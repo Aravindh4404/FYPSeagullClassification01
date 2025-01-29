@@ -8,5 +8,7 @@ large code files/
 # Ignore all log files
 *.log
 
+darkness_analysis_results.csv
+
 # Ignore temporary files
 *.tmp

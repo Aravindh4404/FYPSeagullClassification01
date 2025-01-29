@@ -58,6 +58,29 @@ class DarknessAnalyzer:
             return image_files[:max_images]
         return image_files
 
+    def save_results_to_csv(self, results_dict: Dict):
+        """Save the analysis results to a CSV file"""
+        data = []
+
+        # Process results for both folders
+        for folder_key in ['folder1', 'folder2']:
+            folder_name = results_dict[folder_key]['name']
+            for image_result in results_dict[folder_key]['results']:
+                image_name = image_result['image']
+                for region in image_result['regions']:
+                    data.append({
+                        'Species': folder_name,
+                        'Image': image_name,
+                        'Region': f"Region {region['region_id']}",
+                        'Darkness_Value': region['darkness_value']
+                    })
+
+        # Create DataFrame and save to CSV
+        df = pd.DataFrame(data)
+        output_file = 'darkness_analysis_results.csv'
+        df.to_csv(output_file, index=False)
+        print(f"\nResults saved to {output_file}")
+
     def select_regions_for_image(self, img_path: str):
         """Select regions for a single image"""
         original_image = cv2.imread(img_path)
@@ -72,12 +95,14 @@ class DarknessAnalyzer:
         # Resize image
         self.image = self.resize_image(original_image)
 
-        window_name = f'Draw Regions for {os.path.basename(img_path)} (Press "a" to accept, "r" to reset, "q" to skip)'
+        # Create window only if it doesn't exist
+        window_name = 'Region Selection'
         cv2.namedWindow(window_name)
-        cv2.setMouseCallback(window_name, self.mouse_callback)
-
         self.drawing_image = self.image.copy()
         self.mask = np.zeros(self.image.shape[:2], dtype=np.uint8)
+
+        # Set mouse callback
+        cv2.setMouseCallback(window_name, self.mouse_callback)
 
         print(f"\nSelect regions for {os.path.basename(img_path)}:")
         print("- Hold left mouse button and draw to create regions")
@@ -87,11 +112,16 @@ class DarknessAnalyzer:
         print("- Press 'q' to skip this image")
 
         while True:
-            cv2.imshow(window_name, self.drawing_image)
+            # Show the current image name in the window
+            display_image = self.drawing_image.copy()
+            cv2.putText(display_image, os.path.basename(img_path),
+                        (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
+                        1, (0, 255, 0), 2)
+
+            cv2.imshow(window_name, display_image)
             key = cv2.waitKey(1) & 0xFF
 
             if key == ord('q'):
-                cv2.destroyAllWindows()
                 return None
             elif key == ord('r'):
                 self.drawing_image = self.image.copy()
@@ -105,11 +135,59 @@ class DarknessAnalyzer:
                 scaled_regions = [[(int(x * scale_x), int(y * scale_y))
                                    for x, y in region]
                                   for region in self.regions]
-                cv2.destroyAllWindows()
                 return scaled_regions
 
-        cv2.destroyAllWindows()
         return None
+
+    def process_folders(self, folder1: str, folder2: str, max_images: int = None):
+        """Process all images in both folders"""
+        # Get image lists
+        images1 = self.get_image_files(folder1, max_images)
+        images2 = self.get_image_files(folder2, max_images)
+
+        # Process images and collect results
+        results_dict = {
+            'folder1': {'name': os.path.basename(folder1), 'results': []},
+            'folder2': {'name': os.path.basename(folder2), 'results': []}
+        }
+
+        try:
+            # Process first folder
+            print(f"\nProcessing {results_dict['folder1']['name']}...")
+            for img_path in images1:
+                print(f"\nProcessing {os.path.basename(img_path)}")
+                regions = self.select_regions_for_image(img_path)
+                if regions:
+                    img = cv2.imread(img_path)
+                    if img is not None:
+                        results = self.analyze_regions(img, regions)
+                        results_dict['folder1']['results'].append({
+                            'image': os.path.basename(img_path),
+                            'regions': results
+                        })
+                        self.visualize_individual_image(img, results, os.path.basename(img_path))
+
+            # Process second folder
+            print(f"\nProcessing {results_dict['folder2']['name']}...")
+            for img_path in images2:
+                print(f"\nProcessing {os.path.basename(img_path)}")
+                regions = self.select_regions_for_image(img_path)
+                if regions:
+                    img = cv2.imread(img_path)
+                    if img is not None:
+                        results = self.analyze_regions(img, regions)
+                        results_dict['folder2']['results'].append({
+                            'image': os.path.basename(img_path),
+                            'regions': results
+                        })
+                        self.visualize_individual_image(img, results, os.path.basename(img_path))
+
+            if results_dict['folder1']['results'] and results_dict['folder2']['results']:
+                self.visualize_results(results_dict)
+                self.save_results_to_csv(results_dict)
+
+        finally:
+            cv2.destroyAllWindows()
 
     def analyze_regions(self, image: np.ndarray, regions: List) -> List[Dict]:
         """Calculate darkness metrics for selected regions"""
@@ -135,52 +213,6 @@ class DarknessAnalyzer:
                 })
 
         return results
-
-    def process_folders(self, folder1: str, folder2: str, max_images: int = None):
-        """Process all images in both folders"""
-        # Get image lists
-        images1 = self.get_image_files(folder1, max_images)
-        images2 = self.get_image_files(folder2, max_images)
-
-        # Process images and collect results
-        results_dict = {
-            'folder1': {'name': os.path.basename(folder1), 'results': []},
-            'folder2': {'name': os.path.basename(folder2), 'results': []}
-        }
-
-        # Process first folder
-        print(f"\nProcessing {results_dict['folder1']['name']}...")
-        for img_path in images1:
-            print(f"\nProcessing {os.path.basename(img_path)}")
-            regions = self.select_regions_for_image(img_path)
-            if regions:
-                img = cv2.imread(img_path)
-                if img is not None:
-                    results = self.analyze_regions(img, regions)
-                    results_dict['folder1']['results'].append({
-                        'image': os.path.basename(img_path),
-                        'regions': results
-                    })
-                    self.visualize_individual_image(img, results, os.path.basename(img_path))
-
-        # Process second folder
-        print(f"\nProcessing {results_dict['folder2']['name']}...")
-        for img_path in images2:
-            print(f"\nProcessing {os.path.basename(img_path)}")
-            regions = self.select_regions_for_image(img_path)
-            if regions:
-                img = cv2.imread(img_path)
-                if img is not None:
-                    results = self.analyze_regions(img, regions)
-                    results_dict['folder2']['results'].append({
-                        'image': os.path.basename(img_path),
-                        'regions': results
-                    })
-                    self.visualize_individual_image(img, results, os.path.basename(img_path))
-
-        if results_dict['folder1']['results'] and results_dict['folder2']['results']:
-            self.visualize_results(results_dict)
-            self.save_results_to_csv(results_dict)
 
     def visualize_individual_image(self, image: np.ndarray, results: List[Dict], image_name: str):
         """Visualize results for a single image"""
@@ -339,7 +371,7 @@ def main():
     folder1, folder2 = analyzer.select_folders()
 
     # Set maximum number of images to process from each folder
-    max_images = 10  # Change this value to process more or fewer images
+    max_images = 2  # Change this value to process more or fewer images
 
     # Process the folders
     analyzer.process_folders(folder1, folder2, max_images)
