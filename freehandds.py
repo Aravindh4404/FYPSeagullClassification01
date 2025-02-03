@@ -33,42 +33,36 @@ class DarknessAnalyzer:
 
         return cv2.resize(image, (new_w, new_h))
 
-    def select_folders(self) -> tuple:
-        """Let user select two folders for comparison"""
+    def select_parent_folder(self) -> str:
+        """Let the user select a single parent folder.
+           All subfolders inside this folder are automatically selected."""
         root = Tk()
         root.withdraw()
-
-        print("Select first species folder...")
-        folder1 = filedialog.askdirectory(title="Select first species folder")
-        print("Select second species folder...")
-        folder2 = filedialog.askdirectory(title="Select second species folder")
-
-        return folder1, folder2
+        print("Select the parent folder that contains the species subfolders...")
+        parent_folder = filedialog.askdirectory(title="Select Parent Folder")
+        return parent_folder
 
     def get_image_files(self, folder_path: str, max_images: int = None) -> List[str]:
         """Get list of image files from folder"""
         valid_extensions = ('.jpg', '.jpeg', '.png', '.bmp')
         image_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path)
                        if f.lower().endswith(valid_extensions)]
-
         return image_files[:max_images] if max_images else image_files
 
     def save_results_to_csv(self, results_dict: Dict):
         """Save the analysis results to a CSV file"""
         data = []
-
-        for folder_key in ['folder1', 'folder2']:
-            folder_name = results_dict[folder_key]['name']
-            for image_result in results_dict[folder_key]['results']:
+        for species_key, species_data in results_dict.items():
+            species_name = species_data['name']
+            for image_result in species_data['results']:
                 image_name = image_result['image']
                 for region in image_result['regions']:
                     data.append({
-                        'Species': folder_name,
+                        'Species': species_name,
                         'Image': image_name,
                         'Region': f"Region {region['region_id']}",
                         'Darkness_Value': region['darkness_value']
                     })
-
         df = pd.DataFrame(data)
         output_file = 'darkness_analysis_results.csv'
         df.to_csv(output_file, index=False)
@@ -95,14 +89,13 @@ class DarknessAnalyzer:
         print(f"\nSelect regions for {os.path.basename(img_path)}:")
         print("- Hold left mouse button to draw")
         print("- Release to complete region")
-        print("- 'a' to accept, 'r' to reset, 'q' to skip")
+        print("- Press 'a' to accept, 'r' to reset, or 'q' to skip this image")
 
         while True:
             display_image = self.drawing_image.copy()
             cv2.putText(display_image, os.path.basename(img_path),
                         (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
                         1, (0, 255, 0), 2)
-
             cv2.imshow(window_name, display_image)
             key = cv2.waitKey(1) & 0xFF
 
@@ -114,6 +107,7 @@ class DarknessAnalyzer:
                 self.masks = []
                 self.regions = []
             elif key == ord('a') and len(self.regions) > 0:
+                # Scale regions back to original image size.
                 scale_x = original_image.shape[1] / self.image.shape[1]
                 scale_y = original_image.shape[0] / self.image.shape[0]
                 scaled_regions = [[(int(x * scale_x), int(y * scale_y))
@@ -123,63 +117,53 @@ class DarknessAnalyzer:
 
         return None
 
-    def process_folders(self, folder1: str, folder2: str, max_images: int = None):
-        """Process all images in both folders"""
-        images1 = self.get_image_files(folder1, max_images)
-        images2 = self.get_image_files(folder2, max_images)
+    def process_parent_folder(self, parent_folder: str, max_images: int = None):
+        """
+        Process all images in all subfolders of the parent folder.
+        Each subfolder is assumed to represent a species.
+        """
+        # Get a list of subfolders in the parent folder.
+        subfolders = [os.path.join(parent_folder, d) for d in os.listdir(parent_folder)
+                      if os.path.isdir(os.path.join(parent_folder, d))]
+        if not subfolders:
+            print("No subfolders found in the selected parent folder.")
+            return
 
-        results_dict = {
-            'folder1': {'name': os.path.basename(folder1), 'results': []},
-            'folder2': {'name': os.path.basename(folder2), 'results': []}
-        }
-
-        try:
-            print(f"\nProcessing {results_dict['folder1']['name']}...")
-            for img_path in images1:
-                print(f"\nProcessing {os.path.basename(img_path)}")
+        results_dict = {}
+        for subfolder in subfolders:
+            species_name = os.path.basename(subfolder)
+            results_dict[subfolder] = {'name': species_name, 'results': []}
+            images = self.get_image_files(subfolder, max_images)
+            print(f"\nProcessing species: {species_name} ({len(images)} images)")
+            for img_path in images:
+                print(f"\nProcessing image: {os.path.basename(img_path)}")
                 regions = self.select_regions_for_image(img_path)
                 if regions:
                     img = cv2.imread(img_path)
                     if img is not None:
                         results = self.analyze_regions(img, regions)
-                        results_dict['folder1']['results'].append({
+                        results_dict[subfolder]['results'].append({
                             'image': os.path.basename(img_path),
                             'regions': results
                         })
                         self.visualize_individual_image(img, results, os.path.basename(img_path))
+        # Visualize comparative analysis across species.
+        if results_dict:
+            self.visualize_comparison(results_dict)
+            self.save_results_to_csv(results_dict)
 
-            print(f"\nProcessing {results_dict['folder2']['name']}...")
-            for img_path in images2:
-                print(f"\nProcessing {os.path.basename(img_path)}")
-                regions = self.select_regions_for_image(img_path)
-                if regions:
-                    img = cv2.imread(img_path)
-                    if img is not None:
-                        results = self.analyze_regions(img, regions)
-                        results_dict['folder2']['results'].append({
-                            'image': os.path.basename(img_path),
-                            'regions': results
-                        })
-                        self.visualize_individual_image(img, results, os.path.basename(img_path))
-
-            if results_dict['folder1']['results'] and results_dict['folder2']['results']:
-                self.visualize_comparison(results_dict)
-                self.save_results_to_csv(results_dict)
-
-        finally:
-            cv2.destroyAllWindows()
+        cv2.destroyAllWindows()
 
     def analyze_regions(self, image: np.ndarray, regions: List) -> List[Dict]:
         """Calculate darkness metrics for selected regions with normalization"""
         results = []
-        # Convert image to grayscale
+        # Convert image to grayscale.
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-        # Normalize the grayscale image using min-max normalization
+        # Normalize the grayscale image using min‑max normalization.
         min_val = np.min(gray_image)
         max_val = np.max(gray_image)
         if max_val > min_val:
-            # Scale values to range 0-255
             normalized_gray = ((gray_image - min_val) / (max_val - min_val)) * 255
             normalized_gray = normalized_gray.astype(np.uint8)
         else:
@@ -190,7 +174,7 @@ class DarknessAnalyzer:
             points = np.array(region_points, dtype=np.int32)
             cv2.fillPoly(mask, [points], 255)
 
-            # Use the normalized grayscale image for analysis
+            # Use the normalized grayscale image for analysis.
             region = cv2.bitwise_and(normalized_gray, normalized_gray, mask=mask)
             non_zero_pixels = region[mask > 0]
 
@@ -207,16 +191,13 @@ class DarknessAnalyzer:
     def visualize_individual_image(self, image: np.ndarray, results: List[Dict], image_name: str):
         """Visualize results for a single image"""
         display_image = self.resize_image(image)
-
         plt.figure(figsize=(15, 5))
 
         plt.subplot(1, 2, 1)
         display_image_rgb = cv2.cvtColor(display_image, cv2.COLOR_BGR2RGB)
         plt.imshow(display_image_rgb)
-
         scale_x = display_image.shape[1] / image.shape[1]
         scale_y = display_image.shape[0] / image.shape[0]
-
         for result in results:
             scaled_contour = [(int(x * scale_x), int(y * scale_y))
                               for x, y in result['contour']]
@@ -225,115 +206,63 @@ class DarknessAnalyzer:
             x, y = np.mean(points[:, 0]), np.mean(points[:, 1])
             plt.text(x, y, f"Region {result['region_id']}\n{result['darkness_value']:.1f}",
                      color='red', fontsize=10, ha='center')
-
         plt.title(f"Regions - {image_name}")
         plt.axis('off')
 
         plt.subplot(1, 2, 2)
         region_nums = [r['region_id'] for r in results]
         darkness_values = [r['darkness_value'] for r in results]
-
         bars = plt.bar(region_nums, darkness_values)
         plt.title(f"Darkness Values - {image_name}")
         plt.xlabel("Region Number")
         plt.ylabel("Darkness Value (0-255)\n(lower = darker)")
         plt.ylim(0, 255)
-
         for bar in bars:
             height = bar.get_height()
             plt.text(bar.get_x() + bar.get_width() / 2., height,
-                     f'{height:.1f}',
-                     ha='center', va='bottom')
-
+                     f'{height:.1f}', ha='center', va='bottom')
         plt.tight_layout()
         plt.show()
 
     def visualize_comparison(self, results_dict: Dict):
-        """Visualize comparative analysis between folders"""
-        folder1_name = results_dict['folder1']['name']
-        folder2_name = results_dict['folder2']['name']
+        """
+        Visualize comparative analysis across all species.
+        For each image, if multiple regions were selected, the darkness values are averaged.
+        Then, for each species (subfolder), an overall average and standard deviation is computed,
+        and a final bar chart with one bar per species is displayed.
+        """
+        species_names = []
+        species_means = []
+        species_stds = []
+        species_counts = []
 
-        # Collect all unique region indices present in either folder
-        folder1_regions = set()
-        for result in results_dict['folder1']['results']:
-            folder1_regions.update(range(len(result['regions'])))
+        # Loop through each species (subfolder).
+        for key, species_data in results_dict.items():
+            species_name = species_data['name']
+            image_averages = []
+            for image_result in species_data['results']:
+                region_values = [region['darkness_value'] for region in image_result['regions']]
+                if region_values:
+                    image_avg = np.mean(region_values)
+                    image_averages.append(image_avg)
+            if image_averages:
+                overall_mean = np.mean(image_averages)
+                overall_std = np.std(image_averages, ddof=1) if len(image_averages) > 1 else 0
+                species_names.append(species_name)
+                species_means.append(overall_mean)
+                species_stds.append(overall_std)
+                species_counts.append(len(image_averages))
 
-        folder2_regions = set()
-        for result in results_dict['folder2']['results']:
-            folder2_regions.update(range(len(result['regions'])))
-
-        all_regions = sorted(folder1_regions.union(folder2_regions))
-
-        # Prepare data for plotting
-        regions = []
-        folder1_means, folder1_stds, folder1_counts = [], [], []
-        folder2_means, folder2_stds, folder2_counts = [], [], []
-
-        for region_idx in all_regions:
-            # Folder1 calculations
-            f1_values = [
-                img_result['regions'][region_idx]['darkness_value']
-                for img_result in results_dict['folder1']['results']
-                if region_idx < len(img_result['regions'])
-            ]
-            f1_mean = np.mean(f1_values) if f1_values else np.nan
-            f1_std = np.std(f1_values, ddof=1) if f1_values else np.nan
-            f1_count = len(f1_values)
-
-            # Folder2 calculations
-            f2_values = [
-                img_result['regions'][region_idx]['darkness_value']
-                for img_result in results_dict['folder2']['results']
-                if region_idx < len(img_result['regions'])
-            ]
-            f2_mean = np.mean(f2_values) if f2_values else np.nan
-            f2_std = np.std(f2_values, ddof=1) if f2_values else np.nan
-            f2_count = len(f2_values)
-
-            if not np.isnan(f1_mean) or not np.isnan(f2_mean):
-                regions.append(f"Region {region_idx+1}")
-                folder1_means.append(f1_mean)
-                folder1_stds.append(f1_std)
-                folder1_counts.append(f1_count)
-                folder2_means.append(f2_mean)
-                folder2_stds.append(f2_std)
-                folder2_counts.append(f2_count)
-
-        # Plotting
-        x = np.arange(len(regions))
-        width = 0.35
-
-        fig, ax = plt.subplots(figsize=(12, 6))
-
-        rects1 = ax.bar(x - width/2, folder1_means, width,
-                        yerr=folder1_stds, label=folder1_name,
-                        alpha=0.7, capsize=5)
-        rects2 = ax.bar(x + width/2, folder2_means, width,
-                        yerr=folder2_stds, label=folder2_name,
-                        alpha=0.7, capsize=5)
-
-        ax.set_ylabel('Darkness Value (0-255)\n(lower = darker)')
-        ax.set_title('Comparative Darkness Analysis by Region')
-        ax.set_xticks(x)
-        ax.set_xticklabels(regions)
-        ax.legend()
-
-        # Add count labels
-        for rect, count in zip(rects1, folder1_counts):
-            if not np.isnan(rect.get_height()):
-                height = rect.get_height()
-                ax.text(rect.get_x() + rect.get_width()/2, height/2,
-                        f'n={count}', ha='center', va='center',
-                        color='white', fontweight='bold')
-
-        for rect, count in zip(rects2, folder2_counts):
-            if not np.isnan(rect.get_height()):
-                height = rect.get_height()
-                ax.text(rect.get_x() + rect.get_width()/2, height/2,
-                        f'n={count}', ha='center', va='center',
-                        color='white', fontweight='bold')
-
-        plt.ylim(0, 255)
+        # Plot a bar chart with one bar per species.
+        fig, ax = plt.subplots(figsize=(max(8, len(species_names)*1.5), 6))
+        bars = ax.bar(species_names, species_means, yerr=species_stds, capsize=10, alpha=0.7)
+        ax.set_ylabel('Average Darkness Value (0-255)\n(lower = darker)')
+        ax.set_title('Comparative Average Darkness Analysis Across Species')
+        ax.set_ylim(0, 255)
+        # Add count labels on each bar.
+        for bar, count in zip(bars, species_counts):
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height(),
+                    f'n={count}', ha='center', va='bottom', color='black', fontweight='bold')
         plt.tight_layout()
         plt.show()
 
@@ -342,7 +271,6 @@ class DarknessAnalyzer:
         if event == cv2.EVENT_LBUTTONDOWN:
             self.drawing = True
             self.current_region = [(x, y)]
-
         elif event == cv2.EVENT_MOUSEMOVE:
             if self.drawing:
                 self.current_region.append((x, y))
@@ -352,22 +280,18 @@ class DarknessAnalyzer:
                              self.current_region[-1],
                              (0, 255, 0), 2)
                 cv2.imshow('Region Selection', self.drawing_image)
-
         elif event == cv2.EVENT_LBUTTONUP:
             if self.drawing and len(self.current_region) > 2:
                 self.drawing = False
-
                 region_mask = np.zeros(self.image.shape[:2], dtype=np.uint8)
                 points = np.array(self.current_region, dtype=np.int32)
                 cv2.fillPoly(region_mask, [points], 255)
-
                 M = cv2.moments(points)
                 if M['m00'] != 0:
                     cx = int(M['m10'] / M['m00'])
                     cy = int(M['m01'] / M['m00'])
                     cv2.putText(self.drawing_image, f'Region {len(self.masks) + 1}',
                                 (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-
                 self.masks.append(region_mask)
                 self.regions.append(self.current_region)
                 self.current_region = []
@@ -375,8 +299,8 @@ class DarknessAnalyzer:
 
 def main():
     analyzer = DarknessAnalyzer(target_size=(800, 600))
-    folder1, folder2 = analyzer.select_folders()
-    analyzer.process_folders(folder1, folder2, max_images=5)  # Process up to 5 images per folder
+    parent_folder = analyzer.select_parent_folder()
+    analyzer.process_parent_folder(parent_folder, max_images=5)  # Process up to 5 images per species subfolder
 
 
 if __name__ == "__main__":
