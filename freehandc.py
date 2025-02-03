@@ -1,3 +1,5 @@
+# WORKS
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -371,7 +373,7 @@ def main():
     folder1, folder2 = analyzer.select_folders()
 
     # Set maximum number of images to process from each folder
-    max_images = 2  # Change this value to process more or fewer images
+    max_images = 1  # Change this value to process more or fewer images
 
     # Process the folders
     analyzer.process_folders(folder1, folder2, max_images)
