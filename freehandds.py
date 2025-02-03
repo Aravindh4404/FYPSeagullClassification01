@@ -170,16 +170,28 @@ class DarknessAnalyzer:
             cv2.destroyAllWindows()
 
     def analyze_regions(self, image: np.ndarray, regions: List) -> List[Dict]:
-        """Calculate darkness metrics for selected regions"""
+        """Calculate darkness metrics for selected regions with normalization"""
         results = []
+        # Convert image to grayscale
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        # Normalize the grayscale image using min-max normalization
+        min_val = np.min(gray_image)
+        max_val = np.max(gray_image)
+        if max_val > min_val:
+            # Scale values to range 0-255
+            normalized_gray = ((gray_image - min_val) / (max_val - min_val)) * 255
+            normalized_gray = normalized_gray.astype(np.uint8)
+        else:
+            normalized_gray = gray_image
 
         for i, region_points in enumerate(regions):
             mask = np.zeros(image.shape[:2], dtype=np.uint8)
             points = np.array(region_points, dtype=np.int32)
             cv2.fillPoly(mask, [points], 255)
 
-            region = cv2.bitwise_and(gray_image, gray_image, mask=mask)
+            # Use the normalized grayscale image for analysis
+            region = cv2.bitwise_and(normalized_gray, normalized_gray, mask=mask)
             non_zero_pixels = region[mask > 0]
 
             if len(non_zero_pixels) > 0:
