@@ -5,6 +5,10 @@
 .ipynb_checkpoints/
 
 large code files/
+
+output_species1/
+
+output_species2/
 # Ignore all log files
 *.log
 

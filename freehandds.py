@@ -300,7 +300,7 @@ class DarknessAnalyzer:
 def main():
     analyzer = DarknessAnalyzer(target_size=(800, 600))
     parent_folder = analyzer.select_parent_folder()
-    analyzer.process_parent_folder(parent_folder, max_images=5)  # Process up to 5 images per species subfolder
+    analyzer.process_parent_folder(parent_folder, max_images=2)  # Process up to 5 images per species subfolder
 
 
 if __name__ == "__main__":
