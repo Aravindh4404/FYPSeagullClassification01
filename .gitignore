@@ -14,5 +14,7 @@ output_species2/
 
 darkness_analysis_results.csv
 
+tone_analysis_results.csv
+
 # Ignore temporary files
 *.tmp

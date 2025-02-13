@@ -212,9 +212,9 @@ def analyze_features(df1, df2):
 # Main function
 # --------------------------
 def main():
-    # *** IMPORTANT: Replace these folder paths with your actual directories ***
-    folder1 = r'C:/Users/Aravindh P/Desktop/HQ3/test/Glaucous_Winged_Gull'
-    folder2 = r'C:/Users/Aravindh P/Desktop/HQ3/test/Slaty_Backed_Gull'
+
+    folder1 = r'C:/Users/Aravindh P/Desktop/AUTOMATED/automated gwg jpeg'
+    folder2 = r'C:/Users/Aravindh P/Desktop/AUTOMATED/automated sgb jpeg'
 
     output_folder1 = 'output_species1'
     output_folder2 = 'output_species2'
