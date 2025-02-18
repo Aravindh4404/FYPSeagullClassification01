@@ -18,3 +18,4 @@ tone_analysis_results.csv
 
 # Ignore temporary files
 *.tmp
+/Colored_images/

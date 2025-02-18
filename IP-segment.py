@@ -10,10 +10,9 @@ def compute_curvature(contour):
     """
     Compute a simple discrete curvature along the contour.
     For each point, the curvature is approximated as the angle between the vectors
-    from the previous and next points divided by the distance between those points.
+    from the previous and next points, divided by the distance between those points.
     """
-    # Reshape contour to (N,2)
-    pts = contour[:, 0, :]  # contour shape: (N,1,2)
+    pts = contour[:, 0, :]  # shape: (N, 2)
     N = pts.shape[0]
     curvatures = []
     for i in range(N):
@@ -26,7 +25,7 @@ def compute_curvature(contour):
         norm_v2 = np.linalg.norm(v2)
         if norm_v1 == 0 or norm_v2 == 0:
             continue
-        # Compute the angle between v1 and v2
+        # Angle between v1 and v2
         dot = np.dot(v1, v2)
         cos_angle = np.clip(dot / (norm_v1 * norm_v2), -1.0, 1.0)
         angle = np.arccos(cos_angle)
@@ -47,17 +46,18 @@ def compute_contour_features(contour):
 
     # Basic geometric features
     area = cv2.contourArea(contour)
-    features["area"] = area
     perimeter = cv2.arcLength(contour, True)
+    features["area"] = area
     features["perimeter"] = perimeter
 
+    # Bounding box
     x, y, w, h = cv2.boundingRect(contour)
     features["bounding_width"] = w
     features["bounding_height"] = h
     features["aspect_ratio"] = float(w) / h if h != 0 else 0
     features["extent"] = float(area) / (w * h) if (w * h) != 0 else 0
 
-    # Convex hull and solidity
+    # Convex hull
     hull = cv2.convexHull(contour)
     hull_area = cv2.contourArea(hull)
     features["convex_hull_area"] = hull_area
@@ -66,7 +66,7 @@ def compute_contour_features(contour):
     # Equivalent diameter
     features["equivalent_diameter"] = np.sqrt(4 * area / np.pi) if area > 0 else 0
 
-    # Fit ellipse to obtain orientation and axis lengths (if possible)
+    # Fit ellipse if sufficient points
     if len(contour) >= 5:
         ellipse = cv2.fitEllipse(contour)
         (center, axes, angle) = ellipse
@@ -82,7 +82,7 @@ def compute_contour_features(contour):
         features["minor_axis_length"] = np.nan
         features["ellipse_aspect_ratio"] = np.nan
 
-    # Curvature features along the contour
+    # Curvature features
     curvatures = compute_curvature(contour)
     if curvatures.size > 0:
         features["mean_curvature"] = float(np.mean(curvatures))
@@ -91,35 +91,79 @@ def compute_contour_features(contour):
         features["mean_curvature"] = np.nan
         features["std_curvature"] = np.nan
 
-    # Measure of contour irregularity:
+    # Compare contour perimeter to hull perimeter (irregularity measure)
     hull_perimeter = cv2.arcLength(hull, True)
     features["hull_perimeter"] = hull_perimeter
-    features["perimeter_diff_ratio"] = (hull_perimeter - perimeter) / perimeter if perimeter != 0 else 0
+    features["perimeter_diff_ratio"] = (
+        (hull_perimeter - perimeter) / perimeter if perimeter != 0 else 0
+    )
 
     # Hu Moments (log-transformed)
     moments = cv2.moments(contour)
     huMoments = cv2.HuMoments(moments).flatten()
     for i, hu in enumerate(huMoments):
         # Use log scale for better comparability
-        features[f"hu_moment_{i + 1}"] = -1 * np.sign(hu) * np.log10(abs(hu)) if hu != 0 else 0
+        features[f"hu_moment_{i + 1}"] = (
+            -1 * np.sign(hu) * np.log10(abs(hu)) if hu != 0 else 0
+        )
 
     return features
 
 
+def visualize_processing(original_bgr, thresh, contour):
+    """
+    Display (in a single figure):
+      1) The original image,
+      2) The thresholded mask,
+      3) The original image with the largest contour overlaid
+    """
+
+    # Convert BGR -> RGB for matplotlib
+    original_rgb = cv2.cvtColor(original_bgr, cv2.COLOR_BGR2RGB)
+    thresh_rgb = cv2.cvtColor(thresh, cv2.COLOR_GRAY2RGB)
+
+    # Draw contour on a copy of the original
+    overlay = original_bgr.copy()
+    cv2.drawContours(overlay, [contour], -1, (0, 255, 0), 2)
+    overlay_rgb = cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)
+
+    # Plot with subplots
+    fig, axs = plt.subplots(1, 3, figsize=(16, 5))
+    axs[0].imshow(original_rgb)
+    axs[0].set_title("Original Image")
+    axs[0].axis("off")
+
+    axs[1].imshow(thresh_rgb)
+    axs[1].set_title("Thresholded Mask")
+    axs[1].axis("off")
+
+    axs[2].imshow(overlay_rgb)
+    axs[2].set_title("Contour Overlay")
+    axs[2].axis("off")
+
+    plt.tight_layout()
+    plt.show()
+
+
 class StructureAnalyzer:
-    def __init__(self, white_thresh=250, max_images=None):
+    def __init__(self,
+                 white_thresh=250,
+                 max_images=None,
+                 show_visuals=True):
         """
         Args:
-            white_thresh: Threshold for determining white background (0-255).
-                          Pixels with intensity above this (in grayscale) are considered background.
-            max_images: Maximum number of images to process per folder (if None, process all).
+            white_thresh: Threshold for white background (0-255).
+            max_images: Maximum number of images to process per folder (None => all).
+            show_visuals: If True, show step-by-step images for each file.
         """
         self.white_thresh = white_thresh
         self.max_images = max_images
+        self.show_visuals = show_visuals
 
     def process_image(self, image_path):
         """
-        Process one image to extract the segmented bird's contour and compute shape features.
+        Process one image to get the largest contour and compute shape features.
+        Also optionally visualize the steps.
         """
         img = cv2.imread(image_path)
         if img is None:
@@ -128,43 +172,52 @@ class StructureAnalyzer:
 
         # Convert to grayscale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # Since the background is white, threshold to get the bird (non-white regions)
-        ret, thresh = cv2.threshold(gray, self.white_thresh, 255, cv2.THRESH_BINARY_INV)
 
-        # Find contours from the binary mask
-        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        # Threshold to get the bird (non-white region)
+        #   - anything below white_thresh is "bird" => we invert
+        _, thresh = cv2.threshold(gray, self.white_thresh, 255, cv2.THRESH_BINARY_INV)
+
+        # Find external contours
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if not contours:
             print(f"Warning: No contours found in {image_path}")
             return None
 
-        # Assume the largest contour is the bird.
+        # Largest contour => the bird
         contour = max(contours, key=cv2.contourArea)
+
+        # Optionally visualize the steps
+        if self.show_visuals:
+            visualize_processing(img, thresh, contour)
+
+        # Compute features
         features = compute_contour_features(contour)
         return features
 
     def process_folder(self, folder_path):
         """
-        Process all valid image files in the folder (up to self.max_images) and return results.
+        Process valid image files in the folder (up to self.max_images).
+        Returns a list of feature dictionaries.
         """
-        valid_extensions = ('.jpg', '.jpeg', '.png', '.bmp')
-        image_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path)
-                       if f.lower().endswith(valid_extensions)]
-        image_files = sorted(image_files)
+        valid_exts = (".jpg", ".jpeg", ".png", ".bmp")
+        files = [f for f in sorted(os.listdir(folder_path))
+                 if f.lower().endswith(valid_exts)]
         if self.max_images is not None:
-            image_files = image_files[:self.max_images]
+            files = files[:self.max_images]
 
         results = []
-        for img_file in image_files:
-            print(f"Processing {os.path.basename(img_file)}...")
-            feat = self.process_image(img_file)
+        for filename in files:
+            img_path = os.path.join(folder_path, filename)
+            print(f"Processing {filename}...")
+            feat = self.process_image(img_path)
             if feat is not None:
-                feat["image"] = os.path.basename(img_file)
+                feat["image"] = filename
                 results.append(feat)
         return results
 
-    def save_results_to_csv(self, species1, species2, results1, results2, output_file='structure_analysis_results.csv'):
+    def save_results_to_csv(self, species1, species2, results1, results2, output_file="structure_analysis_results.csv"):
         """
-        Combine results from both species and save to a CSV file.
+        Combine results from both species and save to CSV.
         """
         df1 = pd.DataFrame(results1)
         df1["Species"] = species1
@@ -179,10 +232,10 @@ class StructureAnalyzer:
         """
         Create a boxplot comparing the given feature between species.
         """
-        plt.figure(figsize=(8, 6))
-        species = df["Species"].unique()
-        data = [df[df["Species"] == sp][feature_name].dropna() for sp in species]
-        plt.boxplot(data, labels=species, patch_artist=True,
+        plt.figure(figsize=(8, 5))
+        species_list = df["Species"].unique()
+        data = [df[df["Species"] == sp][feature_name].dropna() for sp in species_list]
+        plt.boxplot(data, labels=species_list, patch_artist=True,
                     boxprops=dict(facecolor="lightgreen", color="green"),
                     medianprops=dict(color="red"))
         plt.ylabel(feature_name)
@@ -191,36 +244,46 @@ class StructureAnalyzer:
 
 
 def main():
-    # Hide the Tkinter root window
+    # Hide the Tk root window
     root = Tk()
     root.withdraw()
 
-    # Ask the user to select two folders containing segmented bird images (one per species)
-    print("Select folder for the first species...")
-    folder1 = filedialog.askdirectory(title="Select folder for first species")
-    print("Select folder for the second species...")
-    folder2 = filedialog.askdirectory(title="Select folder for second species")
+    print("Select the MAIN folder containing two subfolders (one per species).")
+    main_folder = filedialog.askdirectory(title="Select main folder")
 
-    species1 = os.path.basename(folder1.rstrip(os.sep))
-    species2 = os.path.basename(folder2.rstrip(os.sep))
+    # List subdirectories
+    subfolders = [d for d in sorted(os.listdir(main_folder))
+                  if os.path.isdir(os.path.join(main_folder, d))]
 
-    # Set maximum number of images to process per folder
-    max_images = 10  # Change this value as needed
+    if len(subfolders) < 2:
+        print("Error: Main folder must have at least two subfolders for species.")
+        print("Found subfolders:", subfolders)
+        return
 
-    analyzer = StructureAnalyzer(white_thresh=250, max_images=max_images)
+    # For example, pick the first two subfolders as species1 and species2
+    species1_folder = os.path.join(main_folder, subfolders[0])
+    species2_folder = os.path.join(main_folder, subfolders[1])
 
-    print(f"\nProcessing images from species: {species1}")
-    results1 = analyzer.process_folder(folder1)
+    species1 = subfolders[0]
+    species2 = subfolders[1]
+
+    # Create analyzer
+    # show_visuals=True => it will display the image, threshold, and contour for each image
+    analyzer = StructureAnalyzer(white_thresh=250, max_images=5, show_visuals=True)
+
+    print(f"\nAnalyzing species 1: {species1}  in folder: {species1_folder}")
+    results1 = analyzer.process_folder(species1_folder)
     print(f"Processed {len(results1)} images from {species1}.")
 
-    print(f"\nProcessing images from species: {species2}")
-    results2 = analyzer.process_folder(folder2)
+    print(f"\nAnalyzing species 2: {species2}  in folder: {species2_folder}")
+    results2 = analyzer.process_folder(species2_folder)
     print(f"Processed {len(results2)} images from {species2}.")
 
     # Save combined results to CSV
-    df = analyzer.save_results_to_csv(species1, species2, results1, results2)
+    df = analyzer.save_results_to_csv(species1, species2, results1, results2,
+                                      output_file="structure_analysis_results.csv")
 
-    # Example visualization: compare area and mean curvature between species
+    # Example: visualize area and mean curvature
     analyzer.visualize_feature(df, "area")
     analyzer.visualize_feature(df, "mean_curvature")
 
