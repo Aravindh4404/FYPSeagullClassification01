@@ -1,20 +1,19 @@
 """
-Pipeline for Gull Wingtip Analysis
+Pipeline for Gull Regional Analysis
 
-This script demonstrates how to:
-1. Load images and segmentation maps.
-2. Extract wingtip pixels based on segmentation color.
-3. Compute statistics (mean, std, median, histogram, skewness, kurtosis).
-4. Aggregate and visualize the results.
-5. Produce a brief report.
+This script:
+1. Loads images and segmentation maps.
+2. Extracts region pixels for each of: wingtip, wing, body, and head.
+3. Computes intensity statistics (mean, std, median, skewness, kurtosis) for each region.
+4. Aggregates the results and produces frequency plots.
+5. Prints a textual summary report.
 
 Dependencies:
 - Python 3.x
 - numpy
 - opencv-python (cv2)
 - matplotlib
-- scipy (for skew, kurtosis) [optional, or implement your own if needed]
-- Possibly scikit-image (for more advanced segmentation/analysis)
+- scipy (for skew, kurtosis)
 """
 
 import os
@@ -27,24 +26,32 @@ from scipy.stats import skew, kurtosis
 # CONFIGURATION
 ###############################################################################
 
-# Paths to your data (adapt to your folder structure).
+# Paths to your data (adjust as needed)
 SLATY_BACKED_IMG_DIR = r"C:\Users\Aravindh P\OneDrive - University of Nottingham Malaysia\FYP\FYPSeagullClassification01\Features_Analysis\Original_Images\Slaty_Backed_Gull"
 SLATY_BACKED_SEG_DIR = r"C:\Users\Aravindh P\OneDrive - University of Nottingham Malaysia\FYP\FYPSeagullClassification01\Features_Analysis\Colored_Images\Slaty_Backed_Gull"
 
 GLAUCOUS_WINGED_IMG_DIR = r"C:\Users\Aravindh P\OneDrive - University of Nottingham Malaysia\FYP\FYPSeagullClassification01\Features_Analysis\Original_Images\Glaucous_Winged_Gull"
 GLAUCOUS_WINGED_SEG_DIR = r"C:\Users\Aravindh P\OneDrive - University of Nottingham Malaysia\FYP\FYPSeagullClassification01\Features_Analysis\Colored_Images\Glaucous_Winged_Gull"
 
-# Number of images per species you want to process
+# Number of images per species to process
 S = 5
 
-# If wingtips are **green in RGB**, then in OpenCV’s BGR we also use (0, 255, 0)
-WINGTIP_COLOR = (0, 255, 0)
+# Define the BGR colors for each region based on your RGB swatches:
+REGION_COLORS = {
+    "wingtip": (0, 255, 0),      # Green in RGB → (0, 255, 0) in BGR
+    "wing":    (0, 0, 255),      # Red in RGB → (0, 0, 255) in BGR
+    "body":    (0, 255, 255),    # Yellow in RGB → (0, 255, 255) in BGR
+    "head":    (255, 255, 0)   # Sky Blue (e.g., RGB (135,206,235)) → (235,206,135) in BGR
+}
 
 ###############################################################################
 # HELPER FUNCTIONS
 ###############################################################################
 
 def load_images_and_seg_maps(sb_img_dir, sb_seg_dir, gw_img_dir, gw_seg_dir, s):
+    """
+    Loads up to s images and segmentation maps for both species.
+    """
     sb_images = sorted(os.listdir(sb_img_dir))[:s]
     sb_segs   = sorted(os.listdir(sb_seg_dir))[:s]
     gw_images = sorted(os.listdir(gw_img_dir))[:s]
@@ -77,30 +84,37 @@ def load_images_and_seg_maps(sb_img_dir, sb_seg_dir, gw_img_dir, gw_seg_dir, s):
 
     return iSB, sSB, iGW, sGW
 
-def extract_wingtip_pixels(image, seg_map, wingtip_color):
+def extract_region_pixels(image, seg_map, region_color):
+    """
+    Extracts pixels from the image corresponding to a region marked by the given color.
+    """
     if image is None or seg_map is None:
         return np.array([])
 
     mask = (
-        (seg_map[:, :, 0] == wingtip_color[0]) &
-        (seg_map[:, :, 1] == wingtip_color[1]) &
-        (seg_map[:, :, 2] == wingtip_color[2])
+        (seg_map[:, :, 0] == region_color[0]) &
+        (seg_map[:, :, 1] == region_color[1]) &
+        (seg_map[:, :, 2] == region_color[2])
     )
     pixels = image[mask]
 
     if pixels.size == 0:
-        print("[Info] No wingtip pixels found with color", wingtip_color)
+        print(f"[Info] No pixels found for region color {region_color}")
     return pixels
 
 def compute_statistics(pixel_values):
-    # If empty, return NaNs
+    """
+    Computes intensity statistics on the pixel values.
+    If pixel_values has shape (N,3) (color), it converts to grayscale by averaging.
+    Returns a dictionary with mean, std, median, skew, and kurtosis.
+    """
     if pixel_values.size == 0:
         return {
             'mean': np.nan, 'std': np.nan, 'median': np.nan,
             'hist': None, 'skew': np.nan, 'kurtosis': np.nan
         }
 
-    # Convert color to grayscale by averaging channels if we have (N,3)
+    # Convert to grayscale (average the channels) if necessary.
     if len(pixel_values.shape) == 2 and pixel_values.shape[1] == 3:
         pixel_values = pixel_values.mean(axis=1)
 
@@ -121,6 +135,9 @@ def compute_statistics(pixel_values):
     }
 
 def error_bar(values, method='std'):
+    """
+    Computes an error bar (std or sem) for a list of values.
+    """
     arr = np.array(values)
     if arr.size == 0:
         return np.nan
@@ -131,88 +148,111 @@ def error_bar(values, method='std'):
     return np.nan
 
 ###############################################################################
-# MAIN
+# MAIN PIPELINE
 ###############################################################################
 
 def main():
+    # Load images and segmentation maps for both species
     iSB, sSB, iGW, sGW = load_images_and_seg_maps(
         SLATY_BACKED_IMG_DIR, SLATY_BACKED_SEG_DIR,
         GLAUCOUS_WINGED_IMG_DIR, GLAUCOUS_WINGED_SEG_DIR,
         S
     )
 
-    means_sb, stds_sb, medians_sb, skews_sb, kurts_sb = [], [], [], [], []
-    means_gw, stds_gw, medians_gw, skews_gw, kurts_gw = [], [], [], [], []
+    # Prepare dictionaries to store stats for each region.
+    # For each species, we store lists of statistics for each region.
+    stats_sb = {}
+    stats_gw = {}
+    for region in REGION_COLORS:
+        stats_sb[region] = {"means": [], "stds": [], "medians": [], "skews": [], "kurts": []}
+        stats_gw[region] = {"means": [], "stds": [], "medians": [], "skews": [], "kurts": []}
 
     num_images = min(len(iSB), len(iGW))
-
     for idx in range(num_images):
-        # Slaty-backed
-        wingtip_sb = extract_wingtip_pixels(iSB[idx], sSB[idx], WINGTIP_COLOR)
-        stats_sb   = compute_statistics(wingtip_sb)
-        means_sb.append(stats_sb['mean'])
-        stds_sb.append(stats_sb['std'])
-        medians_sb.append(stats_sb['median'])
-        skews_sb.append(stats_sb['skew'])
-        kurts_sb.append(stats_sb['kurtosis'])
+        for region, color in REGION_COLORS.items():
+            # Process Slaty-backed images:
+            pixels_sb = extract_region_pixels(iSB[idx], sSB[idx], color)
+            region_stats_sb = compute_statistics(pixels_sb)
+            stats_sb[region]["means"].append(region_stats_sb['mean'])
+            stats_sb[region]["stds"].append(region_stats_sb['std'])
+            stats_sb[region]["medians"].append(region_stats_sb['median'])
+            stats_sb[region]["skews"].append(region_stats_sb['skew'])
+            stats_sb[region]["kurts"].append(region_stats_sb['kurtosis'])
 
-        # Glaucous-winged
-        wingtip_gw = extract_wingtip_pixels(iGW[idx], sGW[idx], WINGTIP_COLOR)
-        stats_gw   = compute_statistics(wingtip_gw)
-        means_gw.append(stats_gw['mean'])
-        stds_gw.append(stats_gw['std'])
-        medians_gw.append(stats_gw['median'])
-        skews_gw.append(stats_gw['skew'])
-        kurts_gw.append(stats_gw['kurtosis'])
+            # Process Glaucous-winged images:
+            pixels_gw = extract_region_pixels(iGW[idx], sGW[idx], color)
+            region_stats_gw = compute_statistics(pixels_gw)
+            stats_gw[region]["means"].append(region_stats_gw['mean'])
+            stats_gw[region]["stds"].append(region_stats_gw['std'])
+            stats_gw[region]["medians"].append(region_stats_gw['median'])
+            stats_gw[region]["skews"].append(region_stats_gw['skew'])
+            stats_gw[region]["kurts"].append(region_stats_gw['kurtosis'])
 
-    # Aggregate
-    mean_means_sb = np.nanmean(means_sb)
-    mean_stds_sb  = np.nanmean(stds_sb)
-    mean_meds_sb  = np.nanmean(medians_sb)
-    mean_skew_sb  = np.nanmean(skews_sb)
-    mean_kurt_sb  = np.nanmean(kurts_sb)
+    # Aggregate the statistics for each region (compute mean and error bars)
+    aggregated_stats_sb = {}
+    aggregated_stats_gw = {}
+    for region in REGION_COLORS:
+        aggregated_stats_sb[region] = {
+            "mean_of_means": np.nanmean(stats_sb[region]["means"]),
+            "error_bar_means": error_bar(stats_sb[region]["means"]),
+            "mean_of_stds": np.nanmean(stats_sb[region]["stds"]),
+            "error_bar_stds": error_bar(stats_sb[region]["stds"]),
+            "mean_of_medians": np.nanmean(stats_sb[region]["medians"]),
+            "error_bar_medians": error_bar(stats_sb[region]["medians"]),
+            "mean_of_skews": np.nanmean(stats_sb[region]["skews"]),
+            "error_bar_skews": error_bar(stats_sb[region]["skews"]),
+            "mean_of_kurts": np.nanmean(stats_sb[region]["kurts"]),
+            "error_bar_kurts": error_bar(stats_sb[region]["kurts"])
+        }
+        aggregated_stats_gw[region] = {
+            "mean_of_means": np.nanmean(stats_gw[region]["means"]),
+            "error_bar_means": error_bar(stats_gw[region]["means"]),
+            "mean_of_stds": np.nanmean(stats_gw[region]["stds"]),
+            "error_bar_stds": error_bar(stats_gw[region]["stds"]),
+            "mean_of_medians": np.nanmean(stats_gw[region]["medians"]),
+            "error_bar_medians": error_bar(stats_gw[region]["medians"]),
+            "mean_of_skews": np.nanmean(stats_gw[region]["skews"]),
+            "error_bar_skews": error_bar(stats_gw[region]["skews"]),
+            "mean_of_kurts": np.nanmean(stats_gw[region]["kurts"]),
+            "error_bar_kurts": error_bar(stats_gw[region]["kurts"])
+        }
 
-    mean_means_gw = np.nanmean(means_gw)
-    mean_stds_gw  = np.nanmean(stds_gw)
-    mean_meds_gw  = np.nanmean(medians_gw)
-    mean_skew_gw  = np.nanmean(skews_gw)
-    mean_kurt_gw  = np.nanmean(kurts_gw)
+    # Visualization: For each region, plot a histogram of the mean intensities
+    for region in REGION_COLORS:
+        valid_means_sb = [v for v in stats_sb[region]["means"] if not np.isnan(v)]
+        valid_means_gw = [v for v in stats_gw[region]["means"] if not np.isnan(v)]
+        plt.figure()
+        if valid_means_sb:
+            plt.hist(valid_means_sb, bins=10, alpha=0.5, label="SB Means")
+        if valid_means_gw:
+            plt.hist(valid_means_gw, bins=10, alpha=0.5, label="GW Means")
+        plt.title(f"Histogram of {region.capitalize()} Mean Intensities")
+        plt.xlabel("Mean Intensity")
+        plt.ylabel("Frequency")
+        plt.legend()
+        plt.show()
 
-    # Plot hist of means
-    valid_sb = [v for v in means_sb if not np.isnan(v)]
-    valid_gw = [v for v in means_gw if not np.isnan(v)]
+    # Textual Report: Print a summary for each region
+    for region in REGION_COLORS:
+        print(f"==== {region.capitalize()} Summary ====")
+        print("Slaty-backed (SB):")
+        print(f"  Mean of Means: {aggregated_stats_sb[region]['mean_of_means']:.2f} ± {aggregated_stats_sb[region]['error_bar_means']:.2f}")
+        print(f"  Mean of Stds : {aggregated_stats_sb[region]['mean_of_stds']:.2f} ± {aggregated_stats_sb[region]['error_bar_stds']:.2f}")
+        print(f"  Mean of Medians: {aggregated_stats_sb[region]['mean_of_medians']:.2f} ± {aggregated_stats_sb[region]['error_bar_medians']:.2f}")
+        print(f"  Mean of Skews: {aggregated_stats_sb[region]['mean_of_skews']:.2f} ± {aggregated_stats_sb[region]['error_bar_skews']:.2f}")
+        print(f"  Mean of Kurtosis: {aggregated_stats_sb[region]['mean_of_kurts']:.2f} ± {aggregated_stats_sb[region]['error_bar_kurts']:.2f}")
+        print("Glaucous-winged (GW):")
+        print(f"  Mean of Means: {aggregated_stats_gw[region]['mean_of_means']:.2f} ± {aggregated_stats_gw[region]['error_bar_means']:.2f}")
+        print(f"  Mean of Stds : {aggregated_stats_gw[region]['mean_of_stds']:.2f} ± {aggregated_stats_gw[region]['error_bar_stds']:.2f}")
+        print(f"  Mean of Medians: {aggregated_stats_gw[region]['mean_of_medians']:.2f} ± {aggregated_stats_gw[region]['error_bar_medians']:.2f}")
+        print(f"  Mean of Skews: {aggregated_stats_gw[region]['mean_of_skews']:.2f} ± {aggregated_stats_gw[region]['error_bar_skews']:.2f}")
+        print(f"  Mean of Kurtosis: {aggregated_stats_gw[region]['mean_of_kurts']:.2f} ± {aggregated_stats_gw[region]['error_bar_kurts']:.2f}")
+        print("\n")
 
-    plt.figure()
-    if valid_sb:
-        plt.hist(valid_sb, bins=10, alpha=0.5, label="SB Means")
-    if valid_gw:
-        plt.hist(valid_gw, bins=10, alpha=0.5, label="GW Means")
-    plt.title("Histogram of Wingtip Mean Intensities")
-    plt.xlabel("Mean Intensity")
-    plt.ylabel("Frequency")
-    plt.legend()
-    plt.show()
-
-    # Print text report
-    print("==== Slaty-backed Gull (SB) Summary ====")
-    print(f"Mean of Means: {mean_means_sb:.2f} ± {error_bar(means_sb):.2f}")
-    print(f"Mean of Stds : {mean_stds_sb:.2f} ± {error_bar(stds_sb):.2f}")
-    print(f"Mean of Meds : {mean_meds_sb:.2f}")
-    print(f"Mean Skew    : {mean_skew_sb:.2f}")
-    print(f"Mean Kurtosis: {mean_kurt_sb:.2f}")
-
-    print("\n==== Glaucous-winged Gull (GW) Summary ====")
-    print(f"Mean of Means: {mean_means_gw:.2f} ± {error_bar(means_gw):.2f}")
-    print(f"Mean of Stds : {mean_stds_gw:.2f} ± {error_bar(stds_gw):.2f}")
-    print(f"Mean of Meds : {mean_meds_gw:.2f}")
-    print(f"Mean Skew    : {mean_skew_gw:.2f}")
-    print(f"Mean Kurtosis: {mean_kurt_gw:.2f}")
-
-    print("\nNext Steps / Discussion:")
-    print("- Verify if these intensity-based features differentiate the species.")
-    print("- Possibly add texture-based features (GLCM, etc.).")
-    print("- Expand segmentation to other regions (head, body) if needed.")
-    print("- Scale up analysis to more images, e.g. s=100.")
+    print("Next Steps / Discussion:")
+    print("- Verify if these intensity-based features can differentiate between SB and GW.")
+    print("- Consider adding texture-based features (e.g., GLCM) or other measures.")
+    print("- Expand the analysis to more images (e.g., s=100) if feasible.")
 
 if __name__ == "__main__":
     main()
