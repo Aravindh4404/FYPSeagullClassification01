@@ -2,14 +2,6 @@
 from Features_Analysis.utils import *
 from Features_Analysis.config import *
 
-import os
-import cv2
-import numpy as np
-from scipy.stats import skew, kurtosis, ks_2samp, sem
-import matplotlib.pyplot as plt
-from scipy import stats
-
-
 def plot_species_statistics(stats, species_name):
     """Create detailed statistical plots for a single species."""
     fig, axes = plt.subplots(2, 2, figsize=(15, 12))
@@ -78,8 +70,152 @@ def plot_species_statistics(stats, species_name):
     plt.show()
 
 
+import os
+import cv2
+import numpy as np
+from scipy.stats import skew, kurtosis, ks_2samp, sem
+import matplotlib.pyplot as plt
+from scipy import stats
+
+
+def analyze_single_image(image, seg_map, species_name, region_colors, image_idx):
+    """Detailed analysis of a single bird image with multiple visualizations."""
+    # Create a larger figure with multiple subplots
+    fig = plt.figure(figsize=(20, 15))
+    gs = plt.GridSpec(3, 3, figure=fig)
+
+    # 1. Original image with mask overlay (larger)
+    ax_img = fig.add_subplot(gs[0, :2])
+    ax_img.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    ax_img.set_title(f"{species_name} - Original Image {image_idx + 1}")
+    ax_img.axis('off')
+
+    # Storage for region statistics
+    all_intensities = []
+    region_stats = []
+
+    # Process each region
+    for region_name, bgr_color in region_colors.items():
+        # Create mask
+        tolerance = 10
+        lower = np.array([max(c - tolerance, 0) for c in bgr_color], dtype=np.uint8)
+        upper = np.array([min(c + tolerance, 255) for c in bgr_color], dtype=np.uint8)
+        mask = cv2.inRange(seg_map, lower, upper)
+
+        # Overlay contour on original image
+        if np.sum(mask) > 0:
+            contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            ax_img.contour(mask, levels=[0.5], colors='red', linewidths=1)
+
+        # Extract pixels and compute statistics
+        selected_pixels = image[mask > 0]
+        if len(selected_pixels) > 0:
+            intensities = selected_pixels.mean(axis=1) if len(selected_pixels.shape) > 1 else selected_pixels
+            all_intensities.append(intensities)
+
+            # Calculate statistics
+            stats_dict = {
+                'region': region_name,
+                'mean': np.mean(intensities),
+                'std': np.std(intensities),
+                'median': np.median(intensities),
+                'skew': skew(intensities),
+                'kurt': kurtosis(intensities),
+                'min': np.min(intensities),
+                'max': np.max(intensities)
+            }
+            region_stats.append(stats_dict)
+
+    if region_stats:
+        # 2. Main histogram (larger)
+        ax_hist = fig.add_subplot(gs[0, 2])
+        for i, intensities in enumerate(all_intensities):
+            ax_hist.hist(intensities, bins=30, alpha=0.7,
+                         label=f"{region_stats[i]['region']}")
+        ax_hist.set_title("Intensity Distribution")
+        ax_hist.set_xlabel("Intensity")
+        ax_hist.set_ylabel("Frequency")
+        ax_hist.legend()
+        ax_hist.grid(True, alpha=0.3)
+
+        # 3. Box plot of intensities
+        ax_box = fig.add_subplot(gs[1, 0])
+        ax_box.boxplot([stats['mean'] for stats in region_stats],
+                       labels=[stats['region'] for stats in region_stats])
+        ax_box.set_title("Distribution of Mean Intensities")
+        ax_box.grid(True, alpha=0.3)
+
+        # 4. Bar plot of means with standard deviation
+        ax_bar = fig.add_subplot(gs[1, 1])
+        regions = [stats['region'] for stats in region_stats]
+        means = [stats['mean'] for stats in region_stats]
+        stds = [stats['std'] for stats in region_stats]
+        ax_bar.bar(regions, means, yerr=stds, capsize=5)
+        ax_bar.set_title("Mean Intensity with Standard Deviation")
+        ax_bar.grid(True, alpha=0.3)
+
+        # 5. Violin plot of intensity distributions
+        ax_violin = fig.add_subplot(gs[1, 2])
+        ax_violin.violinplot(all_intensities)
+        ax_violin.set_xticks(range(1, len(regions) + 1))
+        ax_violin.set_xticklabels(regions)
+        ax_violin.set_title("Intensity Distribution (Violin Plot)")
+        ax_violin.grid(True, alpha=0.3)
+
+        # 6. Statistics table
+        ax_table = fig.add_subplot(gs[2, :])
+        ax_table.axis('off')
+        table_data = []
+        headers = ['Region', 'Mean', 'Std', 'Median', 'Skewness', 'Kurtosis', 'Min', 'Max']
+        table_data.append(headers)
+        for stats in region_stats:
+            row = [
+                stats['region'],
+                f"{stats['mean']:.2f}",
+                f"{stats['std']:.2f}",
+                f"{stats['median']:.2f}",
+                f"{stats['skew']:.2f}",
+                f"{stats['kurt']:.2f}",
+                f"{stats['min']:.2f}",
+                f"{stats['max']:.2f}"
+            ]
+            table_data.append(row)
+
+        table = ax_table.table(cellText=table_data, loc='center', cellLoc='center')
+        table.auto_set_font_size(False)
+        table.set_fontsize(9)
+        table.scale(1.2, 1.5)
+
+        plt.suptitle(f"Detailed Statistical Analysis - {species_name} Image {image_idx + 1}",
+                     fontsize=16, y=0.95)
+        plt.tight_layout()
+        plt.show()
+
+        # Print statistics to console
+        print(f"\nDetailed Statistics for {species_name} Image {image_idx + 1}:")
+        print("-" * 50)
+        for stats in region_stats:
+            print(f"\n{stats['region']} Region:")
+            for key, value in stats.items():
+                if key != 'region':
+                    print(f"{key.capitalize()}: {value:.2f}")
+
+        # Return statistics for overall analysis
+        return {
+            'means': np.mean([s['mean'] for s in region_stats]),
+            'stds': np.mean([s['std'] for s in region_stats]),
+            'skewness': np.mean([s['skew'] for s in region_stats]),
+            'kurtosis': np.mean([s['kurt'] for s in region_stats]),
+            'min_values': np.mean([s['min'] for s in region_stats]),
+            'max_values': np.mean([s['max'] for s in region_stats]),
+            'medians': np.mean([s['median'] for s in region_stats])
+        }
+
+    return None
+
+
 def analyze_single_species(images, seg_maps, species_name, region_colors):
-    """Analyze a single species and return detailed statistics."""
+    """Analyze all images for a single species."""
     all_stats = {
         'means': [],
         'stds': [],
@@ -91,85 +227,16 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
     }
 
     print(f"\n{'=' * 50}")
-    print(f"Detailed Analysis for {species_name}")
+    print(f"Analysis for {species_name}")
     print(f"{'=' * 50}")
 
     for idx, (image, seg_map) in enumerate(zip(images, seg_maps)):
-        print(f"\nProcessing Image {idx + 1}:")
-        print("-" * 30)
-
-        # Create figure for this image
-        plt.figure(figsize=(15, 5))
-
-        # Original image with mask overlay
-        plt.subplot(1, 2, 1)
-        plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-        plt.title(f"{species_name} - Original Image {idx + 1}")
-        plt.axis('off')
-
-        # Extract region pixels and create histogram
-        image_stats = []
-        for region_name, bgr_color in region_colors.items():
-            # Create mask for this region
-            tolerance = 10
-            lower = np.array([max(c - tolerance, 0) for c in bgr_color], dtype=np.uint8)
-            upper = np.array([min(c + tolerance, 255) for c in bgr_color], dtype=np.uint8)
-            mask = cv2.inRange(seg_map, lower, upper)
-
-            # Overlay contour on original image
-            if np.sum(mask) > 0:
-                contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-                plt.contour(mask, levels=[0.5], colors='red', linewidths=1)
-
-            # Extract pixels and compute statistics
-            selected_pixels = image[mask > 0]
-            if len(selected_pixels) > 0:
-                intensities = selected_pixels.mean(axis=1) if len(selected_pixels.shape) > 1 else selected_pixels
-
-                # Calculate statistics for this region
-                stats_dict = {
-                    'mean': np.mean(intensities),
-                    'std': np.std(intensities),
-                    'skew': skew(intensities),
-                    'kurt': kurtosis(intensities),
-                    'min': np.min(intensities),
-                    'max': np.max(intensities),
-                    'median': np.median(intensities)
-                }
-
-                image_stats.append(stats_dict)
-
-                # Print region statistics
-                print(f"\n{region_name} Region Statistics:")
-                for stat_name, stat_value in stats_dict.items():
-                    print(f"{stat_name.capitalize()}: {stat_value:.2f}")
-
-                # Plot histogram
-                plt.subplot(1, 2, 2)
-                plt.hist(intensities, bins=30, alpha=0.7, label=region_name)
-                plt.title(f"Intensity Distribution\nMean: {stats_dict['mean']:.2f}, Std: {stats_dict['std']:.2f}")
-                plt.xlabel("Intensity")
-                plt.ylabel("Frequency")
-                plt.legend()
-
-        if image_stats:
-            # Aggregate statistics for this image
-            all_stats['means'].append(np.mean([s['mean'] for s in image_stats]))
-            all_stats['stds'].append(np.mean([s['std'] for s in image_stats]))
-            all_stats['skewness'].append(np.mean([s['skew'] for s in image_stats]))
-            all_stats['kurtosis'].append(np.mean([s['kurt'] for s in image_stats]))
-            all_stats['min_values'].append(np.mean([s['min'] for s in image_stats]))
-            all_stats['max_values'].append(np.mean([s['max'] for s in image_stats]))
-            all_stats['medians'].append(np.mean([s['median'] for s in image_stats]))
-
-        plt.tight_layout()
-        plt.show()
-
-    # Plot detailed statistics for this species
-    plot_species_statistics(all_stats, species_name)
+        stats = analyze_single_image(image, seg_map, species_name, region_colors, idx)
+        if stats:
+            for key in all_stats:
+                all_stats[key].append(stats[key])
 
     return all_stats
-
 
 def plot_comparative_statistics(sb_stats, gw_stats):
     """Create comparative visualizations of statistics."""
