@@ -1,78 +1,8 @@
-###############################################################################
-# texture_analysis.py
-###############################################################################
-import os
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-
-# For GLCM & LBP
 from skimage.feature import graycomatrix, graycoprops, local_binary_pattern
-# Optional: for statistical comparison of LBP histograms
 from scipy.stats import chisquare
 
 from Features_Analysis.config import *
-
-###############################################################################
-# 1. HELPER FUNCTIONS
-###############################################################################
-def load_images_and_seg_maps(sb_img_dir, sb_seg_dir, gw_img_dir, gw_seg_dir, s):
-    """
-    Loads images and segmentation maps for Slaty-backed (SB) and Glaucous-winged (GW) gulls.
-    Returns four lists: iSB, sSB, iGW, sGW.
-    """
-    sb_images = sorted(os.listdir(sb_img_dir))[:s]
-    sb_segs   = sorted(os.listdir(sb_seg_dir))[:s]
-    gw_images = sorted(os.listdir(gw_img_dir))[:s]
-    gw_segs   = sorted(os.listdir(gw_seg_dir))[:s]
-
-    iSB, sSB, iGW, sGW = [], [], [], []
-
-    # Load SB images and segmentation
-    for img_name, seg_name in zip(sb_images, sb_segs):
-        img_path = os.path.join(sb_img_dir, img_name)
-        seg_path = os.path.join(sb_seg_dir, seg_name)
-        img = cv2.imread(img_path)
-        seg = cv2.imread(seg_path)
-
-        if seg is not None and seg.shape[-1] == 4:
-            seg = cv2.cvtColor(seg, cv2.COLOR_BGRA2BGR)
-
-        if img is not None and seg is not None:
-            iSB.append(img)
-            sSB.append(seg)
-
-    # Load GW images and segmentation
-    for img_name, seg_name in zip(gw_images, gw_segs):
-        img_path = os.path.join(gw_img_dir, img_name)
-        seg_path = os.path.join(gw_seg_dir, seg_name)
-        img = cv2.imread(img_path)
-        seg = cv2.imread(seg_path)
-
-        if seg is not None and seg.shape[-1] == 4:
-            seg = cv2.cvtColor(seg, cv2.COLOR_BGRA2BGR)
-
-        if img is not None and seg is not None:
-            iGW.append(img)
-            sGW.append(seg)
-
-    return iSB, sSB, iGW, sGW
-
-
-def extract_region_pixels(image, seg_map, region_color, tolerance=10):
-    """
-    Extract pixels from 'image' based on matching 'region_color' in 'seg_map' (within a given tolerance).
-    Returns (selected_pixels, mask).
-    """
-    if image is None or seg_map is None:
-        return np.array([]), None
-
-    lower = np.array([max(c - tolerance, 0) for c in region_color], dtype=np.uint8)
-    upper = np.array([min(c + tolerance, 255) for c in region_color], dtype=np.uint8)
-
-    mask = cv2.inRange(seg_map, lower, upper)
-    selected_pixels = image[mask > 0]
-    return selected_pixels, mask
+from Features_Analysis.utils import *
 
 
 ###############################################################################
