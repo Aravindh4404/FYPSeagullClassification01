@@ -1,4 +1,5 @@
-
+from scipy.stats import sem
+from scipy import stats
 from Features_Analysis.utils import *
 from Features_Analysis.config import *
 
@@ -69,15 +70,6 @@ def plot_species_statistics(stats, species_name):
     plt.grid(True, alpha=0.3)
     plt.show()
 
-
-import os
-import cv2
-import numpy as np
-from scipy.stats import skew, kurtosis, ks_2samp, sem
-import matplotlib.pyplot as plt
-from scipy import stats
-
-
 def analyze_single_image(image, seg_map, species_name, region_colors, image_idx):
     """Detailed analysis of a single bird image with multiple visualizations."""
     # Create a larger figure with multiple subplots
@@ -140,8 +132,7 @@ def analyze_single_image(image, seg_map, species_name, region_colors, image_idx)
 
         # 3. Box plot of intensities
         ax_box = fig.add_subplot(gs[1, 0])
-        ax_box.boxplot([stats['mean'] for stats in region_stats],
-                       labels=[stats['region'] for stats in region_stats])
+        ax_box.boxplot([stats['mean'] for stats in region_stats], tick_labels=[stats['region'] for stats in region_stats])
         ax_box.set_title("Distribution of Mean Intensities")
         ax_box.grid(True, alpha=0.3)
 
@@ -213,7 +204,6 @@ def analyze_single_image(image, seg_map, species_name, region_colors, image_idx)
 
     return None
 
-
 def analyze_single_species(images, seg_maps, species_name, region_colors):
     """Analyze all images for a single species."""
     all_stats = {
@@ -283,7 +273,6 @@ def plot_comparative_statistics(sb_stats, gw_stats):
 
     plt.tight_layout()
     plt.show()
-
 
 def main():
     # Load images
