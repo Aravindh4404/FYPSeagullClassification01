@@ -160,7 +160,7 @@ def main():
     }
 
     # Create an output folder to store the comparison plots
-    output_folder = "Normalization_Comparison_All"
+    output_folder = "Outputs/Normalization_Comparison_All"
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
