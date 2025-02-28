@@ -188,8 +188,8 @@ def analyze_single_image(
         )
         plt.tight_layout()
 
-        os.makedirs("output/visualizations", exist_ok=True)
-        figpath = f"output/visualizations/{species_name.replace(' ', '_')}_image_{image_idx + 1}.png"
+        os.makedirs("Intensity_Result/visualizations", exist_ok=True)
+        figpath = f"Intensity_Result/visualizations/{species_name.replace(' ', '_')}_image_{image_idx + 1}.png"
         plt.savefig(figpath)
         plt.close()
 
@@ -228,13 +228,13 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
         region_df = pd.DataFrame(all_region_stats)
         lbp_df = pd.DataFrame(all_lbp_stats) if len(all_lbp_stats) > 0 else None
 
-        os.makedirs("output/data", exist_ok=True)
-        region_csv = f"output/data/{species_name.replace(' ', '_')}_region_stats.csv"
+        os.makedirs("Intensity_Result/data", exist_ok=True)
+        region_csv = f"Intensity_Result/data/{species_name.replace(' ', '_')}_region_stats.csv"
         region_df.to_csv(region_csv, index=False)
         print(f"Saved region-level stats to {region_csv}")
 
         if lbp_df is not None:
-            lbp_csv = f"output/data/{species_name.replace(' ', '_')}_lbp_stats.csv"
+            lbp_csv = f"Intensity_Result/data/{species_name.replace(' ', '_')}_lbp_stats.csv"
             lbp_df.to_csv(lbp_csv, index=False)
             print(f"Saved LBP stats to {lbp_csv}")
 
@@ -259,7 +259,7 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
 ###############################################################################
 # 3. EXTENDED REGION COMPARISON PLOT (MULTIPLE SUBPLOTS)
 ###############################################################################
-def plot_comparative_statistics_all(sb_df, gw_df, output_dir="output/comparisons"):
+def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/comparisons"):
     """
     Creates a single figure with multiple subplots comparing Slaty-backed vs Glaucous-winged
     across regions for the following metrics:
@@ -430,9 +430,9 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="output/comparisons
 ###############################################################################
 def main():
     # Create output dirs
-    os.makedirs("output/data", exist_ok=True)
-    os.makedirs("output/visualizations", exist_ok=True)
-    os.makedirs("output/comparisons", exist_ok=True)
+    os.makedirs("Intensity_Result/data", exist_ok=True)
+    os.makedirs("Intensity_Result/visualizations", exist_ok=True)
+    os.makedirs("Intensity_Result/comparisons", exist_ok=True)
 
     print("Loading images and segmentation maps...")
 
@@ -473,20 +473,20 @@ def main():
     print("Combining data for all species...")
     if sb_df is not None and gw_df is not None:
         all_df = pd.concat([sb_df, gw_df])
-        all_df.to_csv("output/data/all_species_region_stats.csv", index=False)
+        all_df.to_csv("Intensity_Result/data/all_species_region_stats.csv", index=False)
 
         if sb_lbp_df is not None and gw_lbp_df is not None:
             all_lbp_df = pd.concat([sb_lbp_df, gw_lbp_df])
-            all_lbp_df.to_csv("output/data/all_species_lbp_stats.csv", index=False)
+            all_lbp_df.to_csv("Intensity_Result/data/all_species_lbp_stats.csv", index=False)
 
         # Now create an extended multi-subplot figure with all metrics
         print("Creating extended region comparison plot (means, medians, variance, CV, histograms)...")
-        plot_comparative_statistics_all(sb_df, gw_df, output_dir="output/comparisons")
+        plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/comparisons")
 
-    print("\nAnalysis complete! See 'output' folder for results.")
-    print("- 'output/data': CSV files with stats")
-    print("- 'output/visualizations': Single-image figures (histograms, bar plots, tables)")
-    print("- 'output/comparisons': Cross-species comparison plots")
+    print("\nAnalysis complete! See 'Intensity_Result' folder for results.")
+    print("- 'Intensity_Result/data': CSV files with stats")
+    print("- 'Intensity_Result/visualizations': Single-image figures (histograms, bar plots, tables)")
+    print("- 'Intensity_Result/comparisons': Cross-species comparison plots")
 
 
 # -------------------------------------------------------------------------
