@@ -210,3 +210,5 @@ fabric.properties
 
 # PyPI configuration file
 .pypirc
+/Features_Analysis/Results_Gabor/
+/Features_Analysis/Results_Gabor_Enhanced/
