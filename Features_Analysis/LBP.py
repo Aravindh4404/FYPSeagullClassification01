@@ -16,6 +16,11 @@ radius = 3  # radius defines the size of the neighborhood
 n_points = 8 * radius  # number of points in the neighborhood
 METHOD = 'uniform'  # Uniform pattern to reduce dimensionality
 
+# Directory to store results
+RESULT_DIR = "Outputs/LBP_Results"
+if not os.path.exists(RESULT_DIR):
+    os.makedirs(RESULT_DIR)
+
 
 def get_image_paths(img_dir, seg_dir, limit=S):
     """Get paired original and segmentation image paths"""
@@ -102,7 +107,8 @@ def analyze_species(species_name, img_paths, seg_paths):
                 axes[i][3].set_ylabel('Frequency')
 
     plt.tight_layout()
-    plt.savefig(f'lbp_analysis_{species_name}.png')
+    analysis_path = os.path.join(RESULT_DIR, f'lbp_analysis_{species_name}.png')
+    plt.savefig(analysis_path)
     plt.close()
 
     return all_histograms
@@ -139,7 +145,8 @@ def compare_species_lbp(slaty_histograms, glaucous_histograms):
         axes[idx].legend()
 
     plt.tight_layout()
-    plt.savefig('lbp_comparison.png')
+    comparison_path = os.path.join(RESULT_DIR, 'lbp_comparison.png')
+    plt.savefig(comparison_path)
     plt.close()
 
     return chi_square_distances
@@ -214,7 +221,8 @@ def visualize_lbp_patterns(slaty_paths, glaucous_paths):
         axes[i, 3].axis('off')
 
     plt.tight_layout()
-    plt.savefig('lbp_visualization.png')
+    visualization_path = os.path.join(RESULT_DIR, 'lbp_visualization.png')
+    plt.savefig(visualization_path)
     plt.close()
 
 
@@ -260,7 +268,7 @@ def main():
         sig_text = "Significant" if result['significant'] else "Not significant"
         print(f"  - {region}: p-value = {result['p_value']:.4f} ({sig_text})")
 
-    print("\nAnalysis complete. Output images saved.")
+    print("\nAnalysis complete. Output images saved in the folder:", RESULT_DIR)
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ from scipy.stats import levene
 import matplotlib.gridspec as gridspec
 
 # Create output directory for saving results
-OUTPUT_DIR = "Results_Gabor_Enhanced"
+OUTPUT_DIR = "Outputs/Results_Gabor_Enhanced"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
