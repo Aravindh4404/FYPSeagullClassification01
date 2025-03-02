@@ -1,4 +1,4 @@
-from Features_Analysis.config import *
+from config import *
 
 import os
 import numpy as np

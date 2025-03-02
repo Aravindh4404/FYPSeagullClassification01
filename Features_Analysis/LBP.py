@@ -5,11 +5,7 @@ from skimage.feature import local_binary_pattern
 from skimage import io, color
 import cv2
 from scipy import stats
-from config import (
-    SLATY_BACKED_IMG_DIR, SLATY_BACKED_SEG_DIR,
-    GLAUCOUS_WINGED_IMG_DIR, GLAUCOUS_WINGED_SEG_DIR,
-    REGION_COLORS, S
-)
+from config import *
 
 # Parameters for LBP
 radius = 3  # radius defines the size of the neighborhood

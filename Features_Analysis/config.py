@@ -2,12 +2,15 @@
 # CONFIGURATION
 ###############################################################################
 
-# Paths to your data (adjust as needed)
-SLATY_BACKED_IMG_DIR = r"./dataset/Original_Images/Slaty_Backed_Gull/"
-SLATY_BACKED_SEG_DIR = r"./dataset/Colored_Images/Slaty_Backed_Gull/"
+from pathlib import Path
 
-GLAUCOUS_WINGED_IMG_DIR = r"./dataset/Original_Images/Glaucous_Winged_Gull/"
-GLAUCOUS_WINGED_SEG_DIR = r"./dataset/Colored_Images/Glaucous_Winged_Gull/"
+BASE_DIR = Path(__file__).resolve().parent
+
+SLATY_BACKED_IMG_DIR = BASE_DIR / "dataset" / "Original_Images" / "Slaty_Backed_Gull"
+SLATY_BACKED_SEG_DIR = BASE_DIR / "dataset" / "Colored_Images" / "Slaty_Backed_Gull"
+
+GLAUCOUS_WINGED_IMG_DIR = BASE_DIR / "dataset" / "Original_Images" / "Glaucous_Winged_Gull"
+GLAUCOUS_WINGED_SEG_DIR = BASE_DIR / "dataset" / "Colored_Images" / "Glaucous_Winged_Gull"
 
 # Number of images per species to process
 S = 5
