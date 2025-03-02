@@ -429,6 +429,10 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Outputs/Intensity_
 # 4. MAIN FUNCTION
 ###############################################################################
 def main():
+    # First, run the normalization comparison to determine the best method
+    from normalization_comparison import run_normalization_comparison
+    run_normalization_comparison()
+
     # Create output dirs
     os.makedirs("Outputs/Intensity_Result/data", exist_ok=True)
     os.makedirs("Outputs/Intensity_Result/visualizations", exist_ok=True)
@@ -454,13 +458,14 @@ def main():
     for img_name in gw_filenames:
         img_path = os.path.join(GLAUCOUS_WINGED_IMG_DIR, img_name)
         seg_path = os.path.join(GLAUCOUS_WINGED_SEG_DIR, img_name)
-        # If your segmentations are in a different folder, fix above line
-        # e.g. seg_path = os.path.join(GLAUCOUS_WINGED_SEG_DIR, img_name)
         img = cv2.imread(img_path)
         seg = cv2.imread(seg_path)
         if img is not None and seg is not None:
             gw_images.append(img)
             gw_segs.append(seg)
+
+    # NOTE: You could apply the best normalization method here before analysis
+    # This would be based on the results from run_normalization_comparison()
 
     # C) Analyze each species
     print("Analyzing Slaty-backed Gull images...")
