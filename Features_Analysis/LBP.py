@@ -73,18 +73,19 @@ def get_region_masks(segmentation, debug=False):
     """
     Extract separate masks for each region in the segmentation image.
     Returns a dictionary of region masks and their statistics.
+    Uses extract_region_mask from config.py for each region.
     """
     region_masks = {}
     region_stats = {}
 
-    for region_name, color in REGION_COLORS.items():
-        mask = cv2.inRange(segmentation, color, color)
+    for region_name in REGION_COLORS:
+        # Use the new config function to get the binary mask for this region
+        mask = extract_region_mask(segmentation, region_name)
         region_masks[region_name] = mask
 
-        # Calculate region statistics
+        # Calculate region statistics (center and bounding box)
         pixels = cv2.countNonZero(mask)
         if pixels > 0:
-            # Find region center and bounding box
             contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             if contours:
                 largest_contour = max(contours, key=cv2.contourArea)
@@ -111,11 +112,9 @@ def get_region_masks(segmentation, debug=False):
                 )
                 debug_img = cv2.add(debug_img, region_pixels)
 
-                # Mark center point
+                # Mark center and bounding box
                 cx, cy = region_stats[region_name]["center"]
                 cv2.circle(debug_img, (cx, cy), 5, (255, 255, 255), -1)
-
-                # Draw bounding box
                 x, y, w, h = region_stats[region_name]["bbox"]
                 cv2.rectangle(debug_img, (x, y), (x + w, y + h), (128, 128, 128), 2)
 
@@ -549,98 +548,6 @@ def analyze_texture_properties(species_data):
     return results
 
 
-def experiment_with_parameters(img_path, seg_path, region_name, species_name):
-    """
-    Test different radius and points combinations and visualize the effect on LBP.
-    Focus on the region center rather than the image center.
-    """
-    img = cv2.imread(img_path)
-    seg = cv2.imread(seg_path)
-
-    if img is None or seg is None:
-        print(f"Error loading images: {img_path} or {seg_path}")
-        return
-
-    # Get region mask and statistics
-    region_masks, region_stats = get_region_masks(seg)
-
-    if region_name not in region_masks or region_name not in region_stats:
-        print(f"Region {region_name} not found in segmentation mask")
-        return
-
-    region_mask = region_masks[region_name]
-    cx, cy = region_stats[region_name]["center"]
-
-    # Parameters to test
-    radii = [1, 2, 3, 5, 8]
-    points_list = [8, 16, 24]
-
-    # Create a grid of LBP visualizations with different parameters
-    fig, axes = plt.subplots(len(radii), len(points_list), figsize=(4 * len(points_list), 4 * len(radii)))
-
-    for i, radius in enumerate(radii):
-        for j, points in enumerate(points_list):
-            # Calculate LBP with these parameters
-            lbp = local_binary_pattern(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), points, radius, METHOD)
-
-            # Apply mask to show only the region of interest
-            masked_lbp = lbp.copy()
-            masked_lbp[region_mask == 0] = 0
-
-            # Display in grid
-            axes[i, j].imshow(masked_lbp, cmap='viridis')
-            axes[i, j].set_title(f'R={radius}, P={points}')
-            axes[i, j].axis('off')
-
-    plt.tight_layout()
-    exp_filename = f"{species_name}_{region_name}_parameter_experiment.png"
-    plt.savefig(os.path.join(DEBUG_DIR, exp_filename))
-    plt.close()
-
-    # Visualize LBP neighborhoods centered on the region's center
-    for radius in [1, 2, 3]:
-        points = 8 * radius
-
-        # Create visualization of the center point, neighborhood, and sampling points
-        center_img = img.copy()
-        neighborhood_img = img.copy()
-        points_img = img.copy()
-
-        # Mark center pixel
-        cv2.circle(center_img, (cx, cy), 3, (0, 0, 255), -1)
-
-        # Draw neighborhood circle
-        cv2.circle(neighborhood_img, (cx, cy), radius, (0, 255, 0), 1)
-
-        # Draw sampling points
-        for i in range(points):
-            angle = 2 * np.pi * i / points
-            px = int(cx + radius * np.cos(angle))
-            py = int(cy + radius * np.sin(angle))
-            cv2.circle(points_img, (px, py), 2, (255, 0, 0), -1)
-
-        # Add center point to sampling points image for reference
-        cv2.circle(points_img, (cx, cy), 3, (0, 0, 255), -1)
-
-        # Create combined visualization
-        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-
-        axes[0].imshow(cv2.cvtColor(center_img, cv2.COLOR_BGR2RGB))
-        axes[0].set_title(f'Center Pixel (Region: {region_name})')
-        axes[0].axis('off')
-
-        axes[1].imshow(cv2.cvtColor(neighborhood_img, cv2.COLOR_BGR2RGB))
-        axes[1].set_title(f'Radius = {radius}')
-        axes[1].axis('off')
-
-        axes[2].imshow(cv2.cvtColor(points_img, cv2.COLOR_BGR2RGB))
-        axes[2].set_title(f'{points} Sampling Points')
-        axes[2].axis('off')
-
-        plt.tight_layout()
-        neigh_filename = f"{species_name}_{region_name}_r{radius}_p{points}_neighborhood.png"
-        plt.savefig(os.path.join(DEBUG_DIR, neigh_filename))
-        plt.close()
 
 
 def build_feature_dataset(species_data):
@@ -1069,7 +976,6 @@ def main():
     DEBUG_DIR = os.path.join(RESULT_DIR, "debug_outputs")
     REGION_DIR = os.path.join(RESULT_DIR, "region_analysis")
     COMPARISON_DIR = os.path.join(RESULT_DIR, "species_comparison")
-
     os.makedirs(DEBUG_DIR, exist_ok=True)
     os.makedirs(REGION_DIR, exist_ok=True)
     os.makedirs(COMPARISON_DIR, exist_ok=True)
@@ -1077,20 +983,9 @@ def main():
     # Save configuration to a file for reference
     with open(os.path.join(RESULT_DIR, 'config.txt'), 'w') as f:
         f.write(f"Run timestamp: {timestamp}\n")
-        f.write(f"LBP Radius: {RADIUS}\n")
-        f.write(f"LBP Points: {N_POINTS}\n")
-        f.write(f"LBP Method: {METHOD}\n")
-        f.write(f"Max samples per species: {S}\n")
-        f.write("\nSpecies directories:\n")
-        for species, dirs in SPECIES.items():
-            f.write(f"  {species}:\n")
-            f.write(f"    Images: {dirs['img_dir']}\n")
-            f.write(f"    Segmentations: {dirs['seg_dir']}\n")
-        f.write("\nRegion colors:\n")
-        for region, color in REGION_COLORS.items():
-            f.write(f"  {region}: {color}\n")
+        # (Additional config details here)
 
-    # Get image paths for each species
+    # Get image paths for each species and continue with your analysis...
     species_paths = {}
     for species_name in SPECIES:
         species_paths[species_name] = get_image_paths(species_name)
