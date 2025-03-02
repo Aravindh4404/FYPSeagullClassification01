@@ -68,7 +68,7 @@ def extract_region_mask(segmentation_img, region_name):
     # Create a mask where the pixel value exactly matches the region color
     return cv2.inRange(segmentation_img, region_color, region_color)
 
-
+# use this below
 def extract_region(original_img, segmentation_img, region_name):
     """
     Extract a specific region from an original image using the segmentation map.
