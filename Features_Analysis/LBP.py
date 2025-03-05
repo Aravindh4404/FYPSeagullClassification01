@@ -28,7 +28,7 @@ SPECIES = {
 # LBP PARAMETERS AND RESULT DIRECTORY
 ###############################################################################
 
-RADIUS = 2  # Radius defines the size of the neighborhood
+RADIUS = 16  # Radius defines the size of the neighborhood
 N_POINTS = 8 * RADIUS  # Number of points in the neighborhood
 METHOD = 'uniform'  # Uniform pattern to reduce dimensionality
 
@@ -1014,7 +1014,7 @@ def main():
     species_data = {}
     for species_name in SPECIES:
         print(f"\nProcessing {species_name}...")
-        species_data[species_name] = analyze_species_texture_center_focus(species_name, debug=True)
+        species_data[species_name] = analyze_species_texture(species_name, debug=True)
 
     # Compare LBP features between species
     print("\nComparing LBP features between species...")
