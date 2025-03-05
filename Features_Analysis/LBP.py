@@ -28,7 +28,7 @@ SPECIES = {
 # LBP PARAMETERS AND RESULT DIRECTORY
 ###############################################################################
 
-RADIUS = 16  # Radius defines the size of the neighborhood
+RADIUS = 8  # Radius defines the size of the neighborhood
 N_POINTS = 8 * RADIUS  # Number of points in the neighborhood
 METHOD = 'uniform'  # Uniform pattern to reduce dimensionality
 
@@ -873,211 +873,226 @@ def experiment_with_parameters(img_path, seg_path, region_name, species_name, ou
         plt.close()
 
 
-def extract_center_lbp(img, region_mask, region_stats, region_name):
-    """Extract LBP features from the center of a region instead of the entire region"""
-    # Get center coordinates of the region
-    if region_name not in region_stats:
-        return None, None
+# def extract_center_lbp(img, region_mask, region_stats, region_name):
+#     """Extract LBP features from the center of a region instead of the entire region"""
+#     # Get center coordinates of the region
+#     if region_name not in region_stats:
+#         return None, None
+#
+#     cx, cy = region_stats[region_name]["center"]
+#
+#     # Convert to grayscale if needed
+#     if len(img.shape) == 3:
+#         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#     else:
+#         gray = img
+#
+#     # Extract a small patch around the center
+#     patch_size = 21  # Small odd number to have a clear center
+#     half_size = patch_size // 2
+#
+#     # Check boundaries
+#     x_min = max(0, cx - half_size)
+#     x_max = min(gray.shape[1], cx + half_size + 1)
+#     y_min = max(0, cy - half_size)
+#     y_max = min(gray.shape[0], cy + half_size + 1)
+#
+#     # If patch is too small, return None
+#     if x_max - x_min < 5 or y_max - y_min < 5:
+#         return None, None
+#
+#     # Extract patch
+#     patch = gray[y_min:y_max, x_min:x_max]
+#
+#     # Apply LBP to the patch
+#     lbp = local_binary_pattern(patch, N_POINTS, RADIUS, METHOD)
+#
+#     # Create histogram
+#     n_bins = int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS
+#     hist, _ = np.histogram(lbp, bins=n_bins, range=(0, n_bins), density=True)
+#
+#     return lbp, hist
 
-    cx, cy = region_stats[region_name]["center"]
 
-    # Convert to grayscale if needed
-    if len(img.shape) == 3:
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    else:
-        gray = img
-
-    # Extract a small patch around the center
-    patch_size = 21  # Small odd number to have a clear center
-    half_size = patch_size // 2
-
-    # Check boundaries
-    x_min = max(0, cx - half_size)
-    x_max = min(gray.shape[1], cx + half_size + 1)
-    y_min = max(0, cy - half_size)
-    y_max = min(gray.shape[0], cy + half_size + 1)
-
-    # If patch is too small, return None
-    if x_max - x_min < 5 or y_max - y_min < 5:
-        return None, None
-
-    # Extract patch
-    patch = gray[y_min:y_max, x_min:x_max]
-
-    # Apply LBP to the patch
-    lbp = local_binary_pattern(patch, N_POINTS, RADIUS, METHOD)
-
-    # Create histogram
-    n_bins = int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS
-    hist, _ = np.histogram(lbp, bins=n_bins, range=(0, n_bins), density=True)
-
-    return lbp, hist
-
-
-def analyze_species_texture_center_focus(species_name, limit=S, debug=False):
-    """Analyze LBP features at the center of each region instead of the entire region"""
-    print(f"Analyzing {species_name} textures with center focus...")
-    paths = get_image_paths(species_name)[:limit]
-
-    if not paths:
-        print(f"No images found for {species_name}")
-        return None, None
-
-    region_features = {region: [] for region in REGION_COLORS}
-    debug_outputs = {region: [] for region in REGION_COLORS}
-
-    for i, (img_path, seg_path) in enumerate(paths):
-        print(f"  Processing image {i + 1}/{len(paths)}: {os.path.basename(img_path)}")
-        img = cv2.imread(img_path)
-        seg = cv2.imread(seg_path)
-
-        if img is None or seg is None:
-            print(f"  Warning: Could not load {img_path} or {seg_path}. Skipping.")
-            continue
-
-        # Get all region masks for this image
-        region_masks, region_stats = get_region_masks(seg)
-
-        # Focus on the wingtip region center if available
-        for region_name in REGION_COLORS:
-            if region_name in region_masks and region_name in region_stats and cv2.countNonZero(
-                    region_masks[region_name]) > 0:
-                # Extract LBP features from the center of this region
-                _, hist = extract_center_lbp(img, region_masks[region_name], region_stats, region_name)
-
-                if hist is not None:
-                    region_features[region_name].append(hist)
-                    debug_outputs[region_name].append((img_path, seg_path))
-                else:
-                    print(f"  Warning: Could not extract center LBP for {region_name} in {os.path.basename(img_path)}")
-            else:
-                print(f"  Warning: Region {region_name} not found in {os.path.basename(img_path)}")
-
-    # For debugging, create a summary of regions found across all images
-    if debug:
-        for region_name, paths_list in debug_outputs.items():
-            coverage = len(paths_list) / len(paths) if paths else 0
-            print(f"  Region {region_name}: Found in {len(paths_list)}/{len(paths)} images ({coverage:.1%})")
-
-    return region_features, debug_outputs
-
+# def analyze_species_texture_center_focus(species_name, limit=S, debug=False):
+#     """Analyze LBP features at the center of each region instead of the entire region"""
+#     print(f"Analyzing {species_name} textures with center focus...")
+#     paths = get_image_paths(species_name)[:limit]
+#
+#     if not paths:
+#         print(f"No images found for {species_name}")
+#         return None, None
+#
+#     region_features = {region: [] for region in REGION_COLORS}
+#     debug_outputs = {region: [] for region in REGION_COLORS}
+#
+#     for i, (img_path, seg_path) in enumerate(paths):
+#         print(f"  Processing image {i + 1}/{len(paths)}: {os.path.basename(img_path)}")
+#         img = cv2.imread(img_path)
+#         seg = cv2.imread(seg_path)
+#
+#         if img is None or seg is None:
+#             print(f"  Warning: Could not load {img_path} or {seg_path}. Skipping.")
+#             continue
+#
+#         # Get all region masks for this image
+#         region_masks, region_stats = get_region_masks(seg)
+#
+#         # Focus on the wingtip region center if available
+#         for region_name in REGION_COLORS:
+#             if region_name in region_masks and region_name in region_stats and cv2.countNonZero(
+#                     region_masks[region_name]) > 0:
+#                 # Extract LBP features from the center of this region
+#                 _, hist = extract_center_lbp(img, region_masks[region_name], region_stats, region_name)
+#
+#                 if hist is not None:
+#                     region_features[region_name].append(hist)
+#                     debug_outputs[region_name].append((img_path, seg_path))
+#                 else:
+#                     print(f"  Warning: Could not extract center LBP for {region_name} in {os.path.basename(img_path)}")
+#             else:
+#                 print(f"  Warning: Region {region_name} not found in {os.path.basename(img_path)}")
+#
+#     # For debugging, create a summary of regions found across all images
+#     if debug:
+#         for region_name, paths_list in debug_outputs.items():
+#             coverage = len(paths_list) / len(paths) if paths else 0
+#             print(f"  Region {region_name}: Found in {len(paths_list)}/{len(paths)} images ({coverage:.1%})")
+#
+#     return region_features, debug_outputs
 
 def main():
-    """Main function to run the texture analysis with organized outputs."""
-    print("Starting bird species texture analysis using LBP...")
-    global RESULT_DIR, DEBUG_DIR, REGION_DIR, COMPARISON_DIR  # Declare globals
+    """Main function to run the texture analysis with organized outputs over multiple parameter settings."""
+    # Define the parameter settings to iterate over.
+    radii_list = [1, 2, 3, 5, 8]
+    points_list = [8, 16, 24]
+    global METHOD
+    METHOD = 'uniform'
 
-    # Create a unique run folder using the current timestamp
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    run_folder = f"Run_{timestamp}"
-    RESULT_DIR = os.path.join("Outputs/LBP_Analysis", run_folder)
+    # Loop over each combination of radius and number of points.
+    for r in radii_list:
+        for p in points_list:
+            # Update global parameters.
+            global RADIUS, N_POINTS
+            RADIUS = r
+            N_POINTS = p
 
-    # Create all necessary directories
-    DEBUG_DIR = os.path.join(RESULT_DIR, "debug_outputs")
-    REGION_DIR = os.path.join(RESULT_DIR, "region_analysis")
-    COMPARISON_DIR = os.path.join(RESULT_DIR, "species_comparison")
-    os.makedirs(DEBUG_DIR, exist_ok=True)
-    os.makedirs(REGION_DIR, exist_ok=True)
-    os.makedirs(COMPARISON_DIR, exist_ok=True)
+            # Create a results folder named by parameter settings.
+            run_folder = f"R{RADIUS}_P{N_POINTS}_M{METHOD}"
+            RESULT_DIR = os.path.join("Outputs/LBP_Analysis", run_folder)
+            os.makedirs(RESULT_DIR, exist_ok=True)
 
-    # Save configuration to a file for reference
-    with open(os.path.join(RESULT_DIR, 'config.txt'), 'w') as f:
-        f.write(f"Run timestamp: {timestamp}\n")
-        # (Additional config details here)
+            # Create subdirectories for organized outputs.
+            DEBUG_DIR = os.path.join(RESULT_DIR, "debug_outputs")
+            REGION_DIR = os.path.join(RESULT_DIR, "region_analysis")
+            COMPARISON_DIR = os.path.join(RESULT_DIR, "species_comparison")
+            os.makedirs(DEBUG_DIR, exist_ok=True)
+            os.makedirs(REGION_DIR, exist_ok=True)
+            os.makedirs(COMPARISON_DIR, exist_ok=True)
 
-    # Get image paths for each species and continue with your analysis...
-    species_paths = {}
-    for species_name in SPECIES:
-        species_paths[species_name] = get_image_paths(species_name)
-        print(f"Found {len(species_paths[species_name])} images for {species_name}")
+            # Redirect console output to both terminal and a log file (config.txt).
+            import sys
+            class Logger(object):
+                def __init__(self, filename):
+                    self.terminal = sys.stdout
+                    self.log = open(filename, "w")
+                def write(self, message):
+                    self.terminal.write(message)
+                    self.log.write(message)
+                def flush(self):
+                    self.terminal.flush()
+                    self.log.flush()
+            sys.stdout = Logger(os.path.join(RESULT_DIR, "config.txt"))
 
-    # Create LBP visualization examples (all species in one image)
-    print("\nCreating LBP visualization examples...")
-    visualize_lbp_patterns(species_paths)
+            print(f"Running analysis for RADIUS = {RADIUS}, N_POINTS = {N_POINTS}, METHOD = {METHOD}")
 
-    # Create region-specific visualizations for each species
-    print("\nCreating region-specific LBP visualizations...")
-    visualize_region_lbp(species_paths)
+            # Get image paths for each species.
+            species_paths = {}
+            for species_name in SPECIES:
+                species_paths[species_name] = get_image_paths(species_name)
+                print(f"Found {len(species_paths[species_name])} images for {species_name}")
 
-    # Experiment with different LBP parameters on a sample image for one species
-    sample_species = list(species_paths.keys())[0]
-    if species_paths[sample_species]:
-        sample_img, sample_seg = species_paths[sample_species][0]
-        # Focus on wingtip region for parameter experiments
-        sample_region = "wingtip"
-        print(f"\nExperimenting with different LBP parameters for {sample_species} - region: {sample_region}...")
-        experiment_with_parameters(sample_img, sample_seg, sample_region, sample_species, RESULT_DIR)
-    else:
-        print("No sample image found for parameter experiment.")
+            # Create LBP visualization examples (all species in one image).
+            print("\nCreating LBP visualization examples...")
+            visualize_lbp_patterns(species_paths)
 
-    # Analyze textures for each species with focus on region centers
-    species_data = {}
-    for species_name in SPECIES:
-        print(f"\nProcessing {species_name}...")
-        species_data[species_name] = analyze_species_texture(species_name, debug=True)
+            # Create region-specific visualizations for each species.
+            print("\nCreating region-specific LBP visualizations...")
+            visualize_region_lbp(species_paths)
 
-    # Compare LBP features between species
-    print("\nComparing LBP features between species...")
-    distances = visualize_lbp_comparison(species_data, 'lbp_histogram_comparison.png')
-    print("\nChi-Square Distances between species:")
-    for key, distance in distances.items():
-        print(f"  {key}: {distance:.4f}")
+            # Experiment with different LBP parameters on a sample image for one species.
+            sample_species = list(species_paths.keys())[0]
+            if species_paths[sample_species]:
+                sample_img, sample_seg = species_paths[sample_species][0]
+                sample_region = "wingtip"  # Change if needed.
+                print(f"\nExperimenting with different LBP parameters for {sample_species} - region: {sample_region}...")
+                experiment_with_parameters(sample_img, sample_seg, sample_region, sample_species, RESULT_DIR)
+            else:
+                print("No sample image found for parameter experiment.")
 
-    # Detailed texture analysis for each region
-    print("\nAnalyzing texture properties for individual regions...")
-    texture_properties = analyze_texture_properties(species_data)
+            # Analyze textures for each species.
+            species_data = {}
+            for species_name in SPECIES:
+                print(f"\nProcessing {species_name}...")
+                species_data[species_name] = analyze_species_texture(species_name, debug=True)
 
-    # Build dataset and evaluate classification
-    print("\nBuilding dataset for classification...")
-    X, y, region_info = build_feature_dataset(species_data)
-
-    # Check if we have enough data for classification
-    if len(np.unique(y)) >= 2:
-        print("\nEvaluating classification performance...")
-        results = evaluate_classification(X, y, region_info)
-
-        # Create summary report
-        summary_path = os.path.join(RESULT_DIR, 'analysis_summary.txt')
-        with open(summary_path, 'w') as f:
-            f.write("Bird Species Texture Analysis Summary\n")
-            f.write("====================================\n\n")
-            f.write("LBP Parameters:\n")
-            f.write(f"  Radius: {RADIUS}\n")
-            f.write(f"  Points: {N_POINTS}\n")
-            f.write(f"  Method: {METHOD}\n\n")
-
-            f.write("Species Data Summary:\n")
-            for species_name, (regions, _) in species_data.items():
-                f.write(f"  {species_name}:\n")
-                for region_name, histograms in regions.items():
-                    f.write(f"    {region_name}: {len(histograms)} samples\n")
-
-            f.write("\nChi-Square Distances between Species:\n")
+            # Compare LBP features between species.
+            print("\nComparing LBP features between species...")
+            distances = visualize_lbp_comparison(species_data, 'lbp_histogram_comparison.png')
+            print("\nChi-Square Distances between species:")
             for key, distance in distances.items():
-                f.write(f"  {key}: {distance:.4f}\n")
+                print(f"  {key}: {distance:.4f}")
 
-            f.write("\nClassification Results:\n")
-            for region, metrics in results.items():
-                f.write(f"  {region}:\n")
-                for metric, value in metrics.items():
-                    f.write(f"    {metric}: {value:.4f}\n")
+            # Detailed texture analysis for each region.
+            print("\nAnalyzing texture properties for individual regions...")
+            texture_properties = analyze_texture_properties(species_data)
 
-            # Add texture property summary
-            f.write("\nTexture Property Summary:\n")
-            for species, region_props in texture_properties.items():
-                f.write(f"  {species}:\n")
-                for region, props in region_props.items():
-                    f.write(f"    {region}:\n")
-                    for prop, value in props.items():
-                        if prop != 'dominant_patterns':
-                            f.write(f"      {prop}: {value:.4f}\n")
-                        else:
-                            f.write(f"      {prop}: {value}\n")
-    else:
-        print("Insufficient data for classification evaluation")
+            # Build dataset and evaluate classification.
+            print("\nBuilding dataset for classification...")
+            X, y, region_info = build_feature_dataset(species_data)
+            if len(np.unique(y)) >= 2:
+                print("\nEvaluating classification performance...")
+                results = evaluate_classification(X, y, region_info)
 
-    print("\nAnalysis complete! Results saved to:", RESULT_DIR)
+                summary_path = os.path.join(RESULT_DIR, 'analysis_summary.txt')
+                with open(summary_path, 'w') as f:
+                    f.write("Bird Species Texture Analysis Summary\n")
+                    f.write("====================================\n\n")
+                    f.write("LBP Parameters:\n")
+                    f.write(f"  Radius: {RADIUS}\n")
+                    f.write(f"  Points: {N_POINTS}\n")
+                    f.write(f"  Method: {METHOD}\n\n")
+                    f.write("Species Data Summary:\n")
+                    for species_name, (regions, _) in species_data.items():
+                        f.write(f"  {species_name}:\n")
+                        for region_name, histograms in regions.items():
+                            f.write(f"    {region_name}: {len(histograms)} samples\n")
+                    f.write("\nChi-Square Distances between Species:\n")
+                    for key, distance in distances.items():
+                        f.write(f"  {key}: {distance:.4f}\n")
+                    f.write("\nClassification Results:\n")
+                    for region, metrics in results.items():
+                        f.write(f"  {region}:\n")
+                        for metric, value in metrics.items():
+                            f.write(f"    {metric}: {value:.4f}\n")
+                    f.write("\nTexture Property Summary:\n")
+                    for species, region_props in texture_properties.items():
+                        f.write(f"  {species}:\n")
+                        for region, props in region_props.items():
+                            f.write(f"    {region}:\n")
+                            for prop, value in props.items():
+                                if prop != 'dominant_patterns':
+                                    f.write(f"      {prop}: {value:.4f}\n")
+                                else:
+                                    f.write(f"      {prop}: {value}\n")
+            else:
+                print("Insufficient data for classification evaluation")
 
+            print("\nAnalysis complete! Results saved to:", RESULT_DIR)
+
+            # Restore stdout before the next parameter combination.
+            sys.stdout.log.close()
+            sys.stdout = sys.__stdout__
 
 if __name__ == "__main__":
     main()
