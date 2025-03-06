@@ -28,7 +28,7 @@ SPECIES = {
 # LBP PARAMETERS AND RESULT DIRECTORY
 ###############################################################################
 
-RADIUS = 1  # Radius defines the size of the neighborhood
+RADIUS = 8  # Radius defines the size of the neighborhood
 N_POINTS = 8 * RADIUS  # Number of points in the neighborhood
 METHOD = 'uniform'  # Uniform pattern to reduce dimensionality
 
