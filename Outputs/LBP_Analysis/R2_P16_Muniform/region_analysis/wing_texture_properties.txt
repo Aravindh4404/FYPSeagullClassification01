@@ -1,7 +1,0 @@
-Texture properties for wing:
-     Property Slaty_Backed_Gull Glaucous_Winged_Gull
-0  uniformity            0.1026               0.1285
-1     entropy            3.7609               3.6390
-2    contrast            0.0844               0.1257
-3      energy            0.3203               0.3585
-4  smoothness            0.9127               0.9164

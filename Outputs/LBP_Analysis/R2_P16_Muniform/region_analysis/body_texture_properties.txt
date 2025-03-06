@@ -1,7 +1,0 @@
-Texture properties for body:
-     Property Slaty_Backed_Gull Glaucous_Winged_Gull
-0  uniformity            0.1045               0.1057
-1     entropy            3.6910               3.6914
-2    contrast            0.0738               0.0796
-3      energy            0.3233               0.3251
-4  smoothness            0.9117               0.9134
