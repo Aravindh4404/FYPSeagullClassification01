@@ -1,0 +1,91 @@
+Bird Species Texture Analysis Summary
+====================================
+
+LBP Parameters:
+  Radius: 2
+  Points: 16
+  Method: uniform
+
+Species Data Summary:
+  Slaty_Backed_Gull:
+    wingtip: 5 samples
+    wing: 5 samples
+    head: 4 samples
+    body: 5 samples
+  Glaucous_Winged_Gull:
+    wingtip: 5 samples
+    wing: 5 samples
+    head: 5 samples
+    body: 4 samples
+
+Chi-Square Distances between Species:
+  wingtip_Slaty_Backed_Gull_vs_Glaucous_Winged_Gull: 0.0048
+  wing_Slaty_Backed_Gull_vs_Glaucous_Winged_Gull: 0.0198
+  head_Slaty_Backed_Gull_vs_Glaucous_Winged_Gull: 0.0103
+  body_Slaty_Backed_Gull_vs_Glaucous_Winged_Gull: 0.0040
+
+Classification Results:
+  wing:
+    cv_accuracy: 0.6000
+  wingtip:
+    cv_accuracy: 0.4000
+
+Texture Property Summary:
+  Slaty_Backed_Gull:
+    wingtip:
+      uniformity: 0.1045
+      entropy: 3.7384
+      contrast: 0.0870
+      energy: 0.3233
+      smoothness: 0.9138
+      dominant_patterns: [17  8  9]
+    wing:
+      uniformity: 0.1026
+      entropy: 3.7609
+      contrast: 0.0844
+      energy: 0.3203
+      smoothness: 0.9127
+      dominant_patterns: [17  8  9]
+    head:
+      uniformity: 0.0999
+      entropy: 3.7129
+      contrast: 0.0606
+      energy: 0.3160
+      smoothness: 0.9076
+      dominant_patterns: [17  8  9]
+    body:
+      uniformity: 0.1045
+      entropy: 3.6910
+      contrast: 0.0738
+      energy: 0.3233
+      smoothness: 0.9117
+      dominant_patterns: [17  8  9]
+  Glaucous_Winged_Gull:
+    wingtip:
+      uniformity: 0.1203
+      entropy: 3.6491
+      contrast: 0.1084
+      energy: 0.3469
+      smoothness: 0.9144
+      dominant_patterns: [17  8  9]
+    wing:
+      uniformity: 0.1285
+      entropy: 3.6390
+      contrast: 0.1257
+      energy: 0.3585
+      smoothness: 0.9164
+      dominant_patterns: [17  8 16]
+    head:
+      uniformity: 0.0979
+      entropy: 3.7807
+      contrast: 0.0735
+      energy: 0.3129
+      smoothness: 0.9095
+      dominant_patterns: [17  8  9]
+    body:
+      uniformity: 0.1057
+      entropy: 3.6914
+      contrast: 0.0796
+      energy: 0.3251
+      smoothness: 0.9134
+      dominant_patterns: [17  8  9]

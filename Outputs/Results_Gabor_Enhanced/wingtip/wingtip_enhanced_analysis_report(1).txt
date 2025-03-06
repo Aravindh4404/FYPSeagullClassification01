@@ -1,0 +1,17 @@
+====== ANALYSIS REPORT: wingtip ======
+Analysis Date: 2025-03-02 12:20:21
+
+Number of features analyzed: 24
+Number of statistically significant features (p < 0.05): 0
+
+----- SIGNIFICANT DIFFERENCES BETWEEN SPECIES -----
+No statistically significant differences were found between species.
+
+----- ADDITIONAL CONSIDERATIONS -----
+• Check for potential artifacts such as differences in wing angle, lighting, or image quality.
+• Verify that the sample sizes are adequate and representative of the overall population.
+• Consider rotation-invariant or scale-invariant texture features (e.g., LBP or SIFT-like methods)
+  if wing orientation or size variation is large.
+
+----- CONCLUSION -----
+No significant differences were found with the current Gabor filter parameters. Consider adjusting parameters (e.g., more orientations/frequencies) or exploring other feature extraction methods.

@@ -189,7 +189,6 @@ def display_texture_analysis(
     print(f"p-value: {lbp_comparison['p_value']:.3f}")
     print("If p-value < 0.05, the LBP distributions are significantly different.\n")
 
-
 ###############################################################################
 # 5. MAIN FUNCTION
 ###############################################################################

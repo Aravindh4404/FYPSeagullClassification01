@@ -194,6 +194,46 @@ def plot_gabor_responses(image, mask, filters, filter_responses, title, save_pat
         plt.show()
 
 
+def robust_ttest(sample1, sample2, equal_var=True):
+    """
+    A more robust version of t-test that handles edge cases better.
+    Returns t-statistic and p-value.
+    """
+    # Convert to numpy arrays if they aren't already
+    sample1 = np.array(sample1)
+    sample2 = np.array(sample2)
+
+    # Check for NaN values and remove them
+    sample1 = sample1[~np.isnan(sample1)]
+    sample2 = sample2[~np.isnan(sample2)]
+
+    # Check if samples are identical
+    if np.array_equal(sample1, sample2):
+        return 0.0, 1.0
+
+    # Check if either sample has zero variance
+    if np.std(sample1) < 1e-10 and np.std(sample2) < 1e-10:
+        # If both have near-zero variance but different means
+        if abs(np.mean(sample1) - np.mean(sample2)) > 1e-10:
+            return float('inf'), 0.0  # Completely different, infinite t-stat
+        else:
+            return 0.0, 1.0  # Same values, no difference
+
+    # Standard case - use scipy's ttest_ind
+    try:
+        t_stat, p_val = ttest_ind(sample1, sample2, equal_var=equal_var)
+
+        # Handle NaN in results
+        if np.isnan(t_stat) or np.isnan(p_val):
+            print("Warning: NaN values in t-test results.")
+            return 0.0, 1.0
+
+        return t_stat, p_val
+    except Exception as e:
+        print(f"Error in t-test: {e}")
+        return 0.0, 1.0
+
+
 def create_features_summary(sb_features_all, gw_features_all):
     """
     Create a summary dataframe of all features for both species.
@@ -227,7 +267,7 @@ def create_features_summary(sb_features_all, gw_features_all):
             equal_var = levene_p > 0.05
 
             # Perform t-test with appropriate equal_var parameter
-            t_stat, p_value = ttest_ind(sb_values, gw_values, equal_var=equal_var)
+            t_stat, p_value = robust_ttest(sb_values, gw_values, equal_var=equal_var)
 
             # Calculate Cohen's d effect size
             pooled_std = np.sqrt(((len(sb_values) - 1) * sb_std ** 2 +
@@ -283,15 +323,35 @@ def plot_feature_comparison(sb_features, gw_features, feature_name, region_name,
     sb_values = [f[feature_name] for f, _ in sb_features if f is not None and feature_name in f]
     gw_values = [f[feature_name] for f, _ in gw_features if f is not None and feature_name in f]
 
+    # Debug logging
+    print(f"\nDebugging {feature_name} in {region_name}:")
+    print(f"SB values (first 5): {sb_values[:5]}")
+    print(f"GW values (first 5): {gw_values[:5]}")
+    print(f"SB stats: mean={np.mean(sb_values):.4f}, std={np.std(sb_values):.4f}, n={len(sb_values)}")
+    print(f"GW stats: mean={np.mean(gw_values):.4f}, std={np.std(gw_values):.4f}, n={len(gw_values)}")
+
     if not sb_values or not gw_values:
+        print("No data to plot. Skipping.")
         return None, None  # No data to plot
 
     # Test for equal variances
     levene_stat, levene_p = levene(sb_values, gw_values)
     equal_var = levene_p > 0.05
+    print(f"Levene's test: stat={levene_stat:.4f}, p={levene_p:.4f}, equal_var={equal_var}")
 
     # Calculate statistics
     t_stat, p_value = ttest_ind(sb_values, gw_values, equal_var=equal_var)
+    print(f"T-test: t={t_stat:.4f}, p={p_value:.6f}")
+
+    # If p-value is 1, try to understand why
+    if p_value > 0.99:
+        print("WARNING: p-value is very high (≈1). Possible reasons:")
+        if np.array_equal(sb_values, gw_values):
+            print("- The two samples are identical")
+        if np.std(sb_values) < 1e-10 or np.std(gw_values) < 1e-10:
+            print("- One or both samples have near-zero standard deviation")
+        if np.isnan(sb_values).any() or np.isnan(gw_values).any():
+            print("- NaN values detected in samples")
 
     # Calculate effect size (Cohen's d)
     mean1, mean2 = np.mean(sb_values), np.mean(gw_values)
@@ -302,8 +362,10 @@ def plot_feature_comparison(sb_features, gw_features, feature_name, region_name,
     pooled_std = np.sqrt(((n1 - 1) * std1 ** 2 + (n2 - 1) * std2 ** 2) / (n1 + n2 - 2))
     if pooled_std == 0:
         cohen_d = 0
+        print("WARNING: Pooled standard deviation is zero!")
     else:
         cohen_d = (mean1 - mean2) / pooled_std
+    print(f"Effect size (Cohen's d): {cohen_d:.4f}")
 
     effect_magnitude = get_effect_magnitude(cohen_d)
 

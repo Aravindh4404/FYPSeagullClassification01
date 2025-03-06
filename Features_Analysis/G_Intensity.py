@@ -188,8 +188,8 @@ def analyze_single_image(
         )
         plt.tight_layout()
 
-        os.makedirs("Outputs/Intensity_Result/visualizations", exist_ok=True)
-        figpath = f"Outputs/Intensity_Result/visualizations/{species_name.replace(' ', '_')}_image_{image_idx + 1}.png"
+        os.makedirs("Intensity_Result/visualizations", exist_ok=True)
+        figpath = f"Intensity_Result/visualizations/{species_name.replace(' ', '_')}_image_{image_idx + 1}.png"
         plt.savefig(figpath)
         plt.close()
 
@@ -228,13 +228,13 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
         region_df = pd.DataFrame(all_region_stats)
         lbp_df = pd.DataFrame(all_lbp_stats) if len(all_lbp_stats) > 0 else None
 
-        os.makedirs("Outputs/Intensity_Result/data", exist_ok=True)
-        region_csv = f"Outputs/Intensity_Result/data/{species_name.replace(' ', '_')}_region_stats.csv"
+        os.makedirs("Intensity_Result/data", exist_ok=True)
+        region_csv = f"Intensity_Result/data/{species_name.replace(' ', '_')}_region_stats.csv"
         region_df.to_csv(region_csv, index=False)
         print(f"Saved region-level stats to {region_csv}")
 
         if lbp_df is not None:
-            lbp_csv = f"Outputs/Intensity_Result/data/{species_name.replace(' ', '_')}_lbp_stats.csv"
+            lbp_csv = f"Intensity_Result/data/{species_name.replace(' ', '_')}_lbp_stats.csv"
             lbp_df.to_csv(lbp_csv, index=False)
             print(f"Saved LBP stats to {lbp_csv}")
 
@@ -259,7 +259,7 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
 ###############################################################################
 # 3. EXTENDED REGION COMPARISON PLOT (MULTIPLE SUBPLOTS)
 ###############################################################################
-def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Outputs/Intensity_Result/comparisons"):
+def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/comparisons"):
     """
     Creates a single figure with multiple subplots comparing Slaty-backed vs Glaucous-winged
     across regions for the following metrics:
@@ -429,14 +429,10 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Outputs/Intensity_
 # 4. MAIN FUNCTION
 ###############################################################################
 def main():
-    # First, run the normalization comparison to determine the best method
-    from normalization_comparison import run_normalization_comparison
-    run_normalization_comparison()
-
     # Create output dirs
-    os.makedirs("Outputs/Intensity_Result/data", exist_ok=True)
-    os.makedirs("Outputs/Intensity_Result/visualizations", exist_ok=True)
-    os.makedirs("Outputs/Intensity_Result/comparisons", exist_ok=True)
+    os.makedirs("Intensity_Result/data", exist_ok=True)
+    os.makedirs("Intensity_Result/visualizations", exist_ok=True)
+    os.makedirs("Intensity_Result/comparisons", exist_ok=True)
 
     print("Loading images and segmentation maps...")
 
@@ -458,14 +454,13 @@ def main():
     for img_name in gw_filenames:
         img_path = os.path.join(GLAUCOUS_WINGED_IMG_DIR, img_name)
         seg_path = os.path.join(GLAUCOUS_WINGED_SEG_DIR, img_name)
+        # If your segmentations are in a different folder, fix above line
+        # e.g. seg_path = os.path.join(GLAUCOUS_WINGED_SEG_DIR, img_name)
         img = cv2.imread(img_path)
         seg = cv2.imread(seg_path)
         if img is not None and seg is not None:
             gw_images.append(img)
             gw_segs.append(seg)
-
-    # NOTE: You could apply the best normalization method here before analysis
-    # This would be based on the results from run_normalization_comparison()
 
     # C) Analyze each species
     print("Analyzing Slaty-backed Gull images...")
@@ -478,20 +473,20 @@ def main():
     print("Combining data for all species...")
     if sb_df is not None and gw_df is not None:
         all_df = pd.concat([sb_df, gw_df])
-        all_df.to_csv("Outputs/Intensity_Result/data/all_species_region_stats.csv", index=False)
+        all_df.to_csv("Intensity_Result/data/all_species_region_stats.csv", index=False)
 
         if sb_lbp_df is not None and gw_lbp_df is not None:
             all_lbp_df = pd.concat([sb_lbp_df, gw_lbp_df])
-            all_lbp_df.to_csv("Outputs/Intensity_Result/data/all_species_lbp_stats.csv", index=False)
+            all_lbp_df.to_csv("Intensity_Result/data/all_species_lbp_stats.csv", index=False)
 
         # Now create an extended multi-subplot figure with all metrics
         print("Creating extended region comparison plot (means, medians, variance, CV, histograms)...")
-        plot_comparative_statistics_all(sb_df, gw_df, output_dir="Outputs/Intensity_Result/comparisons")
+        plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/comparisons")
 
     print("\nAnalysis complete! See 'Intensity_Result' folder for results.")
-    print("- 'Outputs/Intensity_Result/data': CSV files with stats")
-    print("- 'Outputs/Intensity_Result/visualizations': Single-image figures (histograms, bar plots, tables)")
-    print("- 'Outputs/Intensity_Result/comparisons': Cross-species comparison plots")
+    print("- 'Intensity_Result/data': CSV files with stats")
+    print("- 'Intensity_Result/visualizations': Single-image figures (histograms, bar plots, tables)")
+    print("- 'Intensity_Result/comparisons': Cross-species comparison plots")
 
 
 # -------------------------------------------------------------------------
