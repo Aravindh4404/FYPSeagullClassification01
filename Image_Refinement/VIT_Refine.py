@@ -220,7 +220,7 @@ def main():
             data_dir=data_dir,
             class_names=class_names,
             device="cuda" if torch.cuda.is_available() else "cpu",
-            output_dir=r"D:\FYP\ConfusionMatrixOutputs"  # Folder to save confusion matrices
+            output_dir=r"D:\FYP\ConfusionMatrixOutputs\ViT"  # Folder to save confusion matrices
         )
 
 if __name__ == "__main__":
