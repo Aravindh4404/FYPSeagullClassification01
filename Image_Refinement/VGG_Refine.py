@@ -1,37 +1,12 @@
 import os
-import glob
 import torch
 import torch.nn as nn
 from torchvision import models, transforms, datasets
 from PIL import Image
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix
-
-########################################
-# 1. Squeeze-and-Excitation Block
-########################################
-class SEBlock(nn.Module):
-    """
-    Squeeze-and-Excitation block to improve channel attention.
-    """
-    def __init__(self, channel, reduction=16):
-        super(SEBlock, self).__init__()
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        self.fc = nn.Sequential(
-            nn.Linear(channel, channel // reduction, bias=False),
-            nn.ReLU(inplace=True),
-            nn.Linear(channel // reduction, channel, bias=False),
-            nn.Sigmoid()
-        )
-
-    def forward(self, x):
-        b, c, _, _ = x.size()
-        y = self.avg_pool(x).view(b, c)
-        y = self.fc(y).view(b, c, 1, 1)
-        return x * y
 
 # Use Pre-trained VGG-16 model and modify it for binary classification
 class VGG16Modified(nn.Module):
@@ -48,50 +23,6 @@ class VGG16Modified(nn.Module):
 
     def forward(self, x):
         return self.vgg(x)
-
-
-########################################
-# 3. Improved VGG16 Model with SEBlock
-########################################
-class VGG16Improved(nn.Module):
-    """
-    VGG16 + Squeeze-and-Excitation (SEBlock) + custom classifier layers.
-    The classifier has been modified to match the checkpoint's expected dimensions.
-    """
-    def __init__(self, num_classes=2, freeze_layers=True):
-        super(VGG16Improved, self).__init__()
-        # Load a pretrained VGG16
-        self.vgg = models.vgg16(pretrained=True)
-        # Optionally freeze early layers (e.g., up to layer 24)
-        if freeze_layers:
-            for param in self.vgg.features[:24].parameters():
-                param.requires_grad = False
-        # Insert SEBlock after the last convolutional output (512 channels in VGG16)
-        self.attention = SEBlock(channel=512, reduction=16)
-        # Replace the classifier with a custom head.
-        # NOTE: The checkpoint expects the first linear layer to output 512 features.
-        self.vgg.classifier = nn.Sequential(
-            nn.Linear(25088, 512),    # Modified from 4096 to 512
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5),
-            nn.Linear(512, 1024),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5),
-            nn.Linear(1024, num_classes)
-        )
-
-    def forward(self, x):
-        # Pass through VGG16's feature extractor
-        x = self.vgg.features(x)
-        # Apply SEBlock
-        x = self.attention(x)
-        # Pool down to 7x7
-        x = nn.AdaptiveAvgPool2d((7, 7))(x)
-        # Flatten
-        x = x.view(x.size(0), -1)
-        # Classify
-        x = self.vgg.classifier(x)
-        return x
 
 ########################################
 # 4. Evaluation function
@@ -179,13 +110,7 @@ def evaluate_model(
 # 5. Decide which model class to use
 ########################################
 def get_model_class(model_path: str):
-    """
-    If the model_path string contains 'Improved', use the improved VGG16 with SEBlock.
-    Otherwise, use the standard VGG16.
-    """
-    if "Improved" in model_path:
-        return VGG16Improved
-    else:
+
         return VGG16Modified
 
 ########################################
@@ -251,11 +176,9 @@ def main():
         r"D:\FYP\MODELS\VGGModel\HQ3_20250218\checkpoint_model_vgg_20250218.pth",
         r"D:\FYP\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth",
         r"D:\FYP\MODELS\VGGModel\HQ3latst_20250216\checkpoint_model_vgg_20250216.pth",
-        r"D:\FYP\MODELS\VGGModel\Improved_20250209\final_model_vgg_improved_20250209.pth",
-        r"D:\FYP\MODELS\VGGModel\Improved_20250210\best_model_vgg_improved_20250210.pth",
         r"D:\FYP\MODELS\VGGModel\HQ2ltst_20241210\final_model_vgg_20241210.pth",
         r"D:\FYP\MODELS\VGGModel\HQ3_20250218\checkpoint_model_vgg_20250218.pth",
-
+        r"D:\FYP\MODELS\VGGModel\HQ3latst_20250307\final_model_vgg_20250307.pth"
     ]
 
     device = "cuda" if torch.cuda.is_available() else "cpu"

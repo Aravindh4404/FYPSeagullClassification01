@@ -1,13 +1,8 @@
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 from skimage.feature import local_binary_pattern
-import cv2
-from scipy import stats
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, cross_val_score
-from pathlib import Path
-from datetime import datetime
 import pandas as pd
 
 from Features_Analysis.config import *
@@ -25,26 +20,12 @@ SPECIES = {
 }
 
 ###############################################################################
-# LBP PARAMETERS AND RESULT DIRECTORY
+# LBP PARAMETERS \
 ###############################################################################
 
-RADIUS = 2  # Radius defines the size of the neighborhood
+RADIUS = 1  # Radius defines the size of the neighborhood
 N_POINTS = 8 * RADIUS  # Number of points in the neighborhood
 METHOD = 'uniform'  # Uniform pattern to reduce dimensionality
-
-# Create a unique run folder using the current timestamp
-RESULT_DIR = os.path.join("Outputs/LBP_Analysis", f"Run_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
-os.makedirs(RESULT_DIR, exist_ok=True)
-
-# Create subdirectories for better organization
-DEBUG_DIR = os.path.join(RESULT_DIR, "debug_outputs")
-REGION_DIR = os.path.join(RESULT_DIR, "region_analysis")
-COMPARISON_DIR = os.path.join(RESULT_DIR, "species_comparison")
-
-os.makedirs(DEBUG_DIR, exist_ok=True)
-os.makedirs(REGION_DIR, exist_ok=True)
-os.makedirs(COMPARISON_DIR, exist_ok=True)
-
 
 ###############################################################################
 # FUNCTION DEFINITIONS
@@ -139,6 +120,9 @@ def extract_lbp_features(image, mask=None, region_stats=None, region_name=None, 
 
     # Create histogram
     n_bins = int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS
+    # n_bins = (
+    print(int(lbp.max() + 1))
+    print(int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS)
 
     # If we have a mask, only consider pixels within the mask
     if mask is not None:
@@ -564,8 +548,6 @@ def analyze_texture_properties(species_data):
     return results
 
 
-
-
 def build_feature_dataset(species_data):
     """Build dataset for classification from the extracted features"""
     X, y, region_info = [], [], []
@@ -888,94 +870,6 @@ def experiment_with_parameters(img_path, seg_path, region_name, species_name, ou
         plt.savefig(os.path.join(exp_dir, neigh_filename))
         plt.close()
 
-
-# def extract_center_lbp(img, region_mask, region_stats, region_name):
-#     """Extract LBP features from the center of a region instead of the entire region"""
-#     # Get center coordinates of the region
-#     if region_name not in region_stats:
-#         return None, None
-#
-#     cx, cy = region_stats[region_name]["center"]
-#
-#     # Convert to grayscale if needed
-#     if len(img.shape) == 3:
-#         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-#     else:
-#         gray = img
-#
-#     # Extract a small patch around the center
-#     patch_size = 21  # Small odd number to have a clear center
-#     half_size = patch_size // 2
-#
-#     # Check boundaries
-#     x_min = max(0, cx - half_size)
-#     x_max = min(gray.shape[1], cx + half_size + 1)
-#     y_min = max(0, cy - half_size)
-#     y_max = min(gray.shape[0], cy + half_size + 1)
-#
-#     # If patch is too small, return None
-#     if x_max - x_min < 5 or y_max - y_min < 5:
-#         return None, None
-#
-#     # Extract patch
-#     patch = gray[y_min:y_max, x_min:x_max]
-#
-#     # Apply LBP to the patch
-#     lbp = local_binary_pattern(patch, N_POINTS, RADIUS, METHOD)
-#
-#     # Create histogram
-#     n_bins = int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS
-#     hist, _ = np.histogram(lbp, bins=n_bins, range=(0, n_bins), density=True)
-#
-#     return lbp, hist
-
-
-# def analyze_species_texture_center_focus(species_name, limit=S, debug=False):
-#     """Analyze LBP features at the center of each region instead of the entire region"""
-#     print(f"Analyzing {species_name} textures with center focus...")
-#     paths = get_image_paths(species_name)[:limit]
-#
-#     if not paths:
-#         print(f"No images found for {species_name}")
-#         return None, None
-#
-#     region_features = {region: [] for region in REGION_COLORS}
-#     debug_outputs = {region: [] for region in REGION_COLORS}
-#
-#     for i, (img_path, seg_path) in enumerate(paths):
-#         print(f"  Processing image {i + 1}/{len(paths)}: {os.path.basename(img_path)}")
-#         img = cv2.imread(img_path)
-#         seg = cv2.imread(seg_path)
-#
-#         if img is None or seg is None:
-#             print(f"  Warning: Could not load {img_path} or {seg_path}. Skipping.")
-#             continue
-#
-#         # Get all region masks for this image
-#         region_masks, region_stats = get_region_masks(seg)
-#
-#         # Focus on the wingtip region center if available
-#         for region_name in REGION_COLORS:
-#             if region_name in region_masks and region_name in region_stats and cv2.countNonZero(
-#                     region_masks[region_name]) > 0:
-#                 # Extract LBP features from the center of this region
-#                 _, hist = extract_center_lbp(img, region_masks[region_name], region_stats, region_name)
-#
-#                 if hist is not None:
-#                     region_features[region_name].append(hist)
-#                     debug_outputs[region_name].append((img_path, seg_path))
-#                 else:
-#                     print(f"  Warning: Could not extract center LBP for {region_name} in {os.path.basename(img_path)}")
-#             else:
-#                 print(f"  Warning: Region {region_name} not found in {os.path.basename(img_path)}")
-#
-#     # For debugging, create a summary of regions found across all images
-#     if debug:
-#         for region_name, paths_list in debug_outputs.items():
-#             coverage = len(paths_list) / len(paths) if paths else 0
-#             print(f"  Region {region_name}: Found in {len(paths_list)}/{len(paths)} images ({coverage:.1%})")
-#
-#     return region_features, debug_outputs
 
 
 def main():
