@@ -1,23 +1,25 @@
-from Features_Analysis.config import *
+"""
+Features_Analysis_Intensity_Only.py
+
+This version removes LBP-based texture analysis. It only calculates intensity
+statistics (mean, std, skew, kurtosis, etc.) for each region.
+"""
 
 import os
-import numpy as np
 import pandas as pd
-import cv2
 import matplotlib.pyplot as plt
-from scipy.stats import sem, skew, kurtosis
-from skimage.feature import local_binary_pattern
-
+from scipy.stats import skew, kurtosis
+from Features_Analysis.config import *
 
 ###############################################################################
-# 1. SINGLE-IMAGE ANALYSIS
+# 1. SINGLE-IMAGE ANALYSIS (Intensity Only)
 ###############################################################################
 def analyze_single_image(
     image, seg_map, species_name, region_colors, image_idx, save_visualization=True
 ):
     """
-    Analyzes a single bird image for intensities & LBP.
-    Returns (region_stats, region_lbp_stats).
+    Analyzes a single bird image for intensity-based statistics only.
+    Returns a list of dictionaries (region_stats) with stats for each region.
     """
 
     # OPTIONAL: Create a figure for visualization
@@ -33,18 +35,9 @@ def analyze_single_image(
 
     # Prepare data structures
     region_stats = []
-    region_lbp_stats = []
     all_intensities = []
 
-    # Convert entire image to grayscale for LBP
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    # LBP parameters
-    radius = 3
-    n_points = 8 * radius
-    lbp = local_binary_pattern(gray_image, n_points, radius, method="uniform")
-
-    # For each region, create a mask & compute statistics
+    # For each region, create a mask & compute intensity statistics
     for region_name, bgr_color in region_colors.items():
         tolerance = 10
         lower = np.array([max(c - tolerance, 0) for c in bgr_color], dtype=np.uint8)
@@ -57,14 +50,10 @@ def analyze_single_image(
             ax_img.contour(mask, levels=[0.5], colors="red", linewidths=1)
 
         selected_pixels = image[mask > 0]  # shape: (N, 3) if color
-        selected_lbp = lbp[mask > 0]
 
         if len(selected_pixels) > 0:
-            # If color, average RGB to get 1D intensities
-            if len(selected_pixels.shape) > 1:
-                intensities = selected_pixels.mean(axis=1)
-            else:
-                intensities = selected_pixels
+            # Convert to grayscale intensity by averaging the RGB channels
+            intensities = selected_pixels.mean(axis=1)
 
             all_intensities.append(intensities)
 
@@ -107,27 +96,6 @@ def analyze_single_image(
                 )
 
             region_stats.append(stats_dict)
-
-            # LBP stats
-            if len(selected_lbp) > 0:
-                lbp_stats = {
-                    "region": region_name,
-                    "species": species_name,
-                    "image_idx": image_idx,
-                    "lbp_mean": np.mean(selected_lbp),
-                    "lbp_std": np.std(selected_lbp),
-                    "lbp_var": np.var(selected_lbp),
-                    "lbp_median": np.median(selected_lbp),
-                    "lbp_range": np.ptp(selected_lbp),
-                }
-
-                # LBP histogram
-                n_bins = int(selected_lbp.max() + 1)
-                lbp_hist, _ = np.histogram(selected_lbp, density=True, bins=n_bins, range=(0, n_bins))
-                for i in range(min(10, len(lbp_hist))):
-                    lbp_stats[f"lbp_hist_bin_{i}"] = lbp_hist[i]
-
-                region_lbp_stats.append(lbp_stats)
 
     # If visualization, create subplots for single-image stats
     if save_visualization and len(region_stats) > 0:
@@ -193,20 +161,19 @@ def analyze_single_image(
         plt.savefig(figpath)
         plt.close()
 
-    return region_stats, region_lbp_stats
+    return region_stats
 
 
 ###############################################################################
-# 2. SINGLE-SPECIES ANALYSIS
+# 2. SINGLE-SPECIES ANALYSIS (Intensity Only)
 ###############################################################################
 def analyze_single_species(images, seg_maps, species_name, region_colors):
     """
-    Analyze all images for a single species.
-    Returns summary_stats (dict), region_df, lbp_df.
+    Analyze all images for a single species (intensity only).
+    Returns summary_stats (dict) and region_df (DataFrame).
     """
 
     all_region_stats = []
-    all_lbp_stats = []
 
     print(f"\n{'='*50}")
     print(f"Analysis for {species_name}")
@@ -215,31 +182,22 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
     # Loop over each image
     for idx, (img, seg) in enumerate(zip(images, seg_maps)):
         print(f"  Processing image {idx+1}/{len(images)}")
-        r_stats, lbp_stats = analyze_single_image(
+        r_stats = analyze_single_image(
             img, seg, species_name, region_colors, idx, save_visualization=True
         )
         if r_stats:
             all_region_stats.extend(r_stats)
-        if lbp_stats:
-            all_lbp_stats.extend(lbp_stats)
 
     # Convert to DataFrame
     if len(all_region_stats) > 0:
         region_df = pd.DataFrame(all_region_stats)
-        lbp_df = pd.DataFrame(all_lbp_stats) if len(all_lbp_stats) > 0 else None
 
         os.makedirs("Intensity_Result/data", exist_ok=True)
         region_csv = f"Intensity_Result/data/{species_name.replace(' ', '_')}_region_stats.csv"
         region_df.to_csv(region_csv, index=False)
         print(f"Saved region-level stats to {region_csv}")
 
-        if lbp_df is not None:
-            lbp_csv = f"Intensity_Result/data/{species_name.replace(' ', '_')}_lbp_stats.csv"
-            lbp_df.to_csv(lbp_csv, index=False)
-            print(f"Saved LBP stats to {lbp_csv}")
-
-        # Summary for final comparison: we only keep main columns
-        # (removing local_var here so it doesn't appear in final dict)
+        # Summary for final comparison
         summary_stats = {
             "means": region_df.groupby("region")["mean"].mean().values,
             "stds": region_df.groupby("region")["std"].mean().values,
@@ -251,9 +209,9 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
             "region_names": region_df["region"].unique(),
         }
 
-        return summary_stats, region_df, lbp_df
+        return summary_stats, region_df
 
-    return None, None, None
+    return None, None
 
 
 ###############################################################################
@@ -268,7 +226,11 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/c
       3) Median
       4) Coefficient of Variation (CV)
       5) Histograms of the 'mean' distribution across regions
+      6) Boxplot of means
     """
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -303,7 +265,6 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/c
     gw_dict = gw_grouped.set_index("region").to_dict(orient="index")
 
     # For each region, build lists for side-by-side bars
-    # We'll do it for: mean, variance, median, cv
     sb_means, sb_means_std = [], []
     sb_vars, sb_vars_std = [], []
     sb_meds, sb_meds_std = [], []
@@ -347,7 +308,7 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/c
             gw_meds.append(0); gw_meds_std.append(0)
             gw_cvs.append(0); gw_cvs_std.append(0)
 
-    # Let's create a 2x3 figure
+    # Create a 2x3 figure
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
     axes = axes.ravel()
 
@@ -356,11 +317,11 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/c
 
     # Subplot 0: Mean ± std
     ax0 = axes[0]
-    sb0 = ax0.bar(x - width / 2, sb_means, width,
-                  yerr=sb_means_std, capsize=5, label="Slaty-backed")
-    gw0 = ax0.bar(x + width / 2, gw_means, width,
-                  yerr=gw_means_std, capsize=5, label="Glaucous-winged")
-    ax0.set_title("Mean Intensity (± std of mean)")
+    ax0.bar(x - width / 2, sb_means, width,
+            yerr=sb_means_std, capsize=5, label="Slaty-backed")
+    ax0.bar(x + width / 2, gw_means, width,
+            yerr=gw_means_std, capsize=5, label="Glaucous-winged")
+    ax0.set_title("Mean Intensity (± std)")
     ax0.set_xticks(x)
     ax0.set_xticklabels(all_regions, rotation=45, ha="right")
     ax0.grid(alpha=0.3)
@@ -368,39 +329,38 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/c
 
     # Subplot 1: Variance
     ax1 = axes[1]
-    sb1 = ax1.bar(x - width / 2, sb_vars, width,
-                  yerr=sb_vars_std, capsize=5, label="Slaty-backed")
-    gw1 = ax1.bar(x + width / 2, gw_vars, width,
-                  yerr=gw_vars_std, capsize=5, label="Glaucous-winged")
-    ax1.set_title("Variance (± std of var)")
+    ax1.bar(x - width / 2, sb_vars, width,
+            yerr=sb_vars_std, capsize=5, label="Slaty-backed")
+    ax1.bar(x + width / 2, gw_vars, width,
+            yerr=gw_vars_std, capsize=5, label="Glaucous-winged")
+    ax1.set_title("Variance (± std)")
     ax1.set_xticks(x)
     ax1.set_xticklabels(all_regions, rotation=45, ha="right")
     ax1.grid(alpha=0.3)
 
     # Subplot 2: Median
     ax2 = axes[2]
-    sb2 = ax2.bar(x - width / 2, sb_meds, width,
-                  yerr=sb_meds_std, capsize=5, label="Slaty-backed")
-    gw2 = ax2.bar(x + width / 2, gw_meds, width,
-                  yerr=gw_meds_std, capsize=5, label="Glaucous-winged")
-    ax2.set_title("Median (± std of median)")
+    ax2.bar(x - width / 2, sb_meds, width,
+            yerr=sb_meds_std, capsize=5, label="Slaty-backed")
+    ax2.bar(x + width / 2, gw_meds, width,
+            yerr=gw_meds_std, capsize=5, label="Glaucous-winged")
+    ax2.set_title("Median")
     ax2.set_xticks(x)
     ax2.set_xticklabels(all_regions, rotation=45, ha="right")
     ax2.grid(alpha=0.3)
 
     # Subplot 3: Coefficient of Variation
     ax3 = axes[3]
-    sb3 = ax3.bar(x - width / 2, sb_cvs, width,
-                  yerr=sb_cvs_std, capsize=5, label="Slaty-backed")
-    gw3 = ax3.bar(x + width / 2, gw_cvs, width,
-                  yerr=gw_cvs_std, capsize=5, label="Glaucous-winged")
-    ax3.set_title("Coefficient of Variation (± std)")
+    ax3.bar(x - width / 2, sb_cvs, width,
+            yerr=sb_cvs_std, capsize=5, label="Slaty-backed")
+    ax3.bar(x + width / 2, gw_cvs, width,
+            yerr=gw_cvs_std, capsize=5, label="Glaucous-winged")
+    ax3.set_title("Coefficient of Variation")
     ax3.set_xticks(x)
     ax3.set_xticklabels(all_regions, rotation=45, ha="right")
     ax3.grid(alpha=0.3)
 
-    # Subplot 4: Histograms of Mean for each region (just an example approach)
-    # We show the distribution of "mean" across all regions, one histogram per species
+    # Subplot 4: Histograms of Mean
     ax4 = axes[4]
     ax4.hist(sb_df["mean"], bins=15, alpha=0.6, label="SB Means")
     ax4.hist(gw_df["mean"], bins=15, alpha=0.6, label="GW Means")
@@ -410,8 +370,7 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/c
     ax4.grid(alpha=0.3)
     ax4.legend()
 
-    # Subplot 5 (last slot): Freed up for something else or we remove it
-    # We can show a boxplot of means for each species
+    # Subplot 5: Boxplot of Means
     ax5 = axes[5]
     ax5.boxplot([sb_df["mean"], gw_df["mean"]], labels=["Slaty-backed", "Glaucous-winged"])
     ax5.set_title("Boxplot of Means")
@@ -426,10 +385,12 @@ def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/c
 
 
 ###############################################################################
-# 4. MAIN FUNCTION
+# 4. MAIN FUNCTION (Intensity Only)
 ###############################################################################
 def main():
-    # Create output dirs
+    # Example config. Adjust as needed or import from your config file.
+
+
     os.makedirs("Intensity_Result/data", exist_ok=True)
     os.makedirs("Intensity_Result/visualizations", exist_ok=True)
     os.makedirs("Intensity_Result/comparisons", exist_ok=True)
@@ -438,46 +399,42 @@ def main():
 
     # A) Load Slaty-backed
     sb_images, sb_segs = [], []
-    sb_filenames = sorted(os.listdir(SLATY_BACKED_IMG_DIR))[:S]
-    for img_name in sb_filenames:
-        img_path = os.path.join(SLATY_BACKED_IMG_DIR, img_name)
-        seg_path = os.path.join(SLATY_BACKED_SEG_DIR, img_name)
-        img = cv2.imread(img_path)
-        seg = cv2.imread(seg_path)
-        if img is not None and seg is not None:
-            sb_images.append(img)
-            sb_segs.append(seg)
+    if os.path.exists(SLATY_BACKED_IMG_DIR):
+        sb_filenames = sorted(os.listdir(SLATY_BACKED_IMG_DIR))[:S]
+        for img_name in sb_filenames:
+            img_path = os.path.join(SLATY_BACKED_IMG_DIR, img_name)
+            seg_path = os.path.join(SLATY_BACKED_SEG_DIR, img_name)
+            img = cv2.imread(img_path)
+            seg = cv2.imread(seg_path)
+            if img is not None and seg is not None:
+                sb_images.append(img)
+                sb_segs.append(seg)
 
     # B) Load Glaucous-winged
     gw_images, gw_segs = [], []
-    gw_filenames = sorted(os.listdir(GLAUCOUS_WINGED_IMG_DIR))[:S]
-    for img_name in gw_filenames:
-        img_path = os.path.join(GLAUCOUS_WINGED_IMG_DIR, img_name)
-        seg_path = os.path.join(GLAUCOUS_WINGED_SEG_DIR, img_name)
-        # If your segmentations are in a different folder, fix above line
-        # e.g. seg_path = os.path.join(GLAUCOUS_WINGED_SEG_DIR, img_name)
-        img = cv2.imread(img_path)
-        seg = cv2.imread(seg_path)
-        if img is not None and seg is not None:
-            gw_images.append(img)
-            gw_segs.append(seg)
+    if os.path.exists(GLAUCOUS_WINGED_IMG_DIR):
+        gw_filenames = sorted(os.listdir(GLAUCOUS_WINGED_IMG_DIR))[:S]
+        for img_name in gw_filenames:
+            img_path = os.path.join(GLAUCOUS_WINGED_IMG_DIR, img_name)
+            seg_path = os.path.join(GLAUCOUS_WINGED_SEG_DIR, img_name)
+            img = cv2.imread(img_path)
+            seg = cv2.imread(seg_path)
+            if img is not None and seg is not None:
+                gw_images.append(img)
+                gw_segs.append(seg)
 
-    # C) Analyze each species
+    # C) Analyze each species (intensity only)
     print("Analyzing Slaty-backed Gull images...")
-    sb_stats, sb_df, sb_lbp_df = analyze_single_species(sb_images, sb_segs, "Slaty-backed Gull", REGION_COLORS)
+    sb_stats, sb_df = analyze_single_species(sb_images, sb_segs, "Slaty-backed Gull", REGION_COLORS)
 
     print("Analyzing Glaucous-winged Gull images...")
-    gw_stats, gw_df, gw_lbp_df = analyze_single_species(gw_images, gw_segs, "Glaucous-winged Gull", REGION_COLORS)
+    gw_stats, gw_df = analyze_single_species(gw_images, gw_segs, "Glaucous-winged Gull", REGION_COLORS)
 
     # D) Combine Data & Plot Extended Comparison
     print("Combining data for all species...")
     if sb_df is not None and gw_df is not None:
         all_df = pd.concat([sb_df, gw_df])
         all_df.to_csv("Intensity_Result/data/all_species_region_stats.csv", index=False)
-
-        if sb_lbp_df is not None and gw_lbp_df is not None:
-            all_lbp_df = pd.concat([sb_lbp_df, gw_lbp_df])
-            all_lbp_df.to_csv("Intensity_Result/data/all_species_lbp_stats.csv", index=False)
 
         # Now create an extended multi-subplot figure with all metrics
         print("Creating extended region comparison plot (means, medians, variance, CV, histograms)...")

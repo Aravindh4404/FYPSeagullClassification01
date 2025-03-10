@@ -120,9 +120,9 @@ def extract_lbp_features(image, mask=None, region_stats=None, region_name=None, 
 
     # Create histogram
     n_bins = int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS
-    # n_bins = (
-    print(int(lbp.max() + 1))
-    print(int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS)
+    # n_bins = int(lbp.max() + 1)
+    # print(int(lbp.max() + 1))
+    # print(int(N_POINTS * (N_POINTS - 1) + 3) if METHOD == 'uniform' else 2 ** N_POINTS)
 
     # If we have a mask, only consider pixels within the mask
     if mask is not None:
