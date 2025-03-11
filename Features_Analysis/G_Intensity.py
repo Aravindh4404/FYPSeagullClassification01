@@ -156,8 +156,8 @@ def analyze_single_image(
         )
         plt.tight_layout()
 
-        os.makedirs("Intensity_Result/visualizations", exist_ok=True)
-        figpath = f"Intensity_Result/visualizations/{species_name.replace(' ', '_')}_image_{image_idx + 1}.png"
+        os.makedirs("Intensity_Results/visualizations", exist_ok=True)
+        figpath = f"Intensity_Results/visualizations/{species_name.replace(' ', '_')}_image_{image_idx + 1}.png"
         plt.savefig(figpath)
         plt.close()
 
@@ -192,8 +192,8 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
     if len(all_region_stats) > 0:
         region_df = pd.DataFrame(all_region_stats)
 
-        os.makedirs("Intensity_Result/data", exist_ok=True)
-        region_csv = f"Intensity_Result/data/{species_name.replace(' ', '_')}_region_stats.csv"
+        os.makedirs("Intensity_Results/data", exist_ok=True)
+        region_csv = f"Intensity_Results/data/{species_name.replace(' ', '_')}_region_stats.csv"
         region_df.to_csv(region_csv, index=False)
         print(f"Saved region-level stats to {region_csv}")
 
@@ -217,7 +217,7 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
 ###############################################################################
 # 3. EXTENDED REGION COMPARISON PLOT (MULTIPLE SUBPLOTS)
 ###############################################################################
-def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/comparisons"):
+def plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Results/comparisons"):
     """
     Creates a single figure with multiple subplots comparing Slaty-backed vs Glaucous-winged
     across regions for the following metrics:
@@ -391,9 +391,9 @@ def main():
     # Example config. Adjust as needed or import from your config file.
 
 
-    os.makedirs("Intensity_Result/data", exist_ok=True)
-    os.makedirs("Intensity_Result/visualizations", exist_ok=True)
-    os.makedirs("Intensity_Result/comparisons", exist_ok=True)
+    os.makedirs("Intensity_Results/data", exist_ok=True)
+    os.makedirs("Intensity_Results/visualizations", exist_ok=True)
+    os.makedirs("Intensity_Results/comparisons", exist_ok=True)
 
     print("Loading images and segmentation maps...")
 
@@ -434,16 +434,16 @@ def main():
     print("Combining data for all species...")
     if sb_df is not None and gw_df is not None:
         all_df = pd.concat([sb_df, gw_df])
-        all_df.to_csv("Intensity_Result/data/all_species_region_stats.csv", index=False)
+        all_df.to_csv("Intensity_Results/data/all_species_region_stats.csv", index=False)
 
         # Now create an extended multi-subplot figure with all metrics
         print("Creating extended region comparison plot (means, medians, variance, CV, histograms)...")
-        plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Result/comparisons")
+        plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Results/comparisons")
 
-    print("\nAnalysis complete! See 'Intensity_Result' folder for results.")
-    print("- 'Intensity_Result/data': CSV files with stats")
-    print("- 'Intensity_Result/visualizations': Single-image figures (histograms, bar plots, tables)")
-    print("- 'Intensity_Result/comparisons': Cross-species comparison plots")
+    print("\nAnalysis complete! See 'Intensity_Results' folder for results.")
+    print("- 'Intensity_Results/data': CSV files with stats")
+    print("- 'Intensity_Results/visualizations': Single-image figures (histograms, bar plots, tables)")
+    print("- 'Intensity_Results/comparisons': Cross-species comparison plots")
 
 
 # -------------------------------------------------------------------------

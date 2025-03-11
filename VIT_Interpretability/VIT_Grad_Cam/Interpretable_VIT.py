@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import timm
 from torchvision import transforms
+from sklearn.metrics import confusion_matrix
 
 # InterpretableViT with Grad-CAM Hooks
 class InterpretableViTGradCAM(nn.Module):
@@ -94,12 +95,20 @@ def preprocess_image(image_path):
     input_tensor = transform(img).unsqueeze(0)
     return input_tensor, original_image
 
-# Grad-CAM Visualization for Folder Batch
-def process_folder(model, root_folder, class_names, max_images=15):
+# Grad-CAM Visualization and Saving with Confusion Matrix Data Collection
+def process_folder(model, root_folder, class_names, output_folder, max_images=15):
+    all_true = []
+    all_pred = []
+
+    # Loop through each class folder in the root folder
     for class_idx, class_folder in enumerate(os.listdir(root_folder)):
         class_path = os.path.join(root_folder, class_folder)
         if not os.path.isdir(class_path):
             continue
+
+        # Create corresponding folder in the output directory
+        output_class_folder = os.path.join(output_folder, class_folder)
+        os.makedirs(output_class_folder, exist_ok=True)
 
         images_processed = 0
         for image_file in os.listdir(class_path):
@@ -112,10 +121,16 @@ def process_folder(model, root_folder, class_names, max_images=15):
             if cam is None:
                 continue
 
+            # Save ground truth and prediction for confusion matrix computation
+            all_true.append(class_idx)
+            all_pred.append(pred_class)
+
+            # Create Grad-CAM overlay visualization
             heatmap = cv2.applyColorMap(np.uint8(255 * cam), cv2.COLORMAP_JET)
             heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
             overlay = cv2.addWeighted(original_image, 0.6, heatmap, 0.4, 0)
 
+            # Plot the three-panel figure
             plt.figure(figsize=(15, 5))
             plt.subplot(1, 3, 1)
             plt.imshow(original_image)
@@ -134,9 +149,39 @@ def process_folder(model, root_folder, class_names, max_images=15):
             plt.axis("off")
 
             plt.tight_layout()
-            plt.show()
+
+            # Save the figure instead of displaying it
+            save_path = os.path.join(output_class_folder, f"gradcam_{os.path.splitext(image_file)[0]}.png")
+            plt.savefig(save_path)
+            plt.close()
 
             images_processed += 1
+
+    return all_true, all_pred
+
+# Function to plot and save the confusion matrix
+def plot_and_save_confusion_matrix(cm, class_names, save_path):
+    plt.figure(figsize=(6, 6))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+    tick_marks = np.arange(len(class_names))
+    plt.xticks(tick_marks, class_names, rotation=45)
+    plt.yticks(tick_marks, class_names)
+
+    # Annotate each cell with the count
+    thresh = cm.max() / 2.
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(j, i, format(cm[i, j], 'd'),
+                     ha="center", va="center",
+                     color="white" if cm[i, j] > thresh else "black")
+
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    plt.tight_layout()
+    plt.savefig(save_path)
+    plt.close()
 
 # Example Usage
 if __name__ == "__main__":
@@ -145,5 +190,18 @@ if __name__ == "__main__":
     model.eval()
 
     class_names = ["Glaucous_Winged_Gull", "Slaty_Backed_Gull"]
-    root_folder = "D:/FYP/FYP DATASETS USED/Dataset HQ/HQ3/train"
-    process_folder(model, root_folder, class_names, max_images=15)
+    root_folder = r"D:\FYP\Black BG\Black Background"
+    output_folder = r"D:\FYP\GradCAM_Output"
+    os.makedirs(output_folder, exist_ok=True)
+
+    # Process the folder and collect true and predicted labels
+    true_labels, pred_labels = process_folder(model, root_folder, class_names, output_folder, max_images=110)
+
+    # Compute the confusion matrix
+    cm = confusion_matrix(true_labels, pred_labels)
+    print("Confusion Matrix:")
+    print(cm)
+
+    # Save the confusion matrix figure
+    cm_save_path = os.path.join(output_folder, "confusion_matrix.png")
+    plot_and_save_confusion_matrix(cm, class_names, cm_save_path)

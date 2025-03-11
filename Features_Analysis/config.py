@@ -1,7 +1,7 @@
 ###############################################################################
 # CONFIGURATION
 ###############################################################################
-
+import os
 from pathlib import Path
 import numpy as np
 import cv2
@@ -26,6 +26,72 @@ REGION_COLORS = {
 }
 
 ENTIRE_BIRD_COLORS = list(REGION_COLORS.values())
+
+# Dictionary of species -> (image directory, segmentation directory)
+SPECIES = {
+    "Slaty_Backed_Gull": {
+        "img_dir": SLATY_BACKED_IMG_DIR,
+        "seg_dir": SLATY_BACKED_SEG_DIR,
+    },
+    "Glaucous_Winged_Gull": {
+        "img_dir": GLAUCOUS_WINGED_IMG_DIR,
+        "seg_dir": GLAUCOUS_WINGED_SEG_DIR,
+    },
+}
+
+
+###############################################################################
+# HELPER FUNCTIONS
+###############################################################################
+def get_image_paths(species):
+    """
+    For the given species, returns a list of (image_path, segmentation_path) pairs
+    that share the same base filename.
+    """
+    img_dir = SPECIES[species]["img_dir"]
+    seg_dir = SPECIES[species]["seg_dir"]
+
+    img_files = sorted([f for f in os.listdir(img_dir)
+                        if f.lower().endswith(('.jpg', '.png', '.jpeg'))])
+    seg_files = sorted([f for f in os.listdir(seg_dir)
+                        if f.lower().endswith(('.jpg', '.png', '.jpeg'))])
+
+    paired_files = []
+    for img_file in img_files:
+        base_name = os.path.splitext(img_file)[0]
+        match_seg = [f for f in seg_files if os.path.splitext(f)[0] == base_name]
+        if match_seg:
+            paired_files.append((
+                os.path.join(img_dir, img_file),
+                os.path.join(seg_dir, match_seg[0])
+            ))
+    return paired_files
+
+
+def get_region_masks(segmentation):
+    """
+    Returns a dictionary {region_name: mask} and {region_name: stats}
+    from the color-coded segmentation image.
+    """
+    region_masks = {}
+    region_stats = {}
+
+    for region_name in REGION_COLORS:
+        mask = extract_region_mask(segmentation, region_name)
+        region_masks[region_name] = mask
+
+        # Optional: find region center
+        pixels = cv2.countNonZero(mask)
+        if pixels > 0:
+            contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            if contours:
+                largest = max(contours, key=cv2.contourArea)
+                M = cv2.moments(largest)
+                if M["m00"] != 0:
+                    cx = int(M["m10"] / M["m00"])
+                    cy = int(M["m01"] / M["m00"])
+                    region_stats[region_name] = {"center": (cx, cy), "pixels": pixels}
+    return region_masks, region_stats
 
 
 def get_region_color(region_name):

@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import timm
 from torchvision import transforms
+from sklearn.metrics import confusion_matrix
+
 
 # Enhanced ViT Model with Grad-CAM
 class EnhancedViT(nn.Module):
@@ -32,6 +34,7 @@ class EnhancedViT(nn.Module):
 
     def forward(self, x):
         tokens = self.vit.forward_features(x)
+        # Save gradients for Grad-CAM
         tokens.register_hook(self.save_tokens_grad)
         self.tokens = tokens
 
@@ -44,6 +47,7 @@ class EnhancedViT(nn.Module):
     def save_tokens_grad(self, grad):
         self.tokens_grad = grad
 
+
 # GradCAM Computation
 def compute_gradcam(model, input_tensor, target_class=None):
     model.eval()
@@ -55,6 +59,7 @@ def compute_gradcam(model, input_tensor, target_class=None):
     score = output[0, target_class]
     score.backward()
 
+    # Remove the class token for Grad-CAM calculation
     tokens = model.tokens[:, 1:, :]
     tokens_grad = model.tokens_grad[:, 1:, :]
 
@@ -74,6 +79,7 @@ def compute_gradcam(model, input_tensor, target_class=None):
     confidence = torch.softmax(output, dim=1)[0, target_class].item()
     return cam, target_class, confidence
 
+
 # Image Preprocessing
 def preprocess_image(image_path):
     transform = transforms.Compose([
@@ -86,12 +92,29 @@ def preprocess_image(image_path):
     image_tensor = transform(image).unsqueeze(0)
     return image_tensor, original_image
 
-# Visualize GradCAM for Folder Batch
-def process_folder(model, root_folder, class_names, max_images=15):
-    for class_idx, class_folder in enumerate(os.listdir(root_folder)):
+
+# Process images in folder and save Grad-CAM for correctly predicted images.
+# Also record predictions for the confusion matrix.
+def process_folder(model, root_folder, class_names, save_folder, max_images=15):
+    y_true = []
+    y_pred = []
+
+    # Process each class folder (sorted to ensure consistency)
+    for class_folder in sorted(os.listdir(root_folder)):
         class_path = os.path.join(root_folder, class_folder)
         if not os.path.isdir(class_path):
             continue
+
+        # Determine ground-truth label index based on folder name
+        if class_folder in class_names:
+            true_class = class_names.index(class_folder)
+        else:
+            # Skip folders not matching known class names
+            continue
+
+        # Create output subfolder for current class under the results folder
+        output_dir = os.path.join(save_folder, class_folder)
+        os.makedirs(output_dir, exist_ok=True)
 
         images_processed = 0
         for image_file in os.listdir(class_path):
@@ -99,45 +122,73 @@ def process_folder(model, root_folder, class_names, max_images=15):
                 break
 
             image_path = os.path.join(class_path, image_file)
-            input_tensor, original_image = preprocess_image(image_path)
+            try:
+                input_tensor, original_image = preprocess_image(image_path)
+            except Exception as e:
+                print(f"Error processing image {image_path}: {e}")
+                continue
+
             cam, pred_class, confidence = compute_gradcam(model, input_tensor)
             if cam is None:
                 continue
 
-            heatmap = cv2.applyColorMap(np.uint8(255 * cam), cv2.COLORMAP_JET)
-            heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
-            overlay = cv2.addWeighted(original_image, 0.5, heatmap, 0.5, 0)
+            # Record true and predicted labels
+            y_true.append(true_class)
+            y_pred.append(pred_class)
 
-            plt.figure(figsize=(15, 5))
-            plt.subplot(1, 3, 1)
-            plt.imshow(original_image)
-            plt.title("Original Image")
-            plt.axis('off')
+            # Save only if the image is correctly predicted
+            if pred_class == true_class:
+                heatmap = cv2.applyColorMap(np.uint8(255 * cam), cv2.COLORMAP_JET)
+                heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
+                overlay = cv2.addWeighted(original_image, 0.5, heatmap, 0.5, 0)
 
-            plt.subplot(1, 3, 2)
-            plt.imshow(cam, cmap='jet')
-            plt.title("GradCAM Map")
-            plt.axis('off')
-
-            plt.subplot(1, 3, 3)
-            plt.imshow(overlay)
-            pred_label = class_names[pred_class] if pred_class < len(class_names) else f"Class {pred_class}"
-            plt.title(f"Overlay\nPredicted: {pred_label}, Conf: {confidence:.2%}")
-            plt.axis('off')
-
-            plt.tight_layout()
-            plt.show()
+                # Save the overlay image with a new filename
+                save_path = os.path.join(output_dir, os.path.splitext(image_file)[0] + '_gradcam.png')
+                Image.fromarray(overlay).save(save_path)
 
             images_processed += 1
 
+    return y_true, y_pred
+
+
 if __name__ == "__main__":
+    # Initialize and load the model
     model = EnhancedViT()
-    model.load_state_dict(torch.load(
-        'D:/FYP/MODELS/VIT/VIT2_HQ3_20250208/final_model_vit_20250208.pth',
-        map_location='cpu'))
+    model_path = 'D:/FYP/MODELS/VIT/VIT2_HQ3_20250208/final_model_vit_20250208.pth'
+    model.load_state_dict(torch.load(model_path, map_location='cpu'))
     model.eval()
 
+    # Define class names (these should correspond to the folder names)
     class_names = ['Glaucous_Winged_Gull', 'Slaty_Backed_Gull']
     # root_folder = "D:/FYP/FYP DATASETS USED/Dataset HQ/HQ3/train"
     root_folder = "D:/FYP/Black BG/Black Background"
-    process_folder(model, root_folder, class_names, max_images=30)
+
+    # Create a results folder using the model name
+    model_name = os.path.basename(os.path.dirname(model_path))
+    results_folder = os.path.join("gradcam_results", model_name)
+    os.makedirs(results_folder, exist_ok=True)
+
+    # Process the folder, saving Grad-CAM overlays only for correctly predicted images,
+    # and accumulate predictions for the confusion matrix.
+    y_true, y_pred = process_folder(model, root_folder, class_names, results_folder, max_images=110)
+
+    # Generate and save the confusion matrix
+    cm = confusion_matrix(y_true, y_pred)
+    fig, ax = plt.subplots(figsize=(6, 6))
+    im = ax.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    ax.figure.colorbar(im, ax=ax)
+    tick_marks = np.arange(len(class_names))
+    ax.set(xticks=tick_marks, yticks=tick_marks, xticklabels=class_names, yticklabels=class_names,
+           ylabel='True label', xlabel='Predicted label', title='Confusion Matrix')
+    thresh = cm.max() / 2.
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(j, i, format(cm[i, j], 'd'),
+                    ha="center", va="center",
+                    color="white" if cm[i, j] > thresh else "black")
+    fig.tight_layout()
+
+    # Save confusion matrix plot
+    cm_save_path = os.path.join(results_folder, "confusion_matrix.png")
+    plt.savefig(cm_save_path)
+    plt.show()
