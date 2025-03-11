@@ -8,8 +8,8 @@ import glob
 # Directory where the texture property files are stored
 analysis_folder = "R16_P128_Muniform"
 
-DATA_DIR = os.path.join("Outputs/LBP_Analysis/", analysis_folder, "region_analysis")
-RESULTS_DIR = os.path.join("Outputs/LBP_Analysis/", analysis_folder, "comparison_results") # Directory to save the visualization results
+DATA_DIR = os.path.join("../Outputs/LBP_Analysis/", analysis_folder, "region_analysis")
+RESULTS_DIR = os.path.join("../Outputs/LBP_Analysis/", analysis_folder, "comparison_results") # Directory to save the visualization results
 
 # Create results directory if it doesn't exist
 os.makedirs(RESULTS_DIR, exist_ok=True)
