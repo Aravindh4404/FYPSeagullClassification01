@@ -8,22 +8,22 @@ from sklearn.metrics import confusion_matrix
 
 
 # ------------------------------------
-# Correct VGGModified Architecture matching your saved model
+# Custom VGGModified Architecture
 # ------------------------------------
 class VGGModified(nn.Module):
     def __init__(self):
         super(VGGModified, self).__init__()
-        self.vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
+        self.vgg = models.vgg16(pretrained=False)
 
-        # Exact classifier structure from your trained model
+        # Modified classifier architecture
         self.vgg.classifier = nn.Sequential(
-            nn.Linear(25088, 4096),
+            nn.Linear(25088, 1536),
             nn.ReLU(inplace=True),
             nn.Dropout(0.5),
-            nn.Linear(4096, 4096),
+            nn.Linear(1536, 512),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.5),
-            nn.Linear(4096, 2)  # Final binary classification layer
+            nn.Dropout(0.4),
+            nn.Linear(512, 2)
         )
 
     def forward(self, x):
@@ -31,23 +31,15 @@ class VGGModified(nn.Module):
 
 
 # ------------------------------------
-# Simplified Confusion Matrix Generation
+# Confusion Matrix Generation Only
 # ------------------------------------
 def generate_confusion_matrix(model_path, data_dir, output_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     class_names = ["Glaucous_Winged_Gull", "Slaty_Backed_Gull"]
 
-    # Initialize model with correct architecture
+    # Load model with correct architecture
     model = VGGModified()
-
-    # Load weights with architecture matching
-    try:
-        model.load_state_dict(torch.load(model_path, map_location=device))
-    except RuntimeError as e:
-        print(f"Error loading model: {str(e)}")
-        print("Attempting to load with strict=False")
-        model.load_state_dict(torch.load(model_path, map_location=device), strict=False)
-
+    model.load_state_dict(torch.load(model_path, map_location=device))
     model.to(device)
     model.eval()
 
@@ -74,19 +66,20 @@ def generate_confusion_matrix(model_path, data_dir, output_dir):
             all_preds.extend(preds.cpu().numpy())
             all_labels.extend(labels.cpu().numpy())
 
-    # Generate and save confusion matrix
+    # Generate confusion matrix
     cm = confusion_matrix(all_labels, all_preds)
 
-    plt.figure(figsize=(8, 6))
+    # Plot and save
+    plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
                 xticklabels=class_names,
                 yticklabels=class_names)
-    plt.title("Confusion Matrix - VGGModified")
+    plt.title(f"Confusion Matrix\n{os.path.basename(model_path)}")
     plt.xlabel("Predicted")
     plt.ylabel("True")
 
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "vggmodified_confusion_matrix.png")
+    output_path = os.path.join(output_dir, "confusion_matrix.png")
     plt.savefig(output_path, bbox_inches='tight', dpi=300)
     plt.close()
 
@@ -98,13 +91,13 @@ def generate_confusion_matrix(model_path, data_dir, output_dir):
 # Main Execution
 # ------------------------------------
 if __name__ == "__main__":
-    # Update these paths according to your system
+    # Configure these paths
     MODEL_PATH = r"D:\FYP\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
     DATA_DIR = r"D:\FYP\Black BG\Black Background"
     OUTPUT_DIR = r"D:\FYP\ConfusionMatrix_Output\VGGModified"
 
     # Generate confusion matrix
-    generate_confusion_matrix(
+    cm_path = generate_confusion_matrix(
         model_path=MODEL_PATH,
         data_dir=DATA_DIR,
         output_dir=OUTPUT_DIR

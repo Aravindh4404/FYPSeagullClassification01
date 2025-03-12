@@ -15,7 +15,7 @@ class VGGModified(nn.Module):
         super(VGGModified, self).__init__()
         self.vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
 
-        # Exact classifier structure from your trained model
+        # Exact classifier structure matching your saved model
         self.vgg.classifier = nn.Sequential(
             nn.Linear(25088, 4096),
             nn.ReLU(inplace=True),
@@ -23,7 +23,10 @@ class VGGModified(nn.Module):
             nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
             nn.Dropout(0.5),
-            nn.Linear(4096, 2)  # Final binary classification layer
+            nn.Sequential(  # Additional nested Sequential layer to match your structure
+                nn.Dropout(0.4),
+                nn.Linear(4096, 2)
+            )
         )
 
     def forward(self, x):
@@ -31,21 +34,21 @@ class VGGModified(nn.Module):
 
 
 # ------------------------------------
-# Simplified Confusion Matrix Generation
+# Confusion Matrix Generation Only
 # ------------------------------------
 def generate_confusion_matrix(model_path, data_dir, output_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     class_names = ["Glaucous_Winged_Gull", "Slaty_Backed_Gull"]
 
-    # Initialize model with correct architecture
+    # Initialize model with corrected architecture
     model = VGGModified()
 
     # Load weights with architecture matching
     try:
-        model.load_state_dict(torch.load(model_path, map_location=device))
+        model.load_state_dict(torch.load(model_path, map_location=device), strict=True)
     except RuntimeError as e:
         print(f"Error loading model: {str(e)}")
-        print("Attempting to load with strict=False")
+        print("Falling back to strict=False loading")
         model.load_state_dict(torch.load(model_path, map_location=device), strict=False)
 
     model.to(device)

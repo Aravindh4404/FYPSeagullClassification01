@@ -191,7 +191,7 @@ def evaluate_model(
 # --------------------------------------------------
 def main():
     # Define your data directory and class names (update paths as needed)
-    data_dir = r"D:\FYP\Black BG\Black Background"
+    data_dir = r"D:\ALLIMAGESLATEST"
     class_names = ["Glaucous_Winged_Gull", "Slaty_Backed_Gull"]
 
     # Specify the model file paths you wish to evaluate
@@ -200,11 +200,11 @@ def main():
         # r"D:\FYP\MODELS\VIT\VIT2_HQ2_20241222\latest_model_vit_20241222.pth",
         # r"D:\FYP\MODELS\VIT\VIT2_HQ2_20241224\final_model_vit_20241224.pth",
         # r"D:\FYP\MODELS\VIT\VIT2_HQ2_20250207\final_model_vit_20250207.pth", #adv
-        r"D:\FYP\MODELS\VIT\VIT2_HQ3_20250208\final_model_vit_20250208.pth", #adv
+        # r"D:\FYP\MODELS\VIT\VIT2_HQ3_20250208\final_model_vit_20250208.pth", #adv
         # r"D:\FYP\MODELS\VIT\VIT3_HQ2_20250206\latest_model.pth",
         # r"D:\FYP\MODELS\VIT\ModelCheckpointsHQltst_ViT_20241114\latest_model_vit_20241114_epoch17.pth",
         # r"D:\FYP\MODELS\VIT\ModelCheckpointsHQltst_ViT_20241112\best_model_vit_20241112.pth"
-        # r"D:\FYP\MODELS\VIT\InterpretableViT_20250213\final_model_vit_20250213.pth",
+        r"D:\FYP\MODELS\VIT\InterpretableViT_20250213\final_model_vit_20250213.pth",
     ]
 
     # Loop through model paths and evaluate each model.
@@ -220,7 +220,7 @@ def main():
             data_dir=data_dir,
             class_names=class_names,
             device="cuda" if torch.cuda.is_available() else "cpu",
-            output_dir=r"D:\FYP\ConfusionMatrixOutputs\ViT"  # Folder to save confusion matrices
+            output_dir=r"D:\FYP\ConfusionMatrixOutputs\ViTFULL"  # Folder to save confusion matrices
         )
 
 if __name__ == "__main__":
