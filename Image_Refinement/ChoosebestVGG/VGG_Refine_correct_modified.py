@@ -103,8 +103,8 @@ def generate_confusion_matrix(model_path, data_dir, output_dir):
 if __name__ == "__main__":
     # Update these paths according to your system
     MODEL_PATH = r"D:\FYP\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
-    DATA_DIR = r"D:\FYP\Black BG\Black Background"
-    OUTPUT_DIR = r"D:\FYP\ConfusionMatrix_Output\VGGModified"
+    DATA_DIR = r"D:\ALLIMAGESLATEST"
+    OUTPUT_DIR = r"D:\FYP\ConfusionMatrix_Output\VGGModifiedfull"
 
     # Generate confusion matrix
     generate_confusion_matrix(

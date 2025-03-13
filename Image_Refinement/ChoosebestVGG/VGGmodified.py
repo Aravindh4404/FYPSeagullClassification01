@@ -13,22 +13,22 @@ from sklearn.metrics import confusion_matrix
 class VGGModified(nn.Module):
     def __init__(self):
         super(VGGModified, self).__init__()
-        self.vgg = models.vgg16(pretrained=False)
-
-        # Modified classifier architecture
+        self.vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
         self.vgg.classifier = nn.Sequential(
-            nn.Linear(25088, 1536),
+            nn.Linear(25088, 4096),
             nn.ReLU(inplace=True),
             nn.Dropout(0.5),
-            nn.Linear(1536, 512),
+            nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.4),
-            nn.Linear(512, 2)
+            nn.Dropout(0.5),
+            nn.Sequential(
+                nn.Dropout(0.4),
+                nn.Linear(4096, 2)
+            )
         )
 
     def forward(self, x):
         return self.vgg(x)
-
 
 # ------------------------------------
 # Confusion Matrix Generation Only
@@ -93,7 +93,7 @@ def generate_confusion_matrix(model_path, data_dir, output_dir):
 if __name__ == "__main__":
     # Configure these paths
     MODEL_PATH = r"D:\FYP\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
-    DATA_DIR = r"D:\FYP\Black BG\Black Background"
+    DATA_DIR = r"D:\ALLIMAGESLATEST\HQ3FULL"
     OUTPUT_DIR = r"D:\FYP\ConfusionMatrix_Output\VGGModified"
 
     # Generate confusion matrix

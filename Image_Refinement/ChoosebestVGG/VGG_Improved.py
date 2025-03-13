@@ -238,12 +238,12 @@ def main():
 
     # Specify model paths (original paths from your script)
     model_paths = [
-        r"D:\FYP\MODELS\VGGModel\Improved_20250209\final_model_vgg_improved_20250209.pth",
+        # r"D:\FYP\MODELS\VGGModel\Improved_20250209\final_model_vgg_improved_20250209.pth",
         r"D:\FYP\MODELS\VGGModel\Improved_20250210\best_model_vgg_improved_20250210.pth",
     ]
 
     # Set output directory for confusion matrices
-    output_dir = r"D:\FYP\ConfusionMatrixOutputs\VGGW"
+    output_dir = r"D:\FYP\ConfusionMatrixOutputs\VGG_Improved_20250210ok"
 
     # Loop through model paths and evaluate each model
     for mp in model_paths:
