@@ -9,23 +9,8 @@ from sklearn.metrics import confusion_matrix
 import numpy as np
 import cv2
 from PIL import Image
-from torchvision.models import VGG16_Weights
+import shutil  # Added for file copying
 
-# # Load the trained VGG model
-# class VGG16Modified(nn.Module):
-#     def __init__(self):
-#         super(VGG16Modified, self).__init__()
-#         from torchvision.models import VGG16_Weights
-#         self.vgg = models.vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
-#         # Replace the classifier with a custom binary classification layer
-#         num_ftrs = self.vgg.classifier[6].in_features
-#         self.vgg.classifier[6] = nn.Sequential(
-#             nn.Dropout(0.5),
-#             nn.Linear(num_ftrs, 2)
-#         )
-#
-#     def forward(self, x):
-#         return self.vgg(x)
 
 # Use Pre-trained VGG-16 model and modify it for binary classification
 class VGG16Modified(nn.Module):
@@ -42,31 +27,7 @@ class VGG16Modified(nn.Module):
 
     def forward(self, x):
         return self.vgg(x)
-#
-# # ------------------------------------
-# # VGGModified Architecture
-# # ------------------------------------
-# class VGGModified(nn.Module):
-#     def __init__(self):
-#         super(VGGModified, self).__init__()
-#         self.vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
-#         self.vgg.classifier = nn.Sequential(
-#             nn.Linear(25088, 4096),
-#             nn.ReLU(inplace=True),
-#             nn.Dropout(0.5),
-#             nn.Linear(4096, 4096),
-#             nn.ReLU(inplace=True),
-#             nn.Dropout(0.5),
-#             nn.Sequential(
-#                 nn.Dropout(0.4),
-#                 nn.Linear(4096, 2)
-#             )
-#         )
-#
-#     def forward(self, x):
-#         return self.vgg(x)
-#
-#
+
 
 # ------------------------------------
 # Grad-CAM Implementation
@@ -133,8 +94,6 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
     # Initialize and load model
     model = VGG16Modified().to(device)
     model.load_state_dict(torch.load(model_path, map_location=device))
-    print(model)
-
     model.eval()
 
     # Setup Grad-CAM
@@ -168,24 +127,47 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
         # Generate Grad-CAM
         heatmap = grad_cam.generate_cam(inputs)
 
-        # Save Grad-CAM visualization only for correctly predicted images
-        if preds.item() == labels.item():
-            image_path = dataset.imgs[i][0]
-            file_name = os.path.basename(image_path)
-            class_name = class_names[preds.item()]
-            class_dir = os.path.join(output_dir, class_name)
-            os.makedirs(class_dir, exist_ok=True)
+        image_path = dataset.imgs[i][0]
+        file_name = os.path.basename(image_path)
+        true_class = class_names[labels.item()]
+        predicted_class = class_names[preds.item()]
+        is_correct = preds.item() == labels.item()
 
+        if is_correct:
+            # Save correctly classified
+            class_dir = os.path.join(output_dir, "correct", true_class)
+            os.makedirs(class_dir, exist_ok=True)
             output_path = os.path.join(class_dir, file_name)
+
             overlay_heatmap(image_path, heatmap, output_path)
 
-            # Add confidence score to the image
+            # Add confidence score
             img = cv2.imread(output_path)
             confidence_text = f"Confidence: {confidence.item():.2f}"
             cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             cv2.imwrite(output_path, img)
+        else:
+            # Save misclassified
+            misclassified_dir = os.path.join(output_dir, "misclassified", true_class)
+            os.makedirs(misclassified_dir, exist_ok=True)
 
-    # Generate and save confusion matrix
+            # Save Grad-CAM visualization
+            output_path = os.path.join(misclassified_dir, file_name)
+            overlay_heatmap(image_path, heatmap, output_path)
+
+            # Add prediction info
+            img = cv2.imread(output_path)
+            confidence_text = f"Confidence: {confidence.item():.2f}"
+            predicted_text = f"Predicted: {predicted_class}"
+            cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv2.putText(img, predicted_text, (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv2.imwrite(output_path, img)
+
+            # Save original copy
+            original_copy_path = os.path.join(misclassified_dir, "original_" + file_name)
+            shutil.copy2(image_path, original_copy_path)
+
+    # Generate confusion matrix
     cm = confusion_matrix(all_labels, all_preds)
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
@@ -200,7 +182,7 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
     plt.close()
 
     print(f"Confusion matrix saved to: {cm_output_path}")
-    print(f"Grad-CAM visualizations for correctly predicted images saved to: {output_dir}")
+    print(f"Results saved to: {output_dir}")
 
 
 # ------------------------------------
@@ -208,8 +190,8 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 # ------------------------------------
 if __name__ == "__main__":
     MODEL_PATH = r"D:\FYP\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
-    DATA_DIR = r"D:\FYP\FYP DATASETS USED\test"
-    OUTPUT_DIR = r"D:\FYP\GradCAM_Output\best_model_vgg_20250210"
+    DATA_DIR = r"D:\FYP\PROCESSING DATA\Black BG\Black Background"
+    OUTPUT_DIR = r"D:\FYP\GradCAM_OutputFull\best_model_vgg_20250210bbg"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     generate_gradcam_and_confusion_matrix(MODEL_PATH, DATA_DIR, OUTPUT_DIR)
