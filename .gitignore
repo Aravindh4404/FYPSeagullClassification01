@@ -8,15 +8,15 @@ output_species2/
 # Ignore all log files
 *.log
 
-darkness_analysis_results.csv
+Tone_Analysis/Results/darkness_analysis_results.csv
 
-tone_analysis_results.csv
+Tone_Analysis/Results/tone_analysis_results.csv
 
 # Ignore temporary files
 *.tmp
 
 Features_Analysis/dataset
-structure_analysis_results.csv
+Tone_Analysis/Results/structure_analysis_results.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

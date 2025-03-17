@@ -1,7 +1,7 @@
 #
 # # ------------------------------------
 # # VGGModified Architecture
-# # ------------------------------------
+# # ------------------------------------ THIS ARCHITECTURE IS WRONG. CORRECT ONE IN THE FILE. THE CORRECT ONE DOESNOT HAVE NN.SEQ INSIDE NN.SEQ
 # class VGGModified(nn.Module):
 #     def __init__(self):
 #         super(VGGModified, self).__init__()
