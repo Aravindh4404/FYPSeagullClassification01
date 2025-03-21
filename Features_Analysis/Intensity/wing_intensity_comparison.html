@@ -1,0 +1,73 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Wing Intensity Comparison</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                h1, h2, h3 {
+                    color: #2c3e50;
+                }
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin: 20px 0;
+                }
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Wing Intensity Comparison: Slaty-backed Gull vs Glaucous-winged Gull</h1>
+<h2>Summary of Results</h2>
+<h3>Mean Wing Intensity</h3>
+<ul>
+<li><strong>Slaty-backed Gull</strong>: 76.45</li>
+<li><strong>Glaucous-winged Gull</strong>: 153.32</li>
+</ul>
+<p><strong>Result</strong>: The Slaty-Backed-Gull has darker wings (lower intensity values).</p>
+<p>The Glaucous-Winged-Gull wings are approximately 100.6% brighter than the Slaty-Backed-Gull.</p>
+<h3>Statistical Significance</h3>
+<ul>
+<li><strong>t-statistic</strong>: -19.9881</li>
+<li><strong>p-value</strong>: 0.00000000</li>
+<li><strong>Significant difference</strong>: Yes</li>
+</ul>
+<h2>Detailed Statistics</h2>
+<p>| Statistic | Slaty-backed Gull | Glaucous-winged Gull |
+|-----------|-------------------|----------------------|
+| Mean intensity | 76.45 | 153.32 |
+| Standard deviation | 22.36 | 31.49 |
+| Minimum | 29.64 | 74.23 |
+| Maximum | 159.33 | 211.69 |
+| Median | 75.56 | 160.52 |
+| Mean pixel variation (std) | 21.52 | 19.06 |
+| Mean skewness | 1.39 | 0.09 |
+| Mean kurtosis | 5.54 | 1.32 |
+| Total pixels analyzed | 47,372,951 | 3,886,316 |</p>
+<h2>Visualization</h2>
+<p><img alt="Wing Intensity Comparison" src="wing_intensity_comparison.png" /></p>
+<h2>Conclusion</h2>
+<p>The analysis shows that the Slaty-Backed-Gull has significantly darker wings compared to the Glaucous-Winged-Gull, with a mean intensity value of 76.45 compared to 153.32.</p>
+<p>The statistical test confirms that this difference is statistically significant (p = 0.00000000).</p>
+<h2>Methods</h2>
+<p>The analysis was performed by measuring the grayscale intensity of segmented wing regions from images of both species. Intensity values range from 0 (black) to 255 (white), with lower values indicating darker coloration.</p>
+        </body>
+        </html>
+        

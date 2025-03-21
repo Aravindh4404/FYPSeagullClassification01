@@ -156,7 +156,7 @@ def analyze_single_image(
         )
         plt.tight_layout()
 
-        os.makedirs("Intensity_Results/visualizations", exist_ok=True)
+        os.makedirs("../Outputs/Old_Intensity/visualizations", exist_ok=True)
         figpath = f"Intensity_Results/visualizations/{species_name.replace(' ', '_')}_image_{image_idx + 1}.png"
         plt.savefig(figpath)
         plt.close()
@@ -192,7 +192,7 @@ def analyze_single_species(images, seg_maps, species_name, region_colors):
     if len(all_region_stats) > 0:
         region_df = pd.DataFrame(all_region_stats)
 
-        os.makedirs("Intensity_Results/data", exist_ok=True)
+        os.makedirs("../Outputs/Old_Intensity/data", exist_ok=True)
         region_csv = f"Intensity_Results/data/{species_name.replace(' ', '_')}_region_stats.csv"
         region_df.to_csv(region_csv, index=False)
         print(f"Saved region-level stats to {region_csv}")
@@ -391,9 +391,9 @@ def main():
     # Example config. Adjust as needed or import from your config file.
 
 
-    os.makedirs("Intensity_Results/data", exist_ok=True)
-    os.makedirs("Intensity_Results/visualizations", exist_ok=True)
-    os.makedirs("Intensity_Results/comparisons", exist_ok=True)
+    os.makedirs("../Outputs/Old_Intensity/data", exist_ok=True)
+    os.makedirs("../Outputs/Old_Intensity/visualizations", exist_ok=True)
+    os.makedirs("../Outputs/Old_Intensity/comparisons", exist_ok=True)
 
     print("Loading images and segmentation maps...")
 
@@ -438,7 +438,7 @@ def main():
 
         # Now create an extended multi-subplot figure with all metrics
         print("Creating extended region comparison plot (means, medians, variance, CV, histograms)...")
-        plot_comparative_statistics_all(sb_df, gw_df, output_dir="Intensity_Results/comparisons")
+        plot_comparative_statistics_all(sb_df, gw_df, output_dir="../Outputs/Old_Intensity/comparisons")
 
     print("\nAnalysis complete! See 'Intensity_Results' folder for results.")
     print("- 'Intensity_Results/data': CSV files with stats")
