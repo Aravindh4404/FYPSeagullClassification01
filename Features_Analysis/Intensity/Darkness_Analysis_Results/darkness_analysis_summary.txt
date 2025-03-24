@@ -1,4 +1,0 @@
-Wing Region Mean Intensity: 113.20
-Total Wingtip Pixels: 34305677
-Darker Wingtip Pixels: 29215914
-Percentage of Wingtip Pixels Darker Than Wing Mean: 85.16%
