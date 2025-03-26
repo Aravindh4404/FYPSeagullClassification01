@@ -1,0 +1,20 @@
+%! Author = Aravindh P
+%! Date = 26-03-2025
+
+\documentclass{report}
+
+% Other packages...
+\usepackage[backend=bibtex, style=numeric]{biblatex}
+\addbibresource{references.bib}
+
+\begin{document}
+    \maketitle
+    \tableofcontents
+
+    % Include your sections
+    \input{introduction}
+    \input{motivation}
+
+    % Print bibliography at the end
+    \printbibliography
+\end{document}

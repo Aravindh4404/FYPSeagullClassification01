@@ -1,0 +1,20 @@
+/venv/
+/.ipynb_checkpoints/
+/.venv/
+/Custom_CNN/
+/Features_Analysis/
+/Initial Models/
+/large code files/
+/Not_Very_Useful_Analysis/
+/Pivotal_Karpathy_Method/
+/Tone_Analysis/
+/Resnet/
+/VGG/
+/VGG_Interpretability/
+/VIT/
+/VIT_Interpretability/
+/VIT_Interpretability/VIT_Grad_Cam/
+/VIT_Interpretability/VIT_Grad_Cam/gradcam_results/
+/VIT_Interpretability/VIT_Grad_Cam/attention_results/
+
+.idea

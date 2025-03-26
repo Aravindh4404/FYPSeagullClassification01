@@ -1,0 +1,26 @@
+%! Author = Aravindh P
+%! Date = 26-03-2025
+
+\chapter{Motivation}
+
+The classification of gulls is complicated by several factors, including hybridization, age-related variations, and environmental influences, all of which contribute to the challenge of accurate identification. Specifically with the Glaucous-winged Gull:
+
+``The amount of variation here is disturbing, because it is unmatched by any other gull species, and more so because it is not completely understood.'' \cite{gull_variation}
+
+``Glaucous-winged Gulls also exhibit variably pigmented wingtips... these differences are often chalked up to individual variation, at least by this author, but they're inconveniently found in several hybrid zones, creating potential for much confusion.'' \cite{gull_variation}
+
+These variations – along with complications such as hybridization, age-related differences, aberration and environmental effects like feather bleaching – pose significant challenges to traditional visual identification. Additionally, factors such as lighting, viewing angle, and colour can all influence the appearance and classification. These complications make manual classification of gulls unreliable and subjective. \cite{gull_variation}
+
+Age plays a significant role in plumage and wingtip pattern development. Immature gulls often display less distinct patterns than adults, making it harder to distinguish between species, especially when they are in the juvenile stage. These age-related changes add another layer of complexity to classification tasks, particularly for automated systems that rely on wingtip patterns. \cite{gull_variation}
+
+Seasonal moulting patterns also introduce challenges in classification. During the moult cycle, gulls' plumage changes significantly, affecting the visibility and clarity of their wingtip patterns. For example, feathers may be worn, and patterns may become obscured, making the gulls harder to distinguish. These moulting-related variations can lead to gradual changes in wingtip patterns over time, making it difficult to rely solely on static images for classification.
+
+To address these complications, this project specifically targets adult gulls in-flight, where wingtip patterns are most discernible. By focusing on adult in-flight images and refining the dataset, complications introduced by age and moulting cycle and the associated variability in plumage are removed, offering a controlled environment allowing deep learning models to focus on the key morphological traits—the wingtip pattern—for more accurate classification.
+
+From a deep learning standpoint, this classification task serves as an excellent case study for developing and refining models capable of handling fine-grained classification challenges. Traditional machine learning models often function as ``black boxes,'' providing little insight into how they arrive at their decisions. The subtle morphological differences between the two gull species necessitate the creation of highly sensitive, interpretable models. The project aims to explore interpretability methods to compare the model's decision-making process with biological insights, thereby potentially contributing to ecological research. By using interpretability methods like Grad-CAM and Saliency Maps, the model's focus on relevant features such as wingtips will be made visible, potentially enabling ecologists to validate whether the model's reasoning aligns with expert understanding of the features influencing classification.
+
+\section*{Objectives implemented so far}
+\begin{itemize}
+    \item Develop deep learning models (using CNNs, ViT) for the fine-grained classification of Slaty-backed and Glaucous-winged gulls.
+    \item Implement basic interpretability techniques (Grad-CAM, Saliency Maps) to visualize and understand which parts of the bird are most influential in the model's decision-making.
+\end{itemize}
