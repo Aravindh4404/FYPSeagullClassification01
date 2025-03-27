@@ -2,6 +2,27 @@
 
 \begin{abstract}
 
-Giving a short overview of the work in your project.
+This project addresses the challenging task of fine-grained classification between two visually
+similar seagull species—Slaty-backed Gull and Glaucous-winged Gull—using deep learning with
+a focus on model interpretability. The research began with meticulous dataset curation guided by
+industry experts, specifically targeting adult in-flight images where distinguishing features are
+most visible. Following an iterative development approach based on Karpathy's methodology,
+multiple deep learning architectures were implemented and evaluated, including ResNet, Inception,
+ViT, and VGG models, with VGG ultimately achieving the highest classification performance.
+
+The project's core contribution lies in bridging computer vision and ornithological research
+through comprehensive interpretability techniques. Gradient-weighted Class Activation Mapping
+(Grad-CAM) visualizations confirmed that high-performing models correctly focused on biologically
+relevant features, particularly wing and wingtip regions. To validate these findings
+quantitatively, manual segmentation of correctly classified images enabled detailed intensity
+analysis of key morphological regions. The results revealed significant distinguishing
+characteristics: Glaucous-winged Gull wings are approximately 100.6\% brighter than their
+Slaty-backed counterparts, while Slaty-backed Gulls demonstrate a distinctive dark wingtip
+pattern with approximately 20.86\% of wingtip pixels having intensity values below 30, compared
+to virtually none (0.034\%) in Glaucous-winged Gulls. These findings align with expert taxonomic
+knowledge while providing quantitative metrics that validate and enhance traditional morphological
+classification methods. The research demonstrates how interpretable deep learning can contribute
+to taxonomic understanding by quantifying subtle visual differences between closely related
+species that are challenging even for human experts to consistently identify.
 
 \end{abstract}
