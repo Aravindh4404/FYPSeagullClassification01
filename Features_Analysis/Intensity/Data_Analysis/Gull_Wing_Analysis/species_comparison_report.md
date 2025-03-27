@@ -3,29 +3,29 @@
 ## Key Findings
 
 ### 1. Wing Intensity
-- **Slaty-backed Gull**: 77.41 ± 23.15
-- **Glaucous-winged Gull**: 152.55 ± 32.25
-- **Difference**: Glaucous-winged wings are 97.1% brighter
+- **Slaty-backed Gull**: 76.45 ± 22.36
+- **Glaucous-winged Gull**: 153.32 ± 31.49
+- **Difference**: Glaucous-winged wings are 100.6% brighter
 - **Statistical Significance**: Highly significant difference (p < 0.001)
 
 ### 2. Wingtip Darkness
-- **Slaty-backed Gull**: 57.25% of wingtip pixels darker than wing
-- **Glaucous-winged Gull**: 47.81% of wingtip pixels darker than wing
+- **Slaty-backed Gull**: 56.62% of wingtip pixels darker than wing
+- **Glaucous-winged Gull**: 47.73% of wingtip pixels darker than wing
 
 ### 3. Very Dark Pixels
 - **Slaty-backed Gull**:
-  - 20.77% pixels < 30 intensity
-  - 30.10% pixels < 40 intensity
-  - 38.50% pixels < 50 intensity
+  - 20.86% pixels < 30 intensity
+  - 30.13% pixels < 40 intensity
+  - 38.38% pixels < 50 intensity
 
 - **Glaucous-winged Gull**:
-  - 0.2578% pixels < 30 intensity
-  - 0.4902% pixels < 40 intensity
-  - 0.7969% pixels < 50 intensity
+  - 0.0340% pixels < 30 intensity
+  - 0.1459% pixels < 40 intensity
+  - 0.3737% pixels < 50 intensity
 
 ### 4. Raw Pixel Counts
-- **Slaty-backed Gull**: Average of 62340 very dark pixels
-- **Glaucous-winged Gull**: Average of 38 very dark pixels
+- **Slaty-backed Gull**: Average of 61450 very dark pixels
+- **Glaucous-winged Gull**: Average of 3 very dark pixels
 
 ## Biological Significance
 
