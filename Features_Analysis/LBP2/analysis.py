@@ -12,11 +12,11 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Create output directory for visualizations
-OUTPUT_DIR = "Results_Latest"
+OUTPUT_DIR = "Results_Latest_Default"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-def load_and_prepare_data(csv_path="LBP_Abstract_Features/lbp_abstract_features.csv"):
+def load_and_prepare_data(csv_path="LBP_Abstract_Features/lbp_abstract_features_default.csv"):
     """Load and prepare the LBP feature data for analysis"""
     print(f"Loading data from {csv_path}...")
     df = pd.read_csv(csv_path)

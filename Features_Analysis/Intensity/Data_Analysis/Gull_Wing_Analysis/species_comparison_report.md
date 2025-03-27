@@ -1,0 +1,42 @@
+# Wing and Wingtip Analysis: Slaty-backed Gull vs Glaucous-winged Gull
+
+## Key Findings
+
+### 1. Wing Intensity
+- **Slaty-backed Gull**: 77.41 ± 23.15
+- **Glaucous-winged Gull**: 152.55 ± 32.25
+- **Difference**: Glaucous-winged wings are 97.1% brighter
+- **Statistical Significance**: Highly significant difference (p < 0.001)
+
+### 2. Wingtip Darkness
+- **Slaty-backed Gull**: 57.25% of wingtip pixels darker than wing
+- **Glaucous-winged Gull**: 47.81% of wingtip pixels darker than wing
+
+### 3. Very Dark Pixels
+- **Slaty-backed Gull**:
+  - 20.77% pixels < 30 intensity
+  - 30.10% pixels < 40 intensity
+  - 38.50% pixels < 50 intensity
+
+- **Glaucous-winged Gull**:
+  - 0.2578% pixels < 30 intensity
+  - 0.4902% pixels < 40 intensity
+  - 0.7969% pixels < 50 intensity
+
+### 4. Raw Pixel Counts
+- **Slaty-backed Gull**: Average of 62340 very dark pixels
+- **Glaucous-winged Gull**: Average of 38 very dark pixels
+
+## Biological Significance
+
+These results demonstrate clear, quantifiable differences between the two gull species:
+
+1. **Overall Wing Color**: Slaty-backed Gulls have significantly darker wings, with intensity values approximately half those of Glaucous-winged Gulls.
+
+2. **Wingtip Darkness Pattern**: Slaty-backed Gulls have a dramatically higher percentage of very dark pixels in their wingtips. Over 20% of wingtip pixels have intensity below 30, compared to virtually none in Glaucous-winged Gulls.
+
+3. **Species Identification Feature**: The presence of very dark pixels (intensity < 30) in the wingtip appears to be a reliable diagnostic feature for distinguishing between these species.
+
+4. **Contrast Pattern**: The higher percentage of dark pixels in Slaty-backed Gull wingtips creates a more pronounced visual contrast between wing and wingtip regions.
+
+These quantitative differences align with field observations that Slaty-backed Gulls have darker wings and more prominent dark wingtips compared to Glaucous-winged Gulls, providing a reliable basis for species identification in image analysis.

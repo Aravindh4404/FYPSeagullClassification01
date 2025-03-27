@@ -5,7 +5,7 @@ from Features_Analysis.config import *  # Import configuration file
 # Define LBP parameters
 RADIUS = 3
 N_POINTS = 8 * RADIUS
-METHOD = 'uniform'  # 'uniform', 'default', etc.
+METHOD = 'default'  # 'uniform', 'default', etc.
 
 # Output directories for saving results
 RESULTS_DIR = "LBP_Abstract_Features"
@@ -64,9 +64,10 @@ def process_image_lbp(image_path, seg_path, species_name, file_name):
         lbp = local_binary_pattern(gray_region, N_POINTS, RADIUS, METHOD)
         lbp_region = lbp[mask > 0]
 
-        # Compute histogram of LBP values
-        hist_lbp, _ = np.histogram(lbp_region, bins=N_POINTS + 2 if METHOD == 'uniform' else int(lbp_region.max() + 1),
-                                   range=(0, N_POINTS + 2), density=True)
+        # # Compute histogram of LBP values
+        # hist_lbp, _ = np.histogram(lbp_region, bins=N_POINTS + 2 if METHOD == 'uniform' else int(lbp_region.max() + 1),
+        #                            range=(0, N_POINTS + 2), density=True)
+        hist_lbp, _ = np.histogram(lbp_region, bins=256, range=(0, 255), density=True)
 
         # Extract abstract features (number of '1s' and transitions)
         ones_hist, transitions_hist = extract_abstract_features(lbp_region)

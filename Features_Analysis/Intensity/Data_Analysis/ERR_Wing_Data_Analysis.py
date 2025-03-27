@@ -431,8 +431,8 @@ def main():
     os.makedirs("Analysis_Results", exist_ok=True)
 
     # Define input files
-    wing_intensity_file = "wing_intensity_analysis.csv"
-    wingtip_darkness_file = "Darkness_Analysis_Results/wingtip_darkness_analysis.csv"
+    wing_intensity_file = "../Wing_Greyscale_Intensity_Results/wing_intensity_analysis.csv"
+    wingtip_darkness_file = "../Darkness_Analysis_Results/wingtip_darkness_analysis.csv"
 
     # Check if input files exist
     if not os.path.exists(wing_intensity_file):

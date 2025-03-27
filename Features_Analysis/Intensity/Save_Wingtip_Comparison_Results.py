@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import cv2
 from scipy.stats import skew, kurtosis
-from config import *
+from Features_Analysis.config import *
 
 from Features_Analysis.config import *
 

@@ -1,0 +1,66 @@
+LOCAL BINARY PATTERN (LBP) ANALYSIS SUMMARY
+==========================================
+
+Species analyzed: Slaty_Backed_Gull, Glaucous_Winged_Gull
+Regions analyzed: wing, wingtip, head
+
+MOST DISCRIMINATIVE FEATURES
+--------------------------
+1. wingtip's std_intensity: 56.29% difference
+2. wing's mean_intensity: 49.26% difference
+3. wingtip's mean_intensity: 45.40% difference
+4. wingtip's contrast: 36.99% difference
+5. wing's contrast: 32.05% difference
+
+REGION BY REGION ANALYSIS
+------------------------
+
+WING:
+  - Mean Intensity: Slaty-backed Gull has lower value (77.4132 vs 152.5537, 49.3% difference)
+  - Std Intensity: Slaty-backed Gull has higher value (22.3676 vs 19.2897, 13.8% difference)
+  - Entropy: Slaty-backed Gull has higher value (3.3759 vs 3.1608, 6.4% difference)
+  - Energy: Slaty-backed Gull has lower value (0.3265 vs 0.3629, 10.0% difference)
+  - Uniformity: Slaty-backed Gull has lower value (0.3265 vs 0.3629, 10.0% difference)
+  - Contrast: Slaty-backed Gull has higher value (6218.0220 vs 4225.1099, 32.1% difference)
+
+WINGTIP:
+  - Mean Intensity: Slaty-backed Gull has lower value (83.1650 vs 152.3300, 45.4% difference)
+  - Std Intensity: Slaty-backed Gull has higher value (57.3967 vs 25.0874, 56.3% difference)
+  - Entropy: Slaty-backed Gull has higher value (3.5572 vs 3.0255, 14.9% difference)
+  - Energy: Slaty-backed Gull has lower value (0.2982 vs 0.3929, 24.1% difference)
+  - Uniformity: Slaty-backed Gull has lower value (0.2982 vs 0.3929, 24.1% difference)
+  - Contrast: Slaty-backed Gull has higher value (7527.3849 vs 4742.9287, 37.0% difference)
+
+HEAD:
+  - Mean Intensity: Slaty-backed Gull has lower value (167.0324 vs 185.3467, 9.9% difference)
+  - Std Intensity: Slaty-backed Gull has lower value (33.2209 vs 35.9587, 7.6% difference)
+  - Entropy: Slaty-backed Gull has lower value (3.4892 vs 3.7590, 7.2% difference)
+  - Energy: Slaty-backed Gull has higher value (0.2930 vs 0.2500, 14.7% difference)
+  - Uniformity: Slaty-backed Gull has higher value (0.2930 vs 0.2500, 14.7% difference)
+  - Contrast: Slaty-backed Gull has lower value (6676.2449 vs 8691.5772, 23.2% difference)
+
+
+SPECIES TEXTURE CHARACTERISTICS
+------------------------------
+
+Slaty_Backed_Gull distinctive characteristics:
+  wing: mean intensity (lower by 49.3%), std intensity (higher by 16.0%), energy (lower by 10.0%), uniformity (lower by 10.0%), contrast (higher by 47.2%)
+  wingtip: mean intensity (lower by 45.4%), std intensity (higher by 128.8%), entropy (higher by 17.6%), energy (lower by 24.1%), uniformity (lower by 24.1%), contrast (higher by 58.7%)
+  head: energy (higher by 17.2%), uniformity (higher by 17.2%), contrast (lower by 23.2%)
+
+Glaucous_Winged_Gull distinctive characteristics:
+  wing: mean intensity (higher by 97.1%), std intensity (lower by 13.8%), energy (higher by 11.1%), uniformity (higher by 11.1%), contrast (lower by 32.1%)
+  wingtip: mean intensity (higher by 83.2%), std intensity (lower by 56.3%), entropy (lower by 14.9%), energy (higher by 31.8%), uniformity (higher by 31.8%), contrast (lower by 37.0%)
+  head: energy (lower by 14.7%), uniformity (lower by 14.7%), contrast (higher by 30.2%)
+
+
+CONCLUSION
+----------
+The most discriminative feature for species identification is the wingtip's std intensity, with a difference of 56.29%.
+
+For species identification using LBP texture analysis, the following features show the most promise:
+1. wingtip's std intensity (56.29% difference)
+2. wing's mean intensity (49.26% difference)
+3. wingtip's mean intensity (45.40% difference)
+4. wingtip's contrast (36.99% difference)
+5. wing's contrast (32.05% difference)
