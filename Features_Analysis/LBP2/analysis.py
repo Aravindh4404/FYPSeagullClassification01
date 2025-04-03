@@ -12,21 +12,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Create output directory for visualizations
-OUTPUT_DIR = "Results_Latest_Default"
+OUTPUT_DIR = "Results_LBP_Analysis"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-
-def load_and_prepare_data(csv_path="LBP_Abstract_Features/lbp_abstract_features_default.csv"):
-    """Load and prepare the LBP feature data for analysis"""
-    print(f"Loading data from {csv_path}...")
-    df = pd.read_csv(csv_path)
-
-    # Convert string representations of lists to actual numpy arrays
-    for col in ['lbp_histogram', 'ones_histogram', 'transitions_histogram']:
-        if col in df.columns:
-            df[col] = df[col].apply(lambda x: parse_array_string(x) if isinstance(x, str) else x)
-
-    return df
 
 
 def parse_array_string(array_str):
@@ -40,6 +27,59 @@ def parse_array_string(array_str):
     except Exception as e:
         print(f"Error parsing array string: {e}")
         return np.array([])
+
+
+def load_and_prepare_data(csv_path="LBP_Abstract_Features/lbp_abstract_features_uniform.csv"):
+    """Load and prepare the LBP feature data for analysis"""
+    print(f"Loading data from {csv_path}...")
+    df = pd.read_csv(csv_path)
+
+    # Convert string representations of lists to actual numpy arrays
+    for col in ['lbp_histogram', 'ones_histogram', 'transitions_histogram']:
+        if col in df.columns:
+            df[col] = df[col].apply(lambda x: parse_array_string(x) if isinstance(x, str) else x)
+
+    return df
+
+
+def calculate_texture_features(avg_hist):
+    """
+    Calculate advanced texture features from histogram
+
+    Parameters:
+    avg_hist (numpy.ndarray): Histogram
+
+    Returns:
+    dict: Calculated texture features
+    """
+    # Ensure histogram is normalized
+    hist_norm = avg_hist / np.sum(avg_hist)
+
+    # Entropy (Shannon entropy)
+    # Add small epsilon to avoid log(0)
+    entropy = -np.sum(hist_norm * np.log2(hist_norm + 1e-10))
+
+    # Energy (sum of squared probabilities)
+    energy = np.sum(hist_norm ** 2)
+
+    # Uniformity is the same as energy in this context
+    uniformity = energy
+
+    # Contrast (weighted variance)
+    indices = np.arange(len(hist_norm))
+    mean = np.sum(indices * hist_norm)
+    contrast = np.sum((indices - mean) ** 2 * hist_norm)
+
+    # Homogeneity
+    homogeneity = np.sum(hist_norm / (1 + np.abs(indices - mean)))
+
+    return {
+        'entropy': entropy,
+        'energy': energy,
+        'uniformity': uniformity,
+        'contrast': contrast,
+        'homogeneity': homogeneity
+    }
 
 
 def calculate_metrics(hist1, hist2):
@@ -112,7 +152,7 @@ def visualize_lbp_histograms(data):
         plt.bar(bins + 0.2, glaucous_avg_lbp, width=0.4, label='Glaucous-winged Gull', alpha=0.7, color='#E1812C')
 
         plt.title(f'LBP Histogram Comparison for {region}', fontsize=15)
-        plt.xlabel('Uniform LBP values', fontsize=12)
+        plt.xlabel('LBP values', fontsize=12)
         plt.ylabel('Frequency', fontsize=12)
         plt.legend()
 
@@ -149,6 +189,11 @@ def visualize_lbp_histograms(data):
             plt.bar(bins_ones + 0.2, glaucous_avg_ones, width=0.4, label='Glaucous-winged Gull', alpha=0.7,
                     color='#E1812C')
 
+            # Calculate mean number of ones
+            slaty_ones_mean = np.sum(np.arange(len(slaty_avg_ones)) * slaty_avg_ones)
+            glaucous_ones_mean = np.sum(np.arange(len(glaucous_avg_ones)) * glaucous_avg_ones)
+            ones_diff_pct = abs(slaty_ones_mean - glaucous_ones_mean) / max(slaty_ones_mean, glaucous_ones_mean) * 100
+
             plt.title(f'Number of Ones Histogram for {region}', fontsize=15)
             plt.xlabel('Number of Ones in Pattern', fontsize=12)
             plt.ylabel('Frequency', fontsize=12)
@@ -156,9 +201,9 @@ def visualize_lbp_histograms(data):
 
             # Add metric values as text
             plt.figtext(0.5, 0.01,
+                        f"Mean: Slaty={slaty_ones_mean:.2f}, Glaucous={glaucous_ones_mean:.2f} ({ones_diff_pct:.2f}% diff) | "
                         f"KL Divergence: {ones_metrics['kl_divergence']:.4f} | "
-                        f"JS Distance: {ones_metrics['js_distance']:.4f} | "
-                        f"Chi-Square: {ones_metrics['chi_square']:.4f}",
+                        f"JS Distance: {ones_metrics['js_distance']:.4f}",
                         ha='center', fontsize=10,
                         bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
@@ -173,6 +218,12 @@ def visualize_lbp_histograms(data):
             plt.bar(bins_trans + 0.2, glaucous_avg_trans, width=0.4, label='Glaucous-winged Gull', alpha=0.7,
                     color='#E1812C')
 
+            # Calculate mean number of transitions
+            slaty_trans_mean = np.sum(np.arange(len(slaty_avg_trans)) * slaty_avg_trans)
+            glaucous_trans_mean = np.sum(np.arange(len(glaucous_avg_trans)) * glaucous_avg_trans)
+            trans_diff_pct = abs(slaty_trans_mean - glaucous_trans_mean) / max(slaty_trans_mean,
+                                                                               glaucous_trans_mean) * 100
+
             plt.title(f'Transitions Histogram for {region}', fontsize=15)
             plt.xlabel('Number of Transitions in Pattern', fontsize=12)
             plt.ylabel('Frequency', fontsize=12)
@@ -180,9 +231,9 @@ def visualize_lbp_histograms(data):
 
             # Add metric values as text
             plt.figtext(0.5, 0.01,
+                        f"Mean: Slaty={slaty_trans_mean:.2f}, Glaucous={glaucous_trans_mean:.2f} ({trans_diff_pct:.2f}% diff) | "
                         f"KL Divergence: {trans_metrics['kl_divergence']:.4f} | "
-                        f"JS Distance: {trans_metrics['js_distance']:.4f} | "
-                        f"Chi-Square: {trans_metrics['chi_square']:.4f}",
+                        f"JS Distance: {trans_metrics['js_distance']:.4f}",
                         ha='center', fontsize=10,
                         bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
@@ -213,28 +264,38 @@ def analyze_texture_properties(data):
                 # Average LBP histogram for this species/region
                 avg_hist = np.mean(np.stack(species_region_data['lbp_histogram'].values), axis=0)
 
-                # Calculate entropy from histogram
-                hist_norm = avg_hist / np.sum(avg_hist)
-                entropy = -np.sum(hist_norm * np.log2(hist_norm + 1e-10))
+                # Get advanced texture features
+                texture_features = calculate_texture_features(avg_hist)
 
-                # Calculate energy and uniformity
-                energy = np.sum(hist_norm ** 2)
+                # Abstract pattern features if available
+                abstract_features = {}
 
-                # Uniformity is the same as energy in this context
-                uniformity = energy
+                if 'ones_histogram' in species_region_data.columns:
+                    ones_hist = np.mean(np.stack(species_region_data['ones_histogram'].values), axis=0)
+                    ones_features = calculate_texture_features(ones_hist)
+                    # Calculate mean number of ones
+                    mean_ones = np.sum(np.arange(len(ones_hist)) * ones_hist)
+                    abstract_features['mean_ones'] = mean_ones
+                    abstract_features['ones_entropy'] = ones_features['entropy']
+                    abstract_features['ones_energy'] = ones_features['energy']
 
-                # Calculate contrast
-                contrast = np.sum(np.arange(len(hist_norm)) ** 2 * hist_norm)
+                if 'transitions_histogram' in species_region_data.columns:
+                    trans_hist = np.mean(np.stack(species_region_data['transitions_histogram'].values), axis=0)
+                    trans_features = calculate_texture_features(trans_hist)
+                    # Calculate mean number of transitions
+                    mean_transitions = np.sum(np.arange(len(trans_hist)) * trans_hist)
+                    abstract_features['mean_transitions'] = mean_transitions
+                    abstract_features['transitions_entropy'] = trans_features['entropy']
+                    abstract_features['transitions_energy'] = trans_features['energy']
 
+                # Store all features
                 texture_stats.append({
                     'region': region,
                     'species': species,
                     'mean_intensity': mean_intensity,
                     'std_intensity': std_intensity,
-                    'entropy': entropy,
-                    'energy': energy,
-                    'uniformity': uniformity,
-                    'contrast': contrast
+                    **texture_features,
+                    **abstract_features
                 })
 
     # Create DataFrame
@@ -244,24 +305,39 @@ def analyze_texture_properties(data):
     stats_df.to_csv(os.path.join(OUTPUT_DIR, "texture_properties.csv"), index=False)
 
     # Create visualizations for each property
-    properties = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast']
+    properties = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast', 'homogeneity']
+
+    # Add abstract features if they exist
+    if 'mean_ones' in stats_df.columns:
+        properties.extend(['mean_ones', 'ones_entropy', 'ones_energy'])
+
+    if 'mean_transitions' in stats_df.columns:
+        properties.extend(['mean_transitions', 'transitions_entropy', 'transitions_energy'])
 
     for prop in properties:
+        if prop not in stats_df.columns:
+            continue
+
         plt.figure(figsize=(12, 6))
 
         # Reshape data for grouped bar chart
         plot_data = []
         for region in regions:
             for species in stats_df['species'].unique():
-                val = stats_df[(stats_df['region'] == region) & (stats_df['species'] == species)][prop].values
-                if len(val) > 0:
+                subset = stats_df[(stats_df['region'] == region) & (stats_df['species'] == species)]
+                if not subset.empty and prop in subset.columns:
+                    val = subset[prop].values[0]
                     plot_data.append({
                         'region': region,
                         'species': species,
-                        'value': val[0]
+                        'value': val
                     })
 
         plot_df = pd.DataFrame(plot_data)
+
+        if len(plot_df) == 0:
+            plt.close()
+            continue
 
         # Create grouped bar chart
         ax = sns.barplot(x='region', y='value', hue='species', data=plot_df)
@@ -306,7 +382,11 @@ def create_discriminative_power_chart(stats_df):
     """Create a heatmap showing discriminative power of texture properties"""
     # Calculate percentage difference for each property and region
     regions = stats_df['region'].unique()
-    properties = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast']
+
+    # Identify all available properties in the dataframe
+    properties = [col for col in stats_df.columns
+                  if col not in ['region', 'species']
+                  and stats_df[col].dtype in [np.float64, np.int64]]
 
     diff_data = []
 
@@ -333,7 +413,7 @@ def create_discriminative_power_chart(stats_df):
     pivot_data = diff_df.pivot(index='region', columns='property', values='difference')
 
     # Create heatmap
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(14, 8))
     sns.heatmap(pivot_data, annot=True, fmt='.1f', cmap='viridis',
                 linewidths=0.5, cbar_kws={'label': 'Difference (%)'})
 
@@ -344,9 +424,9 @@ def create_discriminative_power_chart(stats_df):
 
     # Create bar chart of top discriminative features
     diff_data_sorted = sorted(diff_data, key=lambda x: x['difference'], reverse=True)
-    top_n = min(10, len(diff_data_sorted))
+    top_n = min(15, len(diff_data_sorted))
 
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(14, 8))
 
     labels = [f"{x['region']}-{x['property']}" for x in diff_data_sorted[:top_n]]
     values = [x['difference'] for x in diff_data_sorted[:top_n]]
@@ -367,6 +447,182 @@ def create_discriminative_power_chart(stats_df):
     plt.close()
 
     return diff_df
+
+
+def generate_abstract_features_summary(stats_df):
+    """
+    Generate a detailed summary of abstract feature analysis
+
+    Parameters:
+    stats_df (pandas.DataFrame): Dataframe with texture statistics
+
+    Returns:
+    None (writes to file)
+    """
+    with open(os.path.join(OUTPUT_DIR, "abstract_features_summary.txt"), 'w') as f:
+        f.write("ABSTRACT FEATURES DETAILED ANALYSIS\n")
+        f.write("==================================\n\n")
+
+        # Check if required abstract features are present
+        has_ones = 'mean_ones' in stats_df.columns
+        has_transitions = 'mean_transitions' in stats_df.columns
+
+        if not (has_ones or has_transitions):
+            f.write("No abstract features (number of ones or transitions) found in the dataset.\n")
+            return
+
+        # Regions and species
+        regions = stats_df['region'].unique()
+        species = stats_df['species'].unique()
+
+        f.write(f"Species analyzed: {', '.join(species)}\n")
+        f.write(f"Regions analyzed: {', '.join(regions)}\n\n")
+
+        # Detailed abstract feature analysis
+        f.write("FEATURE DISTRIBUTIONS\n")
+        f.write("--------------------\n")
+
+        for region in regions:
+            f.write(f"\nRegion: {region}\n")
+            region_data = stats_df[stats_df['region'] == region]
+
+            if len(region_data) == 2:  # Ensure we have both species
+                slaty_data = region_data[region_data['species'] == 'Slaty_Backed_Gull'].iloc[0]
+                glaucous_data = region_data[region_data['species'] == 'Glaucous_Winged_Gull'].iloc[0]
+
+                # Number of ones analysis
+                if has_ones:
+                    f.write("\nNumber of Ones Analysis:\n")
+                    slaty_ones = slaty_data['mean_ones']
+                    glaucous_ones = glaucous_data['mean_ones']
+                    ones_diff = abs(slaty_ones - glaucous_ones)
+                    ones_pct = ones_diff / max(slaty_ones, glaucous_ones) * 100
+
+                    f.write(f"  Slaty-backed Gull mean: {slaty_ones:.2f}\n")
+                    f.write(f"  Glaucous-winged Gull mean: {glaucous_ones:.2f}\n")
+                    f.write(f"  Absolute difference: {ones_diff:.2f}\n")
+                    f.write(f"  Percentage difference: {ones_pct:.2f}%\n")
+
+                    if 'ones_entropy' in slaty_data:
+                        ones_entropy_diff = abs(slaty_data['ones_entropy'] - glaucous_data['ones_entropy'])
+                        ones_entropy_pct = ones_entropy_diff / max(slaty_data['ones_entropy'],
+                                                                   glaucous_data['ones_entropy']) * 100
+                        f.write(f"  Entropy difference: {ones_entropy_pct:.2f}%\n")
+
+                    f.write(f"  Interpretation: ")
+                    if slaty_ones > glaucous_ones:
+                        f.write(f"Slaty-backed Gulls have more neighbors brighter than central pixel\n")
+                    else:
+                        f.write(f"Glaucous-winged Gulls have more neighbors brighter than central pixel\n")
+
+                # Transitions analysis
+                if has_transitions:
+                    f.write("\nTransitions Analysis:\n")
+                    slaty_trans = slaty_data['mean_transitions']
+                    glaucous_trans = glaucous_data['mean_transitions']
+                    trans_diff = abs(slaty_trans - glaucous_trans)
+                    trans_pct = trans_diff / max(slaty_trans, glaucous_trans) * 100
+
+                    f.write(f"  Slaty-backed Gull mean: {slaty_trans:.2f}\n")
+                    f.write(f"  Glaucous-winged Gull mean: {glaucous_trans:.2f}\n")
+                    f.write(f"  Absolute difference: {trans_diff:.2f}\n")
+                    f.write(f"  Percentage difference: {trans_pct:.2f}%\n")
+
+                    if 'transitions_entropy' in slaty_data:
+                        trans_entropy_diff = abs(
+                            slaty_data['transitions_entropy'] - glaucous_data['transitions_entropy'])
+                        trans_entropy_pct = trans_entropy_diff / max(slaty_data['transitions_entropy'],
+                                                                     glaucous_data['transitions_entropy']) * 100
+                        f.write(f"  Entropy difference: {trans_entropy_pct:.2f}%\n")
+
+                    f.write(f"  Interpretation: ")
+                    if slaty_trans > glaucous_trans:
+                        f.write(f"Slaty-backed Gulls have more complex texture patterns\n")
+                    else:
+                        f.write(f"Glaucous-winged Gulls have more complex texture patterns\n")
+
+        f.write("\n\nINTERPRETATION GUIDE\n")
+        f.write("-------------------\n")
+        f.write("Number of Ones: Measures how many neighboring pixels are brighter than center\n")
+        f.write("  - Higher values: More bright spots or edges within darker regions\n")
+        f.write("  - Lower values: More uniform dark or bright regions\n\n")
+
+        f.write("Transitions: Counts how many times the binary pattern switches between 0 and 1\n")
+        f.write("  - Higher values: More complex textures with frequent brightness changes\n")
+        f.write("  - Lower values: Smoother textures with fewer brightness changes\n\n")
+
+        f.write("SIGNIFICANCE FOR SPECIES IDENTIFICATION\n")
+        f.write("--------------------------------------\n")
+
+        # Identify most significant differences
+        signif_features = []
+
+        if has_ones:
+            # Collect differences for number of ones across regions
+            for region in regions:
+                region_data = stats_df[stats_df['region'] == region]
+                if len(region_data) == 2:
+                    slaty_ones = region_data[region_data['species'] == 'Slaty_Backed_Gull']['mean_ones'].values[0]
+                    glaucous_ones = region_data[region_data['species'] == 'Glaucous_Winged_Gull']['mean_ones'].values[0]
+                    ones_diff = abs(slaty_ones - glaucous_ones)
+                    ones_pct = ones_diff / max(slaty_ones, glaucous_ones) * 100
+                    signif_features.append({
+                        'feature': 'Number of Ones',
+                        'region': region,
+                        'diff_pct': ones_pct
+                    })
+
+        if has_transitions:
+            # Collect differences for transitions across regions
+            for region in regions:
+                region_data = stats_df[stats_df['region'] == region]
+                if len(region_data) == 2:
+                    slaty_trans = region_data[region_data['species'] == 'Slaty_Backed_Gull']['mean_transitions'].values[
+                        0]
+                    glaucous_trans = \
+                    region_data[region_data['species'] == 'Glaucous_Winged_Gull']['mean_transitions'].values[0]
+                    trans_diff = abs(slaty_trans - glaucous_trans)
+                    trans_pct = trans_diff / max(slaty_trans, glaucous_trans) * 100
+                    signif_features.append({
+                        'feature': 'Transitions',
+                        'region': region,
+                        'diff_pct': trans_pct
+                    })
+
+        # Sort by difference percentage
+        signif_features.sort(key=lambda x: x['diff_pct'], reverse=True)
+
+        # Display top features
+        for i, feat in enumerate(signif_features[:5]):
+            if i == 0:
+                f.write(
+                    f"\nThe most discriminative abstract feature is {feat['feature']} in the {feat['region']} region ")
+                f.write(f"with a difference of {feat['diff_pct']:.2f}%.\n")
+            else:
+                f.write(f"{i + 1}. {feat['feature']} in {feat['region']}: {feat['diff_pct']:.2f}% difference\n")
+
+        f.write("\nCONCLUSION\n")
+        f.write("----------\n")
+        if signif_features:
+            top_feature = signif_features[0]
+            f.write(f"Abstract pattern analysis reveals {top_feature['feature']} in the {top_feature['region']} ")
+            f.write(f"as the most distinctive texture feature between the two gull species.\n\n")
+
+            if top_feature['feature'] == 'Number of Ones':
+                f.write(
+                    "The Number of Ones feature captures the brightness relationship pattern between neighboring pixels.\n")
+                f.write(
+                    "This suggests that the two gull species differ significantly in how brightness is distributed in their feathers,\n")
+                f.write("which may reflect differences in their feather structure and coloration patterns.\n")
+            else:
+                f.write("The Transitions feature captures the complexity of texture patterns in the bird's plumage.\n")
+                f.write("This suggests that the two gull species differ significantly in texture complexity,\n")
+                f.write("which may reflect differences in their feather microstructure and pattern arrangements.\n")
+
+        f.write("\nBoth abstract pattern features provide robust metrics for identification that can complement\n")
+        f.write("traditional intensity-based measurements. These features are particularly useful because they\n")
+        f.write(
+            "can remain distinctive even when lighting conditions vary, providing reliable differentiating characteristics.\n")
 
 
 def generate_summary_report(stats_df, diff_df):
@@ -406,16 +662,41 @@ def generate_summary_report(stats_df, diff_df):
                 glaucous_stats = region_stats[region_stats['species'] == 'Glaucous_Winged_Gull'].iloc[0]
 
                 # Compare each property
-                for prop in ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast']:
-                    slaty_val = slaty_stats[prop]
-                    glaucous_val = glaucous_stats[prop]
+                basic_props = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast']
+                for prop in basic_props:
+                    if prop in slaty_stats and prop in glaucous_stats:
+                        slaty_val = slaty_stats[prop]
+                        glaucous_val = glaucous_stats[prop]
+
+                        if slaty_val != 0 and glaucous_val != 0:
+                            pct_diff = abs(slaty_val - glaucous_val) / max(slaty_val, glaucous_val) * 100
+
+                            comparison = "higher" if slaty_val > glaucous_val else "lower"
+                            f.write(
+                                f"  - {prop.replace('_', ' ').title()}: Slaty-backed Gull has {comparison} value ({slaty_val:.4f} vs {glaucous_val:.4f}, {pct_diff:.1f}% difference)\n")
+
+                # Add abstract feature comparisons if available
+                if 'mean_ones' in slaty_stats and 'mean_ones' in glaucous_stats:
+                    slaty_val = slaty_stats['mean_ones']
+                    glaucous_val = glaucous_stats['mean_ones']
 
                     if slaty_val != 0 and glaucous_val != 0:
                         pct_diff = abs(slaty_val - glaucous_val) / max(slaty_val, glaucous_val) * 100
 
                         comparison = "higher" if slaty_val > glaucous_val else "lower"
                         f.write(
-                            f"  - {prop.replace('_', ' ').title()}: Slaty-backed Gull has {comparison} value ({slaty_val:.4f} vs {glaucous_val:.4f}, {pct_diff:.1f}% difference)\n")
+                            f"  - Mean Number of Ones: Slaty-backed Gull has {comparison} value ({slaty_val:.4f} vs {glaucous_val:.4f}, {pct_diff:.1f}% difference)\n")
+
+                if 'mean_transitions' in slaty_stats and 'mean_transitions' in glaucous_stats:
+                    slaty_val = slaty_stats['mean_transitions']
+                    glaucous_val = glaucous_stats['mean_transitions']
+
+                    if slaty_val != 0 and glaucous_val != 0:
+                        pct_diff = abs(slaty_val - glaucous_val) / max(slaty_val, glaucous_val) * 100
+
+                        comparison = "higher" if slaty_val > glaucous_val else "lower"
+                        f.write(
+                            f"  - Mean Transitions: Slaty-backed Gull has {comparison} value ({slaty_val:.4f} vs {glaucous_val:.4f}, {pct_diff:.1f}% difference)\n")
 
         f.write("\n\nSPECIES TEXTURE CHARACTERISTICS\n")
         f.write("------------------------------\n")
@@ -432,16 +713,17 @@ def generate_summary_report(stats_df, diff_df):
                     other_stats = region_stats[region_stats['species'] == other_species].iloc[0]
 
                     region_props = []
-                    for prop in ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast']:
-                        my_val = species_stats[prop]
-                        other_val = other_stats[prop]
+                    for prop in species_stats.index:
+                        if prop not in ['region', 'species'] and prop in other_stats:
+                            my_val = species_stats[prop]
+                            other_val = other_stats[prop]
 
-                        if my_val != 0 and other_val != 0:
-                            diff = my_val - other_val
-                            if abs(diff) / max(my_val, other_val) > 0.1:  # If difference is >10%
-                                comparison = "higher" if diff > 0 else "lower"
-                                pct = abs(diff / other_val * 100)
-                                region_props.append(f"{prop.replace('_', ' ')} ({comparison} by {pct:.1f}%)")
+                            if my_val != 0 and other_val != 0:
+                                diff = my_val - other_val
+                                if abs(diff) / max(my_val, other_val) > 0.1:  # If difference is >10%
+                                    comparison = "higher" if diff > 0 else "lower"
+                                    pct = abs(diff / other_val * 100)
+                                    region_props.append(f"{prop.replace('_', ' ')} ({comparison} by {pct:.1f}%)")
 
                     if region_props:
                         f.write(f"  {region}: {', '.join(region_props)}\n")
@@ -512,10 +794,56 @@ def perform_pca_analysis(data):
         plt.savefig(os.path.join(OUTPUT_DIR, f"{region}_pca_plot.png"), dpi=300)
         plt.close()
 
+        # If abstract patterns are available, also perform PCA on them
+        for pattern_type in ['ones_histogram', 'transitions_histogram']:
+            if pattern_type in region_data.columns:
+                pattern_name = pattern_type.split('_')[0]
+
+                # Prepare data for PCA
+                X = np.array([hist for hist in region_data[pattern_type]])
+
+                # Make sure all histograms have the same length
+                max_len = max(len(hist) for hist in X)
+                X_padded = np.array([np.pad(hist, (0, max_len - len(hist))) for hist in X])
+
+                # Standardize data
+                X_std = StandardScaler().fit_transform(X_padded)
+
+                # Apply PCA
+                pca = PCA(n_components=2)
+                X_pca = pca.fit_transform(X_std)
+
+                # Create DataFrame for plotting
+                pca_df = pd.DataFrame({
+                    'PC1': X_pca[:, 0],
+                    'PC2': X_pca[:, 1],
+                    'species': region_data['species'].values
+                })
+
+                # Create scatter plot
+                plt.figure(figsize=(10, 8))
+                sns.scatterplot(x='PC1', y='PC2', hue='species', data=pca_df,
+                                palette={'Slaty_Backed_Gull': '#3274A1', 'Glaucous_Winged_Gull': '#E1812C'},
+                                s=100, alpha=0.7)
+
+                plt.title(f'PCA of {pattern_name.capitalize()} Features - {region} Region', fontsize=15)
+                plt.xlabel(f'PC1 ({pca.explained_variance_ratio_[0]:.2%} variance)', fontsize=12)
+                plt.ylabel(f'PC2 ({pca.explained_variance_ratio_[1]:.2%} variance)', fontsize=12)
+
+                # Add variance explained text
+                total_var = pca.explained_variance_ratio_.sum() * 100
+                plt.figtext(0.5, 0.01, f"Total variance explained: {total_var:.2f}%",
+                            ha='center', fontsize=10,
+                            bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
+
+                plt.tight_layout(rect=[0, 0.05, 1, 0.95])
+                plt.savefig(os.path.join(OUTPUT_DIR, f"{region}_{pattern_name}_pca_plot.png"), dpi=300)
+                plt.close()
+
 
 def main():
     """Main function to run the analysis"""
-    print("Starting LBP Analysis...")
+    print("Starting Enhanced LBP Analysis...")
 
     # Load and prepare data
     data = load_and_prepare_data()
@@ -532,8 +860,9 @@ def main():
     # Perform PCA analysis
     perform_pca_analysis(data)
 
-    # Generate summary report
+    # Generate summary reports
     generate_summary_report(stats_df, diff_df)
+    generate_abstract_features_summary(stats_df)
 
     print(f"Analysis complete! Results saved to {OUTPUT_DIR}/")
 
