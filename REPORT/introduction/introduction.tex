@@ -1,158 +1,100 @@
-\usepackage{hyperref}\chapter{Introduction}
+%\documentclass[12pt]{article}
+%\usepackage{amsmath}
+%\usepackage{graphicx}
+%\usepackage{hyperref}
+%\usepackage{enumitem}
 
-Setting out the aims and objectives of your project, explaining the overall intention of the project and specific steps that will be taken to achieve that intention.
 
+\section*{Introduction}
 
+Accurate
+\cite{source3}
+ species identification is a key starting point for scientific research and conservation efforts. Determining whether two populations can be consistently distinguished based on morphological traits is essential for establishing taxonomic boundaries and designing appropriate conservation strategies. Among birds, gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. As noted by ornithologists:
 
-Accurate species identification is a key starting point for scientific research and conservation efforts. Determining whether two populations can be consistently distinguished based on morphological traits is essential for establishing taxonomic boundaries and designing appropriate conservation strategies. Among birds, gulls (Laridae) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. As noted by ornithologists,
+\begin{quote}
+    ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \cite{ayyash2024}.
+\end{quote}
 
-"Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!"1.
+This project addresses the complex task of fine-grained classification between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics. The wing and wingtip patterns—particularly the colour, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species.
 
-This project addresses the complex task of fine-grained classification between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics that challenge even experienced ornithologists. The wingtip patterns—particularly the color, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species2.
+Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets. Fine-grained image classification (FGIC), which focuses on identifying subtle differences between subclasses within the same category, has advanced rapidly over the past decade with the development of sophisticated deep neural network architectures \cite{karpathy2015}. Current approaches to FGIC can be broadly categorized into two frameworks: intensely supervised learning, which requires detailed annotations of discriminative parts, and weakly supervised learning, which achieves comparable or superior results using only image-level labels \cite{zhou2016}.
 
-Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets. Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks. However, these models often function as "black boxes," providing little insight into their decision-making processes—a critical limitation in scientific applications where understanding the reasoning behind classifications is as important as the classifications themselves.
+For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and DenseNet have demonstrated exceptional capabilities, with recent studies achieving accuracy rates exceeding 97\% in bird species classification tasks \cite{he2016}. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species \cite{simonyan2014}. Modern approaches further enhance classification performance through attention mechanisms that help models focus on discriminative regions without explicit part annotations and multi-network learning strategies that capture complementary visual information at different scales \cite{vaswani2017}.
+
+Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks. However, these models often function as ``black boxes,'' providing little insight into their decision-making processes—a critical limitation in scientific applications where understanding the reasoning behind classifications is as important as the classifications themselves.
 
 This project therefore focuses not only on developing high-accuracy classification models but also on implementing robust interpretability techniques to visualize and understand which morphological features drive model decisions. By bridging computer vision and ornithological expertise, this work aims to contribute both to the technological advancement of interpretable fine-grained classification and to the biological understanding of gull taxonomy.
 
-
-
-\section{Motivation}
-
-Explaining the problem being solved.
-
-
+\section*{Motivation}
 
 The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent. These difficulties stem from several interrelated factors:
 
-First, Glaucous-winged Gulls exhibit unusual levels of variation compared to other gull species. As noted in ornithological literature, "The amount of variation here is disturbing, because it is unmatched by any other gull species, and more so because it is not completely understood." This variability extends to wingtip patterns, which are critical for species identification but inconsistent within populations.
+First, Glaucous-winged Gulls exhibit unusual levels of variation compared to other gull species. As noted in ornithological literature:
 
-Second, multiple confounding factors complicate identification, including:
+\begin{quote}
+    ``The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood'' \cite{ornithology2023}.
+\end{quote}
 
+This variability extends to wingtip patterns, which are critical for species identification but inconsistent within populations.
+
+Second, multiple confounding factors complicate identification:
 \begin{itemize}
-\item Hybridization: Both species can interbreed in overlapping ranges, creating intermediate forms
-
-
-\item Age-related variations: Juvenile and immature gulls display less distinct patterns than adults
-
-
-\item Environmental effects: Feather bleaching from sun exposure, contamination, and wear can alter appearance
-
-
-\item Seasonal moulting: Gulls undergo plumage changes throughout the year, affecting diagnostic features
-
-
-\item Viewing conditions: Lighting, angle, and distance significantly impact observed coloration
-
-
+    \item \textbf{Hybridization:} Both species can interbreed in overlapping ranges, creating intermediate forms.
+    \item \textbf{Age-related variations:} Juvenile and immature gulls display less distinct patterns than adults.
+    \item \textbf{Environmental effects:} Feather bleaching from sun exposure, contamination, and wear can alter appearance.
+    \item \textbf{Seasonal moulting:} Gulls undergo plumage changes throughout the year, affecting diagnostic features.
+    \item \textbf{Viewing conditions:} Lighting, angle, and distance significantly impact observed coloration.
 \end{itemize}
-These complications make manual classification both time-consuming and subjective, with considerable disagreement even among experts. While traditional taxonomic guides provide detailed descriptions of distinguishing features45, the subtle nature of these differences often leads to inconsistent identifications.
 
-Deep learning offers a powerful alternative by automatically learning distinctive features from large datasets. However, the "black box" nature of most neural networks limits their usefulness in scientific contexts where understanding the basis for classifications is crucial. This project therefore emphasizes interpretability alongside accuracy, ensuring that model decisions can be validated against expert knowledge and potentially yield new insights into the morphological basis of species differentiation.
+These complications can make manual classification both time-consuming and subjective. While traditional taxonomic guides provide detailed descriptions of distinguishing features \cite{taxonomicguide2023}, the subtle nature of these differences often leads to inconsistent identifications.
+
+Deep learning offers a powerful alternative by automatically learning distinctive features from large datasets. However, the ``black box'' nature of most neural networks limits their usefulness in scientific contexts where understanding the basis for classifications is crucial. This project therefore emphasizes interpretability alongside accuracy, ensuring that model decisions can be validated against expert knowledge and potentially yield new insights into the morphological basis of species differentiation.
 
 By focusing specifically on adult in-flight images where wingtip patterns are most visible, this project addresses the core taxonomic question while minimizing confounding variables. The resulting interpretable classification system aims to provide both a practical identification tool and a scientific instrument for exploring morphological variation within and between these closely related species.
+%
+%\section*{Aims and Objectives}
+%
+%\subsection*{Primary Aims}
+%\begin{enumerate}
+%    \item To develop high-performance deep learning models capable of distinguishing between Slaty-backed and Glaucous-winged Gulls based on their morphological characteristics.
+%    \item To implement robust interpretability techniques that reveal which features influence model decisions, allowing validation against ornithological expertise.
+%    \item To analyze whether consistent morphological differences exist between the two species and identify key discriminative features.
+%\end{enumerate}
+%
+%\subsection*{Specific Objectives}
+%The project will be carried out in four phases:
+%\begin{enumerate}[label=Phase~\arabic*:]
+%    \item Model Development and Evaluation
+%        \begin{itemize}
+%            \item Curate a high-quality dataset of adult in-flight gull images with clearly visible diagnostic features.
+%            \item Implement and compare multiple deep learning architectures (CNNs, Vision Transformers) for fine-grained classification.
+%            \item Optimize model performance through appropriate regularization techniques, data augmentation, and hyperparameter tuning.
+%            \item Evaluate models using appropriate metrics (accuracy, precision, recall, F1-score) on carefully constructed test sets.
+%        \end{itemize}
+%    \item Interpretability Implementation
+%        \begin{itemize}
+%            \item Implement Gradient-weighted Class Activation Mapping (Grad-CAM) for convolutional architectures.
+%            \item Develop or adapt interpretability techniques suitable for Vision Transformers.
+%            \item Visualize regions of images that most influence classification decisions.
+%            \item Compare model focus areas with known taxonomic features described in ornithological literature.
+%        \end{itemize}
+%    \item Feature Analysis
+%        \begin{itemize}
+%            \item Perform quantitative analysis of image regions highlighted by interpretability techniques.
+%            \item Compare intensity, texture, and pattern characteristics between species.
+%            \item Identify statistically significant morphological differences between correctly classified specimens.
+%        \end{itemize}
+%    \item Refinement and Validation
+%        \begin{itemize}
+%            \item Refine models and interpretability methods based on insights from feature analysis.
+%            \item Validate findings against expert ornithological knowledge.
+%            \item Document limitations, edge cases, and areas for future research.
+%        \end{itemize}
+%\end{enumerate}
 
+\bibliographystyle{plain}
+%\bibliography{}
 
+% Add references manually or link to a .bib file once available
 
-
-\section{Aims and Objectives}
-
-Aims and Objectives here.
-
-
-
-\section*{Primary Aims}
-\begin{enumerate}
-\item To develop high-performance deep learning models capable of distinguishing between Slaty-backed and Glaucous-winged Gulls based on their morphological characteristics.
-
-
-\item To implement robust interpretability techniques that reveal which features influence model decisions, allowing validation against ornithological expertise.
-
-
-\item To analyze whether consistent morphological differences exist between the two species and identify the key discriminative features.
-
-
-\end{enumerate}
-\section*{Specific Objectives}
-Phase 1: Model Development and Evaluation
-
-\begin{itemize}
-\item Curate a high-quality dataset of adult in-flight gull images with clearly visible diagnostic features
-
-
-\item Implement and compare multiple deep learning architectures (CNNs, Vision Transformers) for fine-grained classification
-
-
-\item Optimize model performance through appropriate regularization techniques, data augmentation, and hyperparameter tuning
-
-
-\item Evaluate models using appropriate metrics (accuracy, precision, recall, F1-score) on carefully constructed test sets
-
-
-\end{itemize}
-Phase 2: Interpretability Implementation
-
-\begin{itemize}
-\item Implement Gradient-weighted Class Activation Mapping (Grad-CAM) for convolutional architectures
-
-
-\item Develop or adapt interpretability techniques suitable for Vision Transformers
-
-
-\item Visualize the regions of images that most influence classification decisions
-
-
-\item Compare model focus areas with known taxonomic features described in ornithological literature
-
-
-\end{itemize}
-Phase 3: Feature Analysis
-
-\begin{itemize}
-\item Perform quantitative analysis of image regions highlighted by interpretability techniques
-
-
-\item Compare intensity, texture, and pattern characteristics between species
-
-
-\item Identify statistically significant morphological differences between correctly classified specimens
-
-
-\item Generate insights regarding the key discriminative features for identification
-
-
-\end{itemize}
-Phase 4: Refinement and Validation
-
-\begin{itemize}
-\item Refine models and interpretability methods based on insights from feature analysis
-
-
-\item Validate findings against expert ornithological knowledge
-
-
-\item Document limitations, edge cases, and areas for future research
-
-
-\end{itemize}
-
-
-This project approaches the challenge of fine-grained gull classification through a systematic progression from data preparation to model development, interpretability analysis, and feature evaluation. Each phase builds upon previous work while maintaining focus on both classification performance and biological relevance.
-
-The work begins with meticulous dataset curation in collaboration with ornithological experts. Rather than using arbitrary images, the dataset focuses specifically on adult in-flight gulls where key diagnostic features are most visible. This targeted approach allows the models to focus on relevant morphological characteristics while minimizing confounding variables such as age-related differences and posture variation.
-
-The model development phase follows an iterative approach inspired by Karpathy's neural network training methodology3, beginning with simple architectures to establish baselines before progressing to more sophisticated models. Multiple architectures are implemented and compared, including traditional Convolutional Neural Networks (ResNet, VGG, DenseNet, Inception) and modern Vision Transformers, each leveraging transfer learning from ImageNet pre-training. Model performance is rigorously evaluated on carefully constructed test sets, with emphasis on not only overall accuracy but also generalization to challenging cases.
-
-A central focus of this project is the implementation of interpretability techniques that reveal which image regions influence model decisions. For CNN-based models, Gradient-weighted Class Activation Mapping (Grad-CAM) visualizations highlight regions that contribute most significantly to classifications\href{https://www.semanticscholar.org/paper/c06c7104f697357250a55330142990991d9be0a5}{13}\href{https://www.semanticscholar.org/paper/a6268ed45e5b3fc48d5f8621c5e3e997cb6ba3f8}{14}.For transformer-based models, appropriate adaptations of interpretability methods are implemented to accommodate their distinct architectural characteristics\href{https://www.semanticscholar.org/paper/0305f297150c358875aa796e05e9d79231c03eaf}{8}.These visualizations serve as a critical bridge between computational results and biological understanding.
-
-Building on these interpretability results, quantitative analysis of highlighted image regions extracts meaningful morphological insights. Statistical comparisons of features such as intensity distributions, texture patterns, and color variations between correctly classified specimens help identify the specific characteristics that differentiate the species. These analyses are conducted both on whole-image features and on segmented regions corresponding to biologically relevant structures (wingtips, wing surfaces, head regions).
-
-Throughout implementation, the project maintains close alignment with ornithological expertise to ensure that computational approaches yield biologically meaningful results. The final outcome is not merely a high-performance classification system but an interpretable framework that contributes to ornithological understanding of these challenging species.
-
-
-
-
-\section{Description of the work}
-
-Explaining what your project is meant to achieve, how it is meant to function, perhaps even a functional specification.
-
-
+%\end{document}
