@@ -2,3 +2,6 @@ pdflatex thesis.tex
 bibtex thesis
 pdflatex thesis.tex
 pdflatex thesis.tex
+
+del *.aux *.bbl *.bcf *.blg *.log *.run.xml
+

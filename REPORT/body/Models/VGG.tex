@@ -1,22 +1,16 @@
-%! Author = Aravindh P
-%! Date = 07-04-2025
-
-% Preamble
-
-
 \subsection{VGG-16 Architecture}
 
 \subsubsection{Theoretical Background}
 
-VGG-16 is a popular Convolutional Neural Network (CNN) architecture widely used in computer vision applications. Originally developed by Simonyan and Zisserman (2014), VGG-16 consists of 16 layers, including 13 convolutional layers arranged in blocks of increasing depth, followed by 3 fully connected layers, with a total of approximately 138 million parameters. The architecture follows a systematic approach of stacking convolutional layers with small 3$\times$3 filters followed by max-pooling layers, creating a deep network capable of learning complex hierarchical features.
+VGG-16 is a popular Convolutional Neural Network (CNN) architecture widely used in computer vision applications. Originally developed by Simonyan and Zisserman \citep{simonyan2014vgg}, VGG-16 consists of 16 layers, including 13 convolutional layers arranged in blocks of increasing depth, followed by 3 fully connected layers, with a total of approximately 138 million parameters. The architecture follows a systematic approach of stacking convolutional layers with small 3$\times$3 filters followed by max-pooling layers, creating a deep network capable of learning complex hierarchical features.
 
-One of the main advantages of using VGG-16 as a pre-trained model for transfer learning is its ability to capture a wide range of features and patterns in images. This capability stems from the deep architecture of the VGG-16 model, which allows it to extract more complex features from images compared to shallower models. VGG-16 has been pre-trained on the ImageNet dataset, which contains over 1.2 million images across 1,000 classes, enabling it to recognize a wide range of features and patterns applicable to various computer vision tasks.
+One of the main advantages of using VGG-16 as a pre-trained model for transfer learning is its ability to capture a wide range of features and patterns in images. This capability stems from the deep architecture of the VGG-16 model, which allows it to extract more complex features from images compared to shallower models. VGG-16 has been pre-trained on the ImageNet dataset \citep{deng2009imagenet}, which contains over 1.2 million images across 1,000 classes, enabling it to recognize a wide range of features and patterns applicable to various computer vision tasks.
 
 The architecture's elegant simplicity, despite its depth, makes it particularly effective for fine-grained visual classification tasks like ours. Its performance on various computer vision benchmarks, including object detection, image segmentation, and image classification tasks, makes it a versatile choice for transfer learning in numerous applications. For our specific task of gull species classification, the hierarchical feature representation capabilities of VGG-16 proved particularly effective at capturing the subtle differences in wing patterns and morphological features that distinguish between the target species.
 
 \subsubsection{Model Adaptation for Gull Species Classification}
 
-The pre-trained VGG16 model was adapted for our binary classification task through targeted modifications to the final classification layer. The implementation approach follows best practices for fine-grained bird classification established in recent research on transfer learning for avian species identification~\cite{avian2023}. Specifically, the original 1000-class classifier was replaced with a custom binary classification head while preserving the feature extraction capabilities of the convolutional base. The model modification strategy followed this approach:
+The pre-trained VGG16 model was adapted for our binary classification task through targeted modifications to the final classification layer. The implementation approach follows best practices for fine-grained bird classification established in recent research on transfer learning for avian species identification \citep{ghani2024comprehensive, reslan2022automatic}. Specifically, the original 1000-class classifier was replaced with a custom binary classification head while preserving the feature extraction capabilities of the convolutional base. The model modification strategy followed this approach:
 
 \begin{enumerate}
     \item Loading the pre-trained VGG16 with ImageNet weights
@@ -38,7 +32,7 @@ Images were preprocessed using a consistent pipeline to ensure compatibility wit
 
 \subsubsection{Training Augmentation}
 
-A comprehensive data augmentation strategy was implemented to enhance model generalization capabilities and mitigate overfitting. The augmentation pipeline for training incorporated multiple techniques designed to preserve critical taxonomic features while introducing beneficial variability:
+A comprehensive data augmentation strategy was implemented to enhance model generalization capabilities and mitigate overfitting \citep{shorten2019survey}. The augmentation pipeline for training incorporated multiple techniques designed to preserve critical taxonomic features while introducing beneficial variability:
 
 \paragraph{Geometric Transformations:}
 \begin{itemize}
@@ -55,7 +49,7 @@ A comprehensive data augmentation strategy was implemented to enhance model gene
     \item Sharpness enhancement (factor 1.2, probability 0.3)
 \end{itemize}
 
-This augmentation strategy was carefully calibrated to maintain the integrity of critical morphological features (particularly wingtip patterns) while simulating natural variations in viewing conditions. The relatively conservative parameter choices reflect the importance of preserving diagnostic features in fine-grained classification tasks.
+This augmentation strategy was carefully calibrated to maintain the integrity of critical morphological features (particularly wingtip patterns) while simulating natural variations in viewing conditions. The relatively conservative parameter choices reflect the importance of preserving diagnostic features in fine-grained classification tasks \citep{wang2022bird}.
 
 \subsubsection{Validation and Testing Preprocessing}
 
@@ -71,7 +65,7 @@ The dataset was organized using the ImageFolder structure, with a 95:5 split bet
 
 Cross-entropy loss was selected as the objective function for this binary classification task, providing appropriate gradients for optimization. This loss function effectively quantifies the discrepancy between predicted class probabilities and ground truth labels.
 
-The AdamW optimizer was employed with carefully tuned hyperparameters to facilitate effective model training:
+The AdamW optimizer \citep{loshchilov2017decoupled} was employed with carefully tuned hyperparameters to facilitate effective model training:
 \begin{itemize}
     \item Learning rate: 0.0001 (relatively low to enable stable fine-tuning)
     \item Weight decay: 0.001 (for L2 regularization to prevent overfitting)
@@ -81,7 +75,7 @@ This optimization configuration balances the need for fine-grained weight adjust
 
 \subsubsection{Learning Rate Scheduling and Training Stabilization}
 
-An adaptive learning rate schedule was implemented using ReduceLROnPlateau with a patience factor of 3 epochs and a reduction factor of 0.1. This approach automatically reduces the learning rate when validation performance plateaus, enabling finer weight adjustments as the model approaches optimal parameters.
+An adaptive learning rate schedule was implemented using ReduceLROnPlateau with a patience factor of 3 epochs and a reduction factor of 0.1 \citep{wu2015onreducelr}. This approach automatically reduces the learning rate when validation performance plateaus, enabling finer weight adjustments as the model approaches optimal parameters.
 
 To enhance training stability, gradient clipping was applied with a maximum norm of 2.0. This technique prevents exploding gradients by constraining the magnitude of parameter updates, which is particularly valuable when fine-tuning deep architectures like VGG16.
 
@@ -101,8 +95,6 @@ The model's performance was assessed using multiple complementary metrics to ens
     \item F1-Score: Harmonic mean of precision and recall
 \end{itemize}
 
-The final VGG16 model achieved exceptional performance with 98.80\% validation accuracy and 100\% test accuracy, demonstrating its effectiveness in distinguishing between the two gull species based on the refined dataset. This performance exceeds typical benchmarks for fine-grained bird classification tasks, highlighting the effectiveness of the implemented architecture, data preparation strategy, and training methodology.
+The final VGG16 model achieved exceptional performance with 98.80\% validation accuracy and 100\% test accuracy, demonstrating its effectiveness in distinguishing between the two gull species based on the refined dataset. This performance exceeds typical benchmarks for fine-grained bird classification tasks \citep{sanchez2019fine}, highlighting the effectiveness of the implemented architecture, data preparation strategy, and training methodology.
 
 A confusion matrix analysis confirmed the model's strong classification performance across both classes, with minimal misclassifications. This indicates the model successfully learned the discriminative morphological features necessary for distinguishing between Glaucous-winged and Slaty-backed Gulls.
-
-

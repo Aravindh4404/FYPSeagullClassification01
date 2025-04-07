@@ -8,18 +8,18 @@
 \section*{Introduction}
 
 Accurate
-\cite{source3}
+\citep{source3}
  species identification is a key starting point for scientific research and conservation efforts. Determining whether two populations can be consistently distinguished based on morphological traits is essential for establishing taxonomic boundaries and designing appropriate conservation strategies. Among birds, gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. As noted by ornithologists:
 
 \begin{quote}
-    ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \cite{ayyash2024}.
+    ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \citep{ayyash2024}.
 \end{quote}
 
 This project addresses the complex task of fine-grained classification between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics. The wing and wingtip patterns—particularly the colour, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species.
 
-Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets. Fine-grained image classification (FGIC), which focuses on identifying subtle differences between subclasses within the same category, has advanced rapidly over the past decade with the development of sophisticated deep neural network architectures \cite{karpathy2015}. Current approaches to FGIC can be broadly categorized into two frameworks: intensely supervised learning, which requires detailed annotations of discriminative parts, and weakly supervised learning, which achieves comparable or superior results using only image-level labels \cite{zhou2016}.
+Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets. Fine-grained image classification (FGIC), which focuses on identifying subtle differences between subclasses within the same category, has advanced rapidly over the past decade with the development of sophisticated deep neural network architectures \citep{karpathy2015}. Current approaches to FGIC can be broadly categorized into two frameworks: intensely supervised learning, which requires detailed annotations of discriminative parts, and weakly supervised learning, which achieves comparable or superior results using only image-level labels \citep{zhou2016}.
 
-For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and DenseNet have demonstrated exceptional capabilities, with recent studies achieving accuracy rates exceeding 97\% in bird species classification tasks \cite{he2016}. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species \cite{simonyan2014}. Modern approaches further enhance classification performance through attention mechanisms that help models focus on discriminative regions without explicit part annotations and multi-network learning strategies that capture complementary visual information at different scales \cite{vaswani2017}.
+For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and DenseNet have demonstrated exceptional capabilities, with recent studies achieving accuracy rates exceeding 97\% in bird species classification tasks \citep{he2016}. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species \citep{simonyan2014}. Modern approaches further enhance classification performance through attention mechanisms that help models focus on discriminative regions without explicit part annotations and multi-network learning strategies that capture complementary visual information at different scales \citep{vaswani2017}.
 
 Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks. However, these models often function as ``black boxes,'' providing little insight into their decision-making processes—a critical limitation in scientific applications where understanding the reasoning behind classifications is as important as the classifications themselves.
 
@@ -32,7 +32,7 @@ The classification of gulls presents multiple challenges that make traditional i
 First, Glaucous-winged Gulls exhibit unusual levels of variation compared to other gull species. As noted in ornithological literature:
 
 \begin{quote}
-    ``The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood'' \cite{ornithology2023}.
+    ``The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood'' \citep{ornithology2023}.
 \end{quote}
 
 This variability extends to wingtip patterns, which are critical for species identification but inconsistent within populations.
@@ -46,7 +46,7 @@ Second, multiple confounding factors complicate identification:
     \item \textbf{Viewing conditions:} Lighting, angle, and distance significantly impact observed coloration.
 \end{itemize}
 
-These complications can make manual classification both time-consuming and subjective. While traditional taxonomic guides provide detailed descriptions of distinguishing features \cite{taxonomicguide2023}, the subtle nature of these differences often leads to inconsistent identifications.
+These complications can make manual classification both time-consuming and subjective. While traditional taxonomic guides provide detailed descriptions of distinguishing features \citep{taxonomicguide2023}, the subtle nature of these differences often leads to inconsistent identifications.
 
 Deep learning offers a powerful alternative by automatically learning distinctive features from large datasets. However, the ``black box'' nature of most neural networks limits their usefulness in scientific contexts where understanding the basis for classifications is crucial. This project therefore emphasizes interpretability alongside accuracy, ensuring that model decisions can be validated against expert knowledge and potentially yield new insights into the morphological basis of species differentiation.
 

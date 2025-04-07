@@ -3,16 +3,15 @@
 
 \documentclass[a4paper,12pt,twoside]{report}
 \usepackage[left=2.5cm,right=2.5cm,top=2cm,bottom=3cm]{geometry}
+%\usepackage{natbib}
 
-\usepackage[backend=bibtex, style=numeric]{biblatex}
-%\addbibresource{references.bib}
+\usepackage[backend=bibtex, style=numeric, natbib=true]{biblatex}
+
 \addbibresource{bibl.bib}
-%\usepackage{algorithmicx}
-%\usepackage{tikz}
-%\usepackage{amsmath}
 
-\usepackage{hyperref}
-%
+
+
+
 \include{thesis.preamble}
 %
 %
@@ -56,8 +55,7 @@
 
 %\input{appendices/appendix}
 
-%\bibliography{bibliography/bibliography}
-%\bibliographystyle{plain}          % This tells LaTeX where your .bib file is
+
 \printbibliography{title={References}}
 
 \end{document}
