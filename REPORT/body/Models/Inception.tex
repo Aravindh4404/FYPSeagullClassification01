@@ -1,15 +1,8 @@
-%! Author = Aravindh P
-%! Date = 07-04-2025
-
-% Preamble
-
-
-
 \section{Inception v3 Architecture}
 
 \subsection{Theoretical Background}
 
-Inception v3, developed by Szegedy et al. (2016), represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution paths with different kernel sizes. The key innovation in Inception architectures is the use of "Inception modules" that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously.
+Inception v3, developed by \citep{szegedy2016rethinking}, represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution paths with different kernel sizes. The key innovation in Inception architectures is the use of "Inception modules" that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously.
 
 Inception v3 builds upon earlier versions with several important architectural improvements:
 
@@ -21,7 +14,7 @@ Inception v3 builds upon earlier versions with several important architectural i
     \item Label smoothing regularization to prevent overconfidence
 \end{itemize}
 
-These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. As demonstrated by Shu et al. (2023), Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens.
+These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. As demonstrated by \citep{shu2023multiscale}, Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens.
 
 \subsection{Model Adaptation for Gull Classification}
 
@@ -37,7 +30,7 @@ Our implementation adapted the pre-trained Inception v3 model for gull species c
     \end{enumerate}
 \end{enumerate}
 
-A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This approach helps combat the vanishing gradient problem and provides regularization, as noted by Szegedy et al. (2016) in their original paper.
+A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This approach helps combat the vanishing gradient problem and provides regularization, as noted by \citep{szegedy2016rethinking} in their original paper.
 
 The loss function was modified to incorporate both the main output and the auxiliary output during training:
 
@@ -45,20 +38,20 @@ The loss function was modified to incorporate both the main output and the auxil
 \text{loss} = \text{main\_loss} + 0.3 \times \text{auxiliary\_loss}
 \end{equation}
 
-where the auxiliary loss weight (0.3) was selected based on empirical optimization and aligns with recommendations in the literature for fine-tuning Inception architectures.
+where the auxiliary loss weight (0.3) was selected based on empirical optimization and aligns with recommendations in the literature for fine-tuning Inception architectures \citep{touvron2021training}.
 
 \subsection{Advanced Training Techniques}
 
 The Inception v3 implementation incorporated several advanced training techniques to optimize performance:
 
 \begin{itemize}
-    \item Mixed-precision training using PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability
-    \item Gradient clipping with a maximum norm of 2.0 to prevent explosive gradient updates
+    \item Mixed-precision training using PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability \citep{micikevicius2018mixed}
+    \item Gradient clipping with a maximum norm of 2.0 to prevent explosive gradient updates \citep{you2019large}
     \item Precisely tuned learning rate and weight decay parameters identified through hyperparameter optimization
     \item Layer-wise learning rate adjustment to fine-tune different parts of the network at appropriate rates
 \end{itemize}
 
-These techniques collectively enhanced training efficiency and model performance. The implementation of mixed-precision training was particularly valuable given the resource constraints of the Google Colab environment, as it reduced memory usage and accelerated computation without compromising model accuracy.
+These techniques collectively enhanced training efficiency and model performance. The implementation of mixed-precision training was particularly valuable given the resource constraints of the Google Colab environment, as it reduced memory usage and accelerated computation without compromising model accuracy \citep{ghani2024comprehensive}.
 
 \subsection{Data Processing Pipeline}
 
@@ -75,5 +68,4 @@ The data processing pipeline for Inception v3 was adapted to the model's specifi
     \item Simple resizing and normalization for validation and testing
 \end{itemize}
 
-The larger input resolution (299$\times$299 vs 224$\times$224 used by VGG16 and ViT) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species.
-
+The larger input resolution (299$\times$299 vs 224$\times$224 used by VGG16 and ViT) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species \citep{dosovitskiy2020image}.

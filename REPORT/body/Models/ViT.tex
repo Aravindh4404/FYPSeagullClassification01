@@ -8,9 +8,9 @@
 
 \subsection{Theoretical Framework}
 
-Vision Transformers (ViT) represent a paradigm shift in computer vision, applying the self-attention mechanism from transformer models—originally developed for natural language processing—to image classification tasks. First introduced by Dosovitskiy et al. (2020), ViT processes images by dividing them into a sequence of fixed-size patches, which are then linearly embedded and processed through transformer encoder blocks[1].
+Vision Transformers (ViT) represent a paradigm shift in computer vision, applying the self-attention mechanism from transformer models—originally developed for natural language processing—to image classification tasks. First introduced by \citep{dosovitskiy2020image}, ViT processes images by dividing them into a sequence of fixed-size patches, which are then linearly embedded and processed through transformer encoder blocks.
 
-Unlike CNNs that build hierarchical representations through local convolutional operations, ViT applies self-attention mechanisms to capture global relationships between image patches. This allows the model to attend to long-range dependencies within the image, potentially capturing more holistic patterns. As demonstrated by research from Liu et al. (2022), these attention mechanisms enable transformers to excel at detecting subtle features in biomedical images by focusing on the most discriminative regions[2].
+Unlike CNNs that build hierarchical representations through local convolutional operations, ViT applies self-attention mechanisms to capture global relationships between image patches. This allows the model to attend to long-range dependencies within the image, potentially capturing more holistic patterns. As demonstrated by research from \citep{liu2022attention}, these attention mechanisms enable transformers to excel at detecting subtle features in biomedical images by focusing on the most discriminative regions.
 
 The standard ViT architecture consists of:
 
@@ -22,7 +22,7 @@ The standard ViT architecture consists of:
     \item A classification head for prediction
 \end{itemize}
 
-This architecture's capacity to model global relationships makes it particularly promising for fine-grained classification tasks where relationships between distant parts of an image (e.g., wing patterns in relation to head features) may be important for accurate classification.
+This architecture's capacity to model global relationships makes it particularly promising for fine-grained classification tasks where relationships between distant parts of an image (e.g., wing patterns in relation to head features) may be important for accurate classification \citep{conde2021exploring}.
 
 \subsection{Standard Vision Transformer Implementation}
 
@@ -35,13 +35,13 @@ My standard ViT implementation utilized the pre-trained 'vit\_base\_patch16\_224
     \item Maintaining the self-attention mechanisms and transformer blocks
 \end{itemize}
 
-This approach leverages the powerful feature extraction capabilities of ViT while customizing the final classification stage for our specific task. The implementation follows best practices established by Wightman et al. (2021) for adapting vision transformers to specialized classification tasks[3].
+This approach leverages the powerful feature extraction capabilities of ViT while customizing the final classification stage for our specific task. The implementation follows best practices established by \citep{wightman2021resnet} for adapting vision transformers to specialized classification tasks.
 
 \subsection{Enhanced Vision Transformer with Custom Attention}
 
 To further improve the model's ability to focus on taxonomically relevant features, we developed an Enhanced Vision Transformer (EnhancedViT) that incorporates a custom attention mechanism specifically designed for fine-grained classification tasks.
 
-The key innovation in this implementation is an attention-based pooling layer that computes importance scores for each patch token, enabling the model to focus on the most discriminative regions of the input image. This approach draws inspiration from the work of Guan et al. (2022), who demonstrated that specialized attention mechanisms in vision transformers can significantly improve fine-grained classification by emphasizing taxonomically relevant features[4].
+The key innovation in this implementation is an attention-based pooling layer that computes importance scores for each patch token, enabling the model to focus on the most discriminative regions of the input image. This approach draws inspiration from the work of \citep{guan2022attention}, who demonstrated that specialized attention mechanisms in vision transformers can significantly improve fine-grained classification by emphasizing taxonomically relevant features.
 
 The enhanced ViT architecture extends the standard implementation with:
 
@@ -64,7 +64,7 @@ The attention mechanism was implemented as:
 \end{algorithmic}
 \end{algorithm}
 
-This approach allows the model to dynamically focus on the most relevant parts of the image for classification, such as distinctive wingtip patterns or other morphological features that differentiate between gull species.
+This approach allows the model to dynamically focus on the most relevant parts of the image for classification, such as distinctive wingtip patterns or other morphological features that differentiate between gull species \citep{stassin2024explainability}.
 
 \subsection{Data Processing and Augmentation}
 
@@ -81,7 +81,7 @@ Both ViT implementations used standardized preprocessing and augmentation pipeli
     \end{itemize}
 \end{itemize}
 
-The input normalization values specifically used [0.5, 0.5, 0.5] rather than ImageNet statistics, following recommendations from Touvron et al. (2021) for transfer learning with vision transformers[5].
+The input normalization values specifically used [0.5, 0.5, 0.5] rather than ImageNet statistics, following recommendations from\citep{touvron2021training} for transfer learning with vision transformers.
 
 \subsection{Training Methodology}
 
@@ -103,5 +103,3 @@ For the EnhancedViT, we employed additional training refinements:
 \end{itemize}
 
 Both models were trained on the refined high-quality dataset (Stage 3), with an 80:20 split between training and validation sets to ensure robust performance evaluation during development.
-
-

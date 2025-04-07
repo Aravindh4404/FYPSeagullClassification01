@@ -1,4 +1,4 @@
-%! Author = Aravindh P
+\usepackage{natbib}%! Author = Aravindh P
 %! Date = 07-04-2025
 
 % Preamble
@@ -8,11 +8,11 @@
 
 \subsection{Theoretical Background}
 
-Residual Networks (ResNet) represent a significant innovation in deep neural network architecture, introduced by He et al. (2016) to address the degradation problem that occurs when training very deep networks. The key innovation in ResNet is the introduction of skip connections or "shortcut connections" that bypass one or more layers, allowing gradients to flow more easily through the network during backpropagation\citep{residual2016}. This design enables the training of much deeper networks than was previously feasible, with ResNet-50 containing 50 layers organized in residual blocks\citep{resnet50blog}.
+Residual Networks (ResNet) represent a significant innovation in deep neural network architecture, introduced by He et al. to address the degradation problem that occurs when training very deep networks. The key innovation in ResNet is the introduction of skip connections or "shortcut connections" that bypass one or more layers, allowing gradients to flow more easily through the network during backpropagation \citep{he2016deep}. This design enables the training of much deeper networks than was previously feasible, with ResNet-50 containing 50 layers organized in residual blocks.
 
-ResNet-50 architecture consists of five stages, each containing multiple residual blocks. Each residual block contains a "shortcut" that skips over the main path and rejoins it later, allowing the network to learn residual functions with reference to the layer inputs rather than learning unreferenced functions\citep{residual2016}\citep{exploratiojournal}. This approach enables ResNet to achieve high performance on image classification tasks while mitigating the vanishing gradient problem common in very deep networks.
+ResNet-50 architecture consists of five stages, each containing multiple residual blocks. Each residual block contains a "shortcut" that skips over the main path and rejoins it later, allowing the network to learn residual functions with reference to the layer inputs rather than learning unreferenced functions \citep{he2016deep, he2016identity}. This approach enables ResNet to achieve high performance on image classification tasks while mitigating the vanishing gradient problem common in very deep networks.
 
-The architecture's ability to effectively extract hierarchical features through its deep structure makes it particularly well-suited for fine-grained classification tasks where subtle differences must be detected. As noted by Ghani et al. (2023), ResNet architectures have demonstrated strong performance in avian classification tasks due to their capacity to learn discriminative features at multiple scales and levels of abstraction.
+The architecture's ability to effectively extract hierarchical features through its deep structure makes it particularly well-suited for fine-grained classification tasks where subtle differences must be detected. As noted by Ghani et al., ResNet architectures have demonstrated strong performance in avian classification tasks due to their capacity to learn discriminative features at multiple scales and levels of abstraction \citep{ghani2024comprehensive}.
 
 \subsection{Model Adaptation for Gull Species Classification}
 
@@ -28,11 +28,11 @@ For our gull classification task, we adapted the pre-trained ResNet-50 model usi
     \end{enumerate}
 \end{enumerate}
 
-This adaptation strategy preserved ResNet-50's powerful feature extraction capabilities while customizing the classification head for our binary task. The relatively high dropout rate (0.5) was implemented to address potential overfitting, which is particularly important given the visual similarities between the target species and the limited size of our specialized dataset\citep{stackoverflow}.
+This adaptation strategy preserved ResNet-50's powerful feature extraction capabilities while customizing the classification head for our binary task. The relatively high dropout rate (0.5) was implemented to address potential overfitting, which is particularly important given the visual similarities between the target species and the limited size of our specialized dataset \citep{srivastava2014dropout}.
 
 \subsection{Image Preprocessing and Enhancement}
 
-A distinctive aspect of our ResNet-50 implementation was the incorporation of image sharpening as a preprocessing step. This approach was motivated by research from Zhou et al. (2021) showing that enhancing edge definition can improve the detection of subtle morphological features in avian classification tasks. The image enhancement process applied a 3$\times$3 sharpening kernel through a custom preprocessing function:
+A distinctive aspect of our ResNet-50 implementation was the incorporation of image sharpening as a preprocessing step. This approach was motivated by research from Zhou et al. showing that enhancing edge definition can improve the detection of subtle morphological features in avian classification tasks \citep{zhou2022effective}. The image enhancement process applied a 3$\times$3 sharpening kernel through a custom preprocessing function:
 
 \begin{center}
 Sharpening Kernel: \\
@@ -43,7 +43,7 @@ $\begin{bmatrix}
 \end{bmatrix}$
 \end{center}
 
-This technique enhanced the visibility of critical diagnostic features like wingtip patterns while preserving the overall image content. To ensure consistency, image sharpening was applied across both training and evaluation pipelines\citep{jatit}.
+This technique enhanced the visibility of critical diagnostic features like wingtip patterns while preserving the overall image content. To ensure consistency, image sharpening was applied across both training and evaluation pipelines \citep{zhao2021image}.
 
 \subsection{Data Augmentation Strategy}
 
@@ -57,7 +57,7 @@ The data augmentation pipeline for ResNet-50 was structured to enhance model rob
     \item Random cropping with padding to vary focus regions
 \end{itemize}
 
-For validation and testing, a more conservative approach was employed with resizing, center cropping (256$\times$256 pixels), and the same sharpening preprocessing to maintain feature clarity without introducing variability\citep{jatit}.
+For validation and testing, a more conservative approach was employed with resizing, center cropping (256$\times$256 pixels), and the same sharpening preprocessing to maintain feature clarity without introducing variability \citep{shorten2019survey}.
 
 \subsection{Training Approach and Optimization}
 
@@ -70,5 +70,4 @@ The ResNet-50 model was trained using the following methodological approach:
     \item Batch size of 16 for efficient GPU utilization
 \end{itemize}
 
-The implementation of early stopping was particularly valuable for the ResNet model, as it helped prevent overfitting to the training data while ensuring the model retained its generalization capabilities. As demonstrated by Huang et al. (2022), early stopping acts as an effective regularization technique for deep networks when working with specialized datasets of limited size\citep{mdpi}.
-
+The implementation of early stopping was particularly valuable for the ResNet model, as it helped prevent overfitting to the training data while ensuring the model retained its generalization capabilities. As demonstrated by Huang et al., early stopping acts as an effective regularization technique for deep networks when working with specialized datasets of limited size \citep{huang2022early}.
