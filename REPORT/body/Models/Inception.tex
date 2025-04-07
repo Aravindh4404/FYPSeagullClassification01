@@ -1,0 +1,79 @@
+%! Author = Aravindh P
+%! Date = 07-04-2025
+
+% Preamble
+
+
+
+\section{Inception v3 Architecture}
+
+\subsection{Theoretical Background}
+
+Inception v3, developed by Szegedy et al. (2016), represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution paths with different kernel sizes. The key innovation in Inception architectures is the use of "Inception modules" that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously.
+
+Inception v3 builds upon earlier versions with several important architectural improvements:
+
+\begin{itemize}
+    \item Factorized convolutions to reduce computational cost
+    \item Spatial factorization into asymmetric convolutions (e.g., 1$\times$n followed by n$\times$1)
+    \item Auxiliary classifiers that inject additional gradient signals during training
+    \item Batch normalization for improved training stability
+    \item Label smoothing regularization to prevent overconfidence
+\end{itemize}
+
+These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. As demonstrated by Shu et al. (2023), Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens.
+
+\subsection{Model Adaptation for Gull Classification}
+
+Our implementation adapted the pre-trained Inception v3 model for gull species classification using the following approach:
+
+\begin{enumerate}
+    \item Loading the pre-trained Inception v3 model with ImageNet weights
+    \item Extracting the feature dimension from the original classifier (2048)
+    \item Replacing the final classifier with a custom sequence:
+    \begin{enumerate}
+        \item Dropout layer (p=0.5) for regularization
+        \item Linear layer mapping 2048 features to 2 output classes
+    \end{enumerate}
+\end{enumerate}
+
+A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This approach helps combat the vanishing gradient problem and provides regularization, as noted by Szegedy et al. (2016) in their original paper.
+
+The loss function was modified to incorporate both the main output and the auxiliary output during training:
+
+\begin{equation}
+\text{loss} = \text{main\_loss} + 0.3 \times \text{auxiliary\_loss}
+\end{equation}
+
+where the auxiliary loss weight (0.3) was selected based on empirical optimization and aligns with recommendations in the literature for fine-tuning Inception architectures.
+
+\subsection{Advanced Training Techniques}
+
+The Inception v3 implementation incorporated several advanced training techniques to optimize performance:
+
+\begin{itemize}
+    \item Mixed-precision training using PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability
+    \item Gradient clipping with a maximum norm of 2.0 to prevent explosive gradient updates
+    \item Precisely tuned learning rate and weight decay parameters identified through hyperparameter optimization
+    \item Layer-wise learning rate adjustment to fine-tune different parts of the network at appropriate rates
+\end{itemize}
+
+These techniques collectively enhanced training efficiency and model performance. The implementation of mixed-precision training was particularly valuable given the resource constraints of the Google Colab environment, as it reduced memory usage and accelerated computation without compromising model accuracy.
+
+\subsection{Data Processing Pipeline}
+
+The data processing pipeline for Inception v3 was adapted to the model's specific requirements:
+
+\begin{itemize}
+    \item Resize operations to 299$\times$299 pixels (the standard input size for Inception v3)
+    \item Standard data augmentation techniques for training:
+    \begin{itemize}
+        \item Random horizontal flipping
+        \item Random rotation ($\pm$15 degrees)
+        \item Color jittering
+    \end{itemize}
+    \item Simple resizing and normalization for validation and testing
+\end{itemize}
+
+The larger input resolution (299$\times$299 vs 224$\times$224 used by VGG16 and ViT) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species.
+

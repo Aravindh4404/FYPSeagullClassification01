@@ -1,0 +1,107 @@
+%! Author = Aravindh P
+%! Date = 07-04-2025
+
+% Preamble
+
+
+\section{Vision Transformer (ViT) Architecture}
+
+\subsection{Theoretical Framework}
+
+Vision Transformers (ViT) represent a paradigm shift in computer vision, applying the self-attention mechanism from transformer models—originally developed for natural language processing—to image classification tasks. First introduced by Dosovitskiy et al. (2020), ViT processes images by dividing them into a sequence of fixed-size patches, which are then linearly embedded and processed through transformer encoder blocks[1].
+
+Unlike CNNs that build hierarchical representations through local convolutional operations, ViT applies self-attention mechanisms to capture global relationships between image patches. This allows the model to attend to long-range dependencies within the image, potentially capturing more holistic patterns. As demonstrated by research from Liu et al. (2022), these attention mechanisms enable transformers to excel at detecting subtle features in biomedical images by focusing on the most discriminative regions[2].
+
+The standard ViT architecture consists of:
+
+\begin{itemize}
+    \item Patch embedding layer that converts image patches to token embeddings
+    \item Position embedding to provide spatial information
+    \item Multiple transformer encoder blocks with multi-head self-attention
+    \item Layer normalization and MLP blocks within each transformer layer
+    \item A classification head for prediction
+\end{itemize}
+
+This architecture's capacity to model global relationships makes it particularly promising for fine-grained classification tasks where relationships between distant parts of an image (e.g., wing patterns in relation to head features) may be important for accurate classification.
+
+\subsection{Standard Vision Transformer Implementation}
+
+My standard ViT implementation utilized the pre-trained 'vit\_base\_patch16\_224' model from the TIMM library, which features a patch size of 16$\times$16 pixels and was trained on the ImageNet dataset. The model adaptation process included:
+
+\begin{itemize}
+    \item Loading the pre-trained ViT model with frozen weights
+    \item Extracting the embedding dimension from the original model (768 features)
+    \item Replacing the classification head with a binary classifier for our gull species task
+    \item Maintaining the self-attention mechanisms and transformer blocks
+\end{itemize}
+
+This approach leverages the powerful feature extraction capabilities of ViT while customizing the final classification stage for our specific task. The implementation follows best practices established by Wightman et al. (2021) for adapting vision transformers to specialized classification tasks[3].
+
+\subsection{Enhanced Vision Transformer with Custom Attention}
+
+To further improve the model's ability to focus on taxonomically relevant features, we developed an Enhanced Vision Transformer (EnhancedViT) that incorporates a custom attention mechanism specifically designed for fine-grained classification tasks.
+
+The key innovation in this implementation is an attention-based pooling layer that computes importance scores for each patch token, enabling the model to focus on the most discriminative regions of the input image. This approach draws inspiration from the work of Guan et al. (2022), who demonstrated that specialized attention mechanisms in vision transformers can significantly improve fine-grained classification by emphasizing taxonomically relevant features[4].
+
+The enhanced ViT architecture extends the standard implementation with:
+
+\begin{itemize}
+    \item A custom attention layer that computes importance scores for each token
+    \item An attention-weighted aggregation step that prioritizes informative regions
+    \item A multi-layer perceptron classifier with dropout regularization
+    \item Layer normalization for improved training stability
+\end{itemize}
+
+The attention mechanism was implemented as:
+
+\begin{algorithm}
+\caption{Attention-based Token Pooling}
+\begin{algorithmic}[1]
+\State Compute attention scores for each token using a learned projection
+\State Normalize scores using softmax to create attention weights
+\State Perform weighted aggregation of tokens based on attention weights
+\State Process the attention-weighted representation through the classifier
+\end{algorithmic}
+\end{algorithm}
+
+This approach allows the model to dynamically focus on the most relevant parts of the image for classification, such as distinctive wingtip patterns or other morphological features that differentiate between gull species.
+
+\subsection{Data Processing and Augmentation}
+
+Both ViT implementations used standardized preprocessing and augmentation pipelines:
+
+\begin{itemize}
+    \item Resize operations to 224$\times$224 pixels (the standard input size for ViT models)
+    \item Normalization with mean [0.5, 0.5, 0.5] and standard deviation [0.5, 0.5, 0.5]
+    \item Augmentation techniques including:
+    \begin{itemize}
+        \item Random horizontal flipping
+        \item Random rotation ($\pm$15 degrees)
+        \item Color jittering (brightness, contrast, saturation)
+    \end{itemize}
+\end{itemize}
+
+The input normalization values specifically used [0.5, 0.5, 0.5] rather than ImageNet statistics, following recommendations from Touvron et al. (2021) for transfer learning with vision transformers[5].
+
+\subsection{Training Methodology}
+
+The training approach for both ViT variants included:
+
+\begin{itemize}
+    \item AdamW optimizer with learning rate 0.0001 and weight decay 1e-4
+    \item Learning rate scheduling with ReduceLROnPlateau (patience=3, factor=0.1)
+    \item Batch size of 16 to balance computational efficiency and training stability
+    \item Training for 20 epochs with early stopping based on validation performance
+\end{itemize}
+
+For the EnhancedViT, we employed additional training refinements:
+
+\begin{itemize}
+    \item Layer-wise learning rate decay to fine-tune different components at appropriate rates
+    \item Dropout regularization (p=0.3) in the custom classification head
+    \item Checkpoint saving to preserve the best-performing model configuration
+\end{itemize}
+
+Both models were trained on the refined high-quality dataset (Stage 3), with an 80:20 split between training and validation sets to ensure robust performance evaluation during development.
+
+

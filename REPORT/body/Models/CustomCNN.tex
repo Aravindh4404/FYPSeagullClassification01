@@ -1,0 +1,59 @@
+%! Author = Aravindh P
+%! Date = 07-04-2025
+
+% Preamble
+
+
+
+\section{Custom CNN with Squeeze-and-Excitation Blocks}
+
+\subsection{Architectural Innovation}
+
+To complement the transfer learning approach with pre-trained models, we developed a custom CNN architecture specifically designed for our gull classification task. The architecture incorporates Squeeze-and-Excitation (SE) blocks, an attention mechanism introduced by Hu et al. (2018) that adaptively recalibrates channel-wise feature responses by explicitly modeling interdependencies between channels.
+
+The SE mechanism enhances standard convolutional operations by adding two operations:
+
+\begin{itemize}
+    \item A "squeeze" operation that aggregates feature maps across spatial dimensions to produce a channel descriptor
+    \item An "excitation" operation that produces per-channel modulation weights
+\end{itemize}
+
+This channel-wise attention mechanism allows the network to emphasize informative features and suppress less useful ones, improving the representational power of the network. As demonstrated by Hu et al. (2018), the SE mechanism yields significant performance improvements while adding minimal computational overhead.
+
+Our custom CNN implementation follows this architectural pattern:
+
+
+
+\subsection{Addressing Class Imbalance}
+
+An important methodological consideration in our custom CNN implementation was addressing potential class imbalance in the dataset. To ensure balanced learning despite the uneven distribution of examples between classes, we implemented a weighted sampling approach based on class frequencies.
+
+The implementation calculated inverse class weights to prioritize examples from underrepresented classes:
+
+\begin{algorithm}
+\caption{Weighted Sampling for Class Balance}
+\begin{algorithmic}
+\State 1. Count examples per class in the training dataset
+\State 2. Calculate inverse class frequencies: weights = 1 / class\_counts
+\State 3. Assign a sampling weight to each training example based on its class
+\State 4. Create a WeightedRandomSampler using these weights
+\State 5. Use the sampler in the DataLoader to achieve balanced mini-batches
+\end{algorithmic}
+\end{algorithm}
+
+This approach ensures that the model receives a balanced distribution of examples during training, preventing bias toward the majority class. The effectiveness of this technique for handling class imbalance has been demonstrated in fine-grained classification research by Buda et al. (2018), who showed that sampling strategies can significantly improve model performance on imbalanced datasets.
+
+\subsection{Training Methodology}
+
+The custom CNN was trained using the following approach:
+
+\begin{itemize}
+    \item Adam optimizer with learning rate 0.001 and weight decay 0.0005
+    \item Cosine Annealing learning rate scheduler for cyclical learning rate adjustment
+    \item Cross-entropy loss function
+    \item Batch size of 32 (larger than the pre-trained models due to lower memory requirements)
+    \item Training for 20 epochs with checkpoint saving for best-performing models
+\end{itemize}
+
+The use of Cosine Annealing for learning rate scheduling represents a different approach compared to the ReduceLROnPlateau used with the pre-trained models. This scheduler cyclically varies the learning rate between a maximum and minimum value following a cosine function, helping the model escape local minima and potentially converge to better solutions. This approach aligns with research by Loshchilov and Hutter (2017) demonstrating the effectiveness of cyclical learning rates for CNN training.
+
