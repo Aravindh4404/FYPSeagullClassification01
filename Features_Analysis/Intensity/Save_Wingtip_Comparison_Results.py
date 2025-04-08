@@ -28,7 +28,7 @@ def analyze_wingtip_darkness(image_path, seg_path, species, file_name, wing_mean
         return None
 
     # Calculate darkness metrics
-    darker_pixels = np.sum(wingtip_pixels < wing_mean)
+    darker_pixels = np.sum(wingtip_pixels < wing_mean) #wingtip pixels darker than mean of wing
     total_pixels = len(wingtip_pixels)
     percentage_darker = (darker_pixels / total_pixels) * 100 if total_pixels > 0 else 0
 
