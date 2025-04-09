@@ -1,0 +1,64 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Anjum et~al.}{2021}]{anjum2021}
+Anjum, M.~A., Hussain, S., Aadil, F., and Chaudhry, S. (2021).
+\newblock Collaborative cloud based online learning during {COVID-19} pandemic
+  using {Google Colab}.
+\newblock {\em Computer Applications in Engineering Education},
+  29(6):1803--1819.
+
+\bibitem[\protect\astroncite{Carneiro et~al.}{2018}]{carneiro2018}
+Carneiro, T., Da~Nobrega, R. V.~M., Nepomuceno, T., Bian, G.-B.,
+  De~Albuquerque, V. H.~C., and Filho, P. P.~R. (2018).
+\newblock Performance analysis of {Google Colaboratory} as a tool for
+  accelerating deep learning applications.
+\newblock {\em IEEE Access}, 6:61677--61685.
+
+\bibitem[\protect\astroncite{G{\'e}ron}{2019}]{geron2019}
+G{\'e}ron, A. (2019).
+\newblock {\em Hands-on machine learning with {Scikit-Learn}, {Keras}, and
+  {TensorFlow}: Concepts, tools, and techniques to build intelligent systems}.
+\newblock O'Reilly Media, 2nd edition.
+
+\bibitem[\protect\astroncite{Ghani et~al.}{2024}]{ghani2024}
+Ghani, F., Ali, H.~M., Ashraf, I., Ullah, S., Kwak, K.~S., and Kim, D. (2024).
+\newblock A comprehensive review of fine-grained bird species recognition using
+  deep learning techniques.
+\newblock {\em Computer Vision and Image Understanding}, 238:103809.
+
+\bibitem[\protect\astroncite{Kahl et~al.}{2021}]{kahl2021}
+Kahl, S., Wood, C.~M., Eibl, M., and Klinck, H. (2021).
+\newblock {BirdNET}: A deep learning solution for avian diversity monitoring.
+\newblock {\em Ecological Informatics}, 61:101236.
+
+\bibitem[\protect\astroncite{Peng et~al.}{2023}]{birdset2023}
+Peng, Y., Zhang, Z., Xie, Y., Zhang, M., and Wei, Y. (2023).
+\newblock {BirdSet}: A benchmark dataset for fine-grained bird species
+  recognition.
+\newblock {\em Nature Scientific Data}, 10:76.
+
+\bibitem[\protect\astroncite{Raffel et~al.}{2023}]{raffel2023}
+Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou,
+  Y., Li, W., and Liu, P.~J. (2023).
+\newblock Exploring the limits of transfer learning with a unified text-to-text
+  transformer.
+\newblock {\em Journal of Machine Learning Research}, 24(1):5675--5758.
+
+\bibitem[\protect\astroncite{Simonyan and Zisserman}{2014}]{simonyan2014vgg}
+Simonyan, K. and Zisserman, A. (2014).
+\newblock Very deep convolutional networks for large-scale image recognition.
+\newblock {\em arXiv preprint arXiv:1409.1556}.
+
+\bibitem[\protect\astroncite{Wang et~al.}{2022}]{wang2022}
+Wang, L., Bala, A., and Pang, S. (2022).
+\newblock Expert-guided bird image dataset construction for fine-grained
+  classification.
+\newblock {\em Pattern Recognition}, 123:108403.
+
+\bibitem[\protect\astroncite{Zhou et~al.}{2022}]{zhou2022}
+Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., and Torralba, A. (2022).
+\newblock On the effectiveness of expert-curated datasets for bird species
+  classification.
+\newblock {\em IEEE Transactions on Image Processing}, 31(23):4402--4415.
+
+\end{thebibliography}

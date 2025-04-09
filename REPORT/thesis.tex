@@ -3,7 +3,6 @@
 
 \documentclass[a4paper,12pt,twoside]{report}
 \usepackage[left=2.5cm,right=2.5cm,top=2cm,bottom=3cm]{geometry}
-%\usepackage{natbib}
 
 \usepackage[backend=bibtex, style=numeric, natbib=true]{biblatex}
 \usepackage{algorithmicx}
@@ -11,12 +10,7 @@
 \usepackage{hyperref}
 
 
-\addbibresource{thesis.bib}
 
-
-
-
-\include{thesis.preamble}
 %
 %
 \begin{document}
@@ -59,7 +53,8 @@
 
 %\input{appendices/appendix}
 
-\printbibliography{title={References}}
+\bibliography{thesis}
+\bibliographystyle{apa}
 
 \end{document}
 

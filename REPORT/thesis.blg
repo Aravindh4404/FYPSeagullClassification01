@@ -1,0 +1,75 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: thesis.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: biblatex.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'field_info' (item size: 4) to 10180 items.
+Database file #1: thesis-blx.bib
+Database file #2: thesis.bib
+You're missing a field name---line 7 of file thesis.bib
+ : 
+ : %  title={Introduction to algorithms},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Biblatex version: 3.20
+Reallocating 'wiz_functions' (item size: 4) to 9000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+You've used 37 entries,
+            6402 wiz_defined-function locations,
+            1396 strings with 15524 characters,
+and the built_in function-call counts, 376537 in all, are:
+= -- 32398
+> -- 4645
+< -- 1163
++ -- 12510
+- -- 1908
+* -- 26639
+:= -- 46193
+add.period$ -- 0
+call.type$ -- 37
+change.case$ -- 603
+chr.to.int$ -- 66
+cite$ -- 72
+duplicate$ -- 40862
+empty$ -- 31113
+format.name$ -- 3032
+if$ -- 73577
+int.to.chr$ -- 0
+int.to.str$ -- 100
+missing$ -- 0
+newline$ -- 1517
+num.names$ -- 1802
+pop$ -- 14177
+preamble$ -- 1
+purify$ -- 899
+quote$ -- 0
+skip$ -- 7014
+stack$ -- 0
+substring$ -- 60322
+swap$ -- 6272
+text.length$ -- 1040
+text.prefix$ -- 36
+top$ -- 1
+type$ -- 1246
+warning$ -- 0
+while$ -- 5811
+width$ -- 0
+write$ -- 1481
+(There was 1 error message)

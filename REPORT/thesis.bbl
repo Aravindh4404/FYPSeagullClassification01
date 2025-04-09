@@ -1,0 +1,1546 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nty/global//global/global/global}
+  \entry{adriaens2022gulls}{book}{}{}
+    \name{author}{4}{}{%
+      {{hash=AP}{%
+         family={Adriaens},
+         familyi={A\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=MM}{%
+         family={Muusse},
+         familyi={M\bibinitperiod},
+         given={Mars},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=DPJ}{%
+         family={Dubois},
+         familyi={D\bibinitperiod},
+         given={Philippe\bibnamedelima J.},
+         giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=JF}{%
+         family={Jiguet},
+         familyi={J\bibinitperiod},
+         given={Fr√©d√©ric},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Princeton University Press}%
+    }
+    \strng{namehash}{AP+1}
+    \strng{fullhash}{APMMDPJJF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{Gulls of Europe, North Africa, and the Middle East}
+    \field{year}{2022}
+  \endentry
+
+  \entry{anjum2021}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=AMA}{%
+         family={Anjum},
+         familyi={A\bibinitperiod},
+         given={Muhammad\bibnamedelima Azhar},
+         giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=HS}{%
+         family={Hussain},
+         familyi={H\bibinitperiod},
+         given={Samreen},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=AF}{%
+         family={Aadil},
+         familyi={A\bibinitperiod},
+         given={Farhan},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=CS}{%
+         family={Chaudhry},
+         familyi={C\bibinitperiod},
+         given={Samabia},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Wiley Online Library}%
+    }
+    \strng{namehash}{AMA+1}
+    \strng{fullhash}{AMAHSAFCS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \verb{doi}
+    \verb 10.1002/cae.22401
+    \endverb
+    \field{number}{6}
+    \field{pages}{1803\bibrangedash 1819}
+    \field{title}{Collaborative cloud based online learning during {COVID-19}
+  pandemic using {Google Colab}}
+    \field{volume}{29}
+    \field{journaltitle}{Computer Applications in Engineering Education}
+    \field{year}{2021}
+  \endentry
+
+  \entry{ayyash2024gull}{book}{}{}
+    \name{author}{1}{}{%
+      {{hash=AA}{%
+         family={Ayyash},
+         familyi={A\bibinitperiod},
+         given={A.},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Princeton University Press}%
+    }
+    \strng{namehash}{AA1}
+    \strng{fullhash}{AA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{isbn}{9780691195896}
+    \field{title}{The Gull Guide: North America}
+    \verb{url}
+    \verb https://books.google.com.my/books?id=iLkFEQAAQBAJ
+    \endverb
+    \field{year}{2024}
+  \endentry
+
+  \entry{carneiro2018}{article}{}{}
+    \name{author}{6}{}{%
+      {{hash=CT}{%
+         family={Carneiro},
+         familyi={C\bibinitperiod},
+         given={Tiago},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=DNRVM}{%
+         family={Da\bibnamedelima Nobrega},
+         familyi={D\bibinitperiod\bibinitdelim N\bibinitperiod},
+         given={Ricardo Victor\bibnamedelima Medeiros},
+         giveni={R\bibinitperiod\bibinitdelim V\bibinitperiod\bibinitdelim
+  M\bibinitperiod},
+      }}%
+      {{hash=NT}{%
+         family={Nepomuceno},
+         familyi={N\bibinitperiod},
+         given={Thiago},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=BGB}{%
+         family={Bian},
+         familyi={B\bibinitperiod},
+         given={Gui-Bin},
+         giveni={G\bibinithyphendelim B\bibinitperiod},
+      }}%
+      {{hash=DAVHC}{%
+         family={De\bibnamedelima Albuquerque},
+         familyi={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+         given={Victor Hugo\bibnamedelima C},
+         giveni={V\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim
+  C\bibinitperiod},
+      }}%
+      {{hash=FPPR}{%
+         family={Filho},
+         familyi={F\bibinitperiod},
+         given={Pedro Pedrosa\bibnamedelima Rebou{\c{c}}as},
+         giveni={P\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim
+  R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{CT+1}
+    \strng{fullhash}{CTDNRVMNTBGBDAVHCFPPR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \verb{doi}
+    \verb 10.1109/ACCESS.2018.2874767
+    \endverb
+    \field{pages}{61677\bibrangedash 61685}
+    \field{title}{Performance analysis of {Google Colaboratory} as a tool for
+  accelerating deep learning applications}
+    \field{volume}{6}
+    \field{journaltitle}{IEEE Access}
+    \field{year}{2018}
+  \endentry
+
+  \entry{conde2021exploring}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=CMV}{%
+         family={Conde},
+         familyi={C\bibinitperiod},
+         given={M.\bibnamedelima V.},
+         giveni={M\bibinitperiod\bibinitdelim V\bibinitperiod},
+      }}%
+      {{hash=TK}{%
+         family={Turgutlu},
+         familyi={T\bibinitperiod},
+         given={K.},
+         giveni={K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CMVTK1}
+    \strng{fullhash}{CMVTK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Exploring Vision Transformers for Fine-grained
+  Classification}
+    \field{journaltitle}{arXiv preprint arXiv:2106.10587}
+    \field{year}{2021}
+  \endentry
+
+  \entry{deng2009imagenet}{article}{}{}
+    \name{author}{6}{}{%
+      {{hash=DJ}{%
+         family={Deng},
+         familyi={D\bibinitperiod},
+         given={Jia},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=DW}{%
+         family={Dong},
+         familyi={D\bibinitperiod},
+         given={Wei},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=SR}{%
+         family={Socher},
+         familyi={S\bibinitperiod},
+         given={Richard},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=LLJ}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Li-Jia},
+         giveni={L\bibinithyphendelim J\bibinitperiod},
+      }}%
+      {{hash=LK}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Kai},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=FFL}{%
+         family={Fei-Fei},
+         familyi={F\bibinithyphendelim F\bibinitperiod},
+         given={Li},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DJ+1}
+    \strng{fullhash}{DJDWSRLLJLKFFL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \verb{doi}
+    \verb 10.1109/CVPR.2009.5206848
+    \endverb
+    \field{pages}{248\bibrangedash 255}
+    \field{title}{ImageNet: A large-scale hierarchical image database}
+    \field{journaltitle}{2009 IEEE Conference on Computer Vision and Pattern
+  Recognition}
+    \field{year}{2009}
+  \endentry
+
+  \entry{doshi2017}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=DVF}{%
+         family={Doshi-Velez},
+         familyi={D\bibinithyphendelim V\bibinitperiod},
+         given={Finale},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=KB}{%
+         family={Kim},
+         familyi={K\bibinitperiod},
+         given={Been},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DVFKB1}
+    \strng{fullhash}{DVFKB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{Towards a Rigorous Science of Interpretable Machine Learning}
+    \field{journaltitle}{arXiv preprint arXiv:1702.08608}
+    \field{year}{2017}
+  \endentry
+
+  \entry{dosovitskiy2020image}{article}{}{}
+    \true{moreauthor}
+    \true{morelabelname}
+    \name{author}{10}{}{%
+      {{hash=DA}{%
+         family={Dosovitskiy},
+         familyi={D\bibinitperiod},
+         given={Alexey},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=BL}{%
+         family={Beyer},
+         familyi={B\bibinitperiod},
+         given={Lucas},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Kolesnikov},
+         familyi={K\bibinitperiod},
+         given={Alexander},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=WD}{%
+         family={Weissenborn},
+         familyi={W\bibinitperiod},
+         given={Dirk},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=ZX}{%
+         family={Zhai},
+         familyi={Z\bibinitperiod},
+         given={Xiaohua},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=UT}{%
+         family={Unterthiner},
+         familyi={U\bibinitperiod},
+         given={Thomas},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=DM}{%
+         family={Dehghani},
+         familyi={D\bibinitperiod},
+         given={Mostafa},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=MM}{%
+         family={Minderer},
+         familyi={M\bibinitperiod},
+         given={Matthias},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=HG}{%
+         family={Heigold},
+         familyi={H\bibinitperiod},
+         given={Georg},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=GS}{%
+         family={Gelly},
+         familyi={G\bibinitperiod},
+         given={Sylvain},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DA+1}
+    \strng{fullhash}{DABLKAWDZXUTDMMMHGGS+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{An image is worth 16x16 words: {T}ransformers for image
+  recognition at scale}
+    \field{journaltitle}{International Conference on Learning Representations}
+    \field{year}{2021}
+  \endentry
+
+  \entry{geron2019}{book}{}{}
+    \name{author}{1}{}{%
+      {{hash=GA}{%
+         family={G{\'e}ron},
+         familyi={G\bibinitperiod},
+         given={Aur{\'e}lien},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {O'Reilly Media}%
+    }
+    \strng{namehash}{GA1}
+    \strng{fullhash}{GA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{edition}{2nd}
+    \field{isbn}{978-1492032649}
+    \field{title}{Hands-on machine learning with {Scikit-Learn}, {Keras}, and
+  {TensorFlow}: Concepts, tools, and techniques to build intelligent systems}
+    \field{year}{2019}
+  \endentry
+
+  \entry{ghani2024}{article}{}{}
+    \name{author}{6}{}{%
+      {{hash=GF}{%
+         family={Ghani},
+         familyi={G\bibinitperiod},
+         given={Fazal},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=AHM}{%
+         family={Ali},
+         familyi={A\bibinitperiod},
+         given={Hafiz\bibnamedelima Mohsin},
+         giveni={H\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=AI}{%
+         family={Ashraf},
+         familyi={A\bibinitperiod},
+         given={Imran},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=US}{%
+         family={Ullah},
+         familyi={U\bibinitperiod},
+         given={Sultan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=KKS}{%
+         family={Kwak},
+         familyi={K\bibinitperiod},
+         given={Kyung\bibnamedelima Sup},
+         giveni={K\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=KD}{%
+         family={Kim},
+         familyi={K\bibinitperiod},
+         given={Dongho},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{GF+1}
+    \strng{fullhash}{GFAHMAIUSKKSKD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \verb{doi}
+    \verb 10.1016/j.cviu.2023.103809
+    \endverb
+    \field{pages}{103809}
+    \field{title}{A comprehensive review of fine-grained bird species
+  recognition using deep learning techniques}
+    \field{volume}{238}
+    \field{journaltitle}{Computer Vision and Image Understanding}
+    \field{year}{2024}
+  \endentry
+
+  \entry{ghani2024comprehensive}{article}{}{}
+    \name{author}{6}{}{%
+      {{hash=GF}{%
+         family={Ghani},
+         familyi={G\bibinitperiod},
+         given={Fazal},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=AHM}{%
+         family={Ali},
+         familyi={A\bibinitperiod},
+         given={Hafiz\bibnamedelima Mohsin},
+         giveni={H\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=AI}{%
+         family={Ashraf},
+         familyi={A\bibinitperiod},
+         given={Imran},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=US}{%
+         family={Ullah},
+         familyi={U\bibinitperiod},
+         given={Sultan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=KKS}{%
+         family={Kwak},
+         familyi={K\bibinitperiod},
+         given={Kyung\bibnamedelima Sup},
+         giveni={K\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=KD}{%
+         family={Kim},
+         familyi={K\bibinitperiod},
+         given={Dongho},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{GF+1}
+    \strng{fullhash}{GFAHMAIUSKKSKD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \verb{doi}
+    \verb 10.1016/j.cviu.2023.103809
+    \endverb
+    \field{pages}{103809}
+    \field{title}{A comprehensive review of fine-grained bird species
+  recognition using deep learning techniques}
+    \field{volume}{238}
+    \field{journaltitle}{Computer Vision and Image Understanding}
+    \field{year}{2024}
+  \endentry
+
+  \entry{guan2022attention}{article}{}{}
+    \name{author}{5}{}{%
+      {{hash=GJ}{%
+         family={Guan},
+         familyi={G\bibinitperiod},
+         given={Jingwen},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=CQ}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Qinghua},
+         giveni={Q\bibinitperiod},
+      }}%
+      {{hash=LA}{%
+         family={Luo},
+         familyi={L\bibinitperiod},
+         given={Ao},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=WX}{%
+         family={Wei},
+         familyi={W\bibinitperiod},
+         given={Xinchen},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=TJ}{%
+         family={Tang},
+         familyi={T\bibinitperiod},
+         given={Jinmian},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{GJ+1}
+    \strng{fullhash}{GJCQLAWXTJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{pages}{101722}
+    \field{title}{Attention-based fine-grained classification of birds using
+  vision transformers}
+    \field{volume}{71}
+    \field{journaltitle}{Ecological Informatics}
+    \field{year}{2022}
+  \endentry
+
+  \entry{he2016}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=HK}{%
+         family={He},
+         familyi={H\bibinitperiod},
+         given={Kaiming},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=ZX}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Xiangyu},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=RS}{%
+         family={Ren},
+         familyi={R\bibinitperiod},
+         given={Shaoqing},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Sun},
+         familyi={S\bibinitperiod},
+         given={Jian},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HK+1}
+    \strng{fullhash}{HKZXRSSJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{pages}{770\bibrangedash 778}
+    \field{title}{Deep Residual Learning for Image Recognition}
+    \field{journaltitle}{Proceedings of the IEEE Conference on Computer Vision
+  and Pattern Recognition}
+    \field{year}{2016}
+  \endentry
+
+  \entry{kahl2021}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=KS}{%
+         family={Kahl},
+         familyi={K\bibinitperiod},
+         given={Stefan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=WCM}{%
+         family={Wood},
+         familyi={W\bibinitperiod},
+         given={Connor\bibnamedelima M},
+         giveni={C\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=EM}{%
+         family={Eibl},
+         familyi={E\bibinitperiod},
+         given={Maximilian},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=KH}{%
+         family={Klinck},
+         familyi={K\bibinitperiod},
+         given={Holger},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{KS+1}
+    \strng{fullhash}{KSWCMEMKH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \verb{doi}
+    \verb 10.1016/j.ecoinf.2021.101236
+    \endverb
+    \field{pages}{101236}
+    \field{title}{{BirdNET}: A deep learning solution for avian diversity
+  monitoring}
+    \field{volume}{61}
+    \field{journaltitle}{Ecological Informatics}
+    \field{year}{2021}
+  \endentry
+
+  \entry{karpathy2015}{online}{}{}
+    \name{author}{1}{}{%
+      {{hash=KA}{%
+         family={Karpathy},
+         familyi={K\bibinitperiod},
+         given={Andrej},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KA1}
+    \strng{fullhash}{KA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{A Recipe for Training Neural Networks}
+    \verb{url}
+    \verb https://karpathy.github.io/2019/04/25/recipe/
+    \endverb
+    \field{year}{2019}
+    \field{urlday}{08}
+    \field{urlmonth}{04}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{liu2022attention}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=LY}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Yutian},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=ZQ}{%
+         family={Zhao},
+         familyi={Z\bibinitperiod},
+         given={Qingchao},
+         giveni={Q\bibinitperiod},
+      }}%
+      {{hash=XZ}{%
+         family={Xu},
+         familyi={X\bibinitperiod},
+         given={Zheng},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=CE}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Edward},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{LY+1}
+    \strng{fullhash}{LYZQXZCE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{pages}{1634\bibrangedash 1647}
+    \field{title}{Self-attention mechanisms in vision transformers for
+  fine-grained image recognition}
+    \field{volume}{31}
+    \field{journaltitle}{IEEE Transactions on Image Processing}
+    \field{year}{2022}
+  \endentry
+
+  \entry{loshchilov2017decoupled}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=LI}{%
+         family={Loshchilov},
+         familyi={L\bibinitperiod},
+         given={Ilya},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=HF}{%
+         family={Hutter},
+         familyi={H\bibinitperiod},
+         given={Frank},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LIHF1}
+    \strng{fullhash}{LIHF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{title}{Decoupled weight decay regularization}
+    \field{journaltitle}{arXiv preprint arXiv:1711.05101}
+    \field{year}{2017}
+  \endentry
+
+  \entry{miller2019}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=MT}{%
+         family={Miller},
+         familyi={M\bibinitperiod},
+         given={Tim},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{MT1}
+    \strng{fullhash}{MT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{pages}{1\bibrangedash 38}
+    \field{title}{Explanation in Artificial Intelligence: Insights from the
+  Social Sciences}
+    \field{volume}{267}
+    \field{journaltitle}{Artificial Intelligence}
+    \field{year}{2019}
+  \endentry
+
+  \entry{olsen2003gulls}{book}{}{}
+    \name{author}{2}{}{%
+      {{hash=OKM}{%
+         family={Olsen},
+         familyi={O\bibinitperiod},
+         given={Klaus\bibnamedelima Malling},
+         giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=LH}{%
+         family={Larsson},
+         familyi={L\bibinitperiod},
+         given={Hans},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Princeton University Press}%
+    }
+    \strng{namehash}{OKMLH1}
+    \strng{fullhash}{OKMLH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{title}{Gulls of North America, Europe, and Asia}
+    \field{year}{2003}
+  \endentry
+
+  \entry{birdset2023}{article}{}{}
+    \name{author}{5}{}{%
+      {{hash=PY}{%
+         family={Peng},
+         familyi={P\bibinitperiod},
+         given={Yuxin},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=ZZ}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Zheng},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=XY}{%
+         family={Xie},
+         familyi={X\bibinitperiod},
+         given={Yuan},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=ZM}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Min},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=WY}{%
+         family={Wei},
+         familyi={W\bibinitperiod},
+         given={Yunchao},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Nature Publishing Group}%
+    }
+    \strng{namehash}{PY+1}
+    \strng{fullhash}{PYZZXYZMWY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \verb{doi}
+    \verb 10.1038/s41597-023-01945-2
+    \endverb
+    \field{pages}{76}
+    \field{title}{{BirdSet}: A benchmark dataset for fine-grained bird species
+  recognition}
+    \field{volume}{10}
+    \field{journaltitle}{Nature Scientific Data}
+    \field{year}{2023}
+  \endentry
+
+  \entry{pyle2023}{book}{}{}
+    \name{author}{1}{}{%
+      {{hash=PP}{%
+         family={Pyle},
+         familyi={P\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Slate Creek Press}%
+    }
+    \strng{namehash}{PP1}
+    \strng{fullhash}{PP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Identification Guide to North American Birds}
+    \field{year}{2023}
+  \endentry
+
+  \entry{raffel2023}{article}{}{}
+    \name{author}{9}{}{%
+      {{hash=RC}{%
+         family={Raffel},
+         familyi={R\bibinitperiod},
+         given={Colin},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=SN}{%
+         family={Shazeer},
+         familyi={S\bibinitperiod},
+         given={Noam},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=RA}{%
+         family={Roberts},
+         familyi={R\bibinitperiod},
+         given={Adam},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=LK}{%
+         family={Lee},
+         familyi={L\bibinitperiod},
+         given={Katherine},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=NS}{%
+         family={Narang},
+         familyi={N\bibinitperiod},
+         given={Sharan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=MM}{%
+         family={Matena},
+         familyi={M\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=ZY}{%
+         family={Zhou},
+         familyi={Z\bibinitperiod},
+         given={Yanqi},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=LW}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Wei},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=LPJ}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Peter\bibnamedelima J},
+         giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RC+1}
+    \strng{fullhash}{RCSNRALKNSMMZYLWLPJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{number}{1}
+    \field{pages}{5675\bibrangedash 5758}
+    \field{title}{Exploring the limits of transfer learning with a unified
+  text-to-text transformer}
+    \field{volume}{24}
+    \field{journaltitle}{Journal of Machine Learning Research}
+    \field{year}{2023}
+  \endentry
+
+  \entry{reslan2022automatic}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=RA}{%
+         family={Reslan},
+         familyi={R\bibinitperiod},
+         given={Ammar},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=FZ}{%
+         family={Farou},
+         familyi={F\bibinitperiod},
+         given={Zakarya},
+         giveni={Z\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RAFZ1}
+    \strng{fullhash}{RAFZ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{number}{6}
+    \field{pages}{6343\bibrangedash 6352}
+    \field{title}{Automatic fine-grained classification of bird species using
+  deep learning}
+    \field{volume}{12}
+    \field{journaltitle}{International Journal of Electrical and Computer
+  Engineering}
+    \field{year}{2022}
+  \endentry
+
+  \entry{sanchez2019fine}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=SJ}{%
+         family={Sanchez},
+         familyi={S\bibinitperiod},
+         given={Joan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=PF}{%
+         family={Perronnin},
+         familyi={P\bibinitperiod},
+         given={Florent},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=MT}{%
+         family={Mensink},
+         familyi={M\bibinitperiod},
+         given={Thomas},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=VJ}{%
+         family={Verbeek},
+         familyi={V\bibinitperiod},
+         given={Jakob},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \strng{namehash}{SJ+1}
+    \strng{fullhash}{SJPFMTVJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{number}{5}
+    \field{pages}{1\bibrangedash 37}
+    \field{title}{Fine-grained image classification: A survey}
+    \field{volume}{51}
+    \field{journaltitle}{ACM Computing Surveys}
+    \field{year}{2019}
+  \endentry
+
+  \entry{selvaraju2020}{article}{}{}
+    \name{author}{6}{}{%
+      {{hash=SRR}{%
+         family={Selvaraju},
+         familyi={S\bibinitperiod},
+         given={Ramprasaath\bibnamedelima R.},
+         giveni={R\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=CM}{%
+         family={Cogswell},
+         familyi={C\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=DA}{%
+         family={Das},
+         familyi={D\bibinitperiod},
+         given={Abhishek},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=VR}{%
+         family={Vedantam},
+         familyi={V\bibinitperiod},
+         given={Ramakrishna},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=PD}{%
+         family={Parikh},
+         familyi={P\bibinitperiod},
+         given={Devi},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=BD}{%
+         family={Batra},
+         familyi={B\bibinitperiod},
+         given={Dhruv},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Springer}%
+    }
+    \strng{namehash}{SRR+1}
+    \strng{fullhash}{SRRCMDAVRPDBD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{number}{2}
+    \field{pages}{336\bibrangedash 359}
+    \field{title}{Grad-CAM: Visual Explanations from Deep Networks via
+  Gradient-based Localization}
+    \field{volume}{128}
+    \field{journaltitle}{International Journal of Computer Vision}
+    \field{year}{2020}
+  \endentry
+
+  \entry{shorten2019survey}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=SC}{%
+         family={Shorten},
+         familyi={S\bibinitperiod},
+         given={Connor},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=KTM}{%
+         family={Khoshgoftaar},
+         familyi={K\bibinitperiod},
+         given={Taghi\bibnamedelima M},
+         giveni={T\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {SpringerOpen}%
+    }
+    \strng{namehash}{SCKTM1}
+    \strng{fullhash}{SCKTM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1186/s40537-019-0197-0
+    \endverb
+    \field{number}{1}
+    \field{pages}{60}
+    \field{title}{A survey on image data augmentation for deep learning}
+    \field{volume}{6}
+    \field{journaltitle}{Journal of Big Data}
+    \field{year}{2019}
+  \endentry
+
+  \entry{simonyan2014}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=SK}{%
+         family={Simonyan},
+         familyi={S\bibinitperiod},
+         given={Karen},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=ZA}{%
+         family={Zisserman},
+         familyi={Z\bibinitperiod},
+         given={Andrew},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SKZA1}
+    \strng{fullhash}{SKZA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Very Deep Convolutional Networks for Large-Scale Image
+  Recognition}
+    \field{journaltitle}{arXiv preprint arXiv:1409.1556}
+    \field{year}{2014}
+  \endentry
+
+  \entry{simonyan2014vgg}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=SK}{%
+         family={Simonyan},
+         familyi={S\bibinitperiod},
+         given={Karen},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=ZA}{%
+         family={Zisserman},
+         familyi={Z\bibinitperiod},
+         given={Andrew},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SKZA1}
+    \strng{fullhash}{SKZA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Very deep convolutional networks for large-scale image
+  recognition}
+    \field{journaltitle}{arXiv preprint arXiv:1409.1556}
+    \field{year}{2014}
+  \endentry
+
+  \entry{vaswani2017}{article}{}{}
+    \name{author}{8}{}{%
+      {{hash=VA}{%
+         family={Vaswani},
+         familyi={V\bibinitperiod},
+         given={Ashish},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SN}{%
+         family={Shazeer},
+         familyi={S\bibinitperiod},
+         given={Noam},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=PN}{%
+         family={Parmar},
+         familyi={P\bibinitperiod},
+         given={Niki},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=UJ}{%
+         family={Uszkoreit},
+         familyi={U\bibinitperiod},
+         given={Jakob},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=JL}{%
+         family={Jones},
+         familyi={J\bibinitperiod},
+         given={Llion},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=GAN}{%
+         family={Gomez},
+         familyi={G\bibinitperiod},
+         given={Aidan\bibnamedelima N.},
+         giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod},
+      }}%
+      {{hash=K≈}{%
+         family={Kaiser},
+         familyi={K\bibinitperiod},
+         given={≈Åukasz},
+         giveni={≈\bibinitperiod},
+      }}%
+      {{hash=PI}{%
+         family={Polosukhin},
+         familyi={P\bibinitperiod},
+         given={Illia},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{VA+1}
+    \strng{fullhash}{VASNPNUJJLGANK≈PI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{pages}{5998\bibrangedash 6008}
+    \field{title}{Attention is All You Need}
+    \field{journaltitle}{Advances in Neural Information Processing Systems}
+    \field{year}{2017}
+  \endentry
+
+  \entry{wang2022}{article}{}{}
+    \name{author}{3}{}{%
+      {{hash=WL}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Lichen},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=BA}{%
+         family={Bala},
+         familyi={B\bibinitperiod},
+         given={Anju},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=PS}{%
+         family={Pang},
+         familyi={P\bibinitperiod},
+         given={Shanchen},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{WLBAPS1}
+    \strng{fullhash}{WLBAPS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \verb{doi}
+    \verb 10.1016/j.patcog.2021.108403
+    \endverb
+    \field{pages}{108403}
+    \field{title}{Expert-guided bird image dataset construction for
+  fine-grained classification}
+    \field{volume}{123}
+    \field{journaltitle}{Pattern Recognition}
+    \field{year}{2022}
+  \endentry
+
+  \entry{wang2022bird}{article}{}{}
+    \name{author}{3}{}{%
+      {{hash=WL}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Lichen},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=BA}{%
+         family={Bala},
+         familyi={B\bibinitperiod},
+         given={Anju},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=PS}{%
+         family={Pang},
+         familyi={P\bibinitperiod},
+         given={Shanchen},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{WLBAPS1}
+    \strng{fullhash}{WLBAPS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \verb{doi}
+    \verb 10.1016/j.patcog.2021.108403
+    \endverb
+    \field{pages}{108403}
+    \field{title}{Expert-guided bird image dataset construction for
+  fine-grained classification}
+    \field{volume}{123}
+    \field{journaltitle}{Pattern Recognition}
+    \field{year}{2022}
+  \endentry
+
+  \entry{wightman2021resnet}{article}{}{}
+    \name{author}{3}{}{%
+      {{hash=WR}{%
+         family={Wightman},
+         familyi={W\bibinitperiod},
+         given={Ross},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=TH}{%
+         family={Touvron},
+         familyi={T\bibinitperiod},
+         given={Hugo},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=JH}{%
+         family={Jegou},
+         familyi={J\bibinitperiod},
+         given={Herve},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WRTHJH1}
+    \strng{fullhash}{WRTHJH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{{ResNet} strikes back: An improved training procedure in
+  timm}
+    \field{journaltitle}{arXiv preprint arXiv:2110.00476}
+    \field{year}{2021}
+  \endentry
+
+  \entry{wu2015onreducelr}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=WY}{%
+         family={Wu},
+         familyi={W\bibinitperiod},
+         given={Yuhuai},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=DGK}{%
+         family={Dziugaite},
+         familyi={D\bibinitperiod},
+         given={Gintare\bibnamedelima Karolina},
+         giveni={G\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+      {{hash=NM}{%
+         family={Norouzi},
+         familyi={N\bibinitperiod},
+         given={Mohammad},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=RDM}{%
+         family={Roy},
+         familyi={R\bibinitperiod},
+         given={Daniel\bibnamedelima M},
+         giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WY+1}
+    \strng{fullhash}{WYDGKNMRDM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{On the convergence of Adam and beyond}
+    \field{journaltitle}{International Conference on Learning Representations}
+    \field{year}{2018}
+  \endentry
+
+  \entry{yang2018}{article}{}{}
+    \name{author}{6}{}{%
+      {{hash=YZ}{%
+         family={Yang},
+         familyi={Y\bibinitperiod},
+         given={Ze},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=LT}{%
+         family={Luo},
+         familyi={L\bibinitperiod},
+         given={Tiange},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=WD}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Dong},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=HZ}{%
+         family={Hu},
+         familyi={H\bibinitperiod},
+         given={Zhiqiang},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=GJ}{%
+         family={Gao},
+         familyi={G\bibinitperiod},
+         given={Jun},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=WL}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Liwei},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{YZ+1}
+    \strng{fullhash}{YZLTWDHZGJWL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \field{pages}{420\bibrangedash 435}
+    \field{title}{Learning to Navigate for Fine-grained Classification}
+    \field{journaltitle}{Proceedings of the European Conference on Computer
+  Vision (ECCV)}
+    \field{year}{2018}
+  \endentry
+
+  \entry{zhou2016}{article}{}{}
+    \name{author}{5}{}{%
+      {{hash=ZB}{%
+         family={Zhou},
+         familyi={Z\bibinitperiod},
+         given={Bolei},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Khosla},
+         familyi={K\bibinitperiod},
+         given={Aditya},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=LA}{%
+         family={Lapedriza},
+         familyi={L\bibinitperiod},
+         given={Agata},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=OA}{%
+         family={Oliva},
+         familyi={O\bibinitperiod},
+         given={Aude},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Torralba},
+         familyi={T\bibinitperiod},
+         given={Antonio},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{ZB+1}
+    \strng{fullhash}{ZBKALAOATA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{pages}{2921\bibrangedash 2929}
+    \field{title}{Learning Deep Features for Discriminative Localization}
+    \field{journaltitle}{Proceedings of the IEEE Conference on Computer Vision
+  and Pattern Recognition}
+    \field{year}{2016}
+  \endentry
+
+  \entry{zhou2022}{article}{}{}
+    \name{author}{5}{}{%
+      {{hash=ZB}{%
+         family={Zhou},
+         familyi={Z\bibinitperiod},
+         given={Boyang},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Khosla},
+         familyi={K\bibinitperiod},
+         given={Aditya},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=LA}{%
+         family={Lapedriza},
+         familyi={L\bibinitperiod},
+         given={Agata},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=OA}{%
+         family={Oliva},
+         familyi={O\bibinitperiod},
+         given={Aude},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Torralba},
+         familyi={T\bibinitperiod},
+         given={Antonio},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{ZB+2}
+    \strng{fullhash}{ZBKALAOATA2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \verb{doi}
+    \verb 10.1109/TIP.2022.3172104
+    \endverb
+    \field{number}{23}
+    \field{pages}{4402\bibrangedash 4415}
+    \field{title}{On the effectiveness of expert-curated datasets for bird
+  species classification}
+    \field{volume}{31}
+    \field{journaltitle}{IEEE Transactions on Image Processing}
+    \field{year}{2022}
+  \endentry
+\enddatalist
+\endinput

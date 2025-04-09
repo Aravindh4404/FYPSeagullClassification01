@@ -1,0 +1,210 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{titling}
+\usepackage{lmodern}
+\usepackage{lastpage}
+\usepackage{natbib}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\renewcommand{\contentsname}{Table of Contents}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em} % Adjust spacing between paragraphs
+
+% Customise hyperlink appearance (Optional)
+\hypersetup{
+    colorlinks=true,        % Enable colored links
+    linkcolor=black,        % Color for internal links (TOC, sections, etc.)
+    citecolor=black,        % Color for citation links
+    filecolor=black,        % Color for file links
+    urlcolor=blue          % Color for external URLs
+}
+
+\begin{document}
+
+% Cover Page
+\begin{titlepage}
+    \begin{center}
+
+        \textbf{\LARGE{School of Computer Science}}\\[0.5em]
+        \textbf{\Large{Faculty of Science and Engineering}}\\[0.5em]
+        \textbf{\Large{University of Nottingham}}\\[0.5em]
+        \textbf{\Large{Malaysia}}\\[5em]
+
+        \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[3em]
+
+        \textbf{\Large{UG FINAL YEAR DISSERTATION REPORT}}\\[6em]
+        \textbf{\large{\textit{Interpretable Seagull classification}}}\\[6em]
+
+    \end{center}
+
+    \begin{center}
+        \begin{minipage}{0.6\textwidth}  % adjust width as needed
+            \raggedright
+            \textbf{Student's Name} \hspace{1.5cm}: Name\\[1em]
+            \textbf{Student Number} \hspace{1.4cm}: Student ID\\[1em]
+            \textbf{Supervisor Name} \hspace{1.2cm}: Dr. Tomas Maul\\[1em]
+            \textbf{Year} \hspace{3.8cm}: 2025\\[4em]
+        \end{minipage}
+    \end{center}
+
+    \vfill
+
+    \begin{center}
+        \begin{minipage}{\textwidth}
+            \centering
+            {\fontsize{12}{10}\selectfont\textbf{SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENTS FOR THE AWARD OF}}
+            {\fontsize{12}{10}\selectfont\textbf{BACHELOR OF SCIENCE IN COMPUTER SCIENCE (HONS)}}\\
+            {\fontsize{12}{10}\selectfont\textbf{THE UNIVERSITY OF NOTTINGHAM}}
+        \end{minipage}
+    \end{center}
+\end{titlepage}
+
+% Title Page
+\newpage
+\begin{titlepage}
+    \begin{center}
+        \vspace{0.1em}
+        \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[6em]
+
+        \textbf{\large Title}\\[6em]
+
+        \fontsize{10}{10}{Submitted in May 2025, in partial fulfillment of the conditions of the award of the degrees B.Sc.}\\[4em]
+
+        Name\\
+        School of Computer Science\\
+        Faculty of Science and Engineering\\
+        University of Nottingham\\
+        Malaysia\\[6em]
+
+        I hereby declare that this dissertation is all my own work, except as indicated in the text:\\[4em]
+
+        Signature \underline{\hspace{7cm}}\\[2em]
+        Date \hspace{1cm} \underline{\hspace{1cm}} / \underline{\hspace{1cm}} / \underline{\hspace{2cm}}
+    \end{center}
+\end{titlepage}
+
+% Change margins for Table of Contents and subsequent pages
+\newgeometry{
+    margin=1in
+}
+
+% Roman numbering for preliminary pages
+\pagenumbering{roman}
+
+% Acknowledgement
+\newpage
+\section*{\centering \normalsize{Acknowledgement}}
+
+% Abstract
+\newpage
+\section*{\centering \normalsize{Abstract}}
+
+
+% Table of Contents
+\newpage
+\tableofcontents
+
+% List of Figures
+\newpage
+\listoffigures
+
+% List of Tables
+\newpage
+\listoftables
+
+% Switch to Arabic numbering starting from Introduction
+\newpage
+\cleardoublepage % Ensure proper page break before switching numbering style
+\pagenumbering{arabic} % Switch to Arabic numerals
+\setcounter{page}{1} % Restart page numbering at 1
+
+% Introduction
+\section{Introduction}
+   
+% Related Work
+\newpage
+\section{Related Work}
+
+% Description of Work
+\newpage
+\section{Description of Work}
+
+% Methodology
+\newpage
+\section{Methodology}
+
+\subsection{Google Colab Platform}
+
+Google Colab was selected as the primary platform for developing and training deep learning models. As described by Anjum et al. \citet{anjum2021}, Google Colab offers significant advantages for machine learning research through its cloud-based environment with integrated GPU acceleration enabling fast model training. The platform's pre-installed libraries and integration with Google Drive provided an efficient workflow for model development, experimentation, and storage of datasets and trained models. This approach aligns with modern best practices in deep learning research where computational efficiency is crucial for iterative model development and refinement.
+
+Despite its advantages, Google Colab presented a few challenges. The platform frequently disconnected during training sessions, interrupting the model training process before completing all epochs. These disconnections likely stemmed from limited RAM allocation, runtime timeouts, or resource constraints of the shared free GPU environment. As noted by \citet{carneiro2018}, while Colab provides robust GPU resources that can match dedicated servers for certain tasks, these free resources ``are far from enough to solve demanding real-world problems and are not scalable.''
+
+To mitigate these issues, two strategies were implemented. First, the relatively small size of our dataset helped minimize resource demands. Second, checkpoint saving was implemented throughout the training process, allowing training to resume from the last saved state if disconnections were encountered. This approach ensured that progress wasn't lost when disconnections occurred, though it introduced some workflow inefficiencies.
+
+\subsection{Python and PyTorch Framework}
+
+The implementation was carried out using Python as the primary programming language, chosen for its extensive library support and widespread adoption in the machine learning community. Python's simple syntax and powerful libraries make it particularly suitable for rapid prototyping and experimentation in deep learning research \citep{geron2019}.
+
+For the deep learning framework, PyTorch was selected over alternatives like TensorFlow or Keras due to its dynamic computational graph which allows for more flexible model development and easier debugging. PyTorch's intuitive design facilitates a more natural expression of deep learning algorithms while still providing the performance benefits of GPU acceleration. The framework's robust ecosystem for computer vision tasks, including pre-trained models and transformation pipelines, was particularly valuable for this fine-grained classification task.
+
+\subsubsection{Advantages of PyTorch in Our Implementation}
+
+PyTorch offered several key advantages that were particularly beneficial for our transfer learning approach with pre-trained models:
+
+\begin{itemize}
+    \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach allowed for more intuitive debugging and model modification during development. This was especially valuable when adapting pre-trained architectures like VGG16 for our specific classification task.
+
+    \item \textbf{Flexible Model Customization:} The implementation benefited from PyTorch's object-oriented approach, which made it straightforward to modify pre-trained models, e.g., replacing classification layers while preserving feature extraction capabilities.
+
+    \item \textbf{Efficient Data Loading and Augmentation:} PyTorch's DataLoader and transformation pipelines facilitated efficient batch processing and on-the-fly data augmentation, which was crucial for maximizing the utility of our limited dataset.
+
+    \item \textbf{Gradient Visualization Tools:} PyTorch's native support for gradient computation and hooks made implementing Grad-CAM and other visualization techniques more straightforward, enabling better model interpretability.
+\end{itemize}
+
+Similar to approaches described by Raffel et al. \citet{raffel2023}, our implementation prioritized efficiency and optimization to work within the constraints of limited computational resources, allowing us to achieve high-quality results despite the limitations of the free cloud environment.
+
+\section{Dataset Preparation and Refinement}
+
+The dataset preparation followed a three-stage iterative refinement process, each addressing specific challenges identified during model development. This approach aligns with established methodologies in fine-grained bird classification research, where dataset quality has been shown to significantly impact model performance \citet{ghani2024}.
+
+\subsection{Stage 1: Initial Dataset Collection}
+
+The initial dataset was collected from public repositories including eBird and iNaturalist, comprising 451 images of Glaucous-winged Gulls and 486 images of Slaty-backed Gulls. This dataset included gulls of various ages (juveniles and adults) in different postures (sitting, standing, and flying). Initial model testing on this dataset yielded poor performance (below 50\% accuracy), highlighting the need for dataset refinement. Similar challenges with diverse postures and class imbalance have been documented by Kahl et al. in their work on BirdNET systems \citet{kahl2021}.
+
+
+
+
+\subsection{Stage 2: Refined Dataset - Focus on Adult In-flight Images}
+
+Consultation with Professor Gibbins, an ornithological expert, revealed that adult wingtip patterns are the most reliable distinguishing features between these species, and these patterns are most visible in flight. This expert-guided refinement approach parallels methods described by Wang et al. in their work on avian dataset construction, where domain expertise significantly improved classification accuracy for visually similar species. \citet{wang2022}. Consequently, the dataset was refined to focus exclusively on adult in-flight images, resulting in a curated collection of 124 Glaucous-winged Gull images and 127 Slaty-backed Gull images. This targeted approach significantly improved model performance, with accuracy increasing to approximately 70\%.
+
+By focusing specifically on adult in-flight images where wingtip patterns are most visible, this project addresses the core taxonomic question while minimizing confounding variables. The resulting interpretable classification system aims to provide both a practical identification tool and a scientific instrument for exploring morphological variation within and between these closely related species.
+
+\subsection{Stage 3: High-Quality Dataset}
+
+To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. The Glaucous-winged Gull dataset was also carefully curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features. Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed. This quality-focused approach aligns with findings from Zhou et al., who demonstrated that expert-curated datasets can achieve comparable or superior results with significantly smaller data volumes compared to larger uncurated collections \citet{zhou2022}.
+
+For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested. This multi-dataset evaluation approach follows best practices established in the BirdSet benchmark for avian classification studies \citet{birdset2023}.
+
+\section{Transfer Learning Methodology}
+
+\subsection{Theoretical Framework and Rationale}
+
+Transfer learning is a powerful machine learning technique that involves reusing a pre-trained model developed for a specific task as a starting point for a new task. This approach significantly enhances learning efficiency by leveraging knowledge gained from solving previous problems, enabling a positive transfer learning effect and reducing the training time required. For fine-grained classification tasks like distinguishing between visually similar gull species, transfer learning is particularly valuable as it allows the model to build upon a foundation of general visual features already learned from diverse datasets.
+
+As highlighted by Kahl et al. (2021), transfer learning addresses two critical challenges in specialized biological classification: data scarcity and feature abstraction \citet{kahl2021}. First, data scarcity is a common issue in specialized domains like ornithological image classification, where large-scale annotated datasets are rare. Transfer learning mitigates this by leveraging models pre-trained on massive datasets like ImageNet. Second, these pre-trained models have learned to extract hierarchical features that capture important visual patterns, which can significantly enhance the accuracy of fine-grained classification tasks.
+
+In our implementation, transfer learning was employed to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns, which can then be fine-tuned for the specific task of distinguishing between Glaucous-winged and Slaty-backed Gulls.
+
+Several pre-trained architectures were evaluated for this task, with VGG-16. \citet{simonyan2014vgg} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset of gull images, demonstrating the potential of this approach for specialized biological classification tasks.
+
+% Bibliography
+\newpage
+\bibliographystyle{apa}
+\bibliography{references}
+
+\end{document}
