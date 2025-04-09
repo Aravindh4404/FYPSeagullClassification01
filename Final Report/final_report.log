@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  9 APR 2025 22:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  9 APR 2025 22:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -427,46 +427,91 @@ l.88 \end{titlepage}
 
 
 [5]
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 127.
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 144.
+ (C:\Users\Aravindh P\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1phv.fd
+File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
+)
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.129 \newpage
-               [1
+l.157 
+       [1
 
 ]
+
+Package natbib Warning: Citation `karpathy2015' on page 2 undefined on input line 158.
+
+
+Overfull \hbox (5.25926pt too wide) in paragraph at lines 158--159
+[]\OT1/phv/m/n/12 Deep learn-ing ap-proaches of-fer promis-ing so-lu-tions to this tax-o-nomic chal-lenge through
+ []
+
+
+Package natbib Warning: Citation `he2016' on page 2 undefined on input line 160.
+
+
+Package natbib Warning: Citation `simonyan2014' on page 2 undefined on input line 160.
+
+
+Overfull \hbox (10.11751pt too wide) in paragraph at lines 174--175
+[]\OT1/phv/m/n/12 Taxonomic Un-cer-tainty: Cur-rent IUCN clas-si-fi-ca-tions treat them as dis-tinct species,
+ []
+
+
 
 [2]
 
 [3]
+Overfull \hbox (4.85182pt too wide) in paragraph at lines 228--229
+[]\OT1/phv/m/n/12 Convolutional Neu-ral Net-works (CNNs) have rev-o-lu-tion-ized im-age clas-si-fi-ca-tion through
+ []
+
+
 
 [4]
-LaTeX Font Info:    Trying to load font information for TS1+phv on input line 159.
- (C:\Users\Aravindh P\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1phv.fd
-File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
-)
-Overfull \hbox (4.42183pt too wide) in paragraph at lines 172--173
+
+[5]
+
+[6]
+Overfull \hbox (3.80737pt too wide) in paragraph at lines 286--287
+[]\OT1/phv/m/n/12 Implement Gradient-weighted Class Ac-ti-va-tion Map-ping (Grad-CAM) for con-
+ []
+
+
+
+[7]
+
+[8]
+
+[9]
+
+[10]
+Overfull \hbox (4.42183pt too wide) in paragraph at lines 345--346
 \OT1/phv/m/n/12 aligns with es-tab-lished method-olo-gies in fine-grained bird clas-si-fi-ca-tion re-search, where
  []
 
 
 
-[5]
-Overfull \hbox (5.39537pt too wide) in paragraph at lines 183--184
+[11]
+Overfull \hbox (5.39537pt too wide) in paragraph at lines 356--357
 \OT1/phv/m/n/12 Consultation with Pro-fes-sor Gib-bins, an or-nitho-log-i-cal ex-pert, re-vealed that adult wingtip
  []
 
 
 
-[6]
+[12]
 
-[7] (final_report.bbl
-LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 7.
-)
+[13] (final_report.bbl)
 
-[8] 
+Package natbib Warning: There were undefined citations.
+
+
+
+[14] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (final_report.aux)
  ***********
@@ -477,17 +522,17 @@ Package rerunfilecheck Info: File `final_report.out' has not changed.
 (rerunfilecheck)             Checksum: 3EDD6D9EB01735044CE0087D79E509A9;2612.
  ) 
 Here is how much of TeX's memory you used:
- 9908 strings out of 473523
- 158706 string characters out of 5712175
- 559477 words of memory out of 5000000
- 32928 multiletter control sequences out of 15000+600000
+ 9941 strings out of 473523
+ 159156 string characters out of 5712175
+ 560542 words of memory out of 5000000
+ 32938 multiletter control sequences out of 15000+600000
  594408 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,5n,79p,845b,491s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,5n,79p,951b,576s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on final_report.pdf (15 pages, 115630 bytes).
+Output written on final_report.pdf (21 pages, 145916 bytes).
 PDF statistics:
- 207 PDF objects out of 1000 (max. 8388607)
- 43 named destinations out of 1000 (max. 500000)
+ 285 PDF objects out of 1000 (max. 8388607)
+ 66 named destinations out of 1000 (max. 500000)
  110 words of extra memory for PDF output out of 10000 (max. 10000000)
 
