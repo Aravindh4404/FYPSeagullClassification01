@@ -1,9 +1,15 @@
 \begin{thebibliography}{}
 
-\bibitem[\protect\astroncite{Adriaens et~al.}{2022}]{adriaens2022gulls}
-Adriaens, P., Muusse, M., Dubois, P.~J., and Jiguet, F. (2022).
+\bibitem[\protect\astroncite{Adriaens et~al.}{2022a}]{adriaens2022gulls}
+Adriaens, P., Muusse, M., Dubois, P.~J., and Jiguet, F. (2022a).
 \newblock {\em Gulls of Europe, North Africa, and the Middle East}.
 \newblock Princeton University Press.
+
+\bibitem[\protect\astroncite{Adriaens et~al.}{2022b}]{adriaens2022}
+Adriaens, P., Muusse, M., Dubois, P.~J., and Jiguet, F. (2022b).
+\newblock {\em Gulls of Europe, North Africa, and the Middle East: An
+  Identification Guide}.
+\newblock Princeton University Press, Princeton and Oxford.
 
 \bibitem[\protect\astroncite{Anjum et~al.}{2021}]{anjum2021}
 Anjum, M.~A., Hussain, S., Aadil, F., and Chaudhry, S. (2021).
@@ -36,6 +42,12 @@ Ghani, F., Ali, H.~M., Ashraf, I., Ullah, S., Kwak, K.~S., and Kim, D. (2024).
   deep learning techniques.
 \newblock {\em Computer Vision and Image Understanding}, 238:103809.
 
+\bibitem[\protect\astroncite{Iman}{2022}]{iman2022review}
+Iman, M. (2022).
+\newblock A review of deep transfer learning and recent advancements.
+\newblock {\em arXiv preprint arXiv:2201.09679}.
+\newblock Last revised 22 Dec 2022 (v2).
+
 \bibitem[\protect\astroncite{Kahl et~al.}{2021}]{kahl2021}
 Kahl, S., Wood, C.~M., Eibl, M., and Klinck, H. (2021).
 \newblock {BirdNET}: A deep learning solution for avian diversity monitoring.
@@ -54,6 +66,12 @@ Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou,
   transformer.
 \newblock {\em Journal of Machine Learning Research}, 24(1):5675--5758.
 
+\bibitem[\protect\astroncite{Santiago~Martinez}{2024}]{santiago2024comparative}
+Santiago~Martinez, M.~F. (2024).
+\newblock Comparative analysis of deep learning architectures for fine-grained
+  bird classification.
+\newblock {B.S.} thesis, University of Twente.
+
 \bibitem[\protect\astroncite{Simonyan and Zisserman}{2014}]{simonyan2014vgg}
 Simonyan, K. and Zisserman, A. (2014).
 \newblock Very deep convolutional networks for large-scale image recognition.
@@ -64,6 +82,14 @@ Wang, L., Bala, A., and Pang, S. (2022).
 \newblock Expert-guided bird image dataset construction for fine-grained
   classification.
 \newblock {\em Pattern Recognition}, 123:108403.
+
+\bibitem[\protect\astroncite{Zhao}{2017}]{zhao2017transfer}
+Zhao, W. (2017).
+\newblock Research on the deep learning of the small sample data based on
+  transfer learning.
+\newblock In {\em Proceedings of the International Conference on Green Energy
+  and Sustainable Development (GESD 2017)}, volume 1864, page 020018, Chongqing
+  City, China. AIP Publishing.
 
 \bibitem[\protect\astroncite{Zhou et~al.}{2022}]{zhou2022}
 Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., and Torralba, A. (2022).
