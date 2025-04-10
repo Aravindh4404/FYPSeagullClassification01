@@ -124,53 +124,55 @@
 
 % Introduction
 \section{Introduction}
-Accurate species identification is a key starting point for scientific research and conservation efforts. Determining whether two populaions can be consistently distinguished based on morphological traits is essential for establishing taxonomic boundaries and designing appropriate conservation strategies. Gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. As noted by ornithologists:
+Accurate species identification is a key starting point for scientific research and conservation efforts. Determining whether two populaions can be consistently distinguished based on morphological traits is essential for establishing taxonomic boundaries and designing appropriate conservation strategies. Gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. 
 
-\begin{quote}
-    ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \citep{ayyash2024}.
-\end{quote}
-
-
-The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent. These difficulties stem from several interrelated factors. First, certain gull species exhibit unusual levels of variation compared to other gull species.
-
-\begin{quote}
-``Glaucous-winged Gulls also exhibit variably pigmented wingtips... these differences are often chalked up to individual
-variation, at least by this author, but they're inconveniently found in several hybrid zones, creating potential for much
-confusion.\citep{adriaens2022}
-\end{quote}
-
-\begin{quote}
-    ``The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood'' \citep{adriaens2022gulls}.
-\end{quote}
-
-Second, multiple confounding factors complicate identification:
+The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent. These difficulties stem from several interrelated factors. 
+Multiple confounding factors complicate identification:
 \begin{itemize}
-    \item \textbf{Hybridization:} Both species can interbreed in overlapping ranges, creating intermediate forms.
+    \item \textbf{Hybridization:} Species can interbreed in overlapping ranges, creating intermediate forms.
     \item \textbf{Age-related variations:} Juvenile and immature gulls display less distinct patterns than adults.
     \item \textbf{Environmental effects:} Feather bleaching from sun exposure, contamination, and wear can alter appearance.
     \item \textbf{Seasonal moulting:} Gulls undergo plumage changes throughout the year, affecting diagnostic features.
     \item \textbf{Viewing conditions:} Lighting, angle, and distance significantly impact observed coloration.
 \end{itemize} \citep{adriaens2022}
 
-These complications can make manual classification both time-consuming and subjective. While traditional taxonomic guides provide detailed descriptions of distinguishing features, the subtle nature of these differences can often lead to inconsistent identifications.
+Certain gull species exhibit unusual levels of variation compared to other gull species.
+
+As noted by ornithologists:
+
+\begin{quote}
+    ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \citep{ayyash2024}.
+\end{quote}
 
 
-\section*{Motivation}
 
 This project addresses the complex task of fine-grained classification between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics. 
+
+\begin{quote}
+    ``Glaucous-winged Gulls also exhibit variably pigmented wingtips... these differences are often chalked up to individual
+    variation, at least by this author, but they're inconveniently found in several hybrid zones, creating potential for much
+    confusion.\citep{adriaens2022}
+    \end{quote}
+    
+    \begin{quote}
+        ``The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood'' \citep{adriaens2022gulls}.
+    \end{quote}\citep{adriaens2022}
+
+\section{Motivation}
 
 
 DOUBTFUL to keep
 The wing and wingtip patterns—particularly the colour, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species.
 
 
-Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets. Fine-grained image classification (FGIC), which focuses on identifying subtle differences between subclasses within the same category, has advanced rapidly over the past decade with the development of sophisticated deep neural network architectures \citet{karpathy2015}.
-
-For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and DenseNet have demonstrated exceptional capabilities, with recent studies achieving accuracy rates exceeding 97\% in bird species classification tasks \citep{he2016}. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species \citep{simonyan2014}.
+While using machine learning techniques to solve the problem of fine-grained classification, traditional feature extraction methods necessitate manually designed features, such as edge detection, color histograms, feature point matching, and visual word bags, which have limited expressive capabilities and require extensive annotation details like bounding boxes and key points. The drawback of these methods lies in the extensive manual intervention required for feature selection and extraction.\citep{Lu2024}
 
 
-Traditional feature extraction methods necessitate manually designed features, such as edge detection, color histograms, feature point matching, and visual word bags, which have limited expressive capabilities and require extensive annotation details like bounding boxes and key points. The drawback of these methods lies in the extensive manual intervention required for feature selection and extraction. Due to the impressive outcomes of deep learning, most recognition frameworks now depend on advanced convolutions for feature extraction (\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full#ref10}{Krizhevsky et al., 2012}).
-Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks. Manual identification requires per specimen analysis by expert taxonomists, hindering large-scale surveys.
+Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets. Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks. Manual identification requires per specimen analysis by expert taxonomists, hindering large-scale surveys. Fine-grained image classification (FGIC), which focuses on identifying subtle differences between subclasses within the same category, has advanced rapidly over the past decade with the development of sophisticated deep neural network architectures.
+
+For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and DenseNet have demonstrated exceptional capabilities, with recent studies achieving accuracy rates exceeding 97\% in bird species classification tasks. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species.
+
+Due to the impressive outcomes of deep learning, most recognition frameworks now depend on advanced convolutions for feature extraction where features extracted through convolution are learned automatically by multilayer convolutional neural networks, offering the model greater adaptability to various tasks and datasets\citep{Lu2024}.
 
 There are many advantages of using Deep Learning
 Architectures for Image Classification. Getting good quality
@@ -186,11 +188,18 @@ abundant amount of data in order to produce accurate results.
 Overfitting is a prevalent problem in Deep Learning and can
 sometimes negatively affect the model performance in realtime scenarios.
 
-This project therefore focuses not only on developing high-accuracy classification models but also on implementing robust interpretability techniques to visualize and understand which morphological features drive model decisions. By bridging computer vision and ornithological expertise, this work aims to contribute both to the technological advancement of interpretable fine-grained classification and to the biological understanding of gull taxonomy.
+Yet the fine-grained bird classification task has greater challenges \citep{ani13020264}
+(1) High intraclass variance. Birds belonging to the same category usually present distinctly different postures and perspectives
+(2) Low inter-class variance. Some of the different categories of birds may have only minor differences; for example, some of the differences are only in the color pattern on the head; and 
+(3) Limited training data. Some bird data are limited in number, especially endangered species, for whom it is difficult to collect sufficient image data. Meanwhile, the labeling of bird categories usually requires a great deal of time by experts in the corresponding fields. These problems greatly increase the difficulty of acquiring training data.
+(4)large Intensity variation in images as pictures are taken in different time of a day (like morning, noon, evening etc.) — problem
+(5)various poses of Bird (like flying, sitting with different orientation)
+(6) bird localization in the image as there are some images in which there are more than one bird in that image
+(7) Large Variation in Background of the images
+(8) various type of occlusions of birds in the images due to leaf or branches of the tree 6. Size or portion of the bird covered in the images 
+(9)less no of sample images per class and also class imbalance.\citep{10.1007/978-981-15-1387-9_3}
 
-
-
-Yet the fine-grained bird classification task has greater challenges [\href{https://www.mdpi.com/2076-2615/13/2/264#B14-animals-13-00264}{14}], which are mainly reflected in the following three points: (1) High intraclass variance. Birds belonging to the same category usually present distinctly different postures and perspectives, (2) Low inter-class variance. Some of the different categories of birds may have only minor differences; for example, some of the differences are only in the color pattern on the head; and (3) Limited training data. Some bird data are limited in number, especially endangered species, for whom it is difficult to collect sufficient image data. Meanwhile, the labeling of bird categories usually requires a great deal of time by experts in the corresponding fields. These problems greatly increase the difficulty of acquiring training data.
+This project focuses not only on developing high-accuracy classification models tackling the above mentioned problems but also on implementing robust interpretability techniques to visualize and understand which morphological features drive model decisions. By bridging computer vision and ornithological expertise, this work aims to contribute both to the technological advancement of interpretable fine-grained classification and to the biological understanding of gull taxonomy.
 
    
 % Related Work
@@ -352,6 +361,11 @@ Transfer learning is a powerful machine learning technique that involves reusing
 As highlighted by Kahl et al. (2021), transfer learning addresses two critical challenges in specialized biological classification: data scarcity and feature abstraction \citet{kahl2021}. First, data scarcity is a common issue in specialized domains like ornithological image classification, where large-scale annotated datasets are rare. Transfer learning mitigates this by leveraging models pre-trained on massive datasets like ImageNet. Second, these pre-trained models have learned to extract hierarchical features that capture important visual patterns, which can significantly enhance the accuracy of fine-grained classification tasks.
 
 In our implementation, transfer learning was employed to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns, which can then be fine-tuned for the specific task of distinguishing between Glaucous-winged and Slaty-backed Gulls.
+
+ImageNet is a dataset of over 15 million labeled high-resolution images belonging to roughly 22,000
+categories. The images were collected from the web and labeled by human labelers using Amazon’s Mechanical Turk crowd-sourcing tool. Starting in 2010, as part of the Pascal Visual Object
+Challenge, an annual competition called the ImageNet Large-Scale Visual Recognition Challenge
+(ILSVRC) has been held {Krizhevsky et al., 2012}.
 
 Several pre-trained architectures were evaluated for this task, with VGG-16. \citet{simonyan2014vgg} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset of gull images, demonstrating the potential of this approach for specialized biological classification tasks.
 

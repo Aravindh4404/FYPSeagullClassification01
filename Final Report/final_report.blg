@@ -5,48 +5,44 @@ Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: apa.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
-Warning--I didn't find a database entry for "karpathy2015"
-Warning--I didn't find a database entry for "he2016"
-Warning--I didn't find a database entry for "simonyan2014"
-You've used 16 entries,
+You've used 19 entries,
             1940 wiz_defined-function locations,
-            575 strings with 6937 characters,
-and the built_in function-call counts, 6632 in all, are:
-= -- 620
-> -- 328
-< -- 8
-+ -- 121
-- -- 114
-* -- 596
-:= -- 1178
-add.period$ -- 50
-call.type$ -- 16
-change.case$ -- 135
-chr.to.int$ -- 15
-cite$ -- 16
-duplicate$ -- 236
-empty$ -- 423
-format.name$ -- 132
-if$ -- 1259
+            592 strings with 7479 characters,
+and the built_in function-call counts, 8003 in all, are:
+= -- 751
+> -- 395
+< -- 10
++ -- 145
+- -- 136
+* -- 718
+:= -- 1413
+add.period$ -- 60
+call.type$ -- 19
+change.case$ -- 160
+chr.to.int$ -- 18
+cite$ -- 19
+duplicate$ -- 288
+empty$ -- 513
+format.name$ -- 159
+if$ -- 1530
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 19
-newline$ -- 84
-num.names$ -- 48
-pop$ -- 126
+missing$ -- 22
+newline$ -- 99
+num.names$ -- 59
+pop$ -- 148
 preamble$ -- 1
-purify$ -- 137
+purify$ -- 162
 quote$ -- 0
-skip$ -- 177
+skip$ -- 218
 stack$ -- 0
-substring$ -- 400
-swap$ -- 45
-text.length$ -- 2
+substring$ -- 483
+swap$ -- 58
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 88
+type$ -- 106
 warning$ -- 0
-while$ -- 45
+while$ -- 56
 width$ -- 0
-write$ -- 211
-(There were 3 warnings)
+write$ -- 252

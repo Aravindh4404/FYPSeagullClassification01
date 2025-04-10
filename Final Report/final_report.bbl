@@ -53,6 +53,19 @@ Kahl, S., Wood, C.~M., Eibl, M., and Klinck, H. (2021).
 \newblock {BirdNET}: A deep learning solution for avian diversity monitoring.
 \newblock {\em Ecological Informatics}, 61:101236.
 
+\bibitem[\protect\astroncite{Kumar and Das}{2019}]{10.1007/978-981-15-1387-9_3}
+Kumar, A. and Das, S.~D. (2019).
+\newblock Bird species classification using transfer learning with multistage
+  training.
+\newblock In Arora, C. and Mitra, K., editors, {\em Computer Vision
+  Applications}, pages 28--38, Singapore. Springer Singapore.
+
+\bibitem[\protect\astroncite{Lu et~al.}{2024}]{Lu2024}
+Lu, W., Yang, Y., and Yang, L. (2024).
+\newblock Fine-grained image classification method based on hybrid attention
+  module.
+\newblock {\em Frontiers in Neurorobotics}, 18:1391791.
+
 \bibitem[\protect\astroncite{Peng et~al.}{2023}]{birdset2023}
 Peng, Y., Zhang, Z., Xie, Y., Zhang, M., and Wei, Y. (2023).
 \newblock {BirdSet}: A benchmark dataset for fine-grained bird species
@@ -76,6 +89,12 @@ Santiago~Martinez, M.~F. (2024).
 Simonyan, K. and Zisserman, A. (2014).
 \newblock Very deep convolutional networks for large-scale image recognition.
 \newblock {\em arXiv preprint arXiv:1409.1556}.
+
+\bibitem[\protect\astroncite{Wang et~al.}{2023}]{ani13020264}
+Wang, K., Yang, F., Chen, Z., Chen, Y., and Zhang, Y. (2023).
+\newblock A fine-grained bird classification method based on attention and
+  decoupled knowledge distillation.
+\newblock {\em Animals}, 13(2).
 
 \bibitem[\protect\astroncite{Wang et~al.}{2022}]{wang2022}
 Wang, L., Bala, A., and Pang, S. (2022).
