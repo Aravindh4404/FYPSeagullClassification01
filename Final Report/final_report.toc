@@ -1,15 +1,15 @@
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Motivation}{2}{section.2}%
-\contentsline {section}{\numberline {3}Related Work}{4}{section.3}%
-\contentsline {section}{\numberline {4}Deep Learning for Fine-Grained Image Classification}{4}{section.4}%
-\contentsline {section}{\numberline {5}Description of Work}{9}{section.5}%
-\contentsline {section}{\numberline {6}Methodology}{10}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Google Colab Platform}{10}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Python and PyTorch Framework}{10}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Advantages of PyTorch in Our Implementation}{11}{subsubsection.6.2.1}%
-\contentsline {section}{\numberline {7}Dataset Preparation and Refinement}{11}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Stage 1: Initial Dataset Collection}{11}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Stage 2: Refined Dataset - Focus on Adult In-flight Images}{12}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Stage 3: High-Quality Dataset}{12}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Transfer Learning Methodology}{13}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Theoretical Framework and Rationale}{13}{subsection.8.1}%
+\contentsline {section}{\numberline {2}Motivation}{3}{section.2}%
+\contentsline {section}{\numberline {3}Related Work}{5}{section.3}%
+\contentsline {section}{\numberline {4}Deep Learning for Fine-Grained Image Classification}{5}{section.4}%
+\contentsline {section}{\numberline {5}Description of Work}{10}{section.5}%
+\contentsline {section}{\numberline {6}Methodology}{11}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Google Colab Platform}{11}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Python and PyTorch Framework}{11}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Advantages of PyTorch in Our Implementation}{12}{subsubsection.6.2.1}%
+\contentsline {section}{\numberline {7}Dataset Preparation and Refinement}{12}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Stage 1: Initial Dataset Collection}{12}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Stage 2: Refined Dataset - Focus on Adult In-flight Images}{13}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Stage 3: High-Quality Dataset}{13}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Transfer Learning Methodology}{14}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Theoretical Framework and Rationale}{14}{subsection.8.1}%

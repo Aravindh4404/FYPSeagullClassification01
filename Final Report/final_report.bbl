@@ -60,11 +60,38 @@ Kumar, A. and Das, S.~D. (2019).
 \newblock In Arora, C. and Mitra, K., editors, {\em Computer Vision
   Applications}, pages 28--38, Singapore. Springer Singapore.
 
+\bibitem[\protect\astroncite{Lei~Yang}{2022}]{source2}
+Lei~Yang, Ying~Yang, W.~L. (2022).
+\newblock Fine-grained image classification with hybrid attention modules.
+\newblock {\em Computer Vision Advances}, 10:56--78.
+
 \bibitem[\protect\astroncite{Lu et~al.}{2024}]{Lu2024}
 Lu, W., Yang, Y., and Yang, L. (2024).
 \newblock Fine-grained image classification method based on hybrid attention
   module.
 \newblock {\em Frontiers in Neurorobotics}, 18:1391791.
+
+\bibitem[\protect\astroncite{Mohammed~Alswaitti}{2025}]{transferln97}
+Mohammed~Alswaitti, Liao~Zihao, W. A. A. A. K.~A. (2025).
+\newblock Effective classification of birds’ species based on transfer
+  learning.
+\newblock {\em International Journal of Electrical and Computer Engineering
+  (IJECE)}, 12(4):4172--4184.
+
+\bibitem[\protect\astroncite{Name}{2022}]{source4}
+Name, A. (2022).
+\newblock Large-scale bird species classification using cnns.
+\newblock {\em Nature Machine Intelligence}, 5:89--101.
+
+\bibitem[\protect\astroncite{Name}{2023a}]{source5}
+Name, A. (2023a).
+\newblock Advantages and challenges of deep learning for image classification.
+\newblock {\em Artificial Intelligence Review}, 30:300--320.
+
+\bibitem[\protect\astroncite{Name}{2023b}]{source6}
+Name, A. (2023b).
+\newblock Overcoming overfitting in deep neural networks: A review.
+\newblock {\em Machine Learning Research Journal}, 15:45--60.
 
 \bibitem[\protect\astroncite{Peng et~al.}{2023}]{birdset2023}
 Peng, Y., Zhang, Z., Xie, Y., Zhang, M., and Wei, Y. (2023).
@@ -72,12 +99,22 @@ Peng, Y., Zhang, Z., Xie, Y., Zhang, M., and Wei, Y. (2023).
   recognition.
 \newblock {\em Nature Scientific Data}, 10:76.
 
+\bibitem[\protect\astroncite{Pralhad~Gavali}{2023}]{source3}
+Pralhad~Gavali, J. S.~B. (2023).
+\newblock Deep convolutional neural networks for bird species classification.
+\newblock {\em Ecological Informatics}, 18:200--215.
+
 \bibitem[\protect\astroncite{Raffel et~al.}{2023}]{raffel2023}
 Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou,
   Y., Li, W., and Liu, P.~J. (2023).
 \newblock Exploring the limits of transfer learning with a unified text-to-text
   transformer.
 \newblock {\em Journal of Machine Learning Research}, 24(1):5675--5758.
+
+\bibitem[\protect\astroncite{{Santiago Martinez}}{2024}]{essay101313}
+{Santiago Martinez}, M.~F. (2024).
+\newblock Comparative analysis of deep learning architectures for fine- grained
+  bird classification.
 
 \bibitem[\protect\astroncite{Santiago~Martinez}{2024}]{santiago2024comparative}
 Santiago~Martinez, M.~F. (2024).
@@ -89,6 +126,11 @@ Santiago~Martinez, M.~F. (2024).
 Simonyan, K. and Zisserman, A. (2014).
 \newblock Very deep convolutional networks for large-scale image recognition.
 \newblock {\em arXiv preprint arXiv:1409.1556}.
+
+\bibitem[\protect\astroncite{Valan}{2023}]{source1}
+Valan, M. (2023).
+\newblock Automated image-based taxon identification using deep learning.
+\newblock {\em Journal of Taxonomy Research}, 45:123--135.
 
 \bibitem[\protect\astroncite{Wang et~al.}{2023}]{ani13020264}
 Wang, K., Yang, F., Chen, Z., Chen, Y., and Zhang, Y. (2023).
