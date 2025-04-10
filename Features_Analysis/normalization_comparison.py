@@ -193,6 +193,113 @@ def compute_region_global_minmax(image_list, region_name):
     return global_min, global_max
 
 
+def compare_normalization_techniques_per_image(img_dir, seg_dir, region_name="wingtip", limit=5):
+    """
+    Compare multiple normalization methods for a specific region on each individual image.
+
+    Parameters:
+        img_dir (str): Directory with original images
+        seg_dir (str): Directory with segmentation images
+        region_name (str): Name of the region to analyze
+        limit (int): Maximum number of images to process
+    """
+    print(f"\nComparing normalization techniques for each image (region: {region_name})")
+
+    # Create output directory
+    output_dir = f"Outputs/Per_Image_Comparison/{region_name}"
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Load images
+    images = load_images_with_segmentation(img_dir, seg_dir)[:limit]
+
+    if not images:
+        print("No images found to process.")
+        return
+
+    # Define normalization methods
+    normalization_methods = [
+        "None", "Grayscale", "MinMax", "ZScore", "HistEq", "CLAHE", "GlobalMinMax"
+    ]
+
+    # Calculate global min/max if needed for GlobalMinMax
+    global_min, global_max = compute_global_minmax(images, region_name)
+    print(f"Global min: {global_min}, Global max: {global_max}")
+
+    # Process each image
+    for idx, (fname, orig_img, seg_img) in enumerate(images):
+        print(f"Processing image {idx + 1}/{len(images)}: {fname}")
+
+        # Create figure for this image
+        fig, axes = plt.subplots(1, len(normalization_methods), figsize=(20, 5))
+        fig.suptitle(f"Image: {fname} (Region: {region_name})", fontsize=16)
+
+        # Apply each normalization method to this image
+        for method_idx, method in enumerate(normalization_methods):
+            # Apply normalization
+            if method == "GlobalMinMax":
+                norm_region, mask = apply_normalization_to_region(
+                    orig_img, seg_img, region_name, method, global_min, global_max
+                )
+            else:
+                norm_region, mask = apply_normalization_to_region(
+                    orig_img, seg_img, region_name, method
+                )
+
+            # Skip if region not found
+            if np.sum(mask) == 0:
+                axes[method_idx].text(0.5, 0.5, "Region not found",
+                                      ha='center', va='center')
+                axes[method_idx].set_title(method)
+                axes[method_idx].axis('off')
+                continue
+
+            # Display normalized region
+            axes[method_idx].imshow(cv2.cvtColor(norm_region, cv2.COLOR_BGR2RGB))
+            axes[method_idx].set_title(method)
+            axes[method_idx].axis('off')
+
+            # Calculate metrics for display
+            region_pixels = to_grayscale(norm_region)[mask > 0]
+            if len(region_pixels) > 0:
+                mean_val = np.mean(region_pixels)
+                std_val = np.std(region_pixels)
+                cv_val = (std_val / mean_val * 100) if mean_val > 0 else 0
+
+                # Add metrics text to the plot
+                axes[method_idx].set_xlabel(f"Mean: {mean_val:.1f}\nStd: {std_val:.1f}\nCV: {cv_val:.1f}%")
+
+        plt.tight_layout()
+        plt.savefig(f"{output_dir}/{fname.split('.')[0]}_comparison.png", dpi=150)
+        plt.close()
+
+        # Also save individual normalized images
+        for method in normalization_methods:
+            method_dir = f"{output_dir}/{fname.split('.')[0]}"
+            os.makedirs(method_dir, exist_ok=True)
+
+            if method == "GlobalMinMax":
+                norm_region, mask = apply_normalization_to_region(
+                    orig_img, seg_img, region_name, method, global_min, global_max
+                )
+            else:
+                norm_region, mask = apply_normalization_to_region(
+                    orig_img, seg_img, region_name, method
+                )
+
+            if np.sum(mask) > 0:
+                cv2.imwrite(f"{method_dir}/{method}.png", norm_region)
+
+    print(f"Comparison complete! Results saved to '{output_dir}/'")
+
+
+# Usage example:
+# compare_normalization_techniques_per_image(
+#     SLATY_BACKED_IMG_DIR,
+#     SLATY_BACKED_SEG_DIR,
+#     region_name="wingtip",
+#     limit=5
+# )
+
 def run_region_normalization_comparison(region_name="wingtip"):
     """
     Compare multiple normalization methods for a specific region.
@@ -205,7 +312,7 @@ def run_region_normalization_comparison(region_name="wingtip"):
     print("=" * 50)
 
     # Create output directories
-    output_base = f"Outputs/Region_Normalization/{region_name}"
+    output_base = f"Normalisation/Region_Normalization/{region_name}"
     os.makedirs(output_base, exist_ok=True)
     os.makedirs(f"{output_base}/data", exist_ok=True)
     os.makedirs(f"{output_base}/visualizations", exist_ok=True)

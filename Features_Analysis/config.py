@@ -15,7 +15,7 @@ GLAUCOUS_WINGED_IMG_DIR = BASE_DIR / "dataset" / "Original_Images" / "Glaucous_W
 GLAUCOUS_WINGED_SEG_DIR = BASE_DIR / "dataset" / "Colored_Images" / "Glaucous_Winged_Gull"
 
 # Number of images per species to process
-S = 150
+S = 10
 
 # Define the BGR colors for each region based on your RGB swatches:
 REGION_COLORS = {
