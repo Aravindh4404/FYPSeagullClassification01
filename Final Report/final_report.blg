@@ -5,7 +5,7 @@ Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: apa.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
-Repeated entry---line 929 of file references.bib
+Repeated entry---line 1055 of file references.bib
  : @article{source3
  :                 ,
 I'm skipping whatever remains of this entry
@@ -21,45 +21,45 @@ Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush 
 while executing---line 1123 of file apa.bst
 Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
 while executing---line 1123 of file apa.bst
-You've used 27 entries,
+You've used 32 entries,
             1940 wiz_defined-function locations,
-            633 strings with 8538 characters,
-and the built_in function-call counts, 10687 in all, are:
-= -- 1020
-> -- 451
-< -- 18
-+ -- 162
-- -- 152
-* -- 939
-:= -- 1885
-add.period$ -- 83
-call.type$ -- 27
-change.case$ -- 208
-chr.to.int$ -- 25
-cite$ -- 27
-duplicate$ -- 396
-empty$ -- 729
-format.name$ -- 183
-if$ -- 2058
+            671 strings with 9726 characters,
+and the built_in function-call counts, 12953 in all, are:
+= -- 1244
+> -- 539
+< -- 22
++ -- 194
+- -- 182
+* -- 1143
+:= -- 2264
+add.period$ -- 99
+call.type$ -- 32
+change.case$ -- 248
+chr.to.int$ -- 30
+cite$ -- 32
+duplicate$ -- 477
+empty$ -- 891
+format.name$ -- 220
+if$ -- 2506
 int.to.chr$ -- 3
 int.to.str$ -- 0
-missing$ -- 29
-newline$ -- 138
-num.names$ -- 83
-pop$ -- 173
+missing$ -- 34
+newline$ -- 164
+num.names$ -- 98
+pop$ -- 205
 preamble$ -- 1
-purify$ -- 210
+purify$ -- 250
 quote$ -- 0
-skip$ -- 303
+skip$ -- 364
 stack$ -- 0
-substring$ -- 721
-swap$ -- 73
-text.length$ -- 3
+substring$ -- 914
+swap$ -- 90
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 154
+type$ -- 184
 warning$ -- 0
-while$ -- 80
+while$ -- 99
 width$ -- 0
-write$ -- 353
+write$ -- 420
 (There were 7 error messages)

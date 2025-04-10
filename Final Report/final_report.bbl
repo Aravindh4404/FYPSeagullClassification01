@@ -11,6 +11,14 @@ Adriaens, P., Muusse, M., Dubois, P.~J., and Jiguet, F. (2022b).
   Identification Guide}.
 \newblock Princeton University Press, Princeton and Oxford.
 
+\bibitem[\protect\astroncite{Alfatemi et~al.}{2024}]{ALFATEMI2024558}
+Alfatemi, A., Jamal, S.~A., Paykari, N., Rahouti, M., and Chehri, A. (2024).
+\newblock Multi-label classification with deep learning and manual data
+  collection for identifying similar bird species.
+\newblock {\em Procedia Computer Science}, 246:558--565.
+\newblock 28th International Conference on Knowledge Based and Intelligent
+  information and Engineering Systems (KES 2024).
+
 \bibitem[\protect\astroncite{Anjum et~al.}{2021}]{anjum2021}
 Anjum, M.~A., Hussain, S., Aadil, F., and Chaudhry, S. (2021).
 \newblock Collaborative cloud based online learning during {COVID-19} pandemic
@@ -29,6 +37,20 @@ Carneiro, T., Da~Nobrega, R. V.~M., Nepomuceno, T., Bian, G.-B.,
 \newblock Performance analysis of {Google Colaboratory} as a tool for
   accelerating deep learning applications.
 \newblock {\em IEEE Access}, 6:61677--61685.
+
+\bibitem[\protect\astroncite{Ceballos et~al.}{2017}]{Ceballos2017}
+Ceballos, G., Ehrlich, P.~R., Barnosky, A.~D., García, A., Pringle, R.~M., and
+  Palmer, T.~M. (2017).
+\newblock Biological annihilation via the ongoing sixth mass extinction
+  signaled by vertebrate population losses and declines.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  114(30):E6089--E6096.
+
+\bibitem[\protect\astroncite{Coleman}{2015}]{taxonomicimpediment}
+Coleman, C. (2015).
+\newblock Taxonomy in times of the taxonomic impediment - examples from the
+  community of experts on amphipod crustaceans.
+\newblock {\em Journal of Crustacean Biology}, 35:729--740.
 
 \bibitem[\protect\astroncite{G{\'e}ron}{2019}]{geron2019}
 G{\'e}ron, A. (2019).
@@ -71,17 +93,23 @@ Lu, W., Yang, Y., and Yang, L. (2024).
   module.
 \newblock {\em Frontiers in Neurorobotics}, 18:1391791.
 
+\bibitem[\protect\astroncite{M.~Muazin Hilal~Hasibuan}{2022}]{source4}
+M.~Muazin Hilal~Hasibuan, Novanto~Yudistira, R. C.~W. (2022).
+\newblock Large-scale bird species classification using cnns.
+\newblock {\em Nature Machine Intelligence}, 5:89--101.
+
+\bibitem[\protect\astroncite{Marcus}{1990}]{Marcus1990}
+Marcus, L.~F. (1990).
+\newblock Traditional morphometrics.
+\newblock In {\em Proceedings of the Michigan Morphometrics Workshop}, pages
+  77--122.
+
 \bibitem[\protect\astroncite{Mohammed~Alswaitti}{2025}]{transferln97}
 Mohammed~Alswaitti, Liao~Zihao, W. A. A. A. K.~A. (2025).
 \newblock Effective classification of birds’ species based on transfer
   learning.
 \newblock {\em International Journal of Electrical and Computer Engineering
   (IJECE)}, 12(4):4172--4184.
-
-\bibitem[\protect\astroncite{Name}{2022}]{source4}
-Name, A. (2022).
-\newblock Large-scale bird species classification using cnns.
-\newblock {\em Nature Machine Intelligence}, 5:89--101.
 
 \bibitem[\protect\astroncite{Name}{2023a}]{source5}
 Name, A. (2023a).
@@ -111,6 +139,11 @@ Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou,
   transformer.
 \newblock {\em Journal of Machine Learning Research}, 24(1):5675--5758.
 
+\bibitem[\protect\astroncite{Rohlf and Marcus}{1993}]{Rohlf1993}
+Rohlf, J.~F. and Marcus, L.~F. (1993).
+\newblock A revolution in morphometrics.
+\newblock {\em Trends in Ecology \& Evolution}, 8(4):129--132.
+
 \bibitem[\protect\astroncite{{Santiago Martinez}}{2024}]{essay101313}
 {Santiago Martinez}, M.~F. (2024).
 \newblock Comparative analysis of deep learning architectures for fine- grained
@@ -127,7 +160,7 @@ Simonyan, K. and Zisserman, A. (2014).
 \newblock Very deep convolutional networks for large-scale image recognition.
 \newblock {\em arXiv preprint arXiv:1409.1556}.
 
-\bibitem[\protect\astroncite{Valan}{2023}]{source1}
+\bibitem[\protect\astroncite{Valan}{2023}]{valan}
 Valan, M. (2023).
 \newblock Automated image-based taxon identification using deep learning.
 \newblock {\em Journal of Taxonomy Research}, 45:123--135.

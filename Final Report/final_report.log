@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  10 APR 2025 18:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  10 APR 2025 19:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -427,30 +427,29 @@ l.88 \end{titlepage}
 
 
 [5]
-LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 140.
-
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.141 
-       [1
+l.140 A
+       mong birds, gulls (\textit{Laridae}) present a particularly challengi... [1
 
 ]
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 140.
 LaTeX Font Info:    Trying to load font information for TS1+phv on input line 145.
  (C:\Users\Aravindh P\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1phv.fd
 File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
 )
 
 [2]
-Overfull \hbox (18.16287pt too wide) in paragraph at lines 186--187
-\OT1/phv/m/n/12 ResNet, In-cep-tion, and VGG have demon-strated ex-cep-tional ca-pa-bil-i-ties [][]Banu[][] ([][]2023[][])[][]San-
+Overfull \hbox (4.93909pt too wide) in paragraph at lines 181--182
+\OT1/phv/m/n/12 ResNet, In-cep-tion, and VGG have demon-strated ex-cep-tional ca-pa-bil-i-ties [][]Pral-had Gavali[][]
  []
 
 
-Overfull \hbox (11.15108pt too wide) in paragraph at lines 188--189
+Overfull \hbox (11.15108pt too wide) in paragraph at lines 183--184
 \OT1/phv/m/n/12 de-pend on ad-vanced con-vo-lu-tions for fea-ture ex-trac-tion where fea-tures ex-tracted through
  []
 
@@ -459,7 +458,7 @@ Overfull \hbox (11.15108pt too wide) in paragraph at lines 188--189
 [3]
 
 [4]
-Overfull \hbox (4.85182pt too wide) in paragraph at lines 214--215
+Overfull \hbox (4.85182pt too wide) in paragraph at lines 211--212
 []\OT1/phv/m/n/12 Convolutional Neu-ral Net-works (CNNs) have rev-o-lu-tion-ized im-age clas-si-fi-ca-tion through
  []
 
@@ -470,7 +469,7 @@ Overfull \hbox (4.85182pt too wide) in paragraph at lines 214--215
 [6]
 
 [7]
-Overfull \hbox (3.80737pt too wide) in paragraph at lines 276--277
+Overfull \hbox (3.80737pt too wide) in paragraph at lines 273--274
 []\OT1/phv/m/n/12 Implement Gradient-weighted Class Ac-ti-va-tion Map-ping (Grad-CAM) for con-
  []
 
@@ -483,14 +482,14 @@ Overfull \hbox (3.80737pt too wide) in paragraph at lines 276--277
 [10]
 
 [11]
-Overfull \hbox (4.42183pt too wide) in paragraph at lines 335--336
+Overfull \hbox (4.42183pt too wide) in paragraph at lines 332--333
 \OT1/phv/m/n/12 aligns with es-tab-lished method-olo-gies in fine-grained bird clas-si-fi-ca-tion re-search, where
  []
 
 
 
 [12]
-Overfull \hbox (5.39537pt too wide) in paragraph at lines 346--347
+Overfull \hbox (5.39537pt too wide) in paragraph at lines 343--344
 \OT1/phv/m/n/12 Consultation with Pro-fes-sor Gib-bins, an or-nitho-log-i-cal ex-pert, re-vealed that adult wingtip
  []
 
@@ -500,16 +499,13 @@ Overfull \hbox (5.39537pt too wide) in paragraph at lines 346--347
 
 [14] (final_report.bbl
 
-[15])
+[15]
 
-[16] 
+[16])
+
+[17] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
-(final_report.aux
-
-Package natbib Warning: Citation(s) may have changed.
-(natbib)                Rerun to get citations correct.
-
-)
+(final_report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -518,17 +514,17 @@ Package rerunfilecheck Info: File `final_report.out' has not changed.
 (rerunfilecheck)             Checksum: 449D9345AA74032BBC3D61BB7A434848;3020.
  ) 
 Here is how much of TeX's memory you used:
- 10005 strings out of 473523
- 160319 string characters out of 5712175
- 562985 words of memory out of 5000000
- 32985 multiletter control sequences out of 15000+600000
+ 10027 strings out of 473523
+ 160732 string characters out of 5712175
+ 564174 words of memory out of 5000000
+ 33001 multiletter control sequences out of 15000+600000
  594408 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,5n,79p,1253b,589s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,6n,79p,1268b,607s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on final_report.pdf (23 pages, 161074 bytes).
+Output written on final_report.pdf (24 pages, 166281 bytes).
 PDF statistics:
- 351 PDF objects out of 1000 (max. 8388607)
- 83 named destinations out of 1000 (max. 500000)
+ 372 PDF objects out of 1000 (max. 8388607)
+ 89 named destinations out of 1000 (max. 500000)
  126 words of extra memory for PDF output out of 10000 (max. 10000000)
 
