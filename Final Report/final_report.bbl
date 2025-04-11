@@ -31,6 +31,12 @@ Ayyash, A. (2024).
 \newblock {\em The Gull Guide}.
 \newblock Princeton University Press.
 
+\bibitem[\protect\astroncite{Buda et~al.}{2018}]{buda2018systematic}
+Buda, M., Maki, A., and Mazurowski, M. (2018).
+\newblock A systematic study of the class imbalance problem in convolutional
+  neural networks.
+\newblock {\em Neural Networks}, 106:249--259.
+
 \bibitem[\protect\astroncite{Carneiro et~al.}{2018}]{carneiro2018}
 Carneiro, T., Da~Nobrega, R. V.~M., Nepomuceno, T., Bian, G.-B.,
   De~Albuquerque, V. H.~C., and Filho, P. P.~R. (2018).
@@ -46,11 +52,44 @@ Ceballos, G., Ehrlich, P.~R., Barnosky, A.~D., García, A., Pringle, R.~M., and
 \newblock {\em Proceedings of the National Academy of Sciences},
   114(30):E6089--E6096.
 
+\bibitem[\protect\astroncite{Chen et~al.}{2019}]{chen2019looks}
+Chen, C., Li, O., Tao, D., Barnett, A., Rudin, C., and Su, J. (2019).
+\newblock This looks like that: Deep learning for interpretable image
+  recognition.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  8928--8939.
+
+\bibitem[\protect\astroncite{Chu et~al.}{2020}]{chu2020fine}
+Chu, G., Potetz, B., Wang, W., Howard, A., Song, Y., Brucher, F., Leung, T.,
+  and Adam, H. (2020).
+\newblock Fine-grained bird species recognition using high resolution dcnns.
+\newblock In {\em Proceedings of the IEEE Winter Conference on Applications of
+  Computer Vision}, pages 281--290.
+
 \bibitem[\protect\astroncite{Coleman}{2015}]{taxonomicimpediment}
 Coleman, C. (2015).
 \newblock Taxonomy in times of the taxonomic impediment - examples from the
   community of experts on amphipod crustaceans.
 \newblock {\em Journal of Crustacean Biology}, 35:729--740.
+
+\bibitem[\protect\astroncite{Cui et~al.}{2019}]{cui2019class}
+Cui, Y., Jia, M., Lin, T., Song, Y., and Belongie, S. (2019).
+\newblock Class-balanced loss based on effective number of samples.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, pages 9268--9277.
+
+\bibitem[\protect\astroncite{Cui et~al.}{2018}]{cui2018large}
+Cui, Y., Song, Y., Sun, C., Howard, A., and Belongie, S. (2018).
+\newblock Large scale fine-grained categorization and domain-specific transfer
+  learning.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 4109--4118.
+
+\bibitem[\protect\astroncite{Dubey et~al.}{2018}]{dubey2018pairwise}
+Dubey, A., Gupta, O., Guo, P., Raskar, R., Farrell, R., and Naik, N. (2018).
+\newblock Pairwise confusion for fine-grained visual classification.
+\newblock In {\em Proceedings of the European Conference on Computer Vision},
+  pages 70--86.
 
 \bibitem[\protect\astroncite{G{\'e}ron}{2019}]{geron2019}
 G{\'e}ron, A. (2019).
@@ -64,16 +103,40 @@ Ghani, F., Ali, H.~M., Ashraf, I., Ullah, S., Kwak, K.~S., and Kim, D. (2024).
   deep learning techniques.
 \newblock {\em Computer Vision and Image Understanding}, 238:103809.
 
-\bibitem[\protect\astroncite{Iman}{2022}]{iman2022review}
-Iman, M. (2022).
-\newblock A review of deep transfer learning and recent advancements.
-\newblock {\em arXiv preprint arXiv:2201.09679}.
-\newblock Last revised 22 Dec 2022 (v2).
+\bibitem[\protect\astroncite{Guo et~al.}{2019}]{guo2019spottune}
+Guo, Y., Shi, H., Kumar, A., Grauman, K., Rosing, T., and Feris, R. (2019).
+\newblock Spottune: Transfer learning through adaptive fine-tuning.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, pages 4805--4814.
+
+\bibitem[\protect\astroncite{He et~al.}{2022a}]{he2022bird}
+He, X., Wang, Y., Zhou, S., and Li, Q. (2022a).
+\newblock Bird species classification using attention-based fine-grained
+  features.
+\newblock {\em Remote Sensing}, 14(4):932.
+
+\bibitem[\protect\astroncite{He et~al.}{2022b}]{he2022transfg}
+He, Z., Li, J., Liu, D., Li, H., and Barzilay, R. (2022b).
+\newblock Transfg: A transformer architecture for fine-grained recognition.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~36, pages 990--998.
 
 \bibitem[\protect\astroncite{Kahl et~al.}{2021}]{kahl2021}
 Kahl, S., Wood, C.~M., Eibl, M., and Klinck, H. (2021).
 \newblock {BirdNET}: A deep learning solution for avian diversity monitoring.
 \newblock {\em Ecological Informatics}, 61:101236.
+
+\bibitem[\protect\astroncite{Kong and Fowlkes}{2017}]{kong2017low}
+Kong, S. and Fowlkes, C. (2017).
+\newblock Low-rank bilinear pooling for fine-grained classification.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 7025--7034.
+
+\bibitem[\protect\astroncite{Kornblith et~al.}{2019}]{kornblith2019better}
+Kornblith, S., Shlens, J., and Le, Q. (2019).
+\newblock Do better imagenet models transfer better?
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, pages 2661--2671.
 
 \bibitem[\protect\astroncite{Kumar and Das}{2019}]{10.1007/978-981-15-1387-9_3}
 Kumar, A. and Das, S.~D. (2019).
@@ -93,6 +156,12 @@ Lu, W., Yang, Y., and Yang, L. (2024).
   module.
 \newblock {\em Frontiers in Neurorobotics}, 18:1391791.
 
+\bibitem[\protect\astroncite{Lundberg and Lee}{2017}]{lundberg2017unified}
+Lundberg, S. and Lee, S. (2017).
+\newblock A unified approach to interpreting model predictions.
+\newblock {\em Advances in Neural Information Processing Systems},
+  30:4765--4774.
+
 \bibitem[\protect\astroncite{M.~Muazin Hilal~Hasibuan}{2022}]{source4}
 M.~Muazin Hilal~Hasibuan, Novanto~Yudistira, R. C.~W. (2022).
 \newblock Large-scale bird species classification using cnns.
@@ -104,12 +173,24 @@ Marcus, L.~F. (1990).
 \newblock In {\em Proceedings of the Michigan Morphometrics Workshop}, pages
   77--122.
 
+\bibitem[\protect\astroncite{Marini et~al.}{2018}]{marini2018bird}
+Marini, A., Facon, J., and Koerich, A. (2018).
+\newblock Bird species classification: A comparative study between deep
+  learning architectures.
+\newblock In {\em International Conference on Systems, Signals and Image
+  Processing (IWSSIP)}, pages 1--5. IEEE.
+
 \bibitem[\protect\astroncite{Mohammed~Alswaitti}{2025}]{transferln97}
 Mohammed~Alswaitti, Liao~Zihao, W. A. A. A. K.~A. (2025).
 \newblock Effective classification of birds’ species based on transfer
   learning.
 \newblock {\em International Journal of Electrical and Computer Engineering
   (IJECE)}, 12(4):4172--4184.
+
+\bibitem[\protect\astroncite{Montavon et~al.}{2018}]{montavon2018methods}
+Montavon, G., Samek, W., and M{\"u}ller, K. (2018).
+\newblock Methods for interpreting and understanding deep neural networks.
+\newblock {\em Digital Signal Processing}, 73:1--15.
 
 \bibitem[\protect\astroncite{Name}{2023a}]{source5}
 Name, A. (2023a).
@@ -149,16 +230,30 @@ Rohlf, J.~F. and Marcus, L.~F. (1993).
 \newblock Comparative analysis of deep learning architectures for fine- grained
   bird classification.
 
-\bibitem[\protect\astroncite{Santiago~Martinez}{2024}]{santiago2024comparative}
-Santiago~Martinez, M.~F. (2024).
-\newblock Comparative analysis of deep learning architectures for fine-grained
-  bird classification.
-\newblock {B.S.} thesis, University of Twente.
+\bibitem[\protect\astroncite{Selvaraju et~al.}{2017}]{selvaraju2017grad}
+Selvaraju, R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., and Batra, D.
+  (2017).
+\newblock Grad-cam: Visual explanations from deep networks via gradient-based
+  localization.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 618--626.
+
+\bibitem[\protect\astroncite{Sharif~Razavian et~al.}{2014}]{sharif2014cnn}
+Sharif~Razavian, A., Azizpour, H., Sullivan, J., and Carlsson, S. (2014).
+\newblock Cnn features off-the-shelf: An astounding baseline for recognition.
+\newblock {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition Workshops}, pages 806--813.
 
 \bibitem[\protect\astroncite{Simonyan and Zisserman}{2014}]{simonyan2014vgg}
 Simonyan, K. and Zisserman, A. (2014).
 \newblock Very deep convolutional networks for large-scale image recognition.
 \newblock {\em arXiv preprint arXiv:1409.1556}.
+
+\bibitem[\protect\astroncite{Tan et~al.}{2018}]{tan2018survey}
+Tan, C., Sun, F., Kong, T., Zhang, W., Yang, C., and Liu, C. (2018).
+\newblock A survey on deep transfer learning.
+\newblock {\em Artificial Neural Networks and Machine Learning--ICANN 2018},
+  pages 270--279.
 
 \bibitem[\protect\astroncite{Valan}{2023}]{valan}
 Valan, M. (2023).
@@ -177,13 +272,36 @@ Wang, L., Bala, A., and Pang, S. (2022).
   classification.
 \newblock {\em Pattern Recognition}, 123:108403.
 
-\bibitem[\protect\astroncite{Zhao}{2017}]{zhao2017transfer}
-Zhao, W. (2017).
-\newblock Research on the deep learning of the small sample data based on
-  transfer learning.
-\newblock In {\em Proceedings of the International Conference on Green Energy
-  and Sustainable Development (GESD 2017)}, volume 1864, page 020018, Chongqing
-  City, China. AIP Publishing.
+\bibitem[\protect\astroncite{Wei et~al.}{2021}]{wei2021fine}
+Wei, Y., Luo, J., Zhou, H., and Wang, X. (2021).
+\newblock Fine-grained object recognition and zero-shot learning in remote
+  sensing imagery.
+\newblock {\em IEEE Transactions on Geoscience and Remote Sensing},
+  59(4):3050--3063.
+
+\bibitem[\protect\astroncite{Zhang et~al.}{2018a}]{zhang2018mixup}
+Zhang, H., Cisse, M., Dauphin, Y., and Lopez-Paz, D. (2018a).
+\newblock mixup: Beyond empirical risk minimization.
+\newblock In {\em International Conference on Learning Representations}.
+
+\bibitem[\protect\astroncite{Zhang et~al.}{2019}]{zhang2019bird}
+Zhang, J., Zhao, X., Chen, Z., and Lu, Z. (2019).
+\newblock Bird species classification from an image using vgg-16 network.
+\newblock {\em Concurrency and Computation: Practice and Experience},
+  31(23):e5166.
+
+\bibitem[\protect\astroncite{Zhang et~al.}{2018b}]{zhang2018interpretable}
+Zhang, Q., Cao, R., Wu, Y., and Zhu, S. (2018b).
+\newblock Interpretable and fine-grained visual explanations for convolutional
+  neural networks.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, pages 9097--9107.
+
+\bibitem[\protect\astroncite{Zhang et~al.}{2022}]{zhang2022unsupervised}
+Zhang, R., Zhang, J., Huang, Y., and Zou, Q. (2022).
+\newblock Unsupervised part mining for fine-grained image classification.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  44(4):1744--1758.
 
 \bibitem[\protect\astroncite{Zhou et~al.}{2022}]{zhou2022}
 Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., and Torralba, A. (2022).

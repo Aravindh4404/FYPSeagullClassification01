@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  9 APR 2025 21:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  11 APR 2025 18:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -669,7 +669,7 @@ LaTeX Warning: Citation 'ayyash2024' on page 1 undefined on input line 13.
 {C:/Users/Aravindh P/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
 
 [2]
-Overfull \hbox (6.83582pt too wide) in paragraph at lines 113--114
+Overfull \hbox (6.83582pt too wide) in paragraph at lines 115--116
 []\OT1/cmr/m/n/12 Convolutional Neu-ral Net-works (CNNs) have rev-o-lu-tion-ize
 d im-age clas-si-fi-ca-tion through
  []
@@ -677,230 +677,38 @@ d im-age clas-si-fi-ca-tion through
 
 
 [3]
+Underfull \vbox (badness 1147) has occurred while \output is active []
+
+
 
 [4]
 
 [5]
-introduction/introduction.tex:161: Missing number, treated as zero.
+introduction/introduction.tex:163: Missing number, treated as zero.
 <to be read again> 
                    \c@* 
-l.161 \begin{enumerate}[label=Phase~\arabic*
+l.163 \begin{enumerate}[label=Phase~\arabic*
                                             :]
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
 
-introduction/introduction.tex:162: LaTeX Error: Something's wrong--perhaps a mi
+introduction/introduction.tex:164: LaTeX Error: Something's wrong--perhaps a mi
 ssing \item.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.162     \item M
+l.164     \item M
                  odel Development and Evaluation
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
 
-[6]) (body/Methodology.tex (body/DL.tex
-
-[7]
-
-[8]
-
-[9] (body/Models/VGG.tex
-
-[10]
-
-[11]
-
-[12]) (body/Models/ViT.tex
-
-[13]
-
-body/Models/ViT.tex:57: LaTeX Error: Environment algorithm undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.57 \begin{algorithm}
-                      
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-body/Models/ViT.tex:58: LaTeX Error: \caption outside float.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.58 \caption
-             {Attention-based Token Pooling}
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-
-[14]
-
-body/Models/ViT.tex:65: LaTeX Error: \begin{document} ended by \end{algorithm}.
-
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.65 \end{algorithm}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-LaTeX Warning: Citation 'stassin2024explainability' on page 15 undefined on inp
-ut line 67.
-
-
-LaTeX Warning: Citation 'touvron2021training' on page 15 undefined on input lin
-e 84.
-
-) (body/Models/Inception.tex
-
-LaTeX Warning: Citation 'szegedy2016rethinking' on page 15 undefined on input l
-ine 5.
-
-
-
-[15]
-
-LaTeX Warning: Citation 'shu2023multiscale' on page 16 undefined on input line 
-17.
-
-
-LaTeX Warning: Citation 'szegedy2016rethinking' on page 16 undefined on input l
-ine 33.
-
-
-LaTeX Warning: Citation 'touvron2021training' on page 16 undefined on input lin
-e 41.
-
-
-
-[16]
-
-LaTeX Warning: Citation 'micikevicius2018mixed' on page 17 undefined on input l
-ine 48.
-
-
-Overfull \hbox (13.58713pt too wide) in paragraph at lines 48--49
-\OT1/cmr/m/n/12 cel-er-ate com-pu-ta-tion while main-tain-ing nu-mer-i-cal sta-
-bil-ity [[]] 
- []
-
-
-LaTeX Warning: Citation 'you2019large' on page 17 undefined on input line 49.
-
-) (body/Models/ResNet.tex
-
-body/Models/ResNet.tex:1: LaTeX Error: Can be used only in preamble.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1 \usepackage
-               {natbib}%! Author = Aravindh P
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-LaTeX Warning: Citation 'he2016deep' on page 17 undefined on input line 11.
-
-
-
-[17]
-
-LaTeX Warning: Citation 'he2016deep' on page 18 undefined on input line 13.
-
-
-LaTeX Warning: Citation 'he2016identity' on page 18 undefined on input line 13.
-
-
-
-LaTeX Warning: Citation 'srivastava2014dropout' on page 18 undefined on input l
-ine 31.
-
-
-LaTeX Warning: Citation 'zhou2022effective' on page 18 undefined on input line 
-35.
-
-
-
-[18]
-
-LaTeX Warning: Citation 'zhao2021image' on page 19 undefined on input line 46.
-
-
-LaTeX Warning: Citation 'huang2022early' on page 19 undefined on input line 73.
-
-
-) (body/Models/CustomCNN.tex
-Overfull \hbox (8.71953pt too wide) in paragraph at lines 8--8
-[]\OT1/cmr/bx/n/17.28 Custom CNN with Squeeze-and-Excitation Blocks 
- []
-
-
-
-[19]
-
-body/Models/CustomCNN.tex:33: LaTeX Error: Environment algorithm undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.33 \begin{algorithm}
-                      
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-body/Models/CustomCNN.tex:34: LaTeX Error: \caption outside float.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.34 \caption
-             {Weighted Sampling for Class Balance}
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-body/Models/CustomCNN.tex:42: LaTeX Error: \begin{document} ended by \end{algor
-ithm}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.42 \end{algorithm}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-
-[20])))
+[6])
 
 thesis.tex:56: LaTeX Error: Can be used only in preamble.
 
@@ -929,7 +737,7 @@ I'm ignoring this command.
 
 
 
-[21] (thesis.aux)
+[7] (thesis.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -939,7 +747,7 @@ L3 programming layer <2025-01-18>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 3F1EB1A794D72D1B3F6543A94E94C60B;7692.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 Package biblatex Warning: Please (re)run BibTeX on the file(s):
 (biblatex)                thesis
@@ -950,105 +758,13 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 16804 strings out of 473523
- 298854 string characters out of 5712175
+ 16566 strings out of 473523
+ 294522 string characters out of 5712175
  919977 words of memory out of 5000000
- 39740 multiletter control sequences out of 15000+600000
- 564449 words of font info for 55 fonts, out of 8000000 for 9000
+ 39636 multiletter control sequences out of 15000+600000
+ 561337 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,8n,81p,1879b,1451s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{cite.0@guan2022attention} has been referenced but d
-oes not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@wightman2021resnet} has been referenced but 
-does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@conde2021exploring} has been referenced but 
-does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@liu2022attention} has been referenced but do
-es not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@dosovitskiy2020image} has been referenced bu
-t does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@sanchez2019fine} has been referenced but doe
-s not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@wu2015onreducelr} has been referenced but do
-es not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@loshchilov2017decoupled} has been referenced
- but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@wang2022bird} has been referenced but does n
-ot exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@shorten2019survey} has been referenced but d
-oes not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@reslan2022automatic} has been referenced but
- does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@ghani2024comprehensive} has been referenced 
-but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@deng2009imagenet} has been referenced but do
-es not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@simonyan2014vgg} has been referenced but doe
-s not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@birdset2023} has been referenced but does no
-t exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@zhou2022} has been referenced but does not e
-xist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@wang2022} has been referenced but does not e
-xist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@kahl2021} has been referenced but does not e
-xist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@ghani2024} has been referenced but does not 
-exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@raffel2023} has been referenced but does not
- exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@geron2019} has been referenced but does not 
-exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@carneiro2018} has been referenced but does n
-ot exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{cite.0@anjum2021} has been referenced but does not 
-exist, replaced by a fixed one
-
+ 66i,5n,81p,1879b,1451s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{cite.0@adriaens2022gulls} has been referenced but d
 oes not exist, replaced by a fixed one
@@ -1068,17 +784,12 @@ ot exist, replaced by a fixed one
  <C:\Users\Aravindh P\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\t
 crm1200.pk><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/publi
 c/amsfonts/cm/cmbx12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fon
-ts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Aravindh P/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Aravindh P/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Ara
-vindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-<C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmti12.pfb>
-Output written on D:/FYPSeagullClassification01\out\thesis.pdf (21 pages, 19188
-7 bytes).
+ts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Aravindh P/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on D:/FYPSeagullClassification01\out\thesis.pdf (7 pages, 83465 
+bytes).
 PDF statistics:
- 436 PDF objects out of 1000 (max. 8388607)
- 130 named destinations out of 1000 (max. 500000)
- 281 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 117 PDF objects out of 1000 (max. 8388607)
+ 30 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

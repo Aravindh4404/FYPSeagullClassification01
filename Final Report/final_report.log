@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  10 APR 2025 19:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  11 APR 2025 17:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -318,7 +318,7 @@ Package hyperref Info: Link coloring ON on input line 26.
 \@outlinefile=\write3
 \openout3 = `final_report.out'.
 
-<images/nottingham_logo.png, id=63, 338.76563pt x 130.23656pt>
+<images/nottingham_logo.png, id=59, 338.76563pt x 130.23656pt>
 File: images/nottingham_logo.png Graphic file (type png)
 <use images/nottingham_logo.png>
 Package pdftex.def Info: images/nottingham_logo.png  used on input line 37.
@@ -458,52 +458,84 @@ Overfull \hbox (11.15108pt too wide) in paragraph at lines 183--184
 [3]
 
 [4]
-Overfull \hbox (4.85182pt too wide) in paragraph at lines 211--212
-[]\OT1/phv/m/n/12 Convolutional Neu-ral Net-works (CNNs) have rev-o-lu-tion-ized im-age clas-si-fi-ca-tion through
- []
-
-
 
 [5]
 
 [6]
 
 [7]
-Overfull \hbox (3.80737pt too wide) in paragraph at lines 273--274
-[]\OT1/phv/m/n/12 Implement Gradient-weighted Class Ac-ti-va-tion Map-ping (Grad-CAM) for con-
- []
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family phv in TS1 encoding.
+            Default family used instead on input line 254.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family phv in TS1 encoding.
+            Default family used instead on input line 254.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family phv in TS1 encoding.
+            Default family used instead on input line 258.
+
+
+Package natbib Warning: Citation `szegedy2016rethinking' on page 8 undefined on input line 258.
+
+
+Package natbib Warning: Citation `loshchilov2017sgdr' on page 8 undefined on input line 261.
+
+d:/FYPSeagullClassification01/Final Report/final_report.tex:270: Misplaced alignment tab character &.
+l.270 4. Interpretability &
+                            Biological Validation
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
 
 
 
 [8]
 
 [9]
+Overfull \hbox (3.80737pt too wide) in paragraph at lines 313--314
+[]\OT1/phv/m/n/12 Implement Gradient-weighted Class Ac-ti-va-tion Map-ping (Grad-CAM) for con-
+ []
+
+
 
 [10]
 
 [11]
-Overfull \hbox (4.42183pt too wide) in paragraph at lines 332--333
+
+[12]
+
+[13]
+Overfull \hbox (4.42183pt too wide) in paragraph at lines 372--373
 \OT1/phv/m/n/12 aligns with es-tab-lished method-olo-gies in fine-grained bird clas-si-fi-ca-tion re-search, where
  []
 
 
 
-[12]
-Overfull \hbox (5.39537pt too wide) in paragraph at lines 343--344
+[14]
+Overfull \hbox (5.39537pt too wide) in paragraph at lines 383--384
 \OT1/phv/m/n/12 Consultation with Pro-fes-sor Gib-bins, an or-nitho-log-i-cal ex-pert, re-vealed that adult wingtip
  []
 
 
 
-[13]
-
-[14] (final_report.bbl
-
 [15]
 
-[16])
+[16] (final_report.bbl
 
-[17] 
+[17]
+
+[18]
+
+[19])
+
+Package natbib Warning: There were undefined citations.
+
+
+
+[20] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (final_report.aux)
  ***********
@@ -511,20 +543,20 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `final_report.out' has not changed.
-(rerunfilecheck)             Checksum: 449D9345AA74032BBC3D61BB7A434848;3020.
+(rerunfilecheck)             Checksum: 7B5E00E2125E7C2B6412F936DF281A8D;2706.
  ) 
 Here is how much of TeX's memory you used:
- 10027 strings out of 473523
- 160732 string characters out of 5712175
- 564174 words of memory out of 5000000
- 33001 multiletter control sequences out of 15000+600000
- 594408 words of font info for 73 fonts, out of 8000000 for 9000
+ 10114 strings out of 473523
+ 162498 string characters out of 5712175
+ 564807 words of memory out of 5000000
+ 33064 multiletter control sequences out of 15000+600000
+ 595058 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,1268b,607s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on final_report.pdf (24 pages, 166281 bytes).
+ 75i,6n,79p,1268b,633s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Aravindh P\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcss1200.pk><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on final_report.pdf (27 pages, 189752 bytes).
 PDF statistics:
- 372 PDF objects out of 1000 (max. 8388607)
- 89 named destinations out of 1000 (max. 500000)
- 126 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 469 PDF objects out of 1000 (max. 8388607)
+ 111 named destinations out of 1000 (max. 500000)
+ 118 words of extra memory for PDF output out of 10000 (max. 10000000)
 
