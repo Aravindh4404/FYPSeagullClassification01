@@ -1,5 +1,19 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\astroncite{Anjum et~al.}{2021}]{anjum2021}
+Anjum, M.~A., Hussain, S., Aadil, F., and Chaudhry, S. (2021).
+\newblock Collaborative cloud based online learning during {COVID-19} pandemic
+  using {Google Colab}.
+\newblock {\em Computer Applications in Engineering Education},
+  29(6):1803--1819.
+
+\bibitem[\protect\astroncite{Carneiro et~al.}{2018}]{carneiro2018}
+Carneiro, T., Da~Nobrega, R. V.~M., Nepomuceno, T., Bian, G.-B.,
+  De~Albuquerque, V. H.~C., and Filho, P. P.~R. (2018).
+\newblock Performance analysis of {Google Colaboratory} as a tool for
+  accelerating deep learning applications.
+\newblock {\em IEEE Access}, 6:61677--61685.
+
 \bibitem[\protect\astroncite{Conde and Turgutlu}{2021}]{conde2021exploring}
 Conde, M.~V. and Turgutlu, K. (2021).
 \newblock Exploring vision transformers for fine-grained classification.
@@ -13,7 +27,13 @@ Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X.,
   at scale.
 \newblock {\em International Conference on Learning Representations}.
 
-\bibitem[\protect\astroncite{Ghani et~al.}{2024}]{ghani2024comprehensive}
+\bibitem[\protect\astroncite{G{\'e}ron}{2019}]{geron2019}
+G{\'e}ron, A. (2019).
+\newblock {\em Hands-on machine learning with {Scikit-Learn}, {Keras}, and
+  {TensorFlow}: Concepts, tools, and techniques to build intelligent systems}.
+\newblock O'Reilly Media, 2nd edition.
+
+\bibitem[\protect\astroncite{Ghani et~al.}{2024}]{ghani2024}
 Ghani, F., Ali, H.~M., Ashraf, I., Ullah, S., Kwak, K.~S., and Kim, D. (2024).
 \newblock A comprehensive review of fine-grained bird species recognition using
   deep learning techniques.
@@ -25,21 +45,10 @@ Guan, J., Chen, Q., Luo, A., Wei, X., and Tang, J. (2022).
   transformers.
 \newblock {\em Ecological Informatics}, 71:101722.
 
-\bibitem[\protect\astroncite{He et~al.}{2016a}]{he2016deep}
-He, K., Zhang, X., Ren, S., and Sun, J. (2016a).
-\newblock Deep residual learning for image recognition.
-\newblock {\em Proceedings of the IEEE conference on computer vision and
-  pattern recognition}, pages 770--778.
-
-\bibitem[\protect\astroncite{He et~al.}{2016b}]{he2016identity}
-He, K., Zhang, X., Ren, S., and Sun, J. (2016b).
-\newblock Identity mappings in deep residual networks.
-\newblock {\em European Conference on Computer Vision}, pages 630--645.
-
-\bibitem[\protect\astroncite{Huang et~al.}{2022}]{huang2022early}
-Huang, J., Wang, L., Liu, Y., and Wang, S. (2022).
-\newblock Early stopping for deep learning: A systematic survey.
-\newblock {\em Applied Sciences}, 12(14):7320.
+\bibitem[\protect\astroncite{Kahl et~al.}{2021}]{kahl2021}
+Kahl, S., Wood, C.~M., Eibl, M., and Klinck, H. (2021).
+\newblock {BirdNET}: A deep learning solution for avian diversity monitoring.
+\newblock {\em Ecological Informatics}, 61:101236.
 
 \bibitem[\protect\astroncite{Liu et~al.}{2022}]{liu2022attention}
 Liu, Y., Zhao, Q., Xu, Z., and Chen, E. (2022).
@@ -47,40 +56,23 @@ Liu, Y., Zhao, Q., Xu, Z., and Chen, E. (2022).
   image recognition.
 \newblock {\em IEEE Transactions on Image Processing}, 31:1634--1647.
 
-\bibitem[\protect\astroncite{Loshchilov and
-  Hutter}{2017}]{loshchilov2017decoupled}
-Loshchilov, I. and Hutter, F. (2017).
-\newblock Decoupled weight decay regularization.
-\newblock {\em arXiv preprint arXiv:1711.05101}.
+\bibitem[\protect\astroncite{Peng et~al.}{2023}]{birdset2023}
+Peng, Y., Zhang, Z., Xie, Y., Zhang, M., and Wei, Y. (2023).
+\newblock {BirdSet}: A benchmark dataset for fine-grained bird species
+  recognition.
+\newblock {\em Nature Scientific Data}, 10:76.
 
-\bibitem[\protect\astroncite{Reslan and Farou}{2022}]{reslan2022automatic}
-Reslan, A. and Farou, Z. (2022).
-\newblock Automatic fine-grained classification of bird species using deep
-  learning.
-\newblock {\em International Journal of Electrical and Computer Engineering},
-  12(6):6343--6352.
-
-\bibitem[\protect\astroncite{Sanchez et~al.}{2019}]{sanchez2019fine}
-Sanchez, J., Perronnin, F., Mensink, T., and Verbeek, J. (2019).
-\newblock Fine-grained image classification: A survey.
-\newblock {\em ACM Computing Surveys}, 51(5):1--37.
-
-\bibitem[\protect\astroncite{Shorten and
-  Khoshgoftaar}{2019}]{shorten2019survey}
-Shorten, C. and Khoshgoftaar, T.~M. (2019).
-\newblock A survey on image data augmentation for deep learning.
-\newblock {\em Journal of Big Data}, 6(1):60.
+\bibitem[\protect\astroncite{Raffel et~al.}{2023}]{raffel2023}
+Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou,
+  Y., Li, W., and Liu, P.~J. (2023).
+\newblock Exploring the limits of transfer learning with a unified text-to-text
+  transformer.
+\newblock {\em Journal of Machine Learning Research}, 24(1):5675--5758.
 
 \bibitem[\protect\astroncite{Simonyan and Zisserman}{2014}]{simonyan2014vgg}
 Simonyan, K. and Zisserman, A. (2014).
 \newblock Very deep convolutional networks for large-scale image recognition.
 \newblock {\em arXiv preprint arXiv:1409.1556}.
-
-\bibitem[\protect\astroncite{Srivastava et~al.}{2014}]{srivastava2014dropout}
-Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov,
-  R. (2014).
-\newblock Dropout: a simple way to prevent neural networks from overfitting.
-\newblock {\em The Journal of Machine Learning Research}, 15(1):1929--1958.
 
 \bibitem[\protect\astroncite{Stassin et~al.}{2024}]{stassin2024explainability}
 Stassin, S., Corduant, V., Mahmoudi, S.~A., and Siebert, X. (2024).
@@ -96,7 +88,7 @@ Touvron, H., Cord, M., Douze, M., Massa, F., Sablayrolles, A., and Jégou, H.
 \newblock {\em International Conference on Machine Learning}, pages
   10347--10357.
 
-\bibitem[\protect\astroncite{Wang et~al.}{2022}]{wang2022bird}
+\bibitem[\protect\astroncite{Wang et~al.}{2022}]{wang2022}
 Wang, L., Bala, A., and Pang, S. (2022).
 \newblock Expert-guided bird image dataset construction for fine-grained
   classification.
@@ -107,21 +99,10 @@ Wightman, R., Touvron, H., and Jegou, H. (2021).
 \newblock {ResNet} strikes back: An improved training procedure in timm.
 \newblock {\em arXiv preprint arXiv:2110.00476}.
 
-\bibitem[\protect\astroncite{Wu et~al.}{2018}]{wu2015onreducelr}
-Wu, Y., Dziugaite, G.~K., Norouzi, M., and Roy, D.~M. (2018).
-\newblock On the convergence of adam and beyond.
-\newblock {\em International Conference on Learning Representations}.
-
-\bibitem[\protect\astroncite{Zhao et~al.}{2021}]{zhao2021image}
-Zhao, Y., Tong, J., and Sun, L. (2021).
-\newblock Image preprocessing methods to identify micro-cracks of road
-  pavement.
-\newblock {\em Journal of Advanced Transportation}, 2021:1--16.
-
-\bibitem[\protect\astroncite{Zhou et~al.}{2022}]{zhou2022effective}
+\bibitem[\protect\astroncite{Zhou et~al.}{2022}]{zhou2022}
 Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., and Torralba, A. (2022).
 \newblock On the effectiveness of expert-curated datasets for bird species
   classification.
-\newblock {\em IEEE Transactions on Image Processing}, 31:4402--4415.
+\newblock {\em IEEE Transactions on Image Processing}, 31(23):4402--4415.
 
 \end{thebibliography}

@@ -10,45 +10,45 @@ You're missing a field name---line 1841 of file references.bib
  : %  title={Introduction to algorithms},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You've used 21 entries,
+You've used 17 entries,
             1940 wiz_defined-function locations,
-            595 strings with 7691 characters,
-and the built_in function-call counts, 9376 in all, are:
-= -- 889
-> -- 488
-< -- 8
-+ -- 177
-- -- 170
-* -- 864
-:= -- 1638
-add.period$ -- 63
-call.type$ -- 21
-change.case$ -- 189
-chr.to.int$ -- 20
-cite$ -- 21
-duplicate$ -- 319
-empty$ -- 573
-format.name$ -- 201
-if$ -- 1786
-int.to.chr$ -- 2
+            574 strings with 7431 characters,
+and the built_in function-call counts, 7866 in all, are:
+= -- 728
+> -- 450
+< -- 4
++ -- 164
+- -- 160
+* -- 749
+:= -- 1394
+add.period$ -- 51
+call.type$ -- 17
+change.case$ -- 164
+chr.to.int$ -- 17
+cite$ -- 17
+duplicate$ -- 247
+empty$ -- 467
+format.name$ -- 181
+if$ -- 1476
+int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 21
-newline$ -- 108
-num.names$ -- 63
-pop$ -- 160
+missing$ -- 18
+newline$ -- 88
+num.names$ -- 51
+pop$ -- 141
 preamble$ -- 1
-purify$ -- 189
+purify$ -- 164
 quote$ -- 0
-skip$ -- 258
+skip$ -- 192
 stack$ -- 0
-substring$ -- 607
-swap$ -- 73
-text.length$ -- 3
+substring$ -- 504
+swap$ -- 47
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 126
+type$ -- 100
 warning$ -- 0
-while$ -- 69
+while$ -- 53
 width$ -- 0
-write$ -- 269
+write$ -- 219
 (There was 1 error message)

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  12 APR 2025 17:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  12 APR 2025 20:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -318,7 +318,7 @@ Package hyperref Info: Link coloring ON on input line 26.
 \@outlinefile=\write3
 \openout3 = `final_report.out'.
 
-<images/nottingham_logo.png, id=183, 338.76563pt x 130.23656pt>
+<images/nottingham_logo.png, id=207, 338.76563pt x 130.23656pt>
 File: images/nottingham_logo.png Graphic file (type png)
 <use images/nottingham_logo.png>
 Package pdftex.def Info: images/nottingham_logo.png  used on input line 37.
@@ -402,84 +402,53 @@ l.88 \end{titlepage}
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-
+ (final_report.toc
 
 [1
 
 ]
 
-[2] (final_report.toc
-
-[3])
+[2])
 \tf@toc=\write4
 \openout4 = `final_report.toc'.
 
 
 
-[4] (final_report.lof)
-\tf@lof=\write5
-\openout5 = `final_report.lof'.
-
-
-
-[5] (final_report.lot)
-\tf@lot=\write6
-\openout6 = `final_report.lot'.
-
-
-
-[6]
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 453.
-
-
-Package natbib Warning: Citation `ghani2024comprehensive' on page 1 undefined on input line 458.
-
-
-Package natbib Warning: Citation `reslan2022automatic' on page 1 undefined on input line 458.
-
-
-Package natbib Warning: Citation `shorten2019survey' on page 1 undefined on input line 470.
-
-LaTeX Font Info:    Trying to load font information for TS1+phv on input line 474.
-(C:\Users\Aravindh P\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1phv.fd
-File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
-)
+[3]
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.478     \item R
-                 andom resized crops (scale 0.95-1.0 of original size) [1
+l.378 \newpage
+               [1
 
-{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}]
-
-Package natbib Warning: Citation `wang2022bird' on page 2 undefined on input line 487.
-
-
-Package natbib Warning: Citation `loshchilov2017decoupled' on page 2 undefined on input line 503.
-
-
+]
 
 [2]
-
-Package natbib Warning: Citation `wu2015onreducelr' on page 3 undefined on input line 513.
-
-
-Overfull \hbox (1.52985pt too wide) in paragraph at lines 521--522
-[]\OT1/phv/m/n/12 Model check-points were saved af-ter each epoch, pre-serv-ing the best-performing model
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 400.
+ (C:\Users\Aravindh P\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1phv.fd
+File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
+)
+Overfull \hbox (4.42183pt too wide) in paragraph at lines 413--414
+\OT1/phv/m/n/12 aligns with es-tab-lished method-olo-gies in fine-grained bird clas-si-fi-ca-tion re-search, where
  []
-
-
-Package natbib Warning: Citation `sanchez2019fine' on page 3 undefined on input line 533.
 
 
 
 [3]
+Overfull \hbox (5.39537pt too wide) in paragraph at lines 424--425
+\OT1/phv/m/n/12 Consultation with Pro-fes-sor Gib-bins, an or-nitho-log-i-cal ex-pert, re-vealed that adult wingtip
+ []
+
+
 
 [4]
+Overfull \hbox (3.2311pt too wide) in paragraph at lines 453--454
+\OT1/phv/m/n/12 learn-ing mod-els used in this study for fine-grained trans-fer learn-ing with lim-ited datasets
+ []
+
+
 
 [5]
 
@@ -487,155 +456,81 @@ Package natbib Warning: Citation `sanchez2019fine' on page 3 undefined on input 
 
 [7]
 
-Package natbib Warning: Citation `dosovitskiy2020image' on page 8 undefined on input line 748.
-
-
-
 [8]
-
-Package natbib Warning: Citation `liu2022attention' on page 9 undefined on input line 750.
-
-
-Package natbib Warning: Citation `conde2021exploring' on page 9 undefined on input line 762.
-
-
-Package natbib Warning: Citation `wightman2021resnet' on page 9 undefined on input line 775.
-
-
 
 [9]
 
-Package natbib Warning: Citation `guan2022attention' on page 10 undefined on input line 781.
+[10]
 
+[11]
 
-Package natbib Warning: Citation `stassin2024explainability' on page 10 undefined on input line 804.
+[12]
 
+[13]
 
-Overfull \hbox (10.73027pt too wide) in paragraph at lines 808--809
+[14{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}]
+Overfull \hbox (10.73027pt too wide) in paragraph at lines 804--805
 \OT1/phv/m/n/12 Both ViT im-ple-men-ta-tions used stan-dard-ized pre-pro-cess-ing and aug-men-ta-tion pipelines: 
  []
 
 
 
-[10]
-
-Package natbib Warning: Citation `touvron2021training' on page 11 undefined on input line 821.
-
-
-Overfull \hbox (31.6483pt too wide) in paragraph at lines 849--850
-\OT1/phv/m/n/12 tex-tual in-for-ma-tion si-mul-ta-ne-ously ([Szegedy et al., 2016](https://arxiv.org/abs/1512.00567)). 
- []
-
-
-
-[11]
-
-[12]
-Overfull \hbox (58.3241pt too wide) in paragraph at lines 906--907
-\OT1/phv/m/n/12 while main-tain-ing nu-mer-i-cal sta-bil-ity ([Mi-cike-vi-cius et al., 2018](https://arxiv.org/abs/1710.03740)): 
- []
-
-
-Overfull \hbox (96.39948pt too wide) in paragraph at lines 964--965
-\OT1/phv/m/n/12 sub-tle wing pat-tern dif-fer-ences be-tween gull species ([Xie et al., 2020](https://arxiv.org/abs/1911.09070)). 
- []
-
-
-Overfull \hbox (72.97551pt too wide) in paragraph at lines 985--986
-\OT1/phv/m/n/12 as-pect of rig-or-ous sci-en-tific method-ol-ogy ([Bouthillier et al., 2019](https://arxiv.org/abs/1902.02476)). 
- []
-
-
-Package natbib Warning: Citation `he2016deep' on page 13 undefined on input line 991.
-
-
-
-[13]
-
-Package natbib Warning: Citation `he2016deep' on page 14 undefined on input line 993.
-
-
-Package natbib Warning: Citation `he2016identity' on page 14 undefined on input line 993.
-
-
-Overfull \hbox (3.52208pt too wide) in paragraph at lines 993--994
-[]\OT1/phv/m/n/12 ResNet-50 ar-chi-tec-ture con-sists of five stages, each con-tain-ing mul-ti-ple resid-ual blocks.
- []
-
-
-Package natbib Warning: Citation `ghani2024comprehensive' on page 14 undefined on input line 995.
-
-
-Package natbib Warning: Citation `srivastava2014dropout' on page 14 undefined on input line 1011.
-
-
-Package natbib Warning: Citation `zhou2022effective' on page 14 undefined on input line 1015.
-
-
-
-[14]
-
-Package natbib Warning: Citation `zhao2021image' on page 15 undefined on input line 1026.
-
-
-Package natbib Warning: Citation `shorten2019survey' on page 15 undefined on input line 1040.
-
-
-Package natbib Warning: Citation `huang2022early' on page 15 undefined on input line 1053.
-
-
-
 [15]
-Overfull \hbox (1.73373pt too wide) in paragraph at lines 1083--1084
-\OT1/phv/m/n/12 spite the un-even dis-tri-bu-tion of ex-am-ples be-tween classes, we im-ple-mented a weighted
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 845.
+
+
+[16{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}]
+Overfull \hbox (7.45619pt too wide) in paragraph at lines 880--881
+ []\OT1/phv/b/n/12 Mixed-Precision Train-ing: \OT1/phv/m/n/12 We em-ployed Py-Torch's Au-to-matic Mixed Pre-ci-sion (AMP)
  []
 
 
 
-[16]
+[17]
 
-[17] (final_report.bbl
-LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 6.
-
-
-[18])
-
-Package natbib Warning: There were undefined citations.
+[18]
+Overfull \hbox (16.65916pt too wide) in paragraph at lines 918--919
+[]\OT1/phv/m/n/12 The sharp-en-ing ker-nel was sys-tem-at-i-cally ap-plied to both train-ing and eval-u-a-tion pipelines
+ []
 
 
 
-[19] 
+[19]
+
+[20]
+Overfull \hbox (2.66626pt too wide) in paragraph at lines 954--955
+[]\OT1/phv/b/n/12 Squeeze\OT1/phv/m/n/12 : Global av-er-age pool-ing across spa-tial di-men-sions to gen-er-ate channel-
+ []
+
+
+
+[21] (final_report.bbl
+
+[22])
+
+[23] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
-(final_report.aux
-
-Package natbib Warning: Citation(s) may have changed.
-(natbib)                Rerun to get citations correct.
-
-)
+(final_report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `final_report.out' has not changed.
-(rerunfilecheck)             Checksum: 9969207660B94C1D638E12B21D3DD017;9653.
+(rerunfilecheck)             Checksum: F0CF83ECA3EAA13681504DCC5E5BAE7A;10621.
  ) 
 Here is how much of TeX's memory you used:
- 10091 strings out of 473523
- 162098 string characters out of 5712175
- 563810 words of memory out of 5000000
- 33048 multiletter control sequences out of 15000+600000
+ 10030 strings out of 473523
+ 160631 string characters out of 5712175
+ 561745 words of memory out of 5000000
+ 32984 multiletter control sequences out of 15000+600000
  594408 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,1251b,581s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on final_report.pdf (27 pages, 175673 bytes).
+ 75i,6n,79p,1251b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on final_report.pdf (28 pages, 233764 bytes).
 PDF statistics:
- 450 PDF objects out of 1000 (max. 8388607)
- 105 named destinations out of 1000 (max. 500000)
- 366 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 578 PDF objects out of 1000 (max. 8388607)
+ 112 named destinations out of 1000 (max. 500000)
+ 414 words of extra memory for PDF output out of 10000 (max. 10000000)
 
