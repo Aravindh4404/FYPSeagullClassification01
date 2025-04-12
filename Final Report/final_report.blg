@@ -5,66 +5,50 @@ Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: apa.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
-Repeated entry---line 1451 of file references.bib
- : @article{source3
- :                 ,
+You're missing a field name---line 1841 of file references.bib
+ : 
+ : %  title={Introduction to algorithms},
+(Error may have been on previous line)
 I'm skipping whatever remains of this entry
-Repeated entry---line 1829 of file references.bib
- : @article{buda2018systematic
- :                            ,
-I'm skipping whatever remains of this entry
-Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
-while executing---line 1048 of file apa.bst
-Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
-while executing---line 1048 of file apa.bst
-Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
-while executing---line 1048 of file apa.bst
-Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
-while executing---line 1048 of file apa.bst
-Warning--can't use both volume and number fields in he2022transfg
-Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
-while executing---line 1123 of file apa.bst
-Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
-while executing---line 1123 of file apa.bst
-You've used 51 entries,
+You've used 21 entries,
             1940 wiz_defined-function locations,
-            767 strings with 13325 characters,
-and the built_in function-call counts, 24069 in all, are:
-= -- 2342
-> -- 1069
-< -- 34
-+ -- 388
-- -- 370
-* -- 2106
-:= -- 4002
-add.period$ -- 155
-call.type$ -- 51
-change.case$ -- 436
-chr.to.int$ -- 47
-cite$ -- 52
-duplicate$ -- 916
-empty$ -- 1637
-format.name$ -- 431
-if$ -- 4795
-int.to.chr$ -- 5
+            595 strings with 7691 characters,
+and the built_in function-call counts, 9376 in all, are:
+= -- 889
+> -- 488
+< -- 8
++ -- 177
+- -- 170
+* -- 864
+:= -- 1638
+add.period$ -- 63
+call.type$ -- 21
+change.case$ -- 189
+chr.to.int$ -- 20
+cite$ -- 21
+duplicate$ -- 319
+empty$ -- 573
+format.name$ -- 201
+if$ -- 1786
+int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 54
-newline$ -- 258
-num.names$ -- 155
-pop$ -- 430
+missing$ -- 21
+newline$ -- 108
+num.names$ -- 63
+pop$ -- 160
 preamble$ -- 1
-purify$ -- 439
+purify$ -- 189
 quote$ -- 0
-skip$ -- 703
+skip$ -- 258
 stack$ -- 0
-substring$ -- 1772
-swap$ -- 251
-text.length$ -- 17
+substring$ -- 607
+swap$ -- 73
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 298
-warning$ -- 1
-while$ -- 190
+type$ -- 126
+warning$ -- 0
+while$ -- 69
 width$ -- 0
-write$ -- 664
-(There were 8 error messages)
+write$ -- 269
+(There was 1 error message)

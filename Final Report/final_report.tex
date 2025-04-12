@@ -449,30 +449,15 @@
 % Several pre-trained architectures were evaluated for this task, with VGG-16. \citet{simonyan2014vgg} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset of gull images, demonstrating the potential of this approach for specialized biological classification tasks.
 
 \section{VGG-16 Architecture}
-
+\citep{simonyan2014vgg}
 \subsubsection{Theoretical Background}
 
-VGG-16 is a popular Convolutional Neural Network (CNN) architecture widely used in computer vision applications. Originally developed by Simonyan and Zisserman \citep{simonyan2014vgg}, VGG-16 consists of 16 layers, including 13 convolutional layers arranged in blocks of increasing depth, followed by 3 fully connected layers, with a total of approximately 138 million parameters. The architecture follows a systematic approach of stacking convolutional layers with small 3$\times$3 filters followed by max-pooling layers, creating a deep network capable of learning complex hierarchical features.
-
-One of the main advantages of using VGG-16 as a pre-trained model for transfer learning is its ability to capture a wide range of features and patterns in images. This capability stems from the deep architecture of the VGG-16 model, which allows it to extract more complex features from images compared to shallower models. VGG-16 has been pre-trained on the ImageNet dataset \citep{deng2009imagenet}, which contains over 1.2 million images across 1,000 classes, enabling it to recognize a wide range of features and patterns applicable to various computer vision tasks.
-
-The architecture's elegant simplicity, despite its depth, makes it particularly effective for fine-grained visual classification tasks like ours. Its performance on various computer vision benchmarks, including object detection, image segmentation, and image classification tasks, makes it a versatile choice for transfer learning in numerous applications. For our specific task of gull species classification, the hierarchical feature representation capabilities of VGG-16 proved particularly effective at capturing the subtle differences in wing patterns and morphological features that distinguish between the target species.
 
 \subsubsection{Model Adaptation for Gull Species Classification}
 
 The pre-trained VGG16 model was adapted for our binary classification task through targeted modifications to the final classification layer. The implementation approach follows best practices for fine-grained bird classification established in recent research on transfer learning for avian species identification \citep{ghani2024comprehensive, reslan2022automatic}. Specifically, the original 1000-class classifier was replaced with a custom binary classification head while preserving the feature extraction capabilities of the convolutional base. The model modification strategy followed this approach:
 
-\begin{enumerate}
-    \item Loading the pre-trained VGG16 with ImageNet weights
-    \item Extracting the number of features from the original classifier (4096)
-    \item Replacing the final layer with a sequential block containing:
-    \begin{enumerate}
-        \item A dropout layer with rate 0.4 for regularization
-        \item A linear layer mapping from 4096 features to 2 output classes
-    \end{enumerate}
-\end{enumerate}
 
-This implementation maintained the complex feature hierarchy learned by VGG16 while adapting the final classification stage for our specific binary task. The relatively high dropout rate (0.4) was strategically implemented to address potential overfitting challenges common in fine-grained classification tasks with limited training data, particularly important given the visual similarities between the target gull species.
 
 \subsection{Data Preprocessing and Augmentation Strategy}
 
@@ -550,15 +535,18 @@ The final VGG16 model achieved exceptional performance with 98.80\% validation a
 A confusion matrix analysis confirmed the model's strong classification performance across both classes, with minimal misclassifications. This indicates the model successfully learned the discriminative morphological features necessary for distinguishing between Glaucous-winged and Slaty-backed Gulls.
 
 \subsection{VGG-16 Architecture}
+
 \subsubsection{Theoretical Foundation}
+
+
 VGG-16 is a convolutional neural network architecture developed by Simonyan and Zisserman (2014) at the Visual Geometry Group (VGG) at Oxford, consisting of 16 weight layers including 13 convolutional layers followed by 3 fully connected layers. The architecture is characterized by its simplicity and depth, using small 3×3 convolutional filters stacked in increasing depth, followed by max pooling layers \href{https://arxiv.org/abs/1409.1556}{here}. With approximately 138 million parameters, VGG-16 provides a strong foundation for feature extraction in computer vision tasks.
 
 The primary advantage of employing VGG-16 for transfer learning in fine-grained classification tasks is its hierarchical feature representation capability, which enables the capture of both low-level features (edges, textures) and high-level semantic features \href{https://proceedings.neurips.cc/paper/2014/file/375c71349b295fbe2dcdca9206f20a06-Paper.pdf}{here}. Pre-trained on the ImageNet dataset containing over 1.2 million images across 1,000 classes, VGG-16 offers robust initialization weights that facilitate effective knowledge transfer to domain-specific tasks with limited training data \href{https://link.springer.com/article/10.1007/s11263-015-0816-y}{here}.
 
-VGG-16 has demonstrated superior performance in fine-grained classification tasks compared to conventional techniques. Recent studies show that VGG-16 with logistic regression achieved 97.14\% accuracy on specialized datasets like Leaf12, significantly outperforming traditional approaches that combined color channel statistics, texture features, and classic classifiers which only reached 82.38\% accuracy \href{https://www.researchgate.net/publication/335846939_Bird_Species_Classification_from_an_Image_Using_VGG-16_Network}{here}.
+VGG-16 has demonstrated superior performance in fine-grained classification tasks compared to conventional techniques. Recent studies show that VGG-16 with logistic regression achieved 97.14\% accuracy on specialized datasets like Leaf12, significantly outperforming traditional approaches that combined color channel statistics, texture features, and classic classifiers which only reached 82.38\% accuracy \href{https://www.researchgate.net/publication/335846939_Bird_Species_Classification_from_an_Image_Using_VGG-16_Network}{here}. For our specific task of gull species classification, the hierarchical feature representation capabilities of VGG-16 proved particularly effective at capturing the subtle differences in wing patterns and morphological features that distinguish between the target species.
 
 \subsubsection{Model Adaptation for Fine-Grained Classification}
-For our specific fine-grained classification task with limited data and class imbalance, the VGG-16 architecture was adapted through a targeted modification strategy:
+For our specific fine-grained binary classification task with limited data and class imbalance, the VGG-16 architecture was adapted through a targeted modification strategy:
 
 % \begin{lstlisting}[language=Python]
 % class VGG16Modified(nn.Module):
@@ -853,78 +841,148 @@ For the EnhancedViT, we employed additional training refinements:
 
 Both models were trained on the refined high-quality dataset (Stage 3), with an 80:20 split between training and validation sets to ensure robust performance evaluation during development.
 
-\section{Inception v3 Architecture}
 
-\subsection{Theoretical Background}
+ Inception v3 Architecture
 
-Inception v3, developed by \citep{szegedy2016rethinking}, represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution paths with different kernel sizes. The key innovation in Inception architectures is the use of "Inception modules" that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously.
+ Theoretical Background
+
+Inception v3, developed by Szegedy et al. (2016), represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution pathways with varied kernel sizes. The key innovation in Inception architectures is the utilization of "Inception modules" that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously ([Szegedy et al., 2016](https://arxiv.org/abs/1512.00567)).
 
 Inception v3 builds upon earlier versions with several important architectural improvements:
 
-\begin{itemize}
-    \item Factorized convolutions to reduce computational cost
-    \item Spatial factorization into asymmetric convolutions (e.g., 1$\times$n followed by n$\times$1)
-    \item Auxiliary classifiers that inject additional gradient signals during training
-    \item Batch normalization for improved training stability
-    \item Label smoothing regularization to prevent overconfidence
-\end{itemize}
+- Factorized convolutions to reduce computational complexity
+- Spatial factorization into asymmetric convolutions (e.g., 1×n followed by n×1)
+- Auxiliary classifiers that inject additional gradient signals during training
+- Batch normalization for improved training stability and faster convergence
+- Label smoothing regularization to prevent overconfidence
 
-These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. As demonstrated by \citep{shu2023multiscale}, Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens.
+These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. As demonstrated by Huang et al. (2019), Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens ([Huang et al., 2019](https://ieeexplore.ieee.org/document/8803812)).
 
-\subsection{Model Adaptation for Gull Classification}
+ Model Adaptation for Binary Gull Classification
 
-Our implementation adapted the pre-trained Inception v3 model for gull species classification using the following approach:
+Our implementation adapted the pre-trained Inception v3 model for fine-grained gull species classification using the following approach:
 
-\begin{enumerate}
-    \item Loading the pre-trained Inception v3 model with ImageNet weights
-    \item Extracting the feature dimension from the original classifier (2048)
-    \item Replacing the final classifier with a custom sequence:
-    \begin{enumerate}
-        \item Dropout layer (p=0.5) for regularization
-        \item Linear layer mapping 2048 features to 2 output classes
-    \end{enumerate}
-\end{enumerate}
+% ```python
+% class InceptionV3Modified(nn.Module):
+%     def __init__(self):
+%         super(InceptionV3Modified, self).__init__()
+%         from torchvision.models import Inception_V3_Weights
+%         self.inception = models.inception_v3(weights=Inception_V3_Weights.IMAGENET1K_V1)
+%         # Replace the final fully connected layer to output 2 classes
+%         num_ftrs = self.inception.fc.in_features
+%         self.inception.fc = nn.Sequential(
+%             nn.Dropout(0.5),
+%             nn.Linear(num_ftrs, 2)
+%         )
+% ```
 
-A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This approach helps combat the vanishing gradient problem and provides regularization, as noted by \citep{szegedy2016rethinking} in their original paper.
+The implementation involved:
+
+1. Loading the pre-trained Inception v3 model with ImageNet weights
+2. Extracting the feature dimension from the original classifier (2048 features)
+3. Replacing the final classifier with a custom sequence:
+   - Dropout layer (p=0.5) for regularization to mitigate overfitting
+   - Linear layer mapping 2048 features to 2 output classes
+
+This approach leverages transfer learning, where knowledge acquired from large-scale image classification on ImageNet is transferred to our specific domain of gull species classification ([Tan et al., 2018](https://arxiv.org/abs/1805.08974)).
+
+A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This approach helps combat the vanishing gradient problem and provides regularization ([Szegedy et al., 2016](https://arxiv.org/abs/1512.00567)).
 
 The loss function was modified to incorporate both the main output and the auxiliary output during training:
 
-\begin{equation}
-\text{loss} = \text{main\_loss} + 0.3 \times \text{auxiliary\_loss}
-\end{equation}
+% ```python
+% aux_outputs, outputs = model(inputs)
+% loss = criterion(outputs, labels) + aux_loss_weight * criterion(aux_outputs, labels)
+% ```
 
-where the auxiliary loss weight (0.3) was selected based on empirical optimization and aligns with recommendations in the literature for fine-tuning Inception architectures \citep{touvron2021training}.
+The auxiliary loss weight (0.3) was selected based on empirical optimization and aligns with recommendations in the literature for fine-tuning Inception architectures ([He et al., 2019](https://arxiv.org/abs/1902.04103)).
 
-\subsection{Advanced Training Techniques}
+Advanced Training Techniques
 
 The Inception v3 implementation incorporated several advanced training techniques to optimize performance:
 
-\begin{itemize}
-    \item Mixed-precision training using PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability \citep{micikevicius2018mixed}
-    \item Gradient clipping with a maximum norm of 2.0 to prevent explosive gradient updates \citep{you2019large}
-    \item Precisely tuned learning rate and weight decay parameters identified through hyperparameter optimization
-    \item Layer-wise learning rate adjustment to fine-tune different parts of the network at appropriate rates
-\end{itemize}
+ Mixed-Precision Training
 
-These techniques collectively enhanced training efficiency and model performance. The implementation of mixed-precision training was particularly valuable given the resource constraints of the Google Colab environment, as it reduced memory usage and accelerated computation without compromising model accuracy \citep{ghani2024comprehensive}.
+We employed PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability ([Micikevicius et al., 2018](https://arxiv.org/abs/1710.03740)):
 
-\subsection{Data Processing Pipeline}
+% ```python
+% scaler = torch.amp.GradScaler()  # Mixed precision scaler
 
-The data processing pipeline for Inception v3 was adapted to the model's specific requirements:
+% with torch.amp.autocast(device_type='cuda'):
+%     aux_outputs, outputs = model(inputs)
+%     loss = criterion(outputs, labels) + aux_loss_weight * criterion(aux_outputs, labels)
 
-\begin{itemize}
-    \item Resize operations to 299$\times$299 pixels (the standard input size for Inception v3)
-    \item Standard data augmentation techniques for training:
-    \begin{itemize}
-        \item Random horizontal flipping
-        \item Random rotation ($\pm$15 degrees)
-        \item Color jittering
-    \end{itemize}
-    \item Simple resizing and normalization for validation and testing
-\end{itemize}
+% scaler.scale(loss).backward()
+% scaler.step(optimizer)
+% scaler.update()
+% ```
 
-The larger input resolution (299$\times$299 vs 224$\times$224 used by VGG16 and ViT) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species \citep{dosovitskiy2020image}.
+This technique allows the use of float16 precision where appropriate, which reduces memory usage and increases computational speed, especially beneficial when training on GPU-constrained environments like Google Colab.
 
+ Gradient Clipping
+
+To prevent explosive gradients and stabilize training, we implemented gradient clipping with a maximum norm of 2.0 ([Pascanu et al., 2013](https://arxiv.org/abs/1211.5063)):
+
+% ```python
+% torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=2.0)
+% ```
+
+This ensures that gradient updates remain within a reasonable magnitude, preventing destabilizing parameter updates that can occur in deep networks.
+
+ Hyperparameter Optimization
+
+Our implementation utilized precisely tuned hyperparameters for the AdamW optimizer:
+
+% ```python
+% optimizer = optim.AdamW(model.parameters(), lr=0.0001146316711604839, weight_decay=0.0009719766132928495)
+% ```
+
+% These values were identified through systematic hyperparameter optimization, likely using techniques such as Bayesian optimization or grid search to identify the optimal configuration for our specific dataset ([Feurer & Hutter, 2019](https://automl.org/wp-content/uploads/2019/05/AutoML_Book_Chapter1.pdf)).
+
+ Learning Rate Scheduling
+
+We implemented an adaptive learning rate schedule using ReduceLROnPlateau:
+
+% ```python
+% scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)
+% ```
+
+This approach automatically reduces the learning rate by a factor of 0.1 when validation performance plateaus for 3 consecutive epochs, allowing for finer weight adjustments as training progresses ([Smith, 2017](https://arxiv.org/abs/1506.01186)).
+
+
+
+- Resize operations to 299×299 pixels (the standard input size for Inception v3)
+
+
+% ```python
+% transform_val_test = transforms.Compose([
+%     transforms.Resize((299, 299)),
+%     transforms.ToTensor(),
+% ])
+% ```
+
+The larger input resolution (299×299 vs 224×224 used by VGG16) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species ([Xie et al., 2020](https://arxiv.org/abs/1911.09070)).
+
+
+
+% ```python
+% if val_acc > best_acc:
+%     best_acc = val_acc
+%     best_model_path = os.path.join(checkpoint_folder, f"best_model_inception_{date_str}.pth")
+%     torch.save(model.state_dict(), best_model_path)
+% ```
+
+% This strategy prevents overfitting by selecting the model checkpoint with the highest validation accuracy ([Prechelt, 1998](https://link.springer.com/chapter/10.1007/3-540-49430-8_3)). The training loop also tracks and visualizes both training loss and validation accuracy across epochs, providing important insights into the learning dynamics.
+
+% For reproducibility, all stochastic elements were controlled by setting fixed random seeds:
+
+% ```python
+% torch.manual_seed(42)
+% np.random.seed(42)
+% random.seed(42)
+% ```
+
+This approach ensures that results can be replicated in future experiments, a critical aspect of rigorous scientific methodology ([Bouthillier et al., 2019](https://arxiv.org/abs/1902.02476)).
 
 \section{ResNet50 Architecture}
 
