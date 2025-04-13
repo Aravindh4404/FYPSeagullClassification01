@@ -1,94 +1,85 @@
 import pandas as pd
+import numpy as np
+import cv2
+import os
 from Features_Analysis.config import *  # Import configuration file
+from Features_Analysis.Intensity.normalize_intensity_analysis import normalize_and_analyze_intensity
 
 
 def analyze_wingtip_intensity_distribution(image_path, seg_path, species, file_name):
     """
     Analyzes the intensity distribution of wingtip pixels and their difference
-    from the wing intensity for a single image.
+    from the wing intensity for a single image using normalized values.
     """
-    # Load images
+    # Get normalized wing and wingtip regions
+    wing_results = normalize_and_analyze_intensity(image_path, seg_path, species, file_name, "wing")
+    wingtip_results = normalize_and_analyze_intensity(image_path, seg_path, species, file_name, "wingtip")
+    
+    if wing_results is None or wingtip_results is None:
+        return None
+        
+    # Load images for pixel extraction
     original_img = cv2.imread(image_path)
     segmentation_img = cv2.imread(seg_path)
-
-    if original_img is None or segmentation_img is None:
-        print(f"Error loading images: {image_path} or {seg_path}")
-        return None
-
-    # Extract wing and wingtip regions
+    
+    # Extract regions
     wing_region, wing_mask = extract_region(original_img, segmentation_img, "wing")
     wingtip_region, wingtip_mask = extract_region(original_img, segmentation_img, "wingtip")
-
-    # Convert to grayscale
-    gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
+    
+    # Convert to grayscale and normalize
     gray_wing = cv2.cvtColor(wing_region, cv2.COLOR_BGR2GRAY)
-
-    # Get wing pixels
+    gray_wingtip = cv2.cvtColor(wingtip_region, cv2.COLOR_BGR2GRAY)
+    
+    # Get normalized pixels
     wing_pixels = gray_wing[wing_mask > 0]
-
-    if len(wing_pixels) == 0:
-        print(f"No wing region found in {file_name}")
+    wingtip_pixels = gray_wingtip[wingtip_mask > 0]
+    
+    if len(wing_pixels) == 0 or len(wingtip_pixels) == 0:
         return None
-
-    # Calculate mean wing intensity
-    mean_wing_intensity = np.mean(wing_pixels)
-
-    # Get wingtip pixels from the original grayscale image
-    wingtip_pixels = gray_img[wingtip_mask > 0]
-
-    if len(wingtip_pixels) == 0:
-        print(f"No wingtip region found in {file_name}")
-        return None
-
-    # Define intensity ranges (bins)
+        
+    # Define intensity ranges (bins) for normalized values (0-255)
     intensity_ranges = [
-        (0, 10), (10, 20), (20, 30), (30, 40), (40, 50),
-        (50, 60), (60, 70), (70, 80), (80, 90), (90, 100),
-        (100, 110), (110, 120), (120, 130), (130, 140), (140, 150),
-        (150, 160), (160, 170), (170, 180), (180, 190), (190, 200),
-        (200, 210), (210, 220), (220, 230), (230, 240), (240, 255)
+        (0, 25), (25, 50), (50, 75), (75, 100),
+        (100, 125), (125, 150), (150, 175), (175, 200),
+        (200, 225), (225, 255)
     ]
-
+    
     # Count pixels in each intensity range
     range_counts = {}
     for start, end in intensity_ranges:
-        # Count raw number of pixels in this range
         pixel_count = np.sum((wingtip_pixels >= start) & (wingtip_pixels < end))
         range_counts[f"intensity_{start}_{end}"] = pixel_count
-        # Calculate percentage of wingtip pixels in this range
         range_counts[f"pct_{start}_{end}"] = (pixel_count / len(wingtip_pixels)) * 100
-
+    
     # Calculate wing-wingtip differences
-    # For each wingtip pixel, calculate how much darker it is than the mean wing
+    mean_wing_intensity = wing_results['mean_intensity']
     intensity_diffs = mean_wing_intensity - wingtip_pixels
-
-    # Only keep positive differences (darker pixels)
     positive_diffs = intensity_diffs[intensity_diffs > 0]
-
-    # Define difference thresholds
-    diff_thresholds = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-
+    
+    # Define difference thresholds for normalized values
+    diff_thresholds = [25, 50, 75, 100]
+    
     # Count pixels with differences above thresholds
     diff_counts = {}
     for threshold in diff_thresholds:
         pixel_count = np.sum(intensity_diffs > threshold)
         diff_counts[f"diff_gt_{threshold}"] = pixel_count
         diff_counts[f"pct_diff_gt_{threshold}"] = (pixel_count / len(wingtip_pixels)) * 100
-
+    
     # Calculate statistics about very dark pixels
     very_dark_counts = {}
-    dark_thresholds = [30, 40, 50, 60]
+    dark_thresholds = [25, 50, 75]
     for threshold in dark_thresholds:
         pixel_count = np.sum(wingtip_pixels < threshold)
         very_dark_counts[f"dark_lt_{threshold}"] = pixel_count
         very_dark_counts[f"pct_dark_lt_{threshold}"] = (pixel_count / len(wingtip_pixels)) * 100
-
+    
     # Prepare results
     results = {
         "image_name": file_name,
         "species": species,
         "mean_wing_intensity": mean_wing_intensity,
-        "mean_wingtip_intensity": np.mean(wingtip_pixels),
+        "mean_wingtip_intensity": wingtip_results['mean_intensity'],
         "wing_pixel_count": len(wing_pixels),
         "wingtip_pixel_count": len(wingtip_pixels),
         "darker_pixel_count": len(positive_diffs),
@@ -97,7 +88,7 @@ def analyze_wingtip_intensity_distribution(image_path, seg_path, species, file_n
         **diff_counts,
         **very_dark_counts
     }
-
+    
     return results
 
 

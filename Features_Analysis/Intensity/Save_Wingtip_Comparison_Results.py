@@ -4,41 +4,14 @@ import pandas as pd
 import cv2
 from scipy.stats import skew, kurtosis
 from Features_Analysis.config import *
+from Features_Analysis.Intensity.normalize_intensity_analysis import analyze_normalized_wingtip_darkness
 
 from Features_Analysis.config import *
 
 
 def analyze_wingtip_darkness(image_path, seg_path, species, file_name, wing_mean):
-    """Analyzes wingtip darkness compared to wing mean intensity"""
-    # Load images
-    original_img = cv2.imread(image_path)
-    segmentation_img = cv2.imread(seg_path)
-
-    if original_img is None or segmentation_img is None:
-        print(f"Error loading images: {image_path} or {seg_path}")
-        return None
-
-    # Extract wingtip region
-    wingtip_region, wingtip_mask = extract_region(original_img, segmentation_img, "wingtip")
-    gray_wingtip = cv2.cvtColor(wingtip_region, cv2.COLOR_BGR2GRAY)
-    wingtip_pixels = gray_wingtip[wingtip_mask > 0]
-
-    if len(wingtip_pixels) == 0:
-        print(f"No wingtip region found in {file_name}")
-        return None
-
-    # Calculate darkness metrics
-    darker_pixels = np.sum(wingtip_pixels < wing_mean) #wingtip pixels darker than mean of wing
-    total_pixels = len(wingtip_pixels)
-    percentage_darker = (darker_pixels / total_pixels) * 100 if total_pixels > 0 else 0
-
-    return {
-        'image_name': file_name,
-        'species': species,
-        'percentage_darker': percentage_darker,
-        'darker_pixel_count': darker_pixels,
-        'total_wingtip_pixels': total_pixels
-    }
+    """Analyzes wingtip darkness compared to wing mean intensity using normalized values"""
+    return analyze_normalized_wingtip_darkness(image_path, seg_path, species, file_name, wing_mean)
 
 
 def main():

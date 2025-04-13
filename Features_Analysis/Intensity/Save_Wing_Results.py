@@ -4,43 +4,11 @@ import pandas as pd
 import cv2
 from scipy.stats import skew, kurtosis
 from Features_Analysis.config import *
+from Features_Analysis.Intensity.normalize_intensity_analysis import analyze_normalized_wing_intensity
 
 def analyze_wing_intensity(image_path, seg_path, species, file_name):
-    """Analyzes wing intensity for a single image"""
-    # Load images
-    original_img = cv2.imread(image_path)
-    segmentation_img = cv2.imread(seg_path)
-
-    if original_img is None or segmentation_img is None:
-        print(f"Error loading images: {image_path} or {seg_path}")
-        return None
-
-    # Extract wing region
-    wing_region, wing_mask = extract_region(original_img, segmentation_img, "wing")
-
-    # Convert to grayscale
-    gray_wing = cv2.cvtColor(wing_region, cv2.COLOR_BGR2GRAY)
-
-    # Get non-zero pixels (wing area)
-    wing_pixels = gray_wing[wing_mask > 0]
-
-    if len(wing_pixels) == 0:
-        print(f"No wing region found in {file_name}")
-        return None
-
-    # Calculate intensity metrics
-    return {
-        'image_name': file_name,
-        'species': species,
-        'mean_intensity': np.mean(wing_pixels),
-        'std_intensity': np.std(wing_pixels),
-        'median_intensity': np.median(wing_pixels),
-        'min_intensity': np.min(wing_pixels),
-        'max_intensity': np.max(wing_pixels),
-        'skewness': skew(wing_pixels),
-        'kurtosis': kurtosis(wing_pixels),
-        'pixel_count': len(wing_pixels)
-    }
+    """Analyzes wing intensity for a single image using normalized values"""
+    return analyze_normalized_wing_intensity(image_path, seg_path, species, file_name)
 
 
 def main():
