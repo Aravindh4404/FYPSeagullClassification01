@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  13 APR 2025 17:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.6)  14 APR 2025 03:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -388,7 +388,7 @@ Package hyperref Info: Link coloring ON on input line 27.
 \@outlinefile=\write3
 \openout3 = `final_report.out'.
 
-<images/nottingham_logo.png, id=239, 338.76563pt x 130.23656pt>
+<images/nottingham_logo.png, id=247, 338.76563pt x 130.23656pt>
 File: images/nottingham_logo.png Graphic file (type png)
 <use images/nottingham_logo.png>
 Package pdftex.def Info: images/nottingham_logo.png  used on input line 38.
@@ -490,27 +490,34 @@ l.89 \end{titlepage}
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.381 \newpage
-               [1
+l.141 A
+       mong birds, gulls (\textit{Laridae}) present a particularly challengi... [1
 
 ]
-
-[2]
-
-[3]
-LaTeX Font Info:    Trying to load font information for TS1+phv on input line 407.
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 141.
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 146.
  (C:\Users\Aravindh P\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1phv.fd
 File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
 )
-Overfull \hbox (4.42183pt too wide) in paragraph at lines 420--421
-\OT1/phv/m/n/12 aligns with es-tab-lished method-olo-gies in fine-grained bird clas-si-fi-ca-tion re-search, where
+
+[2]
+Overfull \hbox (4.93909pt too wide) in paragraph at lines 182--183
+\OT1/phv/m/n/12 ResNet, In-cep-tion, and VGG have demon-strated ex-cep-tional ca-pa-bil-i-ties [][]Pral-had Gavali[][]
+ []
+
+
+Overfull \hbox (11.15108pt too wide) in paragraph at lines 184--185
+\OT1/phv/m/n/12 de-pend on ad-vanced con-vo-lu-tions for fea-ture ex-trac-tion where fea-tures ex-tracted through
  []
 
 
 
+[3]
+
 [4]
-Overfull \hbox (5.39537pt too wide) in paragraph at lines 431--432
-\OT1/phv/m/n/12 Consultation with Pro-fes-sor Gib-bins, an or-nitho-log-i-cal ex-pert, re-vealed that adult wingtip
+Overfull \hbox (4.85182pt too wide) in paragraph at lines 212--213
+[]\OT1/phv/m/n/12 Convolutional Neu-ral Net-works (CNNs) have rev-o-lu-tion-ized im-age clas-si-fi-ca-tion through
  []
 
 
@@ -518,45 +525,70 @@ Overfull \hbox (5.39537pt too wide) in paragraph at lines 431--432
 [5]
 
 [6]
-d:/FYPSeagullClassification01/Final Report/final_report.tex:488: Misplaced alignment tab character &.
-<argument> Ioffe &
-                   Szegedy
-l.488 ...rxiv.org/abs/1502.03167}{Ioffe & Szegedy}
-                                                  .
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-
 
 [7]
 
 [8]
+
+[9]
+
+[10]
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family phv in TS1 encoding.
+            Default family used instead on input line 302.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family phv in TS1 encoding.
+            Default family used instead on input line 302.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family phv in TS1 encoding.
+            Default family used instead on input line 306.
+
+
+[11]
+
+[12]
+Overfull \hbox (3.80737pt too wide) in paragraph at lines 361--362
+[]\OT1/phv/m/n/12 Implement Gradient-weighted Class Ac-ti-va-tion Map-ping (Grad-CAM) for con-
+ []
+
+
+
+[13]
+
+[14]
+
+[15]
+
+[16]
+Overfull \hbox (4.42183pt too wide) in paragraph at lines 420--421
+\OT1/phv/m/n/12 aligns with es-tab-lished method-olo-gies in fine-grained bird clas-si-fi-ca-tion re-search, where
+ []
+
+
+
+[17]
+Overfull \hbox (5.39537pt too wide) in paragraph at lines 431--432
+\OT1/phv/m/n/12 Consultation with Pro-fes-sor Gib-bins, an or-nitho-log-i-cal ex-pert, re-vealed that adult wingtip
+ []
+
+
+
+[18]
+
+[19]
+
+[20]
+
+[21]
 Overfull \hbox (3.56747pt too wide) in paragraph at lines 527--528
 \OT1/phv/m/n/12 An adap-tive learn-ing rate sched-ule was im-ple-mented us-ing Re-duceL-ROn-Plateau which
  []
 
 
 
-[9]
-d:/FYPSeagullClassification01/Final Report/final_report.tex:552: Misplaced alignment tab character &.
-<argument> Krogh &
-                   Hertz
-l.552 ...0fb6f3fad709e21-Paper.pdf}{Krogh & Hertz}
-                                                  .
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
+[22]
 
-
-
-[10]
+[23]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 573.
@@ -566,203 +598,49 @@ LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 5
 File: ot1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
-[11{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rmtt.enc}]
+[24{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rmtt.enc}]
 
-[12]
+[25]
 
-[13]
+[26]
 
-[14]
+[27]
 Overfull \hbox (10.73027pt too wide) in paragraph at lines 766--767
 \OT1/phv/m/n/12 Both ViT im-ple-men-ta-tions used stan-dard-ized pre-pro-cess-ing and aug-men-ta-tion pipelines: 
  []
 
 
 
-[15]
-LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 807.
+[28]
 
-
-[16]
+[29]
 Overfull \hbox (7.45619pt too wide) in paragraph at lines 842--843
  []\OT1/phv/b/n/12 Mixed-Precision Train-ing: \OT1/phv/m/n/12 We em-ployed Py-Torch's Au-to-matic Mixed Pre-ci-sion (AMP)
  []
 
 
 
-[17]
+[30]
 
-[18]
+[31]
 Overfull \hbox (16.65916pt too wide) in paragraph at lines 872--873
 []\OT1/phv/m/n/12 The sharp-en-ing ker-nel was sys-tem-at-i-cally ap-plied to both train-ing and eval-u-a-tion pipelines
  []
 
 
 
-[19]
+[32]
 Overfull \hbox (2.66626pt too wide) in paragraph at lines 901--902
 []\OT1/phv/b/n/12 Squeeze\OT1/phv/m/n/12 : Global av-er-age pool-ing across spa-tial di-men-sions to gen-er-ate channel-
  []
 
 
 
-[20]
+[33]
 
-[21]
+[34]
 
-d:/FYPSeagullClassification01/Final Report/final_report.tex:941: LaTeX Error: Environment algorithm undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.941 \begin{algorithm}
-                       
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:942: LaTeX Error: \caption outside float.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.942 \caption
-              {Gradient-weighted Class Activation Mapping (Grad-CAM)}
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:943: LaTeX Error: Environment algorithmic undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.943 \begin{algorithmic}
-                         [1]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:944: Undefined control sequence.
-l.944 \Input
-             Input image $I$, CNN model $f$, target class $c$, final convolu...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:945: Undefined control sequence.
-l.945 \Output
-              Heatmap $L_{Grad-CAM}^c$
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:946: Undefined control sequence.
-l.946 \State
-             Perform forward pass on model $f$ with input image $I$ to obtai...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:947: Undefined control sequence.
-l.947 \State
-             Compute gradients of score $y^c$ with respect to feature maps $...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:948: Undefined control sequence.
-l.948 \State
-             Apply global average pooling to gradients to obtain importance ...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:950: Undefined control sequence.
-l.950 \State
-             Calculate weighted combination of feature maps:
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:952: Undefined control sequence.
-l.952 \State
-             Normalize $L_{Grad-CAM}^c$ to range [0, 1]
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:953: Undefined control sequence.
-l.953 \State
-             Resize $L_{Grad-CAM}^c$ to input image dimensions
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:954: Undefined control sequence.
-l.954 \Return
-              $L_{Grad-CAM}^c$
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:955: LaTeX Error: \begin{document} ended by \end{algorithmic}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.955 \end{algorithmic}
-                       
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-d:/FYPSeagullClassification01/Final Report/final_report.tex:956: LaTeX Error: \begin{document} ended by \end{algorithm}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.956 \end{algorithm}
-                     
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Overfull \hbox (4.20958pt too wide) in paragraph at lines 942--957
-[]\OT1/phv/m/n/12 Gradient-weighted Class Ac-ti-va-tion Map-ping (Grad-CAM) [1] In-put im-age $\OML/lmm/m/it/12 I$\OT1/phv/m/n/12 , CNN model
- []
-
-
-
-[22{C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]
+[35]
 Overfull \hbox (14.24706pt too wide) in paragraph at lines 996--997
 \OT1/phv/m/n/12 a-nisms rather than con-vo-lu-tion op-er-a-tions to model re-la-tion-ships be-tween im-age patches.
  []
@@ -774,49 +652,28 @@ Overfull \hbox (4.80493pt too wide) in paragraph at lines 996--997
 
 
 
-[23]
+[36]
 
-[24]
+[37]
 
-[25]
+[38]
 Overfull \hbox (14.31955pt too wide) in paragraph at lines 1091--1092
 []\OT1/phv/b/n/12 Output For-mat\OT1/phv/m/n/12 : Three-panel vi-su-al-iza-tion with orig-i-nal im-age, Grad-CAM heatmap,
  []
 
+(final_report.bbl
 
+[39]
 
-[26]
-Overfull \hbox (52.59691pt too wide) in paragraph at lines 1133--1134
-\OT1/phv/m/n/12 A. (2021). Emerg-ing Prop-er-ties in Self-Supervised Vi-sion Trans-form-ers. [][]arXiv:2104.14294[][]. 
- []
+[40]
 
-d:/FYPSeagullClassification01/Final Report/final_report.tex:1135: Misplaced alignment tab character &.
-l.1135 ...tem Jacob, G., Zhong, J., Bengío, Y., &
-                                                   Pal, C. (2021). Do Vision...
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
+[41]
 
-d:/FYPSeagullClassification01/Final Report/final_report.tex:1137: Misplaced alignment tab character &.
-l.1137     \item Wang, H., Ge, S., Lipton, Z., &
-                                                 Xing, E. P. (2019). Learnin...
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
+[42]
 
+[43])
 
-
-[27] (final_report.bbl
-
-[28])
-
-[29] 
+[44] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (final_report.aux)
  ***********
@@ -824,20 +681,20 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `final_report.out' has not changed.
-(rerunfilecheck)             Checksum: A19ACB8A83E817C62B748B4400D42361;12048.
+(rerunfilecheck)             Checksum: AD0B2B8912566A9AD4180B396F100226;12261.
  ) 
 Here is how much of TeX's memory you used:
- 10867 strings out of 473523
- 172326 string characters out of 5712175
- 575854 words of memory out of 5000000
- 33747 multiletter control sequences out of 15000+600000
- 597084 words of font info for 77 fonts, out of 8000000 for 9000
+ 11077 strings out of 473523
+ 176101 string characters out of 5712175
+ 577226 words of memory out of 5000000
+ 33876 multiletter control sequences out of 15000+600000
+ 597734 words of font info for 79 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,1251b,580s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi6.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on final_report.pdf (34 pages, 333171 bytes).
+ 75i,6n,79p,1268b,663s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Aravindh P\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcss1200.pk><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/Aravindh P/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on final_report.pdf (49 pages, 400638 bytes).
 PDF statistics:
- 735 PDF objects out of 1000 (max. 8388607)
- 159 named destinations out of 1000 (max. 500000)
- 478 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1034 PDF objects out of 1200 (max. 8388607)
+ 239 named destinations out of 1000 (max. 500000)
+ 494 words of extra memory for PDF output out of 10000 (max. 10000000)
 
