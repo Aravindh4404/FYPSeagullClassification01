@@ -13,36 +13,47 @@
 \contentsline {section}{\numberline {6}Training Optimization Strategy}{7}{section.6}%
 \contentsline {section}{\numberline {7}Model Architecture Modifications}{7}{section.7}%
 \contentsline {section}{\numberline {8}Data Preparation and Augmentation}{8}{section.8}%
-\contentsline {section}{\numberline {9}Regularization Techniques}{8}{section.9}%
-\contentsline {section}{\numberline {10}Evaluation Strategy}{9}{section.10}%
-\contentsline {subsection}{\numberline {10.1}VGG-16 Architecture}{9}{subsection.10.1}%
-\contentsline {subsubsection}{\numberline {10.1.1}Theoretical Foundation}{9}{subsubsection.10.1.1}%
-\contentsline {subsubsection}{\numberline {10.1.2}Model Adaptation for Fine-Grained Classification}{10}{subsubsection.10.1.2}%
-\contentsline {subsubsection}{\numberline {10.1.3}Addressing Class Imbalance in another model}{10}{subsubsection.10.1.3}%
-\contentsline {section}{\numberline {11}Data Preprocessing and Augmentation}{11}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Image Preprocessing}{11}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Training Augmentation Strategy}{11}{subsection.11.2}%
-\contentsline {subsection}{\numberline {11.3}Optimization Strategy}{12}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}Learning Rate Scheduling}{12}{subsection.11.4}%
-\contentsline {subsection}{\numberline {11.5}Gradient Clipping}{12}{subsection.11.5}%
-\contentsline {subsection}{\numberline {11.6}Model Evaluation and Selection}{12}{subsection.11.6}%
-\contentsline {subsection}{\numberline {11.7}Reproducibility Considerations}{13}{subsection.11.7}%
-\contentsline {section}{\numberline {12}Implementation Details}{13}{section.12}%
-\contentsline {section}{\numberline {13}Vision Transformer (ViT) Architecture}{13}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Theoretical Framework}{13}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}Standard Vision Transformer Implementation}{14}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Enhanced Vision Transformer with Custom Attention}{14}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Data Processing and Augmentation}{15}{subsection.13.4}%
-\contentsline {subsection}{\numberline {13.5}Training Methodology}{15}{subsection.13.5}%
-\contentsline {subsection}{\numberline {13.6}Residual Network (ResNet-50) Implementation}{18}{subsection.13.6}%
-\contentsline {subsubsection}{\numberline {13.6.1}Architecture Adaptation}{18}{subsubsection.13.6.1}%
-\contentsline {subsubsection}{\numberline {13.6.2}Image Enhancement}{19}{subsubsection.13.6.2}%
-\contentsline {subsubsection}{\numberline {13.6.3}Training Strategy}{19}{subsubsection.13.6.3}%
-\contentsline {subsubsection}{\numberline {13.6.4}Dataset Management}{19}{subsubsection.13.6.4}%
-\contentsline {subsubsection}{\numberline {13.6.5}Performance Implications}{20}{subsubsection.13.6.5}%
-\contentsline {section}{\numberline {14}Custom CNN with Squeeze-and-Excitation Blocks}{20}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Architectural Design}{20}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Data Preprocessing and Augmentation}{21}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}Addressing Class Imbalance}{21}{subsection.14.3}%
-\contentsline {subsection}{\numberline {14.4}Optimization Strategy}{21}{subsection.14.4}%
-\contentsline {subsection}{\numberline {14.5}Model Checkpointing and Evaluation}{22}{subsection.14.5}%
+\contentsline {subsection}{\numberline {8.1}Optimization Strategy}{8}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Learning Rate Scheduling}{9}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Gradient Clipping}{9}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Dataset Management}{9}{subsubsection.8.3.1}%
+\contentsline {section}{\numberline {9}Regularization Techniques}{10}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Model Checkpointing and Evaluation}{10}{subsection.9.1}%
+\contentsline {section}{\numberline {10}Evaluation Strategy}{10}{section.10}%
+\contentsline {subsubsection}{\numberline {10.0.1}Addressing Class Imbalance in few models}{11}{subsubsection.10.0.1}%
+\contentsline {subsection}{\numberline {10.1}Image Preprocessing}{11}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Reproducibility Considerations}{12}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}VGG-16 Architecture}{12}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}Theoretical Foundation}{12}{subsubsection.10.3.1}%
+\contentsline {subsubsection}{\numberline {10.3.2}Model Adaptation for Fine-Grained Classification}{12}{subsubsection.10.3.2}%
+\contentsline {section}{\numberline {11}Implementation Details}{13}{section.11}%
+\contentsline {section}{\numberline {12}Vision Transformer (ViT) Architecture}{13}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Theoretical Framework}{13}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Standard Vision Transformer Implementation}{14}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Enhanced Vision Transformer with Custom Attention}{14}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}Data Processing and Augmentation}{15}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.5}Training Methodology}{16}{subsection.12.5}%
+\contentsline {subsection}{\numberline {12.6}Residual Network (ResNet-50) Implementation}{18}{subsection.12.6}%
+\contentsline {subsubsection}{\numberline {12.6.1}Architecture Adaptation}{18}{subsubsection.12.6.1}%
+\contentsline {subsubsection}{\numberline {12.6.2}Image Enhancement}{19}{subsubsection.12.6.2}%
+\contentsline {subsubsection}{\numberline {12.6.3}Training Strategy}{19}{subsubsection.12.6.3}%
+\contentsline {subsubsection}{\numberline {12.6.4}Performance Implications}{19}{subsubsection.12.6.4}%
+\contentsline {section}{\numberline {13}Custom CNN with Squeeze-and-Excitation Blocks}{20}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Architectural Design}{20}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Addressing Class Imbalance}{20}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Optimization Strategy}{21}{subsection.13.3}%
+\contentsline {section}{\numberline {14}Model Interpretability Methodologies}{21}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Gradient-weighted Class Activation Mapping (Grad-CAM)}{21}{subsection.14.1}%
+\contentsline {subsubsection}{\numberline {14.1.1}Theoretical Foundation}{21}{subsubsection.14.1.1}%
+\contentsline {subsubsection}{\numberline {14.1.2}Methodology for VGG16}{22}{subsubsection.14.1.2}%
+\contentsline {subsection}{\numberline {14.2}Attention Rollout for Vision Transformers}{23}{subsection.14.2}%
+\contentsline {subsubsection}{\numberline {14.2.1}Theoretical Foundation}{23}{subsubsection.14.2.1}%
+\contentsline {subsubsection}{\numberline {14.2.2}Methodology for ViT}{24}{subsubsection.14.2.2}%
+\contentsline {subsection}{\numberline {14.3}Grad-CAM for Vision Transformers}{24}{subsection.14.3}%
+\contentsline {subsubsection}{\numberline {14.3.1}Implementation Approach}{24}{subsubsection.14.3.1}%
+\contentsline {subsection}{\numberline {14.4}Comparison Framework}{25}{subsection.14.4}%
+\contentsline {subsection}{\numberline {14.5}Implementation Details}{26}{subsection.14.5}%
+\contentsline {subsubsection}{\numberline {14.5.1}Grad-CAM for VGG16}{26}{subsubsection.14.5.1}%
+\contentsline {subsubsection}{\numberline {14.5.2}Attention Rollout for ViT}{26}{subsubsection.14.5.2}%
+\contentsline {subsubsection}{\numberline {14.5.3}Grad-CAM for ViT}{27}{subsubsection.14.5.3}%
+\contentsline {subsection}{\numberline {14.6}References}{27}{subsection.14.6}%
