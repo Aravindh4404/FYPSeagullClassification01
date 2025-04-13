@@ -9,6 +9,7 @@
 \usepackage{natbib}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{helvet}
+\usepackage{amsmath}
 \renewcommand{\contentsname}{Table of Contents}
 
 \setlength{\parindent}{0pt}
@@ -223,6 +224,12 @@
 
 % Various pretrained models have been evaluated for bird classification tasks, including VGG16, VGG19, ResNet, DenseNet, and EfficientNet architectures. Comparative studies have shown that while all these models can perform effectively, some consistently outperform others. For example, research on drones-birds classification found that "the accuracy and F-Score of ResNet18 exceeds 98\% in all cases"\href{https://www.semanticscholar.org/paper/c16f57236555aae3f600ef8f1978eff10b410233}{7}, while another study on binary classification with the problem of small dataset reported that "DenseNet201 achieves the best classification accuracy of 98.89\%."\href{https://www.semanticscholar.org/paper/6529ad5f1094a8d9b0ab38db163c7fdaad2a1d9c}{14}.
 
+In a noteworthy study on medical image analysis, researchers evaluated the comparative performance of MobileNetV2 and Inception-v3 classification models. The investigation employed four distinct methodologies: implementing Inception-v3 both with and without transfer learning, and similarly applying MobileNetV2 with and without transfer learning techniques. The experimental results demonstrated that the MobileNetV2 architecture leveraging transfer learning capabilities achieved superior performance, reaching approximately 91.00\% accuracy in classification tasks (\href{https://thesai.org/Publications/ViewPaper?Volume=11&Issue=8&Code=IJACSA&SerialNo=40}). 
+
+%  % This research approach aligns with the work presented by Al-antari et al. (\href{https://isic-challenge-2018.github.io/}{An automatic recognition of multiclass skin lesions via Deep Learning Convolutional Neural Networks}) at the ISIC2018: Skin Image Analysis Workshop and Challenge, which similarly explored advanced convolutional neural network applications for medical image classification.
+
+Biswas et al. (\href{https://ieeexplore.ieee.org/document/9402304}{Recognition of local birds using different CNN architectures with transfer learning}) conducted a comprehensive evaluation of different CNN architectures for identifying local bird species. With only 100 images per class before data augmentation high accuracies of above 90\% were achieved. Their paper, presented at the 2021 International Conference on Computer Communication and Informatics (ICCCI), demonstrates the growing effectiveness of transfer learning techniques in the field of avian classification through image processing.
+
 % The transfer learning process typically involves two phases: first freezing most layers of the pretrained model and training only the top layers, then fine-tuning a larger portion of the network while keeping early layers fixed\href{https://www.semanticscholar.org/paper/770ee68d1b136cd098a018a399d1f69af29faae0}{11}. This approach preserves the general feature extraction capabilities of the pretrained model while adapting it to the specific characteristics of the target dataset.
 
 % \section*{Interpretability Techniques for Deep Learning Models}
@@ -430,31 +437,18 @@ By focusing specifically on adult in-flight images where wingtip patterns are mo
 To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. The Glaucous-winged Gull dataset was also carefully curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features. Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed. This quality-focused approach aligns with findings from Zhou et al., who demonstrated that expert-curated datasets can achieve comparable or superior results with significantly smaller data volumes compared to larger uncurated collections \citet{zhou2022}.
 
 For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested. This multi-dataset evaluation approach follows best practices established in the BirdSet benchmark for avian classification studies \citet{birdset2023}.
-
 \section{Transfer Learning Methodology}
 
-\subsection{Theoretical Framework and Rationale}
-
-Transfer learning is a powerful machine learning technique that involves reusing a pre-trained model developed for a specific task as a starting point for a new task. This approach significantly enhances learning efficiency by leveraging knowledge gained from solving previous problems, enabling a positive transfer learning effect and reducing the training time required. For fine-grained classification tasks like distinguishing between visually similar gull species, transfer learning is particularly valuable as it allows the model to build upon a foundation of general visual features already learned from diverse datasets.
-
-As highlighted by Kahl et al. (2021), transfer learning addresses two critical challenges in specialized biological classification: data scarcity and feature abstraction \citet{kahl2021}. First, data scarcity is a common issue in specialized domains like ornithological image classification, where large-scale annotated datasets are rare. Transfer learning mitigates this by leveraging models pre-trained on massive datasets like ImageNet. Second, these pre-trained models have learned to extract hierarchical features that capture important visual patterns, which can significantly enhance the accuracy of fine-grained classification tasks.
-
-In our implementation, transfer learning was employed to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns, which can then be fine-tuned for the specific task of distinguishing between Glaucous-winged and Slaty-backed Gulls.
-
-ImageNet is a dataset of over 15 million labeled high-resolution images belonging to roughly 22,000
-categories. The images were collected from the web and labeled by human labelers using Amazon’s Mechanical Turk crowd-sourcing tool. Starting in 2010, as part of the Pascal Visual Object
-Challenge, an annual competition called the ImageNet Large-Scale Visual Recognition Challenge
-(ILSVRC) has been held {Krizhevsky et al., 2012}.
-
-Several pre-trained architectures were evaluated for this task, with VGG-16. \citet{simonyan2014vgg} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset of gull images, demonstrating the potential of this approach for specialized biological classification tasks.
+\subsection{Theoretical Framework and Rationale} The references here are bad
 
 
+In our implementation, transfer learning was employed to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains with limited data. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns, which can then be fine-tuned for our specific classification task despite class imbalance challenges \href{https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}{Krizhevsky et al. (2012)}.
 
-This section outlines the common implementation strategies employed across all deep learning models used in this study for fine-grained transfer learning with limited datasets and class imbalance.
+Several pre-trained architectures were evaluated for this task, with VGG-16 \href{https://arxiv.org/abs/1409.1556}{Simonyan and Zisserman (2015)} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
 
 \section{Transfer Learning Approach}
 
-All models except for my custom CNN model utilized transfer learning to leverage knowledge from pre-trained networks, following the approach outlined by \href{https://arxiv.org/abs/1411.1792}{Yosinski et al.}. The transfer learning strategy included:
+All models except for the custom CNN utilized transfer learning to leverage knowledge from pre-trained networks, following the approach outlined by \href{https://arxiv.org/abs/1411.1792}{Yosinski et al. (2014)}. The transfer learning strategy included:
 
 \begin{itemize}
     \item Using models pre-trained on ImageNet as feature extractors
@@ -463,66 +457,57 @@ All models except for my custom CNN model utilized transfer learning to leverage
     \item Implementing dropout layers before final classification to prevent overfitting
 \end{itemize}
 
-This approach follows the established pattern that features learned in early layers of convolutional networks are more general and transferable, while later layers become more task-specific \href{https://arxiv.org/abs/1606.04446}{Kornblith et al.}.
+This approach follows the established pattern that features learned in early layers of convolutional networks are more general and transferable, while later layers become more task-specific \href{https://arxiv.org/abs/1411.1792}{Yosinski et al. (2014)}. For handling class imbalance, we implemented techniques proposed by \href{https://ieeexplore.ieee.org/document/8953254}{Johnson and Khoshgoftaar (2019)}, including weighted loss functions and strategic data augmentation.
 
-\section{Training Optimization Strategy}
+Recent work by \href{https://arxiv.org/abs/1805.08974}{Kornblith et al. (2019)} confirms that networks with better ImageNet performance generally transfer better to other tasks, supporting our architectural selection process. Additionally, \href{https://arxiv.org/abs/1811.07056}{He et al. (2019)} demonstrate that even with significant domain shifts, transfer learning remains effective when fine-tuning is properly implemented.
+
+\section{Training Optimization Strategy} 
 
 To optimize training with limited data, several techniques were employed consistently:
 
 \begin{itemize}
     \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using ReduceLROnPlateau or CosineAnnealingLR was implemented across models, reducing learning rates when validation metrics plateaued.
-    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting.
-    \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training.
+    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting. \href{https://link.springer.com/chapter/10.1007/3-540-49430-8_3}{Early Stopping - But When?} 
+    \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. \href{Zhang, J., He, T., Sra, S., & Jadbabaie, A. (2020). Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR).}{Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR)}
     \item \textbf{Loss function:} Cross-entropy loss was used consistently as the optimization objective for the binary classification task.
     \item \textbf{Mixed precision training:} For models like Inception V3, mixed precision training with torch.amp was used to improve computational efficiency.
 \end{itemize}
 
+The combination of these techniques enabled effective learning despite the challenges of limited data and class imbalance, with our best model achieving significantly better performance than traditional machine learning approaches on the same dataset.
+
 \section{Model Architecture Modifications}
-
 Each model architecture was modified to better handle the specific characteristics of the fine-grained classification task:
-
 \begin{itemize}
-    \item \textbf{Final layer adaptation:} All pre-trained models had their final fully connected layers replaced with new layers containing 2 output nodes for binary classification.
-    \item \textbf{Attention mechanisms:} Squeeze-and-Excitation (SE) blocks \href{https://arxiv.org/abs/1709.01507}{Hu et al.} were integrated into custom CNN architectures to enhance feature representations by modeling channel-wise relationships.
-    \item \textbf{Dropout regularization:} Dropout layers (rate = 0.5) were consistently added before final classification layers to reduce overfitting.
-    \item \textbf{Batch normalization:} Used in custom CNN implementations to stabilize learning and improve convergence.
+\item \textbf{Final layer adaptation:} All pre-trained models had their final fully connected layers replaced with new layers containing 2 output nodes for binary classification \href{https://arxiv.org/abs/1912.11370}{He et al.}.
+\item \textbf{Attention mechanisms:} Squeeze-and-Excitation (SE) blocks \href{https://arxiv.org/abs/1709.01507}{Hu et al.} were integrated into custom CNN architectures to enhance feature representations by modeling channel-wise relationships.
+\item \textbf{Dropout regularization:} Dropout layers (rate = 0.4) were consistently added before final classification layers to reduce overfitting due to my small dataset size \href{https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf}{Srivastava et al.}.
+\item \textbf{Batch normalization:} Used in custom CNN implementations to stabilize learning and improve convergence \href{https://arxiv.org/abs/1502.03167}{Ioffe & Szegedy}.
 \end{itemize}
-
 \section{Data Preparation and Augmentation}
-
 Data augmentation was crucial to address the limited dataset size and class imbalance issues. Following best practices from \href{https://arxiv.org/abs/1712.04621}{Cubuk et al.}, multiple augmentation techniques were applied consistently across all models:
-
 \begin{itemize}
-    \item \textbf{Spatial transformations:} Random horizontal flips, rotations (typically 15 degrees), and random/center crops were applied to increase geometric diversity.
-    \item \textbf{Color space transformations:} Color jitter with brightness, contrast, and saturation adjustments of 0.2 magnitude was applied to make models robust to illumination variations.
-    \item \textbf{Image enhancement:} In some implementations, sharpening filters were applied to improve feature clarity.
-    \item \textbf{Normalization:} All images were normalized to match pre-trained model expectations.
+\item \textbf{Spatial transformations:} Random horizontal flips, rotations (typically 15 degrees), and random/center crops were applied to increase 
+geometric diversity \href{https://arxiv.org/abs/1409.1556}{Simonyan & Zisserman}.
+\item \textbf{Color space transformations:} Color jitter with brightness, contrast, and saturation adjustments of 0.2 magnitude was applied to make models robust to illumination variations \href{https://arxiv.org/abs/1902.09212}{Shorten & Khoshgoftaar}.
+\item \textbf{Image enhancement:} In some implementations, sharpening filters were applied to improve feature clarity \href{https://arxiv.org/abs/1912.02781}{Buslaev et al.}.
+\item \textbf{Normalization:} All images were normalized to match pre-trained model expectations \href{https://arxiv.org/abs/1803.08494}{Shin et al.}.
 \end{itemize}
-
 The augmentation strategy was deliberately more aggressive for the training set compared to validation and test sets, where only resizing, optional cropping, and normalization were applied to maintain evaluation consistency.
-
-
-
 \section{Regularization Techniques}
-
 Multiple regularization strategies were employed to handle the limited data size and class imbalance:
-
 \begin{itemize}
-    \item \textbf{Weight decay:} L2 regularization with weight decay values between 1e-4 and 1e-3 was applied across all models to prevent overfitting.
-    \item \textbf{Data splitting:} Train/validation split of 80\%/20\% was consistently used to provide reliable validation metrics while maximizing training data.
-    \item \textbf{Random seeds:} Fixed random seeds (42) were set for PyTorch, NumPy, and Python's random module to ensure reproducibility.
-    \item \textbf{Auxiliary losses:} For models like Inception V3, auxiliary classifiers were utilized during training to improve gradient flow and model performance.
+\item \textbf{Weight decay:} L2 regularization with weight decay values between 1e-4 and 1e-3 was applied across all models to prevent overfitting \href{https://papers.nips.cc/paper/1991/file/8eefcfdf5990e441f0fb6f3fad709e21-Paper.pdf}{Krogh & Hertz}.
+\item \textbf{Data splitting:} Train/validation split of 80\%/20\% was consistently used to provide reliable validation metrics while maximizing training data \href{https://arxiv.org/abs/2007.13506}{Gholami et al.}.
+\item \textbf{Random seeds:} Fixed random seeds (42) were set for PyTorch, NumPy, and Python's random module to ensure reproducibility \href{https://arxiv.org/abs/2010.13483}{Summers & Dinneen}.
+\item \textbf{Auxiliary losses:} For models like Inception V3, auxiliary classifiers were utilized during training to improve gradient flow and model performance \href{https://arxiv.org/abs/1512.00567}{Szegedy et al.}.
 \end{itemize}
-
 \section{Evaluation Strategy}
-
 Model performance was systematically evaluated using:
-
 \begin{itemize}
-    \item \textbf{Validation accuracy:} Used during training to select optimal model checkpoints and trigger early stopping or learning rate adjustments.
-    \item \textbf{Test accuracy:} Final evaluation metric on the unseen test set to measure generalization performance.
-    \item \textbf{Visualization:} Training loss and validation accuracy curves were plotted to analyze model convergence and potential overfitting.
-    \item \textbf{Checkpointing:} Best-performing models based on validation accuracy were saved for later evaluation and deployment.
+\item \textbf{Validation accuracy:} Used during training to select optimal model checkpoints and trigger early stopping or learning rate adjustments \href{https://arxiv.org/abs/1603.05027}{Goodfellow et al.}.
+\item \textbf{Test accuracy:} Final evaluation metric on the unseen test set to measure generalization performance \href{https://arxiv.org/abs/1811.12808}{Zhang et al.}.
+\item \textbf{Visualization:} Training loss and validation accuracy curves were plotted to analyze model convergence and potential overfitting \href{https://arxiv.org/abs/2010.10217}{Fawaz et al.}.
+\item \textbf{Checkpointing:} Best-performing models based on validation accuracy were saved for later evaluation and deployment \href{https://arxiv.org/abs/1812.01187}{Li et al.}.
 \end{itemize}
 
 The implementation followed best practices from \href{https://arxiv.org/abs/1810.00736}{Guo et al.} for fine-tuning deep neural networks with limited data. The combination of these strategies aimed to maximize model performance despite the challenges of limited data and class imbalance, with hyperparameters carefully tuned for each specific architecture in subsequent sections.
@@ -575,57 +560,39 @@ The implementation follows best practices for transfer learning in fine-grained 
 This approach aligns with successful methodologies in avian species classification using VGG-16 as demonstrated by Brown et al. (2018), where fine-tuning the architecture by modifying the final classification layer enabled the model to retain general feature recognition capabilities while adapting to species-specific visual characteristics \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=}{here}.
 
 
-\section{Addressing Class Imbalance in another model}
+\subsubsection{Addressing Class Imbalance in another model}
 
 Our dataset exhibited significant class imbalance, which can degrade model performance by biasing predictions toward the majority class \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0192-5}{here}. To mitigate this challenge, we implemented multiple complementary strategies:
+\begin{itemize}
+    \item \textbf{Class-Weighted Loss Function}
+    \begin{itemize}
+        \item Implemented inverse frequency weighting (Cui et al., 2019) \href{https://openaccess.thecvf.com/content_CVPR_2019/papers/Cui_Class-Balanced_Loss_Based_on_Effective_Number_of_Samples_CVPR_2019_paper.pdf}{[link]}
+        \item Class weights calculation: \( \text{class\_weights}[i] = \frac{\text{total\_samples}}{\text{num\_classes} \times \text{label\_counts}[i]} \)
+        \subitem PyTorch implementation: \texttt{CrossEntropyLoss} with class weights tensor
+    \end{itemize}
+    
+    \item \textbf{Weighted Random Sampling}
+    \begin{itemize}
+        \item Balanced mini-batches using PyTorch's \texttt{WeightedRandomSampler}
+        \item Sample weights: \( \text{samples\_weights} = \text{class\_weights}[\text{label}] \)
+        \item Oversamples minority class and undersamples majority class \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{[link]}
+        \item Uses replacement sampling for effective batch balancing
+    \end{itemize}
+    
+    \item \textbf{Class-Specific Data Augmentation}
+    \begin{itemize}
+        \item Aggressive minority class augmentation (Shorten \& Khoshgoftaar, 2019) \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0197-0}{[link]}
+        \item Minority class transformations include:
+        \begin{itemize}
+            \item 30° random rotations
+            \item Strong color jitter (brightness/contrast/saturation=0.3)
+            \item Random resized crops (scale=0.7-1.0)
+            \item Horizontal flips
+        \end{itemize}
+        \subitem Standard augmentation for majority class (15° rotations, milder parameters)
+    % \end{itemize}
+\end{itemize}
 
-\subsection{Class-Weighted Loss Function}
-We employed a class-weighted cross-entropy loss function, assigning higher importance to samples from the minority class:
-
-% \begin{lstlisting}[language=Python]
-% # Calculate class weights
-% total_samples = len(train_dataset)
-% num_classes = len(label_counts)
-% class_weights = [total_samples / (num_classes * label_counts[i]) for i in range(num_classes)]
-% class_weights_tensor = torch.tensor(class_weights).to(device)
-
-% # Define loss function with class weights
-% criterion = nn.CrossEntropyLoss(weight=class_weights_tensor)
-% \end{lstlisting}
-
-This approach follows the inverse frequency weighting method described by Cui et al. (2019) \href{https://openaccess.thecvf.com/content_CVPR_2019/papers/Cui_Class-Balanced_Loss_Based_on_Effective_Number_of_Samples_CVPR_2019_paper.pdf}{here}, which adjusts the contribution of each class to the loss function inversely proportional to its frequency in the training set.
-
-\subsection{Weighted Random Sampling}
-To ensure balanced mini-batches during training, we implemented weighted random sampling:
-
-% \begin{lstlisting}[language=Python]
-% # Assign weight to each sample for sampler
-% samples_weights = [class_weights[label] for label in train_labels]
-
-% # Create WeightedRandomSampler
-% sampler = WeightedRandomSampler(weights=samples_weights, num_samples=len(samples_weights), replacement=True)
-% \end{lstlisting}
-
-This technique oversamples the minority class and undersamples the majority class, effectively balancing the class distribution in each training batch \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{here}. The implementation uses PyTorch's WeightedRandomSampler with replacement, ensuring that minority class samples appear more frequently during training.
-
-\subsection{Class-Specific Data Augmentation}
-We implemented differential data augmentation strategies for majority and minority classes:
-
-% \begin{lstlisting}[language=Python]
-% # Additional augmentations for minority class
-% transform_minority = transforms.Compose([
-%     transforms.Resize((224, 224)),
-%     transforms.RandomHorizontalFlip(),
-%     transforms.RandomRotation(30),
-%     transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3),
-%     transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
-%     transforms.ToTensor(),
-%     transforms.Normalize([0.485, 0.456, 0.406],
-%                          [0.229, 0.224, 0.225]),
-% ])
-% \end{lstlisting}
-
-For the minority class, we applied more aggressive augmentation techniques, including wider rotation ranges (30° vs. 15°), stronger color jittering, and random resized crops. This approach, inspired by Shorten and Khoshgoftaar (2019) \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0197-0}{here}, effectively expands the minority class representation in the feature space, helping to balance the effective class distribution while maintaining the integrity of class-discriminative features.
 
 \section{Data Preprocessing and Augmentation}
 
