@@ -1,9 +1,19 @@
 import os
+import sys
 import numpy as np
 import pandas as pd
 import cv2
 from pathlib import Path
+from scipy.stats import skew, kurtosis
+
+# Add the root directory to Python path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.append(str(root_dir))
+
+
 from Features_Analysis.config import *  # Import configuration file
+from Features_Analysis.Intensity.normalize_intensity_analysis import normalize_and_analyze_intensity
 
 
 def analyze_wingtip_darkness(image_path, seg_path, species, file_name):

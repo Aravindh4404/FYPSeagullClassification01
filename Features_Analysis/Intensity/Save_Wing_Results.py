@@ -2,7 +2,15 @@ import os
 import numpy as np
 import pandas as pd
 import cv2
+import sys
+from pathlib import Path
 from scipy.stats import skew, kurtosis
+
+# Add the root directory to Python path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.append(str(root_dir))
+
 from Features_Analysis.config import *
 from Features_Analysis.Intensity.normalize_intensity_analysis import analyze_normalized_wing_intensity
 
