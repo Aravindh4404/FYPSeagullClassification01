@@ -2,6 +2,14 @@ import pandas as pd
 import numpy as np
 import cv2
 import os
+import sys
+from pathlib import Path
+
+# Add the root directory to Python path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.append(str(root_dir))
+
 from Features_Analysis.config import *  # Import configuration file
 from Features_Analysis.Intensity.normalize_intensity_analysis import normalize_and_analyze_intensity
 
