@@ -39,14 +39,14 @@ def main():
     if all_results:
         df = pd.DataFrame(all_results)
 
-        os.makedirs("Intensity_Results", exist_ok=True)
+        os.makedirs("Wing_Greyscale_Intensity_Results/", exist_ok=True)
 
         # Save as CSV
-        csv_path = "Intensity_Results/wing_intensity_analysis.csv"
+        csv_path = "Wing_Greyscale_Intensity_Results//wing_intensity_analysis.csv"
         df.to_csv(csv_path, index=False)
 
         # Save as Pickle
-        pkl_path = "Intensity_Results/wing_intensity_analysis.pkl"
+        pkl_path = "Wing_Greyscale_Intensity_Results//wing_intensity_analysis.pkl"
         df.to_pickle(pkl_path)
 
         print(f"\nResults saved to:\n- {csv_path}\n- {pkl_path}")

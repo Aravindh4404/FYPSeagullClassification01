@@ -111,7 +111,7 @@ def main():
     if results:
         df = pd.DataFrame(results)
 
-        results_dir = "Darkness_Analysis_Results"
+        results_dir = "Darkness_Comparison_Analysis_Results"
         os.makedirs(results_dir, exist_ok=True)
 
         csv_path = os.path.join(results_dir, "wingtip_darkness_analysis.csv")

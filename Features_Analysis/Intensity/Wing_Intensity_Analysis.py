@@ -9,7 +9,7 @@ os.makedirs(output_dir, exist_ok=True)
 
 # Load the data
 try:
-    file_path = 'Intensity_Results\wing_intensity_analysis.csv'
+    file_path = 'Wing_Greyscale_Intensity_Results\wing_intensity_analysis.csv'
     data = pd.read_csv(file_path)
     print(f"Successfully loaded data from {file_path}")
 except Exception as e:
