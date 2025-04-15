@@ -11,15 +11,13 @@ current_dir = Path(__file__).resolve().parent
 root_dir = current_dir.parent.parent
 sys.path.append(str(root_dir))
 
-
 from Features_Analysis.config import *  # Import configuration file
-from Features_Analysis.Intensity.normalize_intensity_analysis import normalize_and_analyze_intensity
-
+from Features_Analysis.image_normalization import minmax_normalize
 
 def analyze_wingtip_darkness(image_path, seg_path, species, file_name):
     """
-    Analyzes the wingtip darkness metrics for a single image.
-    Includes mean, std deviation, and percentage darker.
+    Analyzes wingtip darkness using normalized intensity values (0-1 scale).
+    Normalizes entire image first, then extracts regions.
     """
     # Load images
     original_img = cv2.imread(image_path)
@@ -29,63 +27,40 @@ def analyze_wingtip_darkness(image_path, seg_path, species, file_name):
         print(f"Error loading images: {image_path} or {seg_path}")
         return None
 
-    # Extract wing and wingtip regions
-    wing_region, wing_mask = extract_region(original_img, segmentation_img, "wing")
-    wingtip_region, wingtip_mask = extract_region(original_img, segmentation_img, "wingtip")
-
-    # Convert to grayscale
-    gray_wing = cv2.cvtColor(wing_region, cv2.COLOR_BGR2GRAY)
-
-    # Get non-zero pixels (wing area)
-    wing_pixels = gray_wing[wing_mask > 0]
-
-    if len(wing_pixels) == 0:
-        print(f"No wing region found in {file_name}")
-        return None
-
-    # Calculate mean and std deviation of wing intensity
-    mean_wing_intensity = np.mean(wing_pixels)
-    std_wing_intensity = np.std(wing_pixels)
-
-    # Convert original image to grayscale for wingtip analysis
+    # Convert to grayscale and normalize entire image
     gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
+    normalized_img = minmax_normalize(gray_img)  # Normalize entire image first
 
-    # Get non-zero pixels (wingtip area)
-    wingtip_pixels = gray_img[wingtip_mask > 0]
+    # Extract masks for wing and wingtip regions using your config function
+    _, wing_mask = extract_region(original_img, segmentation_img, "wing")
+    _, wingtip_mask = extract_region(original_img, segmentation_img, "wingtip")
 
-    if len(wingtip_pixels) == 0:
-        print(f"No wingtip region found in {file_name}")
+    # Get normalized pixel values using masks
+    wing_pixels = normalized_img[wing_mask > 0]
+    wingtip_pixels = normalized_img[wingtip_mask > 0]
+
+    if len(wing_pixels) == 0 or len(wingtip_pixels) == 0:
+        print(f"No wing/wingtip found in {file_name}")
         return None
 
-    # Calculate mean and std deviation of wingtip intensity
-    mean_wingtip_intensity = np.mean(wingtip_pixels)
-    std_wingtip_intensity = np.std(wingtip_pixels)
-
-    # Identify darker pixels in the wingtip (darker than mean wing intensity)
-    darker_pixels = wingtip_pixels[wingtip_pixels < mean_wing_intensity]
-
-    # Calculate percentage of darker pixels
-    percentage_darker = (len(darker_pixels) / len(wingtip_pixels)) * 100
-
-    # Calculate mean and std deviation of darker pixels
-    mean_darker_intensity = np.mean(darker_pixels) if len(darker_pixels) > 0 else 0
-    std_darker_intensity = np.std(darker_pixels) if len(darker_pixels) > 0 else 0
+    # Calculate normalized intensity metrics
+    mean_wing = np.mean(wing_pixels)
+    darker_pixels = wingtip_pixels[wingtip_pixels < mean_wing]
 
     return {
         "image_name": file_name,
         "species": species,
-        "mean_wing_intensity": mean_wing_intensity,
-        "std_wing_intensity": std_wing_intensity,
-        "mean_wingtip_intensity": mean_wingtip_intensity,
-        "std_wingtip_intensity": std_wingtip_intensity,
-        "mean_darker_wingtip_intensity": mean_darker_intensity,
-        "std_darker_wingtip_intensity": std_darker_intensity,
-        "percentage_darker": percentage_darker,
+        "mean_wing_intensity": mean_wing,
+        "std_wing_intensity": np.std(wing_pixels),
+        "mean_wingtip_intensity": np.mean(wingtip_pixels),
+        "std_wingtip_intensity": np.std(wingtip_pixels),
+        "percentage_darker": (len(darker_pixels)/len(wingtip_pixels))*100 if len(wingtip_pixels) > 0 else 0,
+        "mean_darker_wingtip_intensity": np.mean(darker_pixels) if len(darker_pixels) > 0 else 0,
+        "std_darker_wingtip_intensity": np.std(darker_pixels) if len(darker_pixels) > 0 else 0,
         "wing_pixel_count": len(wing_pixels),
         "wingtip_pixel_count": len(wingtip_pixels),
         "darker_wingtip_pixels": len(darker_pixels),
     }
-
 
 def main():
     """
@@ -130,7 +105,6 @@ def main():
         species_avg.to_csv(avg_csv_path, index=False)
 
         print(f"\nSpecies averages saved to: {avg_csv_path}")
-
 
 if __name__ == "__main__":
     main()
