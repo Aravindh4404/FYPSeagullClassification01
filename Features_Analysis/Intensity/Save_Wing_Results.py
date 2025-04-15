@@ -15,14 +15,17 @@ def analyze_wing_intensity(image_path, seg_path, species, file_name):
         print(f"Error loading images: {image_path} or {seg_path}")
         return None
 
-    # Extract wing region
-    wing_region, wing_mask = extract_region(original_img, segmentation_img, "wing")
+    # Convert entire image to grayscale first
+    gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
+    
+    # Apply min-max normalization to the entire grayscale image
+    gray_img = cv2.normalize(gray_img, None, 0, 255, cv2.NORM_MINMAX)
 
-    # Convert to grayscale
-    gray_wing = cv2.cvtColor(wing_region, cv2.COLOR_BGR2GRAY)
+    # Extract wing region from the normalized grayscale image
+    wing_region, wing_mask = extract_region(gray_img, segmentation_img, "wing")
 
     # Get non-zero pixels (wing area)
-    wing_pixels = gray_wing[wing_mask > 0]
+    wing_pixels = wing_region[wing_mask > 0]
 
     if len(wing_pixels) == 0:
         print(f"No wing region found in {file_name}")

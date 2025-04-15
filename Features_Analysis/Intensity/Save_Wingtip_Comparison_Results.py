@@ -18,10 +18,16 @@ def analyze_wingtip_darkness(image_path, seg_path, species, file_name, wing_mean
         print(f"Error loading images: {image_path} or {seg_path}")
         return None
 
-    # Extract wingtip region
-    wingtip_region, wingtip_mask = extract_region(original_img, segmentation_img, "wingtip")
-    gray_wingtip = cv2.cvtColor(wingtip_region, cv2.COLOR_BGR2GRAY)
-    wingtip_pixels = gray_wingtip[wingtip_mask > 0]
+    # Convert entire image to grayscale first
+    gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
+    
+    # Apply min-max normalization to the entire grayscale image
+    gray_img = cv2.normalize(gray_img, None, 0, 255, cv2.NORM_MINMAX)
+
+    # Extract wingtip region from the normalized grayscale image
+    wingtip_region, wingtip_mask = extract_region(gray_img, segmentation_img, "wingtip")
+    
+    wingtip_pixels = wingtip_region[wingtip_mask > 0]
 
     if len(wingtip_pixels) == 0:
         print(f"No wingtip region found in {file_name}")

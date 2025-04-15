@@ -1,4 +1,7 @@
 import pandas as pd
+import cv2
+import numpy as np
+import os
 from Features_Analysis.config import *  # Import configuration file
 
 
@@ -15,16 +18,18 @@ def analyze_wingtip_intensity_distribution(image_path, seg_path, species, file_n
         print(f"Error loading images: {image_path} or {seg_path}")
         return None
 
-    # Extract wing and wingtip regions
-    wing_region, wing_mask = extract_region(original_img, segmentation_img, "wing")
-    wingtip_region, wingtip_mask = extract_region(original_img, segmentation_img, "wingtip")
-
-    # Convert to grayscale
+    # Convert entire image to grayscale first
     gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
-    gray_wing = cv2.cvtColor(wing_region, cv2.COLOR_BGR2GRAY)
+    
+    # Apply min-max normalization to the entire grayscale image
+    gray_img = cv2.normalize(gray_img, None, 0, 255, cv2.NORM_MINMAX)
+
+    # Extract wing and wingtip regions from the normalized grayscale image
+    wing_region, wing_mask = extract_region(gray_img, segmentation_img, "wing")
+    wingtip_region, wingtip_mask = extract_region(gray_img, segmentation_img, "wingtip")
 
     # Get wing pixels
-    wing_pixels = gray_wing[wing_mask > 0]
+    wing_pixels = wing_region[wing_mask > 0]
 
     if len(wing_pixels) == 0:
         print(f"No wing region found in {file_name}")
@@ -33,8 +38,8 @@ def analyze_wingtip_intensity_distribution(image_path, seg_path, species, file_n
     # Calculate mean wing intensity
     mean_wing_intensity = np.mean(wing_pixels)
 
-    # Get wingtip pixels from the original grayscale image
-    wingtip_pixels = gray_img[wingtip_mask > 0]
+    # Get wingtip pixels from the normalized grayscale image
+    wingtip_pixels = wingtip_region[wingtip_mask > 0]
 
     if len(wingtip_pixels) == 0:
         print(f"No wingtip region found in {file_name}")
