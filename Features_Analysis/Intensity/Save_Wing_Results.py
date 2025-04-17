@@ -3,6 +3,13 @@ import numpy as np
 import pandas as pd
 import cv2
 from scipy.stats import skew, kurtosis
+
+import sys
+
+# Add the root directory to Python path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.append(str(root_dir))
 from Features_Analysis.config import *
 
 def analyze_wing_intensity(image_path, seg_path, species, file_name):

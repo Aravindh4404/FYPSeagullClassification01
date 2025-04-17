@@ -1,9 +1,17 @@
+from pathlib import Path
+
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score, adjusted_rand_score
 import matplotlib.pyplot as plt
+import sys
+
+# Add the root directory to Python path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.append(str(root_dir))
 
 # Load and prepare data
 df = pd.read_csv("wingtip_intensity_distribution.csv")

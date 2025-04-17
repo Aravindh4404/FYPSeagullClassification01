@@ -1,7 +1,14 @@
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from scipy import stats
 import os
+import sys
+
+# Add the root directory to Python path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.append(str(root_dir))
 
 # Create a directory for saving results
 output_dir = "Wing_Analysis_Results"

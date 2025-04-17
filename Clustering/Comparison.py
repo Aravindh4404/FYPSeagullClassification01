@@ -1,3 +1,6 @@
+from pathlib import Path
+import os
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,6 +10,12 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score, adjusted_rand_score, confusion_matrix
 from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 from sklearn.mixture import GaussianMixture
+import sys
+
+# Add the root directory to Python path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.append(str(root_dir))
 
 # Set a consistent random state for reproducibility
 RANDOM_STATE = 42
@@ -60,7 +69,7 @@ def evaluate_clustering(X_scaled, clusters, true_labels=None):
 
 
 # Function to visualize clusters
-def visualize_clusters(X_pca, clusters, centroids=None, title="Clustering Results"):
+def visualize_clusters(X_pca, clusters, centroids=None, title="Clustering Results", save_path=None):
     plt.figure(figsize=(10, 6))
     scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1], c=clusters, cmap='viridis', alpha=0.7)
     plt.xlabel('PCA Component 1')
@@ -73,7 +82,12 @@ def visualize_clusters(X_pca, clusters, centroids=None, title="Clustering Result
         plt.legend()
 
     plt.tight_layout()
-    plt.show()
+    
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+    else:
+        plt.show()
 
 
 # Function to map clusters to majority species and identify misclassifications
@@ -113,7 +127,7 @@ def map_clusters_to_species(df, clusters, true_labels, species_names):
 
 
 # Function to visualize confusion matrix with mapped species labels
-def visualize_confusion_matrix_with_mapping(true_labels, clusters, majority_mapping, species_names):
+def visualize_confusion_matrix_with_mapping(true_labels, clusters, majority_mapping, species_names, save_path=None):
     if true_labels is None:
         print("No true labels available for confusion matrix.")
         return
@@ -137,7 +151,12 @@ def visualize_confusion_matrix_with_mapping(true_labels, clusters, majority_mapp
     plt.ylabel('True Species')
     plt.title('Confusion Matrix with Species Mapping')
     plt.tight_layout()
-    plt.show()
+    
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+    else:
+        plt.show()
 
     # Calculate and display accuracy
     accuracy = (confusion_df['True'] == confusion_df['Predicted']).mean() * 100
@@ -147,7 +166,7 @@ def visualize_confusion_matrix_with_mapping(true_labels, clusters, majority_mapp
 
 
 # Function to visualize misclassified points
-def visualize_misclassifications(X_pca, cluster_analysis, title="Misclassification Analysis"):
+def visualize_misclassifications(X_pca, cluster_analysis, title="Misclassification Analysis", save_path=None):
     plt.figure(figsize=(10, 6))
 
     # Plot correctly classified points
@@ -168,7 +187,12 @@ def visualize_misclassifications(X_pca, cluster_analysis, title="Misclassificati
     plt.title(title)
     plt.legend()
     plt.tight_layout()
-    plt.show()
+    
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+    else:
+        plt.show()
 
     # Print summary of misclassifications
     misclassified = cluster_analysis[~cluster_analysis['Correctly_Clustered']]
@@ -183,7 +207,7 @@ def visualize_misclassifications(X_pca, cluster_analysis, title="Misclassificati
 
 
 # Function to create feature importance plot based on cluster centers
-def visualize_feature_importance(scaler, cluster_centers, feature_names):
+def visualize_feature_importance(scaler, cluster_centers, feature_names, save_path=None):
     # Transform cluster centers back to original scale
     original_centers = scaler.inverse_transform(cluster_centers)
 
@@ -205,7 +229,12 @@ def visualize_feature_importance(scaler, cluster_centers, feature_names):
                  f'{height:.2f}', ha='center', va='bottom')
 
     plt.tight_layout()
-    plt.show()
+    
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+    else:
+        plt.show()
 
 
 # 1. K-means Clustering
@@ -239,7 +268,11 @@ def apply_gmm(X_scaled, n_components=2):
 
 
 # Main function to run all clustering algorithms
-def run_clustering_analysis(file_path):
+def run_clustering_analysis(file_path, output_dir=None):
+    # Create output directory if it doesn't exist
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+    
     # Load and prepare data
     df, features, true_labels, species_names = load_data(file_path)
     feature_names = features.columns.tolist()
@@ -261,7 +294,8 @@ def run_clustering_analysis(file_path):
 
     # Visualize K-means results
     kmeans_centers_pca = pca.transform(kmeans_centers) if kmeans_centers is not None else None
-    visualize_clusters(X_pca, kmeans_clusters, kmeans_centers_pca, "K-means Clustering Results")
+    kmeans_plot_path = os.path.join(output_dir, "kmeans_clustering.png") if output_dir else None
+    visualize_clusters(X_pca, kmeans_clusters, kmeans_centers_pca, "K-means Clustering Results", kmeans_plot_path)
 
     if true_labels is not None and species_names is not None:
         # Map clusters to species and identify misclassifications
@@ -269,11 +303,13 @@ def run_clustering_analysis(file_path):
 
         # Visualize confusion matrix with species mapping
         print("\n=== K-means Species Mapping Analysis ===")
+        kmeans_confusion_path = os.path.join(output_dir, "kmeans_confusion_matrix.png") if output_dir else None
         kmeans_confusion = visualize_confusion_matrix_with_mapping(true_labels, kmeans_clusters, kmeans_mapping,
-                                                                   species_names)
+                                                                   species_names, kmeans_confusion_path)
 
         # Visualize misclassified points
-        visualize_misclassifications(X_pca, kmeans_analysis, "K-means Misclassification Analysis")
+        kmeans_misclass_path = os.path.join(output_dir, "kmeans_misclassifications.png") if output_dir else None
+        visualize_misclassifications(X_pca, kmeans_analysis, "K-means Misclassification Analysis", kmeans_misclass_path)
 
         # Print majority mappings
         print("\nK-means Cluster to Species Mapping:")
@@ -282,7 +318,8 @@ def run_clustering_analysis(file_path):
 
     # Feature importance based on K-means
     if kmeans_centers is not None:
-        visualize_feature_importance(scaler, kmeans_centers, feature_names)
+        kmeans_feature_path = os.path.join(output_dir, "kmeans_feature_importance.png") if output_dir else None
+        visualize_feature_importance(scaler, kmeans_centers, feature_names, kmeans_feature_path)
 
     # 2. Hierarchical Clustering
     print("\n=== Hierarchical Clustering ===")
@@ -293,7 +330,8 @@ def run_clustering_analysis(file_path):
         print(f"Adjusted Rand Index: {hierarchical_results['adjusted_rand_index']:.3f}")
 
     # Visualize Hierarchical results
-    visualize_clusters(X_pca, hierarchical_clusters, None, "Hierarchical Clustering Results")
+    hierarchical_plot_path = os.path.join(output_dir, "hierarchical_clustering.png") if output_dir else None
+    visualize_clusters(X_pca, hierarchical_clusters, None, "Hierarchical Clustering Results", hierarchical_plot_path)
 
     if true_labels is not None and species_names is not None:
         # Map clusters to species and identify misclassifications
@@ -302,11 +340,13 @@ def run_clustering_analysis(file_path):
 
         # Visualize confusion matrix with species mapping
         print("\n=== Hierarchical Clustering Species Mapping Analysis ===")
+        hierarchical_confusion_path = os.path.join(output_dir, "hierarchical_confusion_matrix.png") if output_dir else None
         hierarchical_confusion = visualize_confusion_matrix_with_mapping(true_labels, hierarchical_clusters,
-                                                                         hierarchical_mapping, species_names)
+                                                                         hierarchical_mapping, species_names, hierarchical_confusion_path)
 
         # Visualize misclassified points
-        visualize_misclassifications(X_pca, hierarchical_analysis, "Hierarchical Clustering Misclassification Analysis")
+        hierarchical_misclass_path = os.path.join(output_dir, "hierarchical_misclassifications.png") if output_dir else None
+        visualize_misclassifications(X_pca, hierarchical_analysis, "Hierarchical Clustering Misclassification Analysis", hierarchical_misclass_path)
 
         # Print majority mappings
         print("\nHierarchical Cluster to Species Mapping:")
@@ -331,7 +371,8 @@ def run_clustering_analysis(file_path):
             print(f"Adjusted Rand Index: {dbscan_results['adjusted_rand_index']:.3f}")
 
         # Visualize DBSCAN results
-        visualize_clusters(X_pca, dbscan_clusters, None, "DBSCAN Clustering Results")
+        dbscan_plot_path = os.path.join(output_dir, "dbscan_clustering.png") if output_dir else None
+        visualize_clusters(X_pca, dbscan_clusters, None, "DBSCAN Clustering Results", dbscan_plot_path)
 
         if true_labels is not None and species_names is not None:
             # Map clusters to species and identify misclassifications
@@ -339,11 +380,13 @@ def run_clustering_analysis(file_path):
 
             # Visualize confusion matrix with species mapping
             print("\n=== DBSCAN Species Mapping Analysis ===")
+            dbscan_confusion_path = os.path.join(output_dir, "dbscan_confusion_matrix.png") if output_dir else None
             dbscan_confusion = visualize_confusion_matrix_with_mapping(true_labels, dbscan_clusters, dbscan_mapping,
-                                                                       species_names)
+                                                                       species_names, dbscan_confusion_path)
 
             # Visualize misclassified points
-            visualize_misclassifications(X_pca, dbscan_analysis, "DBSCAN Misclassification Analysis")
+            dbscan_misclass_path = os.path.join(output_dir, "dbscan_misclassifications.png") if output_dir else None
+            visualize_misclassifications(X_pca, dbscan_analysis, "DBSCAN Misclassification Analysis", dbscan_misclass_path)
 
             # Print majority mappings
             print("\nDBSCAN Cluster to Species Mapping:")
@@ -360,7 +403,8 @@ def run_clustering_analysis(file_path):
 
     # Visualize GMM results
     gmm_centers_pca = pca.transform(gmm_centers) if gmm_centers is not None else None
-    visualize_clusters(X_pca, gmm_clusters, gmm_centers_pca, "Gaussian Mixture Model Results")
+    gmm_plot_path = os.path.join(output_dir, "gmm_clustering.png") if output_dir else None
+    visualize_clusters(X_pca, gmm_clusters, gmm_centers_pca, "Gaussian Mixture Model Results", gmm_plot_path)
 
     if true_labels is not None and species_names is not None:
         # Map clusters to species and identify misclassifications
@@ -368,10 +412,12 @@ def run_clustering_analysis(file_path):
 
         # Visualize confusion matrix with species mapping
         print("\n=== Gaussian Mixture Model Species Mapping Analysis ===")
-        gmm_confusion = visualize_confusion_matrix_with_mapping(true_labels, gmm_clusters, gmm_mapping, species_names)
+        gmm_confusion_path = os.path.join(output_dir, "gmm_confusion_matrix.png") if output_dir else None
+        gmm_confusion = visualize_confusion_matrix_with_mapping(true_labels, gmm_clusters, gmm_mapping, species_names, gmm_confusion_path)
 
         # Visualize misclassified points
-        visualize_misclassifications(X_pca, gmm_analysis, "GMM Misclassification Analysis")
+        gmm_misclass_path = os.path.join(output_dir, "gmm_misclassifications.png") if output_dir else None
+        visualize_misclassifications(X_pca, gmm_analysis, "GMM Misclassification Analysis", gmm_misclass_path)
 
         # Print majority mappings
         print("\nGMM Cluster to Species Mapping:")
@@ -414,8 +460,13 @@ def export_misclassified_points(analysis_df, algorithm_name, output_path=None):
 # Example usage
 if __name__ == "__main__":
     # Replace with your actual file path
-    file_path = "wingtip_intensity_distribution.csv"
-    results = run_clustering_analysis(file_path)
+    file_path = os.path.join(os.path.dirname(__file__), "wingtip_intensity_distribution.csv")
+    
+    # Create output directory for plots
+    output_dir = os.path.join(os.path.dirname(__file__), "clustering_results")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    results = run_clustering_analysis(file_path, output_dir)
 
     # Compare algorithms based on silhouette scores
     print("\n=== Algorithm Comparison ===")
@@ -440,9 +491,13 @@ if __name__ == "__main__":
                  f'{height:.3f}', ha='center', va='bottom')
 
     plt.tight_layout()
-    plt.show()
+    
+    # Save the comparison plot
+    comparison_plot_path = os.path.join(output_dir, "algorithm_comparison.png")
+    plt.savefig(comparison_plot_path)
+    plt.close()
 
     # Export misclassified points for each algorithm
     for algo, (_, _, analysis) in results.items():
         if analysis is not None:
-            export_misclassified_points(analysis, algo)
+            export_misclassified_points(analysis, algo, os.path.join(output_dir, f"{algo}_misclassified_points.csv"))

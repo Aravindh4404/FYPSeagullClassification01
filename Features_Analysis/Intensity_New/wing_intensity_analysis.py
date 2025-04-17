@@ -107,15 +107,15 @@ def main():
     if all_results:
         df = pd.DataFrame(all_results)
         
-        # Create output directory
-        output_dir = "Wing_Intensity_Results_New"
+        # Create output directory using os.path.join
+        output_dir = os.path.join(root_dir, "Wing_Intensity_Results_New")
         os.makedirs(output_dir, exist_ok=True)
         
-        # Save as CSV
+        # Save as CSV using os.path.join
         csv_path = os.path.join(output_dir, "wing_intensity_analysis.csv")
         df.to_csv(csv_path, index=False)
         
-        # Save as Pickle
+        # Save as Pickle using os.path.join
         pkl_path = os.path.join(output_dir, "wing_intensity_analysis.pkl")
         df.to_pickle(pkl_path)
         
