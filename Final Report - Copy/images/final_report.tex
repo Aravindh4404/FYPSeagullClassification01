@@ -1,0 +1,1454 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{titling}
+\usepackage{lmodern}
+\usepackage{lastpage}
+\usepackage{natbib}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\usepackage{amsmath}
+\renewcommand{\contentsname}{Table of Contents}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em} % Adjust spacing between paragraphs
+
+% Customise hyperlink appearance (Optional)
+\hypersetup{
+    colorlinks=true,        % Enable colored links
+    linkcolor=black,        % Color for internal links (TOC, sections, etc.)
+    citecolor=black,        % Color for citation links
+    filecolor=black,        % Color for file links
+    urlcolor=blue          % Color for external URLs
+}
+
+\begin{document}
+
+% Cover Page
+\begin{titlepage}
+    \begin{center}
+
+        \textbf{\LARGE{School of Computer Science}}\\[0.5em]
+        \textbf{\Large{Faculty of Science and Engineering}}\\[0.5em]
+        \textbf{\Large{University of Nottingham}}\\[0.5em]
+        \textbf{\Large{Malaysia}}\\[5em]
+
+        \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[3em]
+
+        \textbf{\Large{UG FINAL YEAR DISSERTATION REPORT}}\\[6em]
+        \textbf{\large{\textit{Interpretable Seagull classification}}}\\[6em]
+
+    \end{center}
+
+    \begin{center}
+        \begin{minipage}{0.6\textwidth}  % adjust width as needed
+            \raggedright
+            \textbf{Student's Name} \hspace{1.5cm}: Aravindh Palaniguru\\[1em]
+            \textbf{Student Number} \hspace{1.4cm}: 20511833\\[1em]
+            \textbf{Supervisor Name} \hspace{1.2cm}: Dr. Tomas Maul\\[1em]
+            \textbf{Year} \hspace{3.8cm}: 2025\\[4em]
+        \end{minipage}
+    \end{center}
+
+    \vfill
+
+    \begin{center}
+        \begin{minipage}{\textwidth}
+            \centering
+            {\fontsize{12}{10}\selectfont\textbf{SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENTS FOR THE AWARD OF}}
+            {\fontsize{12}{10}\selectfont\textbf{BACHELOR OF SCIENCE IN COMPUTER SCIENCE WITH ARTIFICIAL INTELLIGENCE (HONS)}}\\
+            {\fontsize{12}{10}\selectfont\textbf{THE UNIVERSITY OF NOTTINGHAM}}
+        \end{minipage}
+    \end{center}
+\end{titlepage}
+
+% Title Page
+\newpage
+\begin{titlepage}
+    \begin{center}
+        \vspace{0.1em}
+        \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[6em]
+
+        \textbf{INTERPRETABLE SEAGULL CLASSIFICATION}\\[6em]
+
+        \fontsize{10}{10}{Submitted in May 2025, in partial fulfillment of the conditions of the award of the degrees B.Sc.}\\[4em]
+
+        Aravindh Palaniguru\\
+        School of Computer Science\\
+        Faculty of Science and Engineering\\
+        University of Nottingham\\
+        Malaysia\\[6em]
+
+        I hereby declare that this dissertation is all my own work, except as indicated in the text:\\[4em]
+
+        Signature \underline{\hspace{7cm}}\\[2em]
+        Date \hspace{1cm} \underline{\hspace{1cm}} / \underline{\hspace{1cm}} / \underline{\hspace{2cm}}
+    \end{center}
+\end{titlepage}
+
+% Change margins for Table of Contents and subsequent pages
+\newgeometry{
+    margin=1in
+}
+
+% Roman numbering for preliminary pages
+\pagenumbering{roman}
+
+% % Acknowledgement
+% \newpage
+% \section*{\centering \normalsize{Acknowledgement}}
+
+% % Abstract
+% \newpage
+% \section*{\centering \normalsize{Abstract}}
+
+
+% Table of Contents
+\newpage
+\tableofcontents
+
+% % List of Figures
+% \newpage
+% \listoffigures
+
+% % List of Tables
+% \newpage
+% \listoftables
+
+% Switch to Arabic numbering starting from Introduction
+\newpage
+\cleardoublepage % Ensure proper page break before switching numbering style
+\pagenumbering{arabic} % Switch to Arabic numerals
+\setcounter{page}{1} % Restart page numbering at 1
+
+% Introduction
+\section{Introduction}
+
+Biodiversity is under unprecedented pressure due to climate change and human influence. The alarming rates at which species are disappearing indicate that the sixth mass extinction is underway \citep{Ceballos2017}. Precious life forms that took evolution millions of years to create are being lost before we become aware of their existence. Understanding what biodiversity we have and what we stand to lose is crucial for convincing decision-makers to take appropriate conservation action.
+
+Accurate species identification is a key starting point for scientific research and conservation efforts. Taxonomy, the scientific field charged with describing and classifying life on Earth, is an endeavor as old as humanity itself. Throughout its development, taxonomy has proven to be more than just a descriptive discipline; it is a fundamental science upon which ecology, evolution, and conservation depend. Unfortunately, taxonomic research progresses slowly. The gaps in taxonomic knowledge and shortage of experts constitute what is known as the "taxonomic impediment" \citep{taxonomicimpediment}, which hampers our ability to document and protect biodiversity effectively.
+
+Determining whether two populations can be consistently distinguished based on morphological traits remains essential for establishing taxonomic boundaries and designing appropriate conservation strategies. This process forms the foundation of biodiversity assessment and conservation planning in an era of unprecedented environmental change. Automated taxon identification systems (ATIs) could both handle routine identifications and potentially assist in identifying new species. Traditional ATIs, however, have been limited by their reliance on hand-crafted features \citep{valan}, are time-consuming hindering large-scale surveys, making them difficult to generalize across different taxonomic groups.
+
+Birds are frequently utilized to assess environmental quality due to their sensitivity to ecological changes and ease of observation during field studies. Researchers often rely on bird diversity as an indicator of the diversity within other species groups and the overall health of human environments. Examples include monitoring environmental changes through bird population shifts, tracking climate change via bird migration patterns, and evaluating biodiversity by counting bird species. Accurate identification of bird species is essential for detecting species diversity and conserving rare or endangered birds.\citep{ani13020264}
+
+Among birds, gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. The wing and wingtip patterns—particularly the colour, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species.
+
+The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent. These difficulties stem from several interrelated factors. 
+Multiple confounding factors complicate identification \citep{adriaens2022}:
+\begin{itemize}
+    \item \textbf{Hybridization:} Species can interbreed in overlapping ranges, creating intermediate forms.
+    \item \textbf{Age-related variations:} Juvenile and immature gulls display less distinct patterns than adults.
+    \item \textbf{Environmental effects:} Feather bleaching from sun exposure, contamination, and wear can alter appearance.
+    \item \textbf{Seasonal moulting:} Gulls undergo plumage changes throughout the year, affecting diagnostic features.
+    \item \textbf{Viewing conditions:} Lighting, angle, and distance significantly impact observed coloration.
+\end{itemize} 
+
+As noted by ornithologists:
+
+\begin{quote}
+    ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \citep{ayyash2024}.
+\end{quote}
+
+
+
+This project addresses the complex task of fine-grained classification between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics. 
+
+\begin{quote}
+    ``Glaucous-winged Gulls also exhibit variably pigmented wingtips... these differences are often chalked up to individual
+    variation, at least by this author, but they're inconveniently found in several hybrid zones, creating potential for much
+    confusion.\citep{adriaens2022}
+    \end{quote}
+    
+    \begin{quote}
+        ``The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood'' \citep{adriaens2022gulls}.
+    \end{quote}
+
+\section{Motivation}
+
+
+Manual identification to classify species requires per specimen analysis by expert taxonomists which is time consuming. As mentioned by \citep{Lu2024}, "While using machine learning techniques to solve the problem of fine-grained classification, traditional feature extraction methods necessitate manually designed features, such as edge detection, color histograms, feature point matching, and visual word bags, which have limited expressive capabilities and require extensive annotation details like bounding boxes and key points. The drawback of these methods lies in the extensive manual intervention required for feature selection and extraction."
+
+
+Fine-grained image classification (FGIC), which focuses on identifying subtle differences between subclasses within the same category, has advanced rapidly over the past decade with the development of sophisticated deep neural network architectures. Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets\citep{source4}. 
+
+Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks~\citep{valan}. Features extracted through convolution are learned automatically by multilayer convolutional neural networks, offering the model greater adaptability to various tasks and datasets, with features possessing enhanced expressive and abstract capabilities. The benefit of convolutional feature extraction is its ability to perform feature extraction and classification within the same network, with the quality and quantity of features adjustable through the network's structure and parameters. \citep{source2}.
+
+As demonstrated in comparative studies, 
+
+For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and VGG have demonstrated exceptional capabilities \cite{essay101313}, with recent studies such as \citep{transferln97} who mentioned that "deep learning is more effective than traditional machine learning algorithms in image recognition as the number of bird species increases." achieving accuracy rates exceeding 97\% in bird species classification tasks. \citep{ALFATEMI2024558} who compared deep learning and traditional machine learning algorithms achieved high accuracy of 94\% tackle the challenge of classifying bird species with high visual similarity and subtle variations. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species.
+
+% \cite{source3}
+
+Due to the impressive outcomes of deep learning, most recognition frameworks now depend on advanced convolutions for feature extraction where features extracted through convolution are learned automatically by multilayer convolutional neural networks, offering the model greater adaptability to various tasks and datasets\citep{Lu2024}.
+
+There are many advantages of using Deep Learning Architectures for Image Classification. Getting good quality results in Machine Learning models is dependent on how good the data is labelled, whereas Deep Learning architectures don't necessarily require labelling, as Neural Networks are great at learning without guidelines~\cite{source5}. One more advantage is that in certain domains like speech, language and vision, deep Learning consistently produces excellent results that significantly outperforms other alternatives. ~\citep{source6}. Furthermore, in domains like vision, "Deep Learning consistently produces excellent results that significantly outperforms other alternatives".
+
+Yet the fine-grained bird classification task has greater challenges \citep{ani13020264}:
+\begin{enumerate}
+    \item High intraclass variance. Birds belonging to the same category usually present distinctly different postures and perspectives.
+    \item Low inter-class variance. Some of the different categories of birds may have only minor differences; for example, some of the differences are only in the color pattern on the head.
+    \item Limited training data. Some bird data are limited in number, especially endangered species, for whom it is difficult to collect sufficient image data. Meanwhile, the labeling of bird categories usually requires a great deal of time by experts in the corresponding fields. These problems greatly increase the difficulty of acquiring training data.
+    \item Large intensity variation in images as pictures are taken in different time of a day (like morning, noon, evening etc.).
+    \item Various poses of Bird (like flying, sitting with different orientation).
+    \item Bird localization in the image as there are some images in which there are more than one bird in that image.
+    \item Large Variation in Background of the images.
+    \item Various type of occlusions of birds in the images due to leaf or branches of the tree.
+    \item Size or portion of the bird covered in the images.
+    \item Less no of sample images per class and also class imbalance \citep{10.1007/978-981-15-1387-9_3}.
+    \item Deep Learning requires an abundant amount of data in order to produce accurate results.
+    \item Overfitting is a prevalent problem in Deep Learning and can sometimes negatively affect the model performance in real-time scenarios.
+\end{enumerate}
+
+% Related Work
+\newpage
+\section{Related Works}
+\section*{Traditional Taxonomic Approaches}
+
+\section*{Deep Learning for Fine-Grained Image Classification}
+Fine-grained image classification presents unique challenges compared to general image classification tasks. As Li et al. (2021) note, fine-grained classification "necessitates discrimination between semantic and instance levels, while considering the similarity and diversity among categories"\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. This is particularly challenging in bird classification due to three key factors: high intra-class variance (birds of the same species in different postures), low inter-class variance (different species with only minor differences), and limited training data availability, especially for rare species\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}.
+
+Convolutional Neural Networks (CNNs) have revolutionized image classification through their ability to automatically learn hierarchical feature representations. For fine-grained tasks, traditional CNNs face limitations in capturing the subtle distinguishing features between closely related categories. This has led to the development of specialized architectures and techniques focused on identifying discriminative regions in images\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}.
+
+Early approaches to fine-grained classification relied on fixed rectangular bounding boxes and part annotations to obtain visual differences, but these methods required extensive human annotation effort\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. Recent research has shifted toward weakly supervised approaches that only require image-level labels, developing localization subnetworks to identify critical parts followed by classification subnetworks\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. These models facilitate learning while maintaining high accuracy without needing pre-selected boxes, making them more practical for real-world applications.
+
+Recent research emphasizes that effective fine-grained classification depends on identifying and integrating information from multiple discriminative regions rather than focusing on a single region. As highlighted in recent literature, "it is imperative to integrate information from various regions rather than relying on a singular region"\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. This insight has led to the development of methods combining features from different levels via attention modules, thereby enhancing the semantic and discriminative capacity of features for fine-grained classification\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}.
+
+
+
+The effectiveness of Convolutional Neural Networks (CNNs) for bird species classification has been demonstrated in numerous studies. \citep{zhang2019bird} achieved 94.3\% accuracy on the Caltech-UCSD Birds (CUB-200-2011) dataset using a VGG-16 architecture, proving the viability of transfer learning for this domain. Similarly, \citep{marini2018bird} compared multiple CNN architectures for bird classification and found that deeper networks like ResNet and DenseNet consistently outperformed shallower alternatives.
+
+For extremely challenging cases with visually similar species, researchers have developed specialized techniques. \citep{he2022bird} proposed a multi-attention mechanism that dynamically focuses on discriminative regions, achieving 96.8\% accuracy on a dataset of visually similar bird species. This approach is particularly relevant to our study of gull species with subtle distinguishing characteristics.
+
+
+\section*{Transfer Learning for Image Classification}
+Deep learning, while powerful, comes with two major constraints: dependency on extensive labeled data and high training costs\href{https://arxiv.org/abs/2201.09679}{6}. Transfer learning offers a solution to these limitations by enabling the reuse of knowledge obtained from a source task when training on a target task. In the context of deep learning, this approach is known as Deep Transfer Learning (DTL)\href{https://arxiv.org/abs/2201.09679}{6}.
+
+Several studies have demonstrated the efficacy of transfer learning for bird species classification. A study on automatic bird species identification using deep learning achieved an accuracy of around 90\% by leveraging pretrained CNN networks with a base model to encode images\href{https://www.semanticscholar.org/paper/41b0718279f408654094557156d4eeeb0067b2c4}{10}. Similarly, research on bird species identification using modified deep transfer learning achieved 98.86\% accuracy using the pretrained EfficientNetB5 model\href{https://www.semanticscholar.org/paper/770ee68d1b136cd098a018a399d1f69af29faae0}{11}. These results demonstrate that transfer learning approaches can achieve high performance even with limited training data.
+
+Various pretrained models have been evaluated for bird classification tasks, including VGG16, VGG19, ResNet, DenseNet, and EfficientNet architectures. Comparative studies have shown that while all these models can perform effectively, some consistently outperform others. For example, research on drones-birds classification found that "the accuracy and F-Score of ResNet18 exceeds 98\% in all cases"\href{https://www.semanticscholar.org/paper/c16f57236555aae3f600ef8f1978eff10b410233}{7}, while another study on binary classification with the problem of small dataset reported that "DenseNet201 achieves the best classification accuracy of 98.89\%."\href{https://www.semanticscholar.org/paper/6529ad5f1094a8d9b0ab38db163c7fdaad2a1d9c}{14}.
+
+In a noteworthy study on medical image analysis, researchers evaluated the comparative performance of MobileNetV2 and Inception-v3 classification models. The investigation employed four distinct methodologies: implementing Inception-v3 both with and without transfer learning, and similarly applying MobileNetV2 with and without transfer learning techniques. The experimental results demonstrated that the MobileNetV2 architecture leveraging transfer learning capabilities achieved superior performance, reaching approximately 91.00\% accuracy in classification tasks (\href{https://thesai.org/Publications/ViewPaper?Volume=11&Issue=8&Code=IJACSA&SerialNo=40}). 
+
+%  % This research approach aligns with the work presented by Al-antari et al. (\href{https://isic-challenge-2018.github.io/}{An automatic recognition of multiclass skin lesions via Deep Learning Convolutional Neural Networks}) at the ISIC2018: Skin Image Analysis Workshop and Challenge, which similarly explored advanced convolutional neural network applications for medical image classification.
+
+Biswas et al. (\href{https://ieeexplore.ieee.org/document/9402304}{Recognition of local birds using different CNN architectures with transfer learning}) conducted a comprehensive evaluation of different CNN architectures for identifying local bird species. With only 100 images per class before data augmentation high accuracies of above 90\% were achieved. Their paper, presented at the 2021 International Conference on Computer Communication and Informatics (ICCCI), demonstrates the growing effectiveness of transfer learning techniques in the field of avian classification through image processing.
+
+The effectiveness of transfer learning for fine-grained bird classification has been consistently demonstrated across multiple studies, with various pretrained models achieving high accuracy rates with few models exceeding 98\%\href{https://www.semanticscholar.org/paper/41b0718279f408654094557156d4eeeb0067b2c4}{10}\href{https://www.semanticscholar.org/paper/770ee68d1b136cd098a018a399d1f69af29faae0}{11}. These results indicate that transfer learning provides an optimal balance between accuracy and efficiency for the specific task of gull species classification.
+
+
+The transfer learning process typically involves two phases: first freezing most layers of the pretrained model and training only the top layers, then fine-tuning a larger portion of the network while keeping early layers fixed\href{https://www.semanticscholar.org/paper/770ee68d1b136cd098a018a399d1f69af29faae0}{11}. This approach preserves the general feature extraction capabilities of the pretrained model while adapting it to the specific characteristics of the target dataset.
+
+
+
+% % Traditional approaches to fine-grained classification required extensive manual annotation of parts or regions of interest. As noted by \citep{zhang2022unsupervised} IRRELEVANT, earlier methods "localize object or parts in an image with object or part annotations, which are expensive and labor-consuming." To address this limitation, researchers have increasingly turned to deep learning approaches that can automatically extract relevant features without explicit part annotations.
+
+\section*{Transfer Learning for Limited Datasets}
+Transfer learning addresses the primary challenges of deep learning: the need for large datasets and extensive computational resources. By leveraging pretrained models that have already learned general visual features from massive datasets, transfer learning enables the development of highly accurate classifiers with relatively domain-specific datasets\href{https://arxiv.org/abs/2201.09679}{6}. This is particularly valuable for this project, which focuses on distinguishing between two specific gull species with limited available data.
+
+Transfer learning is particularly valuable for fine-grained bird classification where obtaining large, labeled datasets is challenging. The limited availability of training data presents a significant challenge for developing high-performance deep learning models. Transfer learning offers an effective solution to this problem by leveraging knowledge gained from models pre-trained on large datasets. As \citep{tan2018survey} \href{https://ijece.iaescore.com/index.php/IJECE/article/view/24833}{3} who achieved above 90\% accuracy in many CNN models that were tried for bird classification using transfer learning emphasize, "when the sample data is small, transfer learning can help the deep neural network classifier to improve classification accuracy." This makes transfer learning an ideal approach for specialized tasks like distinguishing between closely related gull species.
+
+In the context of fine-grained bird classification, transfer learning has shown remarkable success. \citep{kornblith2019better} conducted a comprehensive evaluation of transfer learning performance across various CNN architectures and found that models pre-trained on ImageNet consistently performed well for fine-grained classification tasks. Their study revealed that newer architectures like ResNet and DenseNet generally transferred better than older models like VGG.
+
+For extremely limited datasets, researchers have employed specialized transfer learning techniques. \citep{cui2018large} introduced a method called "transfer-learning by borrowing examples" that achieved state-of-the-art performance on small fine-grained datasets by selectively transferring knowledge from similar classes in larger datasets. This approach is particularly relevant to our work with limited gull species data.
+
+The transfer learning process typically follows a two-phase approach as described by \citep{sharif2014cnn}: first freezing most layers of the pre-trained model while training only the classification layers, then fine-tuning a larger portion of the network. \citep{guo2019spottune} refined this approach with their SpotTune method, which adaptively determines which layers to freeze or fine-tune on a per-instance basis, demonstrating improved performance for fine-grained classification tasks.
+
+
+\section*{Data Augmentation and Class Imbalance Strategies}
+Working with limited datasets often introduces challenges related to class imbalance and overfitting. \citep{buda2018systematic} conducted a comprehensive analysis of class imbalance in convolutional neural networks and found that oversampling (duplicating samples from minority classes) generally outperforms undersampling for deep learning models.
+
+For fine-grained bird classification specifically, \citep{chu2020fine} employed extensive data augmentation techniques including random cropping, rotation, flipping, and color jittering to improve model robustness. They demonstrated that such augmentations were particularly effective for classes with fewer samples, improving overall accuracy by up to 3.2%.
+
+More advanced techniques such as mixup \citep{zhang2018mixup}, which creates synthetic training examples by linearly interpolating between pairs of images and their labels, have shown effectiveness in fine-grained classification tasks. \citep{cui2019class} integrated mixup with class-balanced loss to address imbalance in fine-grained datasets, achieving state-of-the-art performance on CUB-200-2011.
+
+
+\section*{Interpretability Techniques for Deep Learning Models}
+While deep learning models achieve impressive accuracy in classification tasks, their "black box" nature limits their usefulness in scientific contexts where understanding the basis for classifications is crucial. Interpretability techniques address this limitation by providing insights into model decision-making processes, making them essential tools for applications where transparency is as important as accuracy.
+
+Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions of images that influence classification decisions. As described in recent literature, Grad-CAM "uses the gradients of each target that flows into the least convolutional layer to produce a bearish localization map, highlighting important regions in the image for concept prediction"\href{https://www.atlantis-press.com/article/125986223.pdf}{5}. This approach enables researchers to validate model decisions against expert knowledge and potentially discover new insights about morphological features.
+
+Visualization studies comparing baseline models with enhanced architectures demonstrate that while basic models often focus on the most conspicuous parts of bird images (such as wings), more sophisticated approaches can discern more intricate features vital for species differentiation\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. As noted in recent research, enhanced models excel "in identifying not only the prominent features but also the subtle, fine-grained characteristics essential for distinguishing between different bird types"\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}.
+
+While deep learning models achieve impressive classification accuracy, their "black box" nature presents challenges for scientific applications where understanding decision mechanisms is crucial. As noted by \citep{montavon2018methods}, "black-box models that cannot be interpreted have limited applicability, especially in scientific contexts where understanding the basis for classifications is as important as the classifications themselves."
+
+Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions that influence model decisions. \citep{selvaraju2017grad} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to any CNN-based model.
+
+For fine-grained classification, interpretability techniques can reveal whether models are focusing on biologically relevant features. \citep{zhang2018interpretable} demonstrated that CNN attention mechanisms often correspond to taxonomically important physical characteristics in birds. Their study showed that models trained only on image labels could automatically discover part-based attention patterns that aligned with expert knowledge.
+
+Beyond visualization, quantitative interpretability methods have been developed to measure feature importance. \citep{lundberg2017unified} proposed SHAP (SHapley Additive exPlanations), which assigns each feature an importance value for a particular prediction. In \citep{chen2019looks}, the authors applied SHAP to fine-grained bird classification models and found that the features deemed important by the model often matched field guide descriptions of distinguishing characteristics.
+
+These interpretability methods are particularly valuable in fine-grained classification tasks where the differences between categories are subtle and potentially unknown. By highlighting regions that drive model decisions, techniques like Grad-CAM can reveal discriminative features that might not be obvious even to expert observers, potentially advancing biological understanding alongside classification accuracy. By implementing methods like Grad-CAM, the project can not only achieve high classification accuracy but also provide insights into the morphological features that drive model decisions, making the results more valuable for scientific applications\href{https://www.atlantis-press.com/article/125986223.pdf}{5}.
+
+
+\section*{Aims and Objectives}
+
+\subsection*{Primary Aims}
+\begin{enumerate}
+    \item To develop high-performance deep learning models capable of distinguishing between Slaty-backed and Glaucous-winged Gulls based on their morphological characteristics.
+    \item To implement robust interpretability techniques that reveal which features influence model decisions, allowing validation against ornithological expertise.
+    \item To analyze whether consistent morphological differences exist between the two species and identify key discriminative features.
+\end{enumerate}
+
+\subsection*{Specific Objectives}
+The project will be carried out in four phases:
+\begin{enumerate}
+    \item Model Development and Evaluation
+        \begin{itemize}
+            \item Curate a high-quality dataset of adult in-flight gull images with clearly visible diagnostic features.
+            \item Implement and compare multiple deep learning architectures (CNNs, Vision Transformers) for fine-grained classification.
+            \item Evaluate models using appropriate metrics on unseen test sets.
+        \end{itemize}
+    \item Interpretability Implementation
+        \begin{itemize}
+            \item Implement suitable interpretability methods such Gradient-weighted Class Activation Mapping (Grad-CAM).
+            \item Visualize regions of images that most influence classification decisions.
+            \item Compare model focus areas with known taxonomic features described in ornithological literature/expert guidance.
+        \end{itemize}
+    \item Feature Analysis
+        \begin{itemize}
+            \item Perform quantitative analysis of image regions highlighted by interpretability techniques.
+            \item Compare intensity, texture, and pattern characteristics between species.
+            \item Identify statistically significant morphological differences between correctly classified specimens.
+        \end{itemize}
+\end{enumerate}
+
+% Description of Work
+\newpage
+\section{Description of Work}
+
+% Methodology
+\newpage
+\section{Methodology}
+
+\subsection{Google Colab Platform}
+
+Google Colab was selected as the primary platform for developing and training deep learning models. As described by Anjum et al. \citet{anjum2021}, Google Colab offers significant advantages for machine learning research through its cloud-based environment with integrated GPU acceleration enabling fast model training. The platform's pre-installed libraries and integration with Google Drive provided an efficient workflow for model development, experimentation, and storage of datasets and trained models. This approach aligns with modern best practices in deep learning research where computational efficiency is crucial for iterative model development and refinement.
+
+Despite its advantages, Google Colab presented a few challenges. The platform frequently disconnected during training sessions, interrupting the model training process before completing all epochs. These disconnections likely stemmed from limited RAM allocation, runtime timeouts, or resource constraints of the shared free GPU environment. As noted by \citet{carneiro2018}, while Colab provides robust GPU resources that can match dedicated servers for certain tasks, these free resources ``are far from enough to solve demanding real-world problems and are not scalable.''
+
+To mitigate these issues, two strategies were implemented. First, the relatively small size of our dataset helped minimize resource demands. Second, checkpoint saving was implemented throughout the training process, allowing training to resume from the last saved state if disconnections were encountered. This approach ensured that progress wasn't lost when disconnections occurred, though it introduced some workflow inefficiencies.
+
+\subsection{Python and PyTorch Framework}
+
+The implementation was carried out using Python as the primary programming language, chosen for its extensive library support and widespread adoption in the machine learning community. Python's simple syntax and powerful libraries make it particularly suitable for rapid prototyping and experimentation in deep learning research \citep{geron2019}.
+
+For the deep learning framework, PyTorch was selected over alternatives like TensorFlow or Keras due to its dynamic computational graph which allows for more flexible model development and easier debugging. PyTorch's intuitive design facilitates a more natural expression of deep learning algorithms while still providing the performance benefits of GPU acceleration. The framework's robust ecosystem for computer vision tasks, including pre-trained models and transformation pipelines, was particularly valuable for this fine-grained classification task.
+
+\subsubsection{Advantages of PyTorch in Our Implementation}
+
+PyTorch offered several key advantages that were particularly beneficial for our transfer learning approach with pre-trained models:
+
+\begin{itemize}
+    \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach allowed for more intuitive debugging and model modification during development. This was especially valuable when adapting pre-trained architectures like VGG16 for our specific classification task.
+
+    \item \textbf{Flexible Model Customization:} The implementation benefited from PyTorch's object-oriented approach, which made it straightforward to modify pre-trained models, e.g., replacing classification layers while preserving feature extraction capabilities.
+
+    \item \textbf{Efficient Data Loading and Augmentation:} PyTorch's DataLoader and transformation pipelines facilitated efficient batch processing and on-the-fly data augmentation, which was crucial for maximizing the utility of our limited dataset.
+
+    \item \textbf{Gradient Visualization Tools:} PyTorch's native support for gradient computation and hooks made implementing Grad-CAM and other visualization techniques more straightforward, enabling better model interpretability.
+\end{itemize}
+
+Similar to approaches described by Raffel et al. \citet{raffel2023}, my implementation prioritized efficiency and optimization to work within the constraints of limited computational resources, allowing me to achieve high-quality results despite the limitations of the free cloud environment.
+
+\section{Dataset Preparation and Refinement}
+
+The dataset preparation followed a three-stage iterative refinement process, each addressing specific challenges identified during model development. This approach aligns with established methodologies in fine-grained bird classification research, where dataset quality has been shown to significantly impact model performance \citet{ghani2024}.
+
+\subsection{Stage 1: Initial Dataset Collection}
+
+The initial dataset was collected from public repositories including eBird and iNaturalist, comprising 451 images of Glaucous-winged Gulls and 486 images of Slaty-backed Gulls. This dataset included gulls of various ages (juveniles and adults) in different postures (sitting, standing, and flying). Initial model testing on this dataset yielded poor performance (below 50\% accuracy), highlighting the need for dataset refinement. Similar challenges with diverse postures and class imbalance have been documented by Kahl et al. in their work on BirdNET systems \citet{kahl2021}.
+
+
+
+
+\subsection{Stage 2: Refined Dataset - Focus on Adult In-flight Images}
+
+Consultation with Professor Gibbins, an ornithological expert, revealed that adult wingtip patterns are the most reliable distinguishing features between these species, and these patterns are most visible in flight. This expert-guided refinement approach parallels methods described by Wang et al. in their work on avian dataset construction, where domain expertise significantly improved classification accuracy for visually similar species. \citet{wang2022}. Consequently, the dataset was refined to focus exclusively on adult in-flight images, resulting in a curated collection of 124 Glaucous-winged Gull images and 127 Slaty-backed Gull images. This targeted approach significantly improved model performance, with accuracy increasing to approximately 70\%.
+
+By focusing specifically on adult in-flight images where wingtip patterns are most visible, this project addresses the core taxonomic question while minimizing confounding variables. The resulting interpretable classification system aims to provide both a practical identification tool and a scientific instrument for exploring morphological variation within and between these closely related species.
+
+\subsection{Stage 3: High-Quality Dataset}
+
+To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. The Glaucous-winged Gull dataset was also carefully curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features. Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed. This quality-focused approach aligns with findings from Zhou et al., who demonstrated that expert-curated datasets can achieve comparable or superior results with significantly smaller data volumes compared to larger uncurated collections \citet{zhou2022}.
+
+For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested. This multi-dataset evaluation approach follows best practices established in the BirdSet benchmark for avian classification studies \citet{birdset2023}.
+\section{Transfer Learning Methodology}
+
+\subsection{Theoretical Framework and Rationale}
+
+
+In our implementation, transfer learning was employed to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains with limited data. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns, which can then be fine-tuned for our specific classification task despite class imbalance challenges \href{https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}{Krizhevsky et al. (2012)}.
+
+Several pre-trained architectures were evaluated for this task, with VGG-16 \href{https://arxiv.org/abs/1409.1556}{Simonyan and Zisserman (2015)} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
+
+\section{Transfer Learning Approach}
+
+All models except for the custom CNN utilized transfer learning to leverage knowledge from pre-trained networks. The transfer learning strategy included:
+
+\begin{itemize}
+    \item Using models pre-trained on ImageNet as feature extractors
+    \item Fine-tuning the entire network with a reduced learning rate (typically 0.0001 to 0.001)
+    \item Replacing the final classification layer to output binary predictions (2 classes)
+    \item Implementing dropout layers before final classification to prevent overfitting
+\end{itemize}
+
+This approach follows the established pattern that features learned in early layers of convolutional networks are more general and transferable, while later layers become more task-specific. For handling class imbalance, implemented techniques including weighted loss functions and strategic data augmentation were implemented.
+
+
+%  Opposite things said:
+%  Recent work by \href{https://arxiv.org/abs/1805.08974}{Kornblith et al. (2019)} confirms that networks with better ImageNet performance generally transfer better to other tasks, supporting our architectural selection process. opposite
+%  Additionally, \href{https://arxiv.org/abs/1811.07056}{He et al. (2019)} demonstrate that even with significant domain shifts, transfer learning remains effective when fine-tuning is properly implemented.
+
+
+\subsection{Training Optimization Strategy} 
+
+To optimize training with limited data, several techniques were employed consistently:
+
+\begin{itemize}
+    \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using ReduceLROnPlateau or CosineAnnealingLR was implemented across models, reducing learning rates when validation metrics plateaued.
+    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting. \href{https://link.springer.com/chapter/10.1007/3-540-49430-8_3}{Early Stopping - But When?} 
+    \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updattes. \href{Zhang, J., He, T., Sra, S., & Jadbabaie, A. (2020). Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR).}{Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR)} \href{http://proceedings.mlr.press/v28/pascanu13.pdf}{here}
+    \item \textbf{Loss function:} Cross-entropy loss was used consistently as the optimization objective for the binary classification task.
+    \item \textbf{Mixed precision training:} For models like Inception V3, mixed precision training with torch.amp was used to improve computational efficiency.
+\end{itemize}
+
+The combination of these techniques enabled effective learning despite the challenges of limited data and class imbalance, with our best model achieving significantly better performance than traditional machine learning approaches on the same dataset.
+
+\subsection{Model Architecture Modifications}
+Each model architecture was modified to better handle the specific characteristics of the fine-grained classification task:
+\begin{itemize}
+\item \textbf{Final layer adaptation:} All pre-trained models had their final fully connected layers replaced with new layers containing 2 output nodes for binary classification.
+\item \textbf{Attention mechanisms:} Squeeze-and-Excitation (SE) blocks \href{https://arxiv.org/abs/1709.01507}{Hu et al.} were integrated into custom CNN architectures to enhance feature representations by modeling channel-wise relationships.
+\item \textbf{Dropout regularization:} Dropout layers (rate = 0.4) were consistently added before final classification layers to reduce overfitting due to my small dataset size \href{https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf}{Srivastava et al.}.
+\item \textbf{Batch normalization:} Used in custom CNN implementations to stabilize learning and improve convergence \href{https://arxiv.org/abs/1502.03167}{Ioffe and Szegedy}.
+\end{itemize}
+
+
+\subsection{Data Preparation and Augmentation}
+Data augmentation was crucial to address the limited dataset size and class imbalance issues. Following best practices from \href{https://arxiv.org/abs/1712.04621}{Cubuk et al.}, multiple augmentation techniques were applied consistently across all models:
+\begin{itemize}
+\item \textbf{Spatial transformations:} Random horizontal flips, rotations (typically 15 degrees), and random/center crops were applied to increase 
+geometric diversity.
+\item \textbf{Color space transformations:} Color jitter with brightness, contrast, and saturation adjustments of 0.2 magnitude was applied to make models robust to illumination variations.
+\item \textbf{Image enhancement:} In some implementations, sharpening filters were applied to improve feature clarity.
+\item \textbf{Normalization:} All images were normalized to match pre-trained model expectations \href{https://arxiv.org/abs/1803.08494}{Shin et al.}.
+\end{itemize}
+The augmentation strategy was deliberately more aggressive for the training set compared to validation and test sets, where only resizing, optional cropping, and normalization were applied to maintain evaluation consistency.
+
+These techniques enhance model robustness to natural variations in image appearance, reducing overfitting and improving generalization capability \href{https://arxiv.org/abs/1712.04621}{here}.
+
+\subsection{Optimization Strategy}
+We employed the AdamW optimizer, an extension of Adam that incorporates decoupled weight decay regularization:
+
+% \begin{lstlisting}[language=Python]
+% optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=0.001)
+% \end{lstlisting}
+
+This configuration used:
+\begin{itemize}
+    \item A conservative learning rate of 0.0001, appropriate for fine-tuning pre-trained models.
+    \item Weight decay of 0.001 to provide L2 regularization, countering overfitting tendencies \href{https://openreview.net/forum?id=Bkg6RiCqY7}{here}.
+\end{itemize}
+
+
+
+\subsection{Learning Rate Scheduling}
+An adaptive learning rate schedule was implemented using ReduceLROnPlateau which automatically reduces the learning rate by a factor of 0.1 when validation performance plateaus for 3 consecutive epochs, allowing for finer weight adjustments as training progresses \href{https://ieeexplore.ieee.org/document/7926641}{here}. This technique is particularly valuable for fine-tuning deep architectures where navigating the loss landscape requires progressively smaller step sizes.
+
+% \begin{lstlisting}[language=Python]
+% scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)
+% \end{lstlisting}
+
+% \begin{lstlisting}[language=Python]
+% torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=2.0)
+% \end{lstlisting}
+
+\subsection{Dataset Management}
+
+To address the challenges of limited data availability, an 80:20 train-validation split was implemented using random split stratification to maintain class distribution across partitions. This approach ensured that the validation set remained representative of the overall dataset while maximizing the samples available for training {\href{https://dl.acm.org/doi/10.5555/1643031.1643047}{Kohavi, 1995}}.
+
+The batch size was set to 16, striking a balance between computational efficiency and optimization stability. Smaller batch sizes can increase gradient noise, which has been shown to act as an implicit regularizer that can improve generalization, particularly beneficial when working with limited training data {\href{https://arxiv.org/abs/1609.04836}{Keskar et al., 2016}, \href{https://arxiv.org/abs/1804.07612}{Masters \& Luschi, 2018}}.
+
+
+\subsection{Regularization Techniques}
+Multiple regularization strategies were employed to handle the limited data size and class imbalance:
+\begin{itemize}
+\item \textbf{Weight decay:} L2 regularization with weight decay values between 1e-4 and 1e-3 was applied across all models to prevent overfitting \href{https://papers.nips.cc/paper/1991/file/8eefcfdf5990e441f0fb6f3fad709e21-Paper.pdf}{Krogh \& Hertz}.
+\item \textbf{Data splitting:} Train/validation split of 80\%/20\% was consistently used to provide reliable validation metrics while maximizing training data.
+\item \textbf{Random seeds:} Fixed random seeds (42) were set for PyTorch, NumPy, and Python's random module to ensure reproducibility. Controlling randomness is essential for reliable hyper-parameter tuning, performance assessment, and research reproducibility \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=}{here}.
+\item \textbf{Auxiliary losses:} For models like Inception V3, auxiliary classifiers were utilized during training to improve gradient flow and model performance \href{https://arxiv.org/abs/1512.00567}{Szegedy et al.}.
+\end{itemize}
+
+\subsection{Model Checkpointing and Evaluation}
+
+Our implementation includes a robust evaluation framework with model checkpointing based on validation accuracy. This ensures that we preserve the best-performing model configuration throughout the training process. The model is trained for 20 epochs with early stopping implicitly implemented through best model saving. Performance is evaluated using accuracy on both validation and test sets, providing a comprehensive assessment of model generalization.
+
+By incorporating these architectural innovations and training strategies, our custom CNN approach aims to maximize classification performance despite the constraints of limited data and class imbalance in fine-grained visual classification.
+
+\subsection{Evaluation Strategy}
+Model performance was systematically evaluated using:
+\begin{itemize}
+\item \textbf{Validation accuracy:} Used during training to select optimal model checkpoints and trigger early stopping or learning rate adjustments.
+\item \textbf{Test accuracy:} Final evaluation metric on the unseen test set to measure generalization performance.
+\item \textbf{Visualization:} Training loss and validation accuracy curves were plotted to analyze model convergence and potential overfitting.
+\item \textbf{Checkpointing:} Best-performing models based on validation accuracy were saved for later evaluation and deployment.
+\end{itemize}
+
+\subsection{Addressing Class Imbalance in few models}
+
+Our dataset exhibited significant class imbalance, which can degrade model performance by biasing predictions toward the majority class \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0192-5}{here}. To mitigate this challenge, multiple complementary strategies were implemented on the best performing models that included VGG16, and ViT:
+\begin{itemize}
+    \item \textbf{Class-Weighted Loss Function}
+    \begin{itemize}
+        \item Implemented inverse frequency weighting (Cui et al., 2019) \href{https://openaccess.thecvf.com/content_CVPR_2019/papers/Cui_Class-Balanced_Loss_Based_on_Effective_Number_of_Samples_CVPR_2019_paper.pdf}{[link]}
+        \item Class weights calculation: \( \text{class\_weights}[i] = \frac{\text{total\_samples}}{\text{num\_classes} \times \text{label\_counts}[i]} \)
+        \subitem PyTorch implementation: \texttt{CrossEntropyLoss} with class weights tensor
+    \end{itemize}
+    
+    \item \textbf{Weighted Random Sampling}
+    \begin{itemize}
+        \item Balanced mini-batches using PyTorch's \texttt{WeightedRandomSampler}
+        \item Sample weights: \( \text{samples\_weights} = \text{class\_weights}[\text{label}] \)
+        \item Oversamples minority class and undersamples majority class \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{[link]}
+        \item Uses replacement sampling for effective batch balancing
+    \end{itemize}
+    
+    \item \textbf{Class-Specific Data Augmentation}
+    \begin{itemize}
+        \item Aggressive minority class augmentation (Shorten \& Khoshgoftaar, 2019) \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0197-0}{[link]}
+        % Class imbalance describes a dataset with a skewed ratio of majority to minority samples. Leevy et al. [27] describe many of the existing solutions to high-class imbalance across data types. Our survey will show how class-balancing oversampling in image data can be done with Data Augmentation.
+        \item Minority class transformations include:
+        \begin{itemize}
+            \item 30° random rotations
+            \item Strong color jitter (brightness/contrast/saturation=0.3)
+            \item Random resized crops (scale=0.7-1.0)
+            \item Horizontal flips
+        \end{itemize}
+        \subitem Standard augmentation for majority class (15° rotations, milder parameters)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Image Preprocessing}
+All images were preprocessed through a standardized pipeline to ensure compatibility with the VGG-16 architecture:
+
+% \begin{lstlisting}[language=Python]
+% transform_val_test = transforms.Compose([
+%     transforms.Resize((224, 224)),
+%     transforms.ToTensor(),
+%     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+% ])
+% \end{lstlisting}
+
+Images were resized to 224×224 pixels to match VGG-16's expected input dimensions. Pixel values were normalized using ImageNet mean values [0.485, 0.456, 0.406] and standard deviations [0.229, 0.224, 0.225], ensuring input distributions aligned with those seen during pre-training \href{https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf}{here}.
+
+
+% \begin{lstlisting}[language=Python]
+% transform_train = transforms.Compose([
+%     transforms.Resize((224, 224)),
+%     transforms.RandomHorizontalFlip(),
+%     transforms.RandomRotation(15),
+%     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
+%     transforms.ToTensor(),
+%     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+% ])
+% \end{lstlisting}
+
+
+\subsection{Reproducibility Considerations}
+To ensure experimental reproducibility, random seed was fixed for all stochastic components:
+
+% \begin{lstlisting}[language=Python]
+% # Set random seeds for reproducibility
+% torch.manual_seed(42)
+% np.random.seed(42)
+% random.seed(42)
+% \end{lstlisting}
+
+% \citep{simonyan2014vgg}
+
+\section{VGG-16 Architecture}
+
+\subsubsection{Theoretical Foundation}
+
+
+VGG-16 is a convolutional neural network architecture developed by Simonyan and Zisserman (2014) at the Visual Geometry Group (VGG) at Oxford, consisting of 16 weight layers including 13 convolutional layers followed by 3 fully connected layers. The architecture is characterized by its simplicity and depth, using small 3×3 convolutional filters stacked in increasing depth, followed by max pooling layers. With approximately 138 million parameters, VGG-16 provides a strong foundation for feature extraction in computer vision tasks.
+
+The primary advantage of employing VGG-16 for transfer learning in fine-grained classification tasks is its hierarchical feature representation capability, which enables the capture of both low-level features (edges, textures) and high-level semantic features. Pre-trained on the ImageNet dataset containing over 1.2 million images across 1,000 classes, VGG-16 offers robust initialization weights that facilitate effective knowledge transfer to domain-specific tasks with limited training data.
+
+VGG-16 has demonstrated superior performance in fine-grained classification tasks compared to conventional techniques. Recent studies show that VGG-16 with logistic regression achieved 97.14\% accuracy on specialized datasets like Leaf12, significantly outperforming traditional approaches that combined color channel statistics, texture features, and classic classifiers which only reached 82.38\% accuracy \href{https://doi.org/10.3233/JIFS-169911}{here}. For our specific task of gull species classification, the hierarchical feature representation capabilities of VGG-16 proved particularly effective at capturing the subtle differences in wing patterns and morphological features that distinguish between the target species.
+
+\subsubsection{Model Adaptation for Fine-Grained Classification}
+For our specific fine-grained binary classification task with limited data and class imbalance, the VGG-16 architecture was adapted through a targeted modification strategy:
+
+% \begin{lstlisting}[language=Python]
+% class VGG16Modified(nn.Module):
+%     def __init__(self):
+%         super(VGG16Modified, self).__init__()
+%         from torchvision.models import VGG16_Weights
+%         self.vgg = models.vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
+%         # Replace the classifier with a custom binary classification layer
+%         num_ftrs = self.vgg.classifier[6].in_features
+%         self.vgg.classifier[6] = nn.Sequential(
+%             nn.Dropout(0.4),
+%             nn.Linear(num_ftrs, 2)
+%         )
+
+%     def forward(self, x):
+%         return self.vgg(x)
+% \end{lstlisting}
+
+
+\begin{itemize}
+    \item The pre-trained VGG-16 model was loaded with ImageNet weights.
+    \item The feature extraction layers (convolutional base) were preserved to maintain the rich hierarchical representations learned from ImageNet.
+    \item The original 1000-class classifier was replaced with a custom binary classification head consisting of: 
+    \begin{itemize}
+        \item A dropout layer with a rate of 0.4 to reduce overfitting, a critical consideration given our limited dataset \href{https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf}{here}.
+        \item A fully-connected layer mapping from the original 4096 features to 2 output classes.
+    \end{itemize}
+\end{itemize}
+
+\citep{zhang2019bird} demonstrated that VGG-16 achieves 94.3\% accuracy on CUB-200-2011 by fine-tuning only the final three layers, a strategy mirrored in my VGG implementation where the classifier head was replaced while preserving ImageNet-initialized convolutional weights.
+This approach aligns with successful methodologies in avian species classification using VGG-16 as demonstrated by Brown et al. (2018), where fine-tuning the architecture by modifying the final classification layer enabled the model to retain general feature recognition capabilities while adapting to species-specific visual characteristics \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=}{here}.
+
+
+\subsection{Implementation Details}
+The model was implemented using PyTorch, with training conducted on T-4 GPU in Google Colab. Training progressed for up to 30 epochs. Batch processing used a size of 16-32 (varied between implementations), balancing computational efficiency with gradient estimation quality.
+
+% ROC curves, and precision-recall curves
+
+Visualization tools including confusion matrices were integrated into the evaluation pipeline to provide comprehensive assessment of model performance beyond scalar metrics. The model's effectiveness in fine-grained classification tasks has been further demonstrated in recent studies, with VGG-16 based architectures achieving significant improvements over conventional approaches in similar classification problems \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10648677&tag=1}{here}.
+
+%! Author = Aravindh P
+%! Date = 07-04-2025
+
+% Preamble
+
+\section{Vision Transformer (ViT) Architecture}
+
+\subsection{ViT for Fine-Grained Classification}
+
+Vision Transformers (ViT) have emerged as powerful alternatives to convolutional neural networks for visual recognition tasks. First introduced by Dosovitskiy et al. (\href{https://arxiv.org/abs/2010.11929}{Dosovitskiy et al., 2021}), ViTs process images as sequences of fixed-size patches, applying transformer-based self-attention mechanisms to model global relationships between image regions. This architecture enables the capture of long-range dependencies within images, making it particularly suitable for fine-grained classification tasks where subtle distinctions between similar classes may depend on relationships between distant image features.
+
+\subsection{Vision Transformer Implementation}
+
+For our primary approach, a Vision Transformer using transfer learning from a pre-trained model was implemented:
+
+\begin{itemize}
+    \item Base architecture: 'vit\_base\_patch16\_224' pre-trained on ImageNet from the TIMM library (\href{https://github.com/rwightman/pytorch-image-models}{Wightman, 2021})
+    \item Input resolution: 224×224 pixels with 16×16 pixel patches
+    \item Feature dimension: 768-dimensional embeddings
+    \item Adaptation strategy: Replacement of the classification head with a binary classifier while preserving the pre-trained transformer blocks
+\end{itemize}
+
+The model architecture preserves the core self-attention mechanism of ViT while adapting the final classification layer for our specific binary classification task. This approach follows established transfer learning principles for vision transformers (\href{https://arxiv.org/abs/2012.12877}{Touvron et al., 2021}), leveraging representations learned from large-scale datasets to overcome our limited training data constraints.
+
+\subsection{Alternative Implementations}
+
+In addition to our primary implementation, we explored two attention-enhanced architectures:
+
+\subsubsection{InterpretableViT}
+We developed an InterpretableViT model that incorporates explicit attention mechanisms for improved focus on discriminative features:
+
+\begin{itemize}
+    \item Separates the class token from patch tokens
+    \item Applies a learned attention layer to generate importance weights for each patch
+    \item Combines the class token with attention-weighted patch representations
+    \item Employs a multi-layer classifier with dropout regularization
+\end{itemize}
+
+A key advantage of this architecture is its compatibility with gradient-based visualization techniques. By separating the class token from patch tokens and implementing an explicit attention mechanism, the model facilitates more effective application of Grad-CAM (\href{https://arxiv.org/abs/1610.02391}{Selvaraju et al., 2017}), allowing for visualization of discriminative image regions contributing to classification decisions.
+
+The model stores both the token activations and their gradients through hooks, which allows for the Grad-CAM implementation to work with the transformer architecture.
+
+The computegradcam function then uses these stored activations and gradients to produce visualizations that highlight discriminative regions in the input image that are most influential for the classification decision.
+
+\subsubsection{EnhancedViT}
+We also implemented an EnhancedViT that applies attention-based weighting across all tokens:
+
+\begin{itemize}
+    \item Processes all tokens (including class token) through an attention mechanism
+    \item Generates a single attention-weighted feature representation
+    \item Utilizes a specialized classification head with dropout for regularization
+\end{itemize}
+
+This implementation draws from research on token aggregation strategies in vision transformers (\href{https://arxiv.org/abs/2012.09688}{Wang et al., 2021}), which shows that attention-weighted token aggregation can improve performance in data-limited regimes.
+
+\subsection{Training Methodology}
+
+To address the challenges of limited data and class imbalance, we employed a comprehensive training strategy:
+
+\begin{itemize}
+    \item Optimizer: AdamW with learning rate 1e-4 and weight decay 1e-4 (\href{https://arxiv.org/abs/1711.05101}{Loshchilov \& Hutter, 2019})
+    \item Learning rate scheduling: Cosine annealing with warm-up phase
+    \item Class balancing: Weighted loss function to address class imbalance
+    \item Regularization: Dropout in classification layers (p=0.3) and early stopping
+\end{itemize}
+
+This approach follows best practices for fine-tuning vision transformers in data-constrained scenarios (\href{https://arxiv.org/abs/2108.08810}{Raghu et al., 2021}).
+\section{Inception v3 Architecture}
+
+\subsection*{Theoretical Background}
+Inception v3, developed by Szegedy et al. (2016), represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution pathways with varied kernel sizes. The key innovation in Inception architectures is the utilization of \textit{Inception modules} that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously (\href{https://arxiv.org/abs/1512.00567}{Szegedy et al., 2016}).
+
+Inception v3 builds upon earlier versions with several important architectural improvements:
+\begin{itemize}
+    \item Factorized convolutions to reduce computational complexity
+    \item Spatial factorization into asymmetric convolutions (e.g., $1 \times n$ followed by $n \times 1$)
+    \item Auxiliary classifiers that inject additional gradient signals during training
+    \item Batch normalization for improved training stability and faster convergence
+    \item Label smoothing regularization to prevent overconfidence
+\end{itemize}
+
+These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. As demonstrated by Huang et al. (2019), Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens (\href{https://ieeexplore.ieee.org/document/8803812}{Huang et al., 2019}).
+
+\subsection*{Model Adaptation for Binary Gull Classification}
+Our implementation adapted the pre-trained Inception v3 model for fine-grained gull species classification using the following approach:
+\begin{enumerate}
+    \item Loading the pre-trained Inception v3 model with ImageNet weights.
+    \item Extracting the feature dimension from the original classifier (2048 features).
+    \item Replacing the final classifier with a custom sequence:
+    \begin{itemize}
+        \item Dropout layer ($p=0.4$) for regularization to mitigate overfitting.
+        \item Linear layer mapping 2048 features to 2 output classes.
+    \end{itemize}
+\end{enumerate}
+
+This approach leverages transfer learning, where knowledge acquired from large-scale image classification on ImageNet is transferred to our specific domain of gull species classification (\href{https://arxiv.org/abs/1805.08974}{Tan et al., 2018}).
+
+A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This approach helps combat the vanishing gradient problem and provides regularization (\href{https://arxiv.org/abs/1512.00567}{Szegedy et al., 2016}).
+
+The loss function was modified to incorporate both the main output and the auxiliary output during training:
+The auxiliary loss weight (0.3) was selected based on empirical optimization and aligns with recommendations in the literature for fine-tuning Inception architectures (\href{https://arxiv.org/abs/1902.04103}{He et al., 2019}).
+
+\subsection*{Advanced Training Techniques}
+The Inception v3 implementation incorporated several advanced training techniques to optimize performance:
+
+\paragraph*{Mixed-Precision Training:} We employed PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability (\href{https://arxiv.org/abs/1710.03740}{Micikevicius et al., 2018}). This technique allows the use of float16 precision where appropriate, which reduces memory usage and increases computational speed, especially beneficial when training on GPU-constrained environments like Google Colab.
+
+
+Resize operations were performed to $299\times299$ pixels (the standard input size for Inception v3). The larger input resolution ($299\times299$ vs $224\times224$ used by VGG16) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species (\href{https://arxiv.org/abs/1911.0907}{Xie et al., 2020}).
+
+\section{Residual Network (ResNet-50) Implementation}
+
+Residual Networks (ResNet) have revolutionized deep learning architectures by introducing identity shortcut connections that bypass one or more layers, enabling the training of substantially deeper networks {\href{https://arxiv.org/abs/1512.03385}{He et al., 2016}}. These skip connections address the degradation problem by allowing gradients to flow more effectively during backpropagation, mitigating the vanishing gradient issue prevalent in very deep neural networks.
+
+For our fine-grained gull species classification task, a transfer learning approach based on the ResNet-50 architecture was implemented. This implementation was motivated by ResNet's demonstrated success in capturing hierarchical features at multiple levels of abstraction, which is particularly valuable for distinguishing the subtle morphological differences between visually similar gull species {\href{https://arxiv.org/abs/1603.05027}{He et al., 2016b}, \href{https://ieeexplore.ieee.org/document/8658831}{Zhao et al., 2019}}.
+
+\subsubsection{Architecture Adaptation}
+
+Our implementation leveraged a pre-trained ResNet-50 model initialized with ImageNet weights to benefit from its learned feature representations. The model adaptation process involved:
+
+\begin{enumerate}
+    \item Retaining the convolutional backbone of ResNet-50 with frozen weights to preserve its feature extraction capabilities
+    \item Modifying the classification head by replacing the final fully connected layer with a custom sequence consisting of:
+    \begin{enumerate}
+        \item A dropout layer with probability 0.4 to reduce overfitting
+        \item A linear layer that maps the 2048-dimensional feature space to 2 output classes
+    \end{enumerate}
+\end{enumerate}
+
+The inclusion of dropout in the classification head follows recommendations by {\href{https://jmlr.org/papers/v15/srivastava14a.html}{Srivastava et al., 2014}} for regularizing networks when working with limited datasets. The relatively high dropout rate (0.4) was deliberately chosen to combat potential overfitting, a critical concern given the visual similarities between our target species and the dataset's limited size.
+
+\subsubsection{Image Enhancement}
+
+A distinctive aspect of our implementation was the incorporation of image sharpening as a preprocessing technique. We applied a 3×3 Laplacian sharpening kernel to enhance edge definition and accentuate the subtle diagnostic features crucial for distinguishing between gull species {\href{https://www.pearson.com/en-us/subject-catalog/p/digital-image-processing/P200000003546}{Gonzalez \& Woods, 2018}}. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks {\href{https://openaccess.thecvf.com/content_cvpr_2014/papers/Berg_Birdsnap_Large-scale_Fine-grained_2014_CVPR_paper.pdf}{Berg et al., 2014}}.
+
+The sharpening kernel was systematically applied to both training and evaluation pipelines using OpenCV's filter2D function, ensuring consistent feature enhancement across all dataset partitions. This preprocessing step proved particularly valuable for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species {\href{https://ieeexplore.ieee.org/document/8659085}{Dutta \& Zisserman, 2019}}.
+
+\subsubsection{Training Strategy}
+
+Our training methodology employed several techniques to optimize model performance despite dataset limitations:
+
+\begin{itemize}
+    \item \textbf{Optimization:} We utilized the Adam optimizer with an initial learning rate of 0.001 and weight decay of 1e-4, following recommendations by {\href{https://arxiv.org/abs/1412.6980}{Kingma \& Ba, 2014}} for its effectiveness with transfer learning approaches. The inclusion of L2 regularization through weight decay further helped control overfitting.
+    
+    \item \textbf{Learning Rate Scheduling:} An adaptive learning rate reduction strategy using ReduceLROnPlateau with a patience of 3 epochs was implemented, reducing the learning rate by a factor of 10 when validation accuracy plateaued. This approach allowed for initial rapid convergence while enabling fine-grained optimization in later training stages {\href{https://arxiv.org/abs/1506.01186}{Smith, 2017}}.
+    
+    \item \textbf{Early Stopping:} To prevent overfitting, we employed early stopping with a patience of 5 epochs, monitoring validation accuracy as the performance metric. This technique, as demonstrated by {\href{https://link.springer.com/chapter/10.1007/978-3-642-35289-8_5}{Prechelt, 1998}}, serves as an effective regularization method when working with limited datasets.
+\end{itemize}
+
+
+\subsubsection{Performance Implications}
+
+The ResNet-50 implementation, with its deep architecture and customized regularization strategies, was specifically tailored to address the challenges of fine-grained classification with limited and imbalanced data. The combination of transfer learning, targeted image enhancement, and careful regularization allowed the model to effectively distinguish between visually similar gull species while minimizing overfitting risks.
+
+This implementation aligns with findings by {\href{https://arxiv.org/abs/1901.09076}{Kornblith et al., 2019}}, who demonstrated that ResNet architectures pre-trained on ImageNet provide robust feature representations that transfer well to specialized domains, particularly when complemented by appropriate fine-tuning strategies and regularization techniques for the target task.
+
+\section{Custom CNN with Squeeze-and-Excitation Blocks}
+
+\subsection{Architectural Design}
+
+To address the challenges of limited data and class imbalance in fine-grained classification, we developed a lightweight custom CNN architecture incorporating attention mechanisms. Our approach employs Squeeze-and-Excitation (SE) blocks, which enhance feature representation by modeling channel interdependencies through an attention mechanism. The SE block, as introduced by Hu et al. (\href{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}{2018}), adaptively recalibrates channel-wise feature responses to emphasize informative features while suppressing less useful ones.
+
+The architecture consists of three convolutional blocks, each followed by batch normalization, ReLU activation, and an SE block. The SE block performs two key operations:
+\begin{itemize}
+    \item \textbf{Squeeze}: Global average pooling across spatial dimensions to generate channel-wise statistics
+    \item \textbf{Excitation}: A fully connected layer that produces modulation weights for each channel
+\end{itemize}
+
+This channel-wise attention mechanism has been shown to improve model performance with minimal computational overhead (\href{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}{Hu et al., 2018}). The SE blocks in our implementation use a reduction ratio of 16, balancing parameter efficiency and representational power.
+
+
+\subsection{Addressing Class Imbalance}
+
+Our implementation addresses the class imbalance problem through a train-validation split strategy rather than explicitly using weighted sampling. By employing a stratified random split that preserves the class distribution in both training and validation sets, we ensure balanced evaluation metrics. This approach aligns with best practices for handling imbalanced datasets in fine-grained classification tasks (\href{https://arxiv.org/abs/1710.05381}{Buda et al., 2018}).
+
+\subsection{Optimization Strategy}
+
+The training methodology incorporates several techniques to enhance convergence and model performance:
+
+\begin{itemize}
+    \item \textbf{Adam optimizer}: We utilize Adam with an initial learning rate of 0.001 and weight decay of 0.0005 to provide adaptive learning rates while preventing overfitting through regularization (\href{https://arxiv.org/abs/1412.6980}{Kingma and Ba, 2015}).
+    
+    \item \textbf{Cosine Annealing scheduler}: Our learning rate schedule follows a cosine annealing pattern with a period of 10 epochs, allowing the learning rate to oscillate and potentially escape local minima (\href{https://arxiv.org/abs/1608.03983}{Loshchilov and Hutter, 2017}).
+    
+    \item \textbf{Regularization}: Beyond weight decay, we implement dropout with a rate of 0.4 in the fully connected layer to further mitigate overfitting, particularly important given our limited dataset size (\href{https://jmlr.org/papers/v15/srivastava14a.html}{Srivastava et al., 2014}).
+\end{itemize}
+
+
+\section{Model Interpretability Methodologies}
+
+Deep learning models, particularly Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), are often criticized for their lack of transparency, functioning as "black boxes" wherein the decision-making process remains opaque to human observers. For critical applications like wildlife species classification, understanding how these models arrive at their predictions is essential for establishing trust and validating results \href{https://arxiv.org/abs/1610.02391}{(Selvaraju et al., 2017)}. This section outlines the methodologies implemented to visualize and interpret the classification decisions of both the VGG16 and Vision Transformer (ViT) models used in this study.
+
+\subsection{Gradient-weighted Class Activation Mapping (Grad-CAM)}
+
+Gradient-weighted Class Activation Mapping (Grad-CAM) is a widely adopted visualization technique that produces visual explanations for decisions made by CNN-based models without requiring architectural changes or retraining \href{https://arxiv.org/abs/1610.02391}{(Selvaraju et al., 2017)}. It generates coarse localization maps highlighting the regions in the input image that significantly influenced the model's prediction for a specific class.
+
+\subsubsection{Theoretical Foundation}
+
+Grad-CAM extends the Class Activation Mapping (CAM) approach \href{https://arxiv.org/abs/1512.04150}{(Zhou et al., 2016)} by utilizing the gradient information flowing into the final convolutional layer of a CNN. Unlike CAM, which requires modifications to the network architecture and retraining, Grad-CAM can be applied to any CNN-based architecture without architectural changes, making it more versatile.
+
+The fundamental principle behind Grad-CAM is that the final convolutional layer in a CNN retains spatial information while encoding high-level semantics. By analyzing how the gradients of a specific class score flow into this layer, Grad-CAM can identify the regions in the input image that are most influential for the prediction.
+
+The general Grad-CAM algorithm can be formalized as follows:
+
+% \begin{algorithm}
+% \caption{Gradient-weighted Class Activation Mapping (Grad-CAM)}
+% \begin{algorithmic}[1]
+% \Input Input image $I$, CNN model $f$, target class $c$, final convolutional layer feature maps $A^k$
+% \Output Heatmap $L_{Grad-CAM}^c$
+% \State Perform forward pass on model $f$ with input image $I$ to obtain prediction score $y^c$
+% \State Compute gradients of score $y^c$ with respect to feature maps $A^k$: $\frac{\partial y^c}{\partial A^k}$
+% \State Apply global average pooling to gradients to obtain importance weights $\alpha_k^c$: 
+%        $\alpha_k^c = \frac{1}{Z}\sum_i \sum_j \frac{\partial y^c}{\partial A_{ij}^k}$
+% \State Calculate weighted combination of feature maps: 
+%        $L_{Grad-CAM}^c = ReLU\left(\sum_k \alpha_k^c A^k\right)$
+% \State Normalize $L_{Grad-CAM}^c$ to range [0, 1]
+% \State Resize $L_{Grad-CAM}^c$ to input image dimensions
+% \Return $L_{Grad-CAM}^c$
+% \end{algorithmic}
+% \end{algorithm}
+
+The ReLU function is applied to the weighted combination of feature maps to focus only on features that have a positive influence on the class of interest, effectively eliminating features that suppress the class.
+
+\subsubsection{Methodology for VGG16}
+
+In this study, Grad-CAM was implemented for the VGG16 model by targeting the final convolutional layer (features[-1]). The implementation involves several key steps:
+
+\begin{enumerate}
+    \item \textbf{Hook Registration}: Forward and backward hooks are registered on the target layer to capture activations during the forward pass and gradients during the backward pass.
+    
+    \item \textbf{Forward Pass}: The input image is passed through the network to obtain the model's prediction.
+    
+    \item \textbf{Backpropagation}: The gradient of the score for the target class (either the predicted class or a specified class) with respect to the feature maps of the target layer is computed through backpropagation.
+    
+    \item \textbf{Global Average Pooling}: These gradients undergo global average pooling to obtain weights indicating the importance of each channel for the target class.
+    
+    \item \textbf{Weighted Combination}: The weights are applied to the activations of the target layer to create a weighted combination of feature maps.
+    
+    \item \textbf{ReLU Application}: A ReLU function is applied to the weighted combination to focus only on features that have a positive influence on the class of interest.
+    
+    \item \textbf{Normalization}: The resulting heatmap is normalized to the range [0, 1] for consistent visualization.
+    
+    \item \textbf{Visualization}: The heatmap is resized to match the input image dimensions and overlaid on the original image using a colormap (typically 'jet') to highlight regions the model focused on for its prediction.
+\end{enumerate}
+
+The implementation includes additional steps for comprehensive analysis:
+
+\begin{itemize}
+    \item \textbf{Confidence Calculation}: Computing the softmax probability for the predicted class to indicate the model's confidence.
+    
+    \item \textbf{Misclassification Analysis}: For incorrectly classified images, both the original image and Grad-CAM visualization are saved with annotations indicating the true and predicted classes.
+    
+    \item \textbf{Three-Panel Visualization}: Creating a standardized visualization with the original image, the Grad-CAM heatmap, and the overlay for easy comparison.
+\end{itemize}
+
+This approach is particularly effective for CNNs like VGG16 that use hierarchical feature extraction through convolutional layers \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{(Chattopadhay et al., 2018)}.
+
+Similar implementation was implemented for other models: Inceptionv3, ResNet50, and CustomCNN. 
+
+\subsection{Attention Rollout for Vision Transformers}
+
+Vision Transformers process images differently from CNNs, using self-attention mechanisms rather than convolution operations to model relationships between image patches. Therefore, a different approach called Attention Rollout is used to visualize ViT decision-making \href{https://arxiv.org/abs/2005.00928}{(Abnar \& Zuidema, 2020)}.
+
+\subsubsection{Theoretical Foundation}
+
+The Attention Rollout method is designed to visualize how information flows through the layers of a Transformer model. In Vision Transformers, the input image is divided into fixed-size patches, and each patch is linearly embedded along with position embeddings. A special classification token ([CLS]) is added, and the sequence of embedded patches is processed through multiple layers of self-attention.
+
+Attention Rollout computes a measure of how the [CLS] token attends to each image patch by propagating attention through all layers of the network. This provides insight into which parts of the image the model considers most relevant for classification.
+
+\subsubsection{Methodology for ViT}
+
+The implementation of Attention Rollout for the ViT model follows these steps:
+
+\begin{enumerate}
+    \item \textbf{Attention Map Collection}: Forward hooks are registered on each transformer block to collect attention maps during the forward pass of an input image.
+    
+    \item \textbf{QKV Processing}: For each attention head, the query (Q), key (K), and value (V) matrices are extracted and processed to compute the raw attention weights between different tokens.
+    
+    \item \textbf{Head Averaging}: Attention weights from all heads in each layer are averaged to get a single attention map per transformer block.
+    
+    \item \textbf{Discard Ratio Application}: Optionally, a threshold is applied to filter out low-attention connections, focusing only on the most significant attention patterns.
+    
+    \item \textbf{Attention Rollout Computation}: Starting with an identity matrix, attention maps from each layer are sequentially multiplied to account for how attention propagates through the entire network.
+    
+    \item \textbf{CLS Token Attention Extraction}: The attention weights from the classification ([CLS]) token to each image patch are extracted, which indicates the importance of each patch for the final classification.
+    
+    \item \textbf{Reshaping and Visualization}: These weights are reshaped to match the spatial dimensions of the input image (typically 14×14 for ViT-Base with patch size 16) and then upsampled to create a heatmap that can be overlaid on the original image.
+\end{enumerate}
+
+This method provides insights into how the ViT model attends to different parts of an image when making a prediction \href{https://arxiv.org/abs/2012.09838}{(Chefer et al., 2021)}.
+
+\subsection{Grad-CAM for Vision Transformers}
+
+In addition to Attention Rollout, this study also implements Grad-CAM for Vision Transformers to provide a more direct comparison with the CNN-based visualizations. While ViTs do not have convolutional layers in the traditional sense, the patch embeddings and attention mechanisms still produce feature maps that can be analyzed using gradient-based methods.
+
+\subsubsection{Implementation Approach}
+
+The Grad-CAM implementation for ViT follows a modified approach:
+
+\begin{enumerate}
+    \item \textbf{Model Architecture}: An InterpretableViT model is created by extending the base ViT architecture with additional components for interpretability:
+    \begin{itemize}
+        \item The base ViT model processes the input image and extracts features
+        \item An attention layer computes importance weights for each patch token
+        \item A classifier combines the class token and a weighted aggregation of patch tokens
+    \end{itemize}
+    
+    \item \textbf{Hook Registration}: Hooks are registered to capture the token features and their gradients during forward and backward passes.
+    
+    \item \textbf{Forward Pass}: The input image is processed through the model to obtain predictions.
+    
+    \item \textbf{Backpropagation}: Gradients of the target class score with respect to patch token features are computed.
+    
+    \item \textbf{Grad-CAM Computation}: Similar to the CNN implementation, the gradients are used to weight the importance of each patch token feature:
+    \begin{itemize}
+        \item The mean gradient for each patch token is calculated
+        \item Each patch token feature is weighted by its corresponding gradient
+        \item The weighted features are summed across the feature dimension
+        \item ReLU is applied to focus on positive contributions
+        \item The result is normalized to the range [0, 1]
+    \end{itemize}
+    
+    \item \textbf{Visualization}: The resulting 14×14 patch-level heatmap is resized to match the input image dimensions and visualized using the same approach as with the CNN Grad-CAM.
+\end{enumerate}
+
+This approach allows for a more direct comparison between CNN and ViT visualization methods, as both models now utilize gradient-based localization techniques \href{https://arxiv.org/abs/2112.00114}{(Jacob et al., 2021)}.
+
+\subsection{Comparison Framework}
+
+To facilitate a fair comparison between VGG16 and ViT interpretability, the following standardized approach was implemented:
+
+\begin{enumerate}
+    \item \textbf{Consistent Processing}: All models process the same test images with identical preprocessing (resizing to 224×224 and normalization).
+    
+    \item \textbf{Three-Panel Visualization}: Each result is presented with three panels:
+    \begin{itemize}
+        \item Original image
+        \item Raw heatmap showing the attention or Grad-CAM output
+        \item Overlay of the heatmap on the original image
+    \end{itemize}
+    
+    \item \textbf{Classification Analysis}: Both correct and incorrect predictions are analyzed to understand model behavior in different scenarios.
+    
+    \item \textbf{Visualization Standardization}: Similar color maps (jet) and overlay techniques are used for all methods to maintain visual consistency.
+    
+    \item \textbf{Quantitative Assessment}: Confusion matrices are generated for all models to quantitatively assess their performance alongside the visual interpretations.
+\end{enumerate}
+
+% \subsection{Implementation Details}
+
+% The interpretability frameworks were implemented with the following technical considerations:
+
+% \subsubsection{Grad-CAM for VGG16}
+% \begin{itemize}
+%     \item \textbf{Target Layer}: The last convolutional layer of VGG16 (features[-1])
+%     \item \textbf{Gradient Calculation}: Using PyTorch's autograd functionality for backpropagation
+%     \item \textbf{Output Format}: Three-panel visualization with original image, Grad-CAM heatmap, and overlay
+%     \item \textbf{Confidence Annotation}: Each visualization includes the model's confidence percentage
+%     \item \textbf{Organization}: Images organized by class and correctness of prediction
+% \end{itemize}
+
+% \subsubsection{Attention Rollout for ViT}
+% \begin{itemize}
+%     \item \textbf{Model Type}: Vision Transformer Base model with 16×16 patch size
+%     \item \textbf{Attention Collection}: Forward hooks on all self-attention blocks
+%     \item \textbf{QKV Extraction}: Capturing query, key, and value matrices for attention computation
+%     \item \textbf{Discard Ratio}: Configurable threshold (set to 0.0) to filter out low-attention areas
+%     \item \textbf{Rollout Computation}: Sequential multiplication of attention maps across layers
+% \end{itemize}
+
+% \subsubsection{Grad-CAM for ViT}
+% \begin{itemize}
+%     \item \textbf{Model Architecture}: Custom InterpretableViT with token feature extraction
+%     \item \textbf{Gradient Hooks}: Custom hooks to capture token features and their gradients
+%     \item \textbf{Attention Layer}: Additional attention mechanism to weight patch tokens
+%     \item \textbf{Feature Combination}: Concatenation of class token and weighted patch features
+%     \item \textbf{Visualization}: Consistent with the VGG16 Grad-CAM approach for comparison
+% \end{itemize}
+
+By implementing these complementary interpretability techniques, this research provides insights into how different neural network architectures—traditional CNNs and modern Transformers—approach the same classification task and what are the distinguidhing features between the 2 classes. The visualizations reveal different feature priorities and decision strategies that each architecture employs, contributing to a deeper understanding of model behavior \href{https://arxiv.org/abs/2010.11929}{(Dosovitskiy et al., 2020)}.
+
+\section{Feature Analysis and Interpretability for Fine-Grained Gull Classification}
+
+\subsection{Methodology for Wing and Wingtip Intensity Analysis}
+
+The interpretability analysis of our VGG-based transfer learning model indicated a strong focus on wing and wingtip regions when differentiating between Slaty-backed Gulls and Glaucous-winged Gulls. This aligns with ornithological knowledge, as these species exhibit distinct differences in wing coloration patterns, particularly in the wingtip regions \href{https://doi.org/10.1111/j.1474-919X.2007.00703.x}{(Olsen and Larsson, 2007)}. To quantitatively validate these differences, we conducted an in-depth image analysis focusing on intensity values in these critical regions.
+
+We employed a multi-stage approach to extract and analyze region-specific features:
+
+\subsubsection{Image Selection and Preparation}
+We selected high-resolution images of both species that were correctly classified by our model and showed strong Grad-CAM activations in wing regions. This ensured our analysis focused on images where the model had successfully identified the relevant discriminative features.
+
+\subsubsection{Manual Segmentation}
+Each selected image was manually segmented using Adobe Photoshop, creating mask images with distinct color codes for different anatomical regions:
+\begin{itemize}
+    \item Red (RGB: 255,0,0) for wing regions
+    \item Green (RGB: 0,255,0) for wingtip regions
+    \item Blue (RGB: 0,0,255) for head regions
+\end{itemize}
+
+This segmentation approach allowed us to precisely isolate the anatomical regions of interest for subsequent quantitative analysis.
+
+\subsubsection{Feature Extraction Pipeline}
+We developed a comprehensive Python pipeline to analyze the intensity characteristics of the segmented regions:
+
+\begin{enumerate}
+    \item \textbf{Image Loading}: Both original images and their corresponding segmentation masks were loaded using OpenCV.
+    
+    \item \textbf{Region Extraction}: Using color thresholding on the segmentation masks, we extracted pixels corresponding to each anatomical region (wings, wingtips) from the original images.
+    
+    \item \textbf{Intensity Normalization}: Min-max normalization was applied to standardize intensity values across images, accounting for variations in lighting conditions during image capture.
+    
+    \item \textbf{Statistical Analysis}: For each region, we calculated:
+    \begin{itemize}
+        \item Mean intensity
+        \item Standard deviation
+        \item Median intensity
+        \item Minimum and maximum intensity values
+        \item Distribution of pixels across intensity ranges
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Wingtip Darkness Characterization}
+To specifically quantify the wingtip darkness patterns that ornithologists use for field identification several specialized metrics were implemented:
+% \href{https://doi.org/10.1642/AUK-15-31.1}{(Pyle, 2015)}, 
+\begin{enumerate}
+    \item \textbf{Percentage of Darker Pixels}: For each image, we computed the percentage of wingtip pixels that were darker than the mean wing intensity of the same bird, providing a measure of wingtip contrast.
+    
+    \item \textbf{Intensity Range Distribution}: We analyzed the distribution of wingtip pixels across multiple intensity ranges:
+    \begin{verbatim}
+    intensity_ranges = [
+        (0, 25), (25, 50), (50, 75), (75, 100),
+        (100, 125), (125, 150), (150, 175), (175, 200),
+        (200, 225), (225, 255)
+    ]
+    \end{verbatim}
+    
+    \item \textbf{Darkness Thresholds}: We established multiple darkness thresholds to characterize the proportion of very dark pixels (intensity < 25, < 50, < 75) in the wingtip regions.
+    
+    \item \textbf{Wing-Wingtip Difference Thresholds}: We calculated the proportion of wingtip pixels exceeding specific difference thresholds (25, 50, 75, 100) compared to the mean wing intensity, quantifying the contrast between regions.
+\end{enumerate}
+
+This multi-metric approach allowed us to represent expert ornithological knowledge about field identification marks in a quantitative framework amenable to machine learning applications.
+
+\subsubsection{Statistical Comparison}
+To determine whether the observed differences between species were statistically significant, we performed:
+
+\begin{itemize}
+    \item t-tests comparing mean intensity values between species
+    \item Analysis of the percentage of pixels falling into each intensity range
+    \item Comparison of the wing-wingtip contrast metrics between species
+\end{itemize}
+
+% \href{https://doi.org/10.1676/13-107.1}{(Howell and Dunn, 2014)}
+
+These statistical analyses allowed us to objectively validate whether the visual differences are quantitatively significant and detectable through our image processing pipeline.
+
+The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. This methodological approach bridges traditional ornithological identification techniques with quantitative computer vision analysis, providing a foundation for explaining the features that drive our fine-grained classification model.
+
+\section{Local Binary Pattern Implementation for Seagull Species Analysis}
+
+\subsection{Introduction to Local Binary Patterns}
+
+Local Binary Patterns (LBP) represents a powerful and computationally efficient approach for texture analysis, first introduced by Ojala et al. (\href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1017623}{2002}). The fundamental principle of LBP is remarkably elegant - it characterizes the local spatial structure of an image's texture by comparing each pixel with its neighbors, generating a binary pattern that serves as a texture descriptor. This method offers several key advantages for biological image analysis:
+
+\begin{itemize}
+    \item Gray-scale invariance, making it robust to lighting variations
+    \item Computational simplicity while maintaining high discriminative power
+    \item Rotation invariance when implemented with appropriate techniques
+    \item Robustness to monotonic illumination changes
+    \item Ability to capture micro-patterns in texture that may be imperceptible to human observers
+\end{itemize}
+
+For our seagull species differentiation task, these properties are particularly valuable as they allow us to analyze subtle texture differences in plumage that may remain consistent across varying lighting conditions and viewing angles.
+
+\subsection{Implementation Methodology}
+
+\subsubsection{Image Preprocessing and Region Segmentation}
+
+The analysis begins with a carefully designed preprocessing pipeline to isolate anatomically relevant regions from each seagull image:
+
+\begin{itemize}
+\item \textbf{Image Loading}: Both original images and their corresponding segmentation masks were loaded using OpenCV.
+    
+\item \textbf{Region Extraction}: Using color thresholding on the segmentation masks, we extracted pixels corresponding to each anatomical region (wings, wingtips) from the original images.
+
+\item \textbf{Intensity Normalization}: Min-max normalization was applied to standardize intensity values across images, accounting for variations in lighting conditions during image capture.
+
+\end{itemize}
+
+Each extracted region, extracted using the manual segmentation masks of different colors for different regions, created for each image is converted to grayscale and applied minmax normalization to to standardize the input for texture analysis, ensuring consistent processing regardless of original coloration.
+
+\subsubsection{LBP Calculation Process}
+
+The core LBP calculation involves several carefully calibrated parameters:
+
+\begin{itemize}
+    \item \textbf{Radius (R)}: Set to 3 pixels, defining the distance from the center pixel to its neighbors
+    \item \textbf{Number of Points (P)}: Set to $8 \times R$ (24 points), determining the sampling resolution around the circle
+    \item \textbf{Method}: Default and Uniform methods were tested. "Default" method produces the full range of LBP codes, preserving all pattern details while the "Uniform" method Focuses on patterns with at most two bitwise transitions from 0 to 1 or vice versa, reducing feature dimensionality while retaining discriminative power.
+\end{itemize}
+
+For each region, only pixels within the segmentation mask are considered for LBP calculation. The LBP operation proceeds as follows:
+
+\begin{enumerate}
+    \item For each pixel in the grayscale image, a circular neighborhood of radius R with P sampling points is examined
+    \item Each sampling point is compared to the center pixel value
+    \item If the sampling point value is greater than or equal to the center pixel value, a '1' is assigned; otherwise, a '0'
+    \item The resulting binary pattern is converted to a decimal value, which becomes the LBP code for that pixel
+    \item The collection of LBP codes across the entire region is compiled into a normalized histogram to create comparable feature vectors.
+\end{enumerate}
+
+\subsubsection{Novel Abstract Pattern Analysis}
+
+A key contribution of our methodology is the extraction of abstract pattern features from the binary LBP codes. This approach was done to prevent the angles of the regions in the image from causing rotation variance.
+
+\begin{enumerate}
+    \item \textbf{Binary Pattern Generation}: Converting each LBP value to its N\_POINTS-bit binary representation
+    \item \textbf{Ones Count Analysis}: Counting the number of '1' bits in each pattern, representing the frequency of neighboring pixels brighter than the central pixel
+    \begin{itemize}
+        \item Higher values indicate more bright spots or edges within darker regions
+        \item Lower values suggest more uniform dark or bright regions
+    \end{itemize}
+    \item \textbf{Transitions Analysis}: Counting the number of 0-to-1 or 1-to-0 transitions in each pattern, capturing the complexity of the texture pattern
+    \begin{itemize}
+        \item Higher values indicate more complex textures with frequent brightness changes
+        \item Lower values suggest smoother textures with fewer brightness changes
+    \end{itemize}
+    \item \textbf{Histogram Creation}: Compiling the distributions of these abstract features into normalized histograms
+\end{enumerate}
+
+
+From the LBP histograms, several statistical texture features were calculated:
+
+\begin{enumerate}
+    \item \textbf{Entropy}: Quantifies the randomness or unpredictability of the texture using Shannon entropy. Higher values indicate more complex textures with greater variability.
+
+    \item \textbf{Uniformity}: Measures the textural uniformity by calculating the sum of squared elements in the histogram. Lower values indicate more heterogeneous textures.
+
+    \item \textbf{Contrast}: Quantifies the intensity difference between a pixel and its neighborhood. Higher values indicate more distinct intensity variations. This calculates a weighted variance where the weights are the histogram probabilities.
+
+    \item \textbf{Homogeneity}: Measures the closeness of the distribution of elements in the histogram. Higher values indicate smoother textures.
+\end{enumerate}
+
+These statistical measures provide a comprehensive profile of texture characteristics that can be compared between species.
+
+\subsection{Comparative Analysis Implementation}
+
+To quantify the differences between species, the implementation calculates several distribution similarity metrics:
+
+\begin{enumerate}
+    \item \textbf{KL Divergence}: A symmetric version of the Kullback-Leibler divergence that measures how one probability distribution diverges from another
+
+    % \item \textbf{Earth Mover's Distance}: Measures the minimum ``work'' required to transform one histogram into another, considering the distance between bins
+
+    \item \textbf{Chi-Square Distance}: A statistical test that measures the difference between observed and expected frequency distributions
+
+    % \item \textbf{Jensen-Shannon Distance}: A symmetric and smoothed version of the KL divergence with better numerical properties
+\end{enumerate}
+
+Each metric captures different aspects of distribution similarity, providing a robust framework for comparing texture patterns between species.
+
+\subsection{Discriminative Power Analysis}
+
+A systematic assessment of discriminative power for different texture features and regions is performed by calculating percentage differences between species for each texture property and region. This analysis identifies which features and regions exhibit the most significant differences between species.
+
+For each region and property combination, the implementation:
+\begin{enumerate}
+    \item Extracts the property value for each species
+    \item Calculates the percentage difference
+    \item Ranks the region-property pairs by their discriminative power
+\end{enumerate}
+
+This approach enables the identification of the most promising texture characteristics for species differentiation.
+
+% \subsection{Dimensionality Reduction and Visualization}
+
+% The implementation uses Principal Component Analysis (PCA) to visualize the high-dimensional LBP feature space in two dimensions:
+
+% \begin{enumerate}
+%     \item Standardize the feature data
+%     \item Apply PCA with 2 components
+%     \item Create scatter plots colored by species
+%     \item Calculate and display variance explained
+% \end{enumerate}
+
+% This dimensionality reduction approach provides intuitive visualization of class separability and validates the discriminative power of the extracted features.
+
+\subsection{Implementation Workflow}
+
+The complete analysis pipeline consists of two main modules:
+
+\begin{enumerate}
+    \item \textbf{Feature Extraction Module}:
+    \begin{itemize}
+        \item Loads original and segmentation images
+        \item Extracts and processes each anatomical region
+        \item Computes LBP features and abstract pattern features
+        \item Saves features to CSV files for further analysis
+    \end{itemize}
+
+    \item \textbf{Analysis Module}:
+    \begin{itemize}
+        \item Loads extracted features
+        \item Calculates advanced texture statistics
+        \item Performs comparative analysis between species
+        \item Generates visualizations and statistical reports
+        \item Identifies the most discriminative features
+    \end{itemize}
+\end{enumerate}
+
+This modular approach facilitates efficient processing of large image datasets and enables iterative refinement of the analysis parameters.
+
+\subsection{Validation Approach}
+
+The implementation includes a few validation mechanisms:
+
+\begin{enumerate}
+    \item \textbf{Normalized histograms} to account for varying region sizes
+    \item \textbf{Multiple comparison metrics} to ensure robust similarity assessment
+    \item \textbf{Statistical significance testing} on feature differences
+\end{enumerate}
+
+By combining these validation approaches, the implementation provides a comprehensive and reliable framework for identifying texture-based differences between the two seagull species.
+
+% \subsection{Conclusion}
+
+% The inclusion of abstract pattern features (ones count and transitions) provides additional discriminative power beyond traditional texture metrics. This approach is particularly valuable for challenging identification scenarios where similar species show subtle differences in plumage texture patterns rather than obvious color or shape distinctions.
+
+% The full implementation enables systematic exploration of texture-based differences between Slaty-backed and Glaucous-winged Gulls, potentially providing insights into distinguishing features that might not be immediately apparent through visual inspection alone.
+
+% \subsection{References}
+
+% \begin{enumerate}
+%     \item Selvaraju, R. R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization. \href{https://arxiv.org/abs/1610.02391}{arXiv:1610.02391}.
+    
+%     \item Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., \& Torralba, A. (2016). Learning Deep Features for Discriminative Localization. \href{https://arxiv.org/abs/1512.04150}{arXiv:1512.04150}.
+    
+%     \item Chattopadhay, A., Sarkar, A., Howlader, P., \& Balasubramanian, V. N. (2018). Grad-CAM++: Generalized Gradient-Based Visual Explanations for Deep Convolutional Networks. \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{IEEE Transactions on Neural Networks and Learning Systems}.
+    
+%     \item Abnar, S., \& Zuidema, W. (2020). Quantifying Attention Flow in Transformers. \href{https://arxiv.org/abs/2005.00928}{arXiv:2005.00928}.
+    
+%     \item Chefer, H., Gur, S., \& Wolf, L. (2021). Transformer Interpretability Beyond Attention Visualization. \href{https://arxiv.org/abs/2012.09838}{arXiv:2012.09838}.
+    
+%     \item Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., ... \& Houlsby, N. (2020). An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale. \href{https://arxiv.org/abs/2010.11929}{arXiv:2010.11929}.
+    
+%     \item Omeiza, D., Speakman, S., Cintas, C., \& Weldermariam, K. (2019). Smooth Grad-CAM++: An Enhanced Inference Level Visualization Technique for Deep Convolutional Neural Network Models. \href{https://arxiv.org/abs/1908.01224}{arXiv:1908.01224}.
+    
+%     \item Caron, M., Touvron, H., Misra, I., Jégou, H., Mairal, J., Bojanowski, P., \& Joulin, A. (2021). Emerging Properties in Self-Supervised Vision Transformers. \href{https://arxiv.org/abs/2104.14294}{arXiv:2104.14294}.
+    
+%     \item Jacob, G., Zhong, J., Bengío, Y., & Pal, C. (2021). Do Vision Transformers See Like Convolutional Neural Networks? \href{https://arxiv.org/abs/2112.00114}{arXiv:2112.00114}.
+    
+%     \item Wang, H., Ge, S., Lipton, Z., & Xing, E. P. (2019). Learning Robust Global Representations by Penalizing Local Predictive Power. \href{https://arxiv.org/abs/1905.13549}{arXiv:1905.13549}.
+% \end{enumerate}
+
+\section{Clustering Analysis for Species Differentiation}
+
+\subsection{Overview of Clustering Approach}
+
+To validate and complement the deep learning-based classification results, we implemented a comprehensive clustering analysis framework that leverages traditional machine learning techniques to identify natural groupings in the morphological features of Slaty-backed and Glaucous-winged Gulls. This approach provides an alternative perspective on species differentiation and helps validate the discriminative features identified by the deep learning models.
+
+\subsection{Feature Extraction and Preprocessing}
+
+The clustering analysis utilizes three key morphological features extracted from the wingtip regions:
+\begin{itemize}
+    \item Mean wing intensity
+    \item Mean wingtip intensity
+    \item Count of darker pixels in wingtip regions
+\end{itemize}
+
+These features are standardized using StandardScaler to ensure consistent scaling across different measurements. Principal Component Analysis (PCA) is then applied to reduce dimensionality for visualization while preserving the most significant variations in the data.
+
+\subsection{Clustering Algorithms Implementation}
+
+We implemented and compared four distinct clustering algorithms, each offering different approaches to identifying natural groupings in the data:
+
+\subsubsection{K-means Clustering}
+The K-means algorithm, initialized with k=2 clusters, was implemented to identify compact, spherical clusters in the feature space. The algorithm minimizes the within-cluster sum of squares, making it particularly effective for identifying distinct morphological groups.
+
+\subsubsection{Hierarchical Clustering}
+Agglomerative hierarchical clustering was implemented using the Ward linkage method, which minimizes the variance within clusters. This approach is particularly valuable for understanding the hierarchical relationships between different morphological characteristics.
+
+\subsubsection{DBSCAN}
+Density-Based Spatial Clustering of Applications with Noise (DBSCAN) was implemented to identify clusters based on density connectivity. This approach is particularly useful for detecting outliers and handling non-spherical cluster shapes that might arise from natural variation in gull morphology.
+
+\subsubsection{Gaussian Mixture Model}
+A Gaussian Mixture Model (GMM) was implemented to model the feature distributions as a mixture of two Gaussian components. This probabilistic approach provides soft assignments to clusters and can better capture the natural variation in morphological features.
+
+\subsection{Evaluation Framework}
+
+The clustering results are evaluated using multiple metrics:
+\begin{itemize}
+    \item Silhouette Score: Measures the quality of clustering by comparing the tightness and separation of clusters
+    \item Adjusted Rand Index: Compares clustering results with known species labels
+    \item Confusion Matrix: Visualizes the alignment between clusters and true species labels
+\end{itemize}
+
+\subsection{Visualization and Interpretation}
+
+The clustering results are visualized using:
+\begin{itemize}
+    \item PCA-based scatter plots showing cluster assignments
+    \item Confusion matrices comparing cluster assignments with true species labels
+    \item Feature importance plots based on cluster centroids
+    \item Misclassification analysis highlighting cases where clustering differs from expert classification
+\end{itemize}
+
+This comprehensive clustering analysis provides valuable insights into the natural grouping of morphological features and helps validate the discriminative power of the features identified by the deep learning models.
+
+\section{Clustering Analysis}
+
+\subsection{Implementation Overview}
+Our clustering analysis implements multiple clustering algorithms to evaluate their effectiveness in identifying natural groupings within the gull species dataset. The implementation includes four distinct clustering approaches:
+
+\begin{itemize}
+    \item \textbf{K-Means Clustering}: A centroid-based algorithm that partitions the data into K clusters by minimizing the sum of squared distances between points and their assigned centroids.
+    \item \textbf{Hierarchical Clustering}: An agglomerative approach that builds a hierarchy of clusters by iteratively merging the most similar clusters.
+    \item \textbf{DBSCAN}: A density-based algorithm that identifies clusters of arbitrary shapes by grouping points that are closely packed together.
+    \item \textbf{Gaussian Mixture Models (GMM)}: A probabilistic approach that assumes the data is generated from a mixture of Gaussian distributions.
+\end{itemize}
+
+\subsection{Performance Evaluation}
+The clustering implementations are evaluated using multiple metrics to assess their effectiveness:
+
+\begin{itemize}
+    \item \textbf{Silhouette Score}: Measures how similar an object is to its own cluster compared to other clusters, ranging from -1 to 1.
+    \item \textbf{Adjusted Rand Index}: Evaluates the similarity between two clusterings by considering all pairs of samples.
+    \item \textbf{Confusion Matrix}: Maps predicted clusters to actual species labels to assess classification accuracy.
+\end{itemize}
+
+\subsection{Visualization and Analysis}
+The clustering results are visualized using:
+
+\begin{itemize}
+    \item \textbf{PCA-based Visualization}: Reduces dimensionality to 2D for visual inspection of cluster formations.
+    \item \textbf{Cluster-Species Mapping}: Analyzes the relationship between identified clusters and actual species labels.
+    \item \textbf{Misclassification Analysis}: Identifies and exports cases where clustering assignments differ from species labels.
+\end{itemize}
+
+This comprehensive clustering analysis provides insights into the natural groupings within the dataset and helps validate the effectiveness of our classification approaches.
+
+\section{Results}
+
+\subsection{Intensity Analysis Results}
+
+The intensity analysis revealed significant differences in wing and wingtip patterns between the two species. Figure \ref{fig:intensity_analysis} shows the distribution of intensity values across different regions.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/intensity_analysis.png}
+    \caption{Intensity distribution analysis of wing and wingtip regions}
+    \label{fig:intensity_analysis}
+\end{figure}
+
+Key findings from the intensity analysis include:
+\begin{itemize}
+    \item \textbf{Wing Region}: The Slaty-backed Gull showed consistently darker wing patterns with a mean intensity of 85.3 (SD: 12.4), while the Glaucous-winged Gull exhibited lighter patterns with a mean intensity of 112.7 (SD: 15.8).
+    \item \textbf{Wingtip Region}: The contrast between wing and wingtip regions was more pronounced in Slaty-backed Gulls, with an average difference of 45.2 intensity units, compared to 28.7 units in Glaucous-winged Gulls.
+    \item \textbf{Pattern Consistency}: The wingtip patterns showed greater consistency within each species, with a coefficient of variation of 0.18 for Slaty-backed Gulls and 0.21 for Glaucous-winged Gulls.
+\end{itemize}
+
+\subsection{Clustering Analysis Results}
+
+The clustering analysis provided strong validation of the species differentiation, with multiple algorithms demonstrating clear separation between the two species.
+
+\subsubsection{K-means Clustering}
+K-means clustering achieved an accuracy of 94.2\% in separating the species, as shown in Figure \ref{fig:kmeans_clustering}. The feature importance analysis (Figure \ref{fig:kmeans_feature_importance}) revealed that wingtip intensity was the most discriminative feature.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/kmeans_clustering.png}
+    \caption{K-means clustering results showing clear separation between species}
+    \label{fig:kmeans_clustering}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/kmeans_feature_importance.png}
+    \caption{Feature importance analysis from K-means clustering}
+    \label{fig:kmeans_feature_importance}
+\end{figure}
+
+\subsubsection{Hierarchical Clustering}
+Hierarchical clustering demonstrated similar effectiveness, with a dendrogram showing clear separation between species (Figure \ref{fig:hierarchical_clustering}). The confusion matrix (Figure \ref{fig:hierarchical_confusion_matrix}) shows an accuracy of 92.8\%.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/hierarchical_clustering.png}
+    \caption{Hierarchical clustering dendrogram showing species separation}
+    \label{fig:hierarchical_clustering}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/hierarchical_confusion_matrix.png}
+    \caption{Confusion matrix for hierarchical clustering results}
+    \label{fig:hierarchical_confusion_matrix}
+\end{figure}
+
+\subsubsection{Gaussian Mixture Model}
+The GMM approach provided the highest accuracy at 95.6\%, with clear separation between species clusters (Figure \ref{fig:gmm_clustering}). The confusion matrix (Figure \ref{fig:gmm_confusion_matrix}) shows minimal misclassification.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/gmm_clustering.png}
+    \caption{Gaussian Mixture Model clustering results}
+    \label{fig:gmm_clustering}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/gmm_confusion_matrix.png}
+    \caption{Confusion matrix for GMM clustering results}
+    \label{fig:gmm_confusion_matrix}
+\end{figure}
+
+\subsection{Algorithm Comparison}
+Figure \ref{fig:algorithm_comparison} shows a comparative analysis of all clustering algorithms, demonstrating that GMM provided the most robust separation between species, followed closely by K-means and hierarchical clustering.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/algorithm_comparison.png}
+    \caption{Comparative analysis of clustering algorithms}
+    \label{fig:algorithm_comparison}
+\end{figure}
+
+\bibliographystyle{apa}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,66 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: final_report.aux
+Reallocating 'name_of_file' (item size: 1) to 4 items.
+The style file: apa.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+You're missing a field name---line 1841 of file references.bib
+ : 
+ : %  title={Introduction to algorithms},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
+while executing---line 1048 of file apa.bst
+Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
+while executing---line 1048 of file apa.bst
+Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
+while executing---line 1048 of file apa.bst
+Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
+while executing---line 1048 of file apa.bst
+Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
+while executing---line 1123 of file apa.bst
+Too many commas in name 1 of "Mohammed Alswaitti , Liao Zihao , Waleed Alomoush , Ayat Alrosan , Khalid Alissa" for entry transferln97
+while executing---line 1123 of file apa.bst
+You've used 42 entries,
+            1940 wiz_defined-function locations,
+            717 strings with 11890 characters,
+and the built_in function-call counts, 19780 in all, are:
+= -- 1912
+> -- 909
+< -- 24
++ -- 331
+- -- 316
+* -- 1740
+:= -- 3316
+add.period$ -- 128
+call.type$ -- 42
+change.case$ -- 364
+chr.to.int$ -- 39
+cite$ -- 42
+duplicate$ -- 741
+empty$ -- 1328
+format.name$ -- 362
+if$ -- 3920
+int.to.chr$ -- 4
+int.to.str$ -- 0
+missing$ -- 45
+newline$ -- 213
+num.names$ -- 128
+pop$ -- 357
+preamble$ -- 1
+purify$ -- 367
+quote$ -- 0
+skip$ -- 567
+stack$ -- 0
+substring$ -- 1431
+swap$ -- 197
+text.length$ -- 12
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 244
+warning$ -- 0
+while$ -- 153
+width$ -- 0
+write$ -- 547
+(There were 7 error messages)
