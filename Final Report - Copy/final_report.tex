@@ -340,27 +340,47 @@ Despite its advantages, Google Colab presented a few challenges. The platform fr
 
 To mitigate these issues, two strategies were implemented. First, the relatively small size of our dataset helped minimize resource demands. Second, checkpoint saving was implemented throughout the training process, allowing training to resume from the last saved state if disconnections were encountered. This approach ensured that progress wasn't lost when disconnections occurred, though it introduced some workflow inefficiencies.
 
+
 \subsection{Python and PyTorch Framework}
 
-The implementation was carried out using Python as the primary programming language, chosen for its extensive library support and widespread adoption in the machine learning community. Python's simple syntax and powerful libraries make it particularly suitable for rapid prototyping and experimentation in deep learning research \citep{geron2019}.
+The implementation was carried out using Python as the primary programming language, chosen for its extensive library support and widespread adoption in the machine learning community \citep{geron2019}. For the deep learning framework, PyTorch was selected over alternatives like TensorFlow or Keras due to its dynamic computational graph which allows for more flexible model development and easier debugging.
 
-For the deep learning framework, PyTorch was selected over alternatives like TensorFlow or Keras due to its dynamic computational graph which allows for more flexible model development and easier debugging. PyTorch's intuitive design facilitates a more natural expression of deep learning algorithms while still providing the performance benefits of GPU acceleration. The framework's robust ecosystem for computer vision tasks, including pre-trained models and transformation pipelines, was particularly valuable for this fine-grained classification task.
-
-\subsubsection{Advantages of PyTorch in Our Implementation}
-
-PyTorch offered several key advantages that were particularly beneficial for our transfer learning approach with pre-trained models:
+PyTorch offered several key advantages for our transfer learning approach:
 
 \begin{itemize}
-    \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach allowed for more intuitive debugging and model modification during development. This was especially valuable when adapting pre-trained architectures like VGG16 for our specific classification task.
-
-    \item \textbf{Flexible Model Customization:} The implementation benefited from PyTorch's object-oriented approach, which made it straightforward to modify pre-trained models, e.g., replacing classification layers while preserving feature extraction capabilities.
-
-    \item \textbf{Efficient Data Loading and Augmentation:} PyTorch's DataLoader and transformation pipelines facilitated efficient batch processing and on-the-fly data augmentation, which was crucial for maximizing the utility of our limited dataset.
-
-    \item \textbf{Gradient Visualization Tools:} PyTorch's native support for gradient computation and hooks made implementing Grad-CAM and other visualization techniques more straightforward, enabling better model interpretability.
+    \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach allowed for intuitive debugging and model modification when adapting pre-trained architectures for our classification task.
+    
+    \item \textbf{Flexible Model Customization:} The implementation benefited from PyTorch's object-oriented approach, making it straightforward to modify pre-trained models while preserving feature extraction capabilities.
+    
+    \item \textbf{Efficient Data Processing:} PyTorch's DataLoader and transformation pipelines facilitated batch processing and on-the-fly data augmentation, crucial for maximizing the utility of our limited dataset.
+    
+    \item \textbf{Gradient Visualization:} Native support for gradient computation made implementing Grad-CAM and other visualization techniques more straightforward, enabling better model interpretability.
 \end{itemize}
 
-Similar to approaches described by Raffel et al. \citet{raffel2023}, my implementation prioritized efficiency and optimization to work within the constraints of limited computational resources, allowing me to achieve high-quality results despite the limitations of the free cloud environment.
+Similar to approaches described by Raffel et al. \citet{raffel2023}, the implementation prioritized efficiency to work within limited computational resources while achieving high-quality results.
+
+
+% \subsection{Python and PyTorch Framework}
+
+% The implementation was carried out using Python as the primary programming language, chosen for its extensive library support and widespread adoption in the machine learning community. Python's simple syntax and powerful libraries make it particularly suitable for rapid prototyping and experimentation in deep learning research \citep{geron2019}.
+
+% For the deep learning framework, PyTorch was selected over alternatives like TensorFlow or Keras due to its dynamic computational graph which allows for more flexible model development and easier debugging. PyTorch's intuitive design facilitates a more natural expression of deep learning algorithms while still providing the performance benefits of GPU acceleration. The framework's robust ecosystem for computer vision tasks, including pre-trained models and transformation pipelines, was particularly valuable for this fine-grained classification task.
+
+% \subsubsection{Advantages of PyTorch in Our Implementation}
+
+% PyTorch offered several key advantages that were particularly beneficial for our transfer learning approach with pre-trained models:
+
+% \begin{itemize}
+%     \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach allowed for more intuitive debugging and model modification during development. This was especially valuable when adapting pre-trained architectures like VGG16 for our specific classification task.
+
+%     \item \textbf{Flexible Model Customization:} The implementation benefited from PyTorch's object-oriented approach, which made it straightforward to modify pre-trained models, e.g., replacing classification layers while preserving feature extraction capabilities.
+
+%     \item \textbf{Efficient Data Loading and Augmentation:} PyTorch's DataLoader and transformation pipelines facilitated efficient batch processing and on-the-fly data augmentation, which was crucial for maximizing the utility of our limited dataset.
+
+%     \item \textbf{Gradient Visualization Tools:} PyTorch's native support for gradient computation and hooks made implementing Grad-CAM and other visualization techniques more straightforward, enabling better model interpretability.
+% \end{itemize}
+
+% Similar to approaches described by Raffel et al. \citet{raffel2023}, my implementation prioritized efficiency and optimization to work within the constraints of limited computational resources, allowing me to achieve high-quality results despite the limitations of the free cloud environment.
 
 \section{Dataset Preparation and Refinement}
 
@@ -765,7 +785,7 @@ Unlike the transfer learning approaches used with pre-trained models, our custom
 
 \section{Model Interpretability Methodologies}
 
-Deep learning models, particularly Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), are often criticized for their lack of transparency, functioning as "black boxes" wherein the decision-making process remains opaque to human observers. For critical applications like wildlife species classification, understanding how these models arrive at their predictions is essential for establishing trust and validating results \href{https://arxiv.org/abs/1610.02391}{(Selvaraju et al., 2017)}. This section outlines the methodologies implemented to visualize and interpret the classification decisions of both the VGG16 and Vision Transformer (ViT) models used in this study.
+Deep learning models, particularly Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), are often criticized for their lack of transparency, functioning as "black boxes" wherein the decision-making process remains opaque to human observers. For critical applications like wildlife species classification, understanding how these models arrive at their predictions is essential for establishing trust and validating results \href{https://arxiv.org/abs/1610.02391}{(Selvaraju et al., 2017)}. This section outlines the methodologies implemented to visualize and interpret the classification decisions of both the CNN architecture and Vision Transformer (ViT) models used in this study.
 
 \subsection{Gradient-weighted Class Activation Mapping (Grad-CAM)}
 
@@ -776,8 +796,6 @@ Gradient-weighted Class Activation Mapping (Grad-CAM) is a widely adopted visual
 Grad-CAM extends the Class Activation Mapping (CAM) approach \href{https://arxiv.org/abs/1512.04150}{(Zhou et al., 2016)} by utilizing the gradient information flowing into the final convolutional layer of a CNN. Unlike CAM, which requires modifications to the network architecture and retraining, Grad-CAM can be applied to any CNN-based architecture without architectural changes, making it more versatile.
 
 The fundamental principle behind Grad-CAM is that the final convolutional layer in a CNN retains spatial information while encoding high-level semantics. By analyzing how the gradients of a specific class score flow into this layer, Grad-CAM can identify the regions in the input image that are most influential for the prediction.
-
-The general Grad-CAM algorithm can be formalized as follows:
 
 % \begin{algorithm}
 % \caption{Gradient-weighted Class Activation Mapping (Grad-CAM)}
@@ -820,17 +838,7 @@ In this study, Grad-CAM was implemented for the VGG16 model by targeting the fin
     \item \textbf{Visualization}: The heatmap is resized to match the input image dimensions and overlaid on the original image using a colormap (typically 'jet') to highlight regions the model focused on for its prediction.
 \end{enumerate}
 
-The implementation includes additional steps for comprehensive analysis:
 
-\begin{itemize}
-    \item \textbf{Confidence Calculation}: Computing the softmax probability for the predicted class to indicate the model's confidence.
-    
-    \item \textbf{Misclassification Analysis}: For incorrectly classified images, both the original image and Grad-CAM visualization are saved with annotations indicating the true and predicted classes.
-    
-    \item \textbf{Three-Panel Visualization}: Creating a standardized visualization with the original image, the Grad-CAM heatmap, and the overlay for easy comparison.
-\end{itemize}
-
-This approach is particularly effective for CNNs like VGG16 that use hierarchical feature extraction through convolutional layers \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{(Chattopadhay et al., 2018)}.
 
 Similar implementation was implemented for other models: Inceptionv3, ResNet50, and CustomCNN. 
 
@@ -868,60 +876,62 @@ This method provides insights into how the ViT model attends to different parts 
 
 \subsection{Grad-CAM for Vision Transformers}
 
-In addition to Attention Rollout, this study also implements Grad-CAM for Vision Transformers to provide a more direct comparison with the CNN-based visualizations. While ViTs do not have convolutional layers in the traditional sense, the patch embeddings and attention mechanisms still produce feature maps that can be analyzed using gradient-based methods.
+In addition to Attention Rollout, this study also implements Grad-CAM for Vision Transformers to provide a more direct comparison with the CNN-based visualizations. Two variants of Grad-CAM for ViT were implemented in this study: Enhanced ViT and Interpretable ViT, each with specific architectural modifications to facilitate interpretation.
 
-\subsubsection{Implementation Approach}
+\subsection{Enhanced ViT Implementation}
 
-The Grad-CAM implementation for ViT follows a modified approach:
+The Enhanced ViT approach modifies the standard ViT architecture to facilitate Grad-CAM visualization:
 
-\begin{enumerate}
-    \item \textbf{Model Architecture}: An InterpretableViT model is created by extending the base ViT architecture with additional components for interpretability:
-    \begin{itemize}
-        \item The base ViT model processes the input image and extracts features
-        \item An attention layer computes importance weights for each patch token
-        \item A classifier combines the class token and a weighted aggregation of patch tokens
-    \end{itemize}
-    
-    \item \textbf{Hook Registration}: Hooks are registered to capture the token features and their gradients during forward and backward passes.
-    
-    \item \textbf{Forward Pass}: The input image is processed through the model to obtain predictions.
-    
-    \item \textbf{Backpropagation}: Gradients of the target class score with respect to patch token features are computed.
-    
-    \item \textbf{Grad-CAM Computation}: Similar to the CNN implementation, the gradients are used to weight the importance of each patch token feature:
-    \begin{itemize}
-        \item The mean gradient for each patch token is calculated
-        \item Each patch token feature is weighted by its corresponding gradient
-        \item The weighted features are summed across the feature dimension
-        \item ReLU is applied to focus on positive contributions
-        \item The result is normalized to the range [0, 1]
-    \end{itemize}
-    
-    \item \textbf{Visualization}: The resulting 14×14 patch-level heatmap is resized to match the input image dimensions and visualized using the same approach as with the CNN Grad-CAM.
-\end{enumerate}
+\begin{itemize}
+\item \textbf{Model Architecture:} The Enhanced ViT model extends the base ViT by replacing the original head with an identity layer, adding an attention layer to compute scalar importance scores for each token, and implementing a classifier that operates on attention-weighted features.
+\item \textbf{Token Feature Registration:} The model registers hooks to capture token features during the forward pass and their gradients during backpropagation.
+\item \textbf{Gradient Computation:} When computing Grad-CAM, the class token is excluded, and only the patch tokens are considered.
+\item \textbf{Spatial Reshaping:} The tokens and gradients are reshaped to recover the 2D spatial structure ($h \times w$ grid) from the sequence of tokens.
+\item \textbf{Grad-CAM Generation:} Similar to traditional Grad-CAM, channel-wise weights are computed from gradients and applied to token features to create the activation map.
+\end{itemize}
 
-This approach allows for a more direct comparison between CNN and ViT visualization methods, as both models now utilize gradient-based localization techniques \href{https://arxiv.org/abs/2112.00114}{(Jacob et al., 2021)}.
+\subsection{Interpretable ViT Implementation}
+
+The Interpretable ViT variant uses a different approach to extract and utilize token information:
+
+\begin{itemize}
+\item \textbf{Dual-Stream Architecture:} This implementation processes the class token and patch tokens separately.
+\item \textbf{Attention Weights Calculation:} An explicit attention layer computes importance weights for patch tokens, determining how much each patch contributes to the final representation.
+\item \textbf{Feature Combination:} The class token and weighted patch features are concatenated before classification, providing the classifier with both global context (class token) and attention-weighted local features.
+\item \textbf{Grad-CAM Calculation:} During Grad-CAM computation, gradients flow through this combined representation, providing a more nuanced view of how different parts of the image contribute to the classification.
+\end{itemize}
+
+Both approaches enable visualization of the ViT's decision-making process using gradient information, but with different mechanisms for integrating token features and attention weights.
 
 \subsection{Comparison Framework}
 
-To facilitate a fair comparison between VGG16 and ViT interpretability, the following standardized approach was implemented:
+To facilitate a fair comparison between CNN model and ViT interpretability, the following standardized approach was implemented:
 
+\begin{itemize}
+\item \textbf{Consistent Processing:} All models process the same test images with identical preprocessing (resizing to $224 \times 224$ and normalization).
+\item \textbf{Three-Panel Visualization:} Each result is presented with three panels:
 \begin{enumerate}
-    \item \textbf{Consistent Processing}: All models process the same test images with identical preprocessing (resizing to 224×224 and normalization).
-    
-    \item \textbf{Three-Panel Visualization}: Each result is presented with three panels:
-    \begin{itemize}
-        \item Original image
-        \item Raw heatmap showing the attention or Grad-CAM output
-        \item Overlay of the heatmap on the original image
-    \end{itemize}
-    
-    \item \textbf{Classification Analysis}: Both correct and incorrect predictions are analyzed to understand model behavior in different scenarios.
-    
-    \item \textbf{Visualization Standardization}: Similar color maps (jet) and overlay techniques are used for all methods to maintain visual consistency.
-    
-    \item \textbf{Quantitative Assessment}: Confusion matrices are generated for all models to quantitatively assess their performance alongside the visual interpretations.
+\item Original image
+\item Raw heatmap showing the attention or Grad-CAM output
+\item Overlay of the heatmap on the original image
 \end{enumerate}
+\item \textbf{Classification Analysis:} Both correct and incorrect predictions are analyzed to understand model behavior in different scenarios.
+\item \textbf{Visualization Standardization:} Similar color maps (jet) and overlay techniques are used for all methods to maintain visual consistency.
+\item \textbf{Quantitative Assessment:} Confusion matrices are generated for all models to quantitatively assess their performance alongside the visual interpretations.
+\end{itemize}
+
+By implementing these complementary interpretability techniques, this research provides insights into how different neural network architectures—traditional CNNs and modern Transformers—approach the same classification task and what are the distinguishing features between the two classes. The visualizations reveal different feature priorities and decision strategies that each architecture employs, contributing to a deeper understanding of model behavior \cite{Dosovitskiy2020}.
+
+
+% \begin{itemize}
+%     \item \textbf{Confidence Calculation}: Computing the softmax probability for the predicted class to indicate the model's confidence.
+    
+%     \item \textbf{Misclassification Analysis}: For incorrectly classified images, both the original image and Grad-CAM visualization are saved with annotations indicating the true and predicted classes.
+    
+%     \item \textbf{Three-Panel Visualization}: Creating a standardized visualization with the original image, the Grad-CAM heatmap, and the overlay for easy comparison.
+% \end{itemize}
+
+
 
 % \subsection{Implementation Details}
 
@@ -955,6 +965,102 @@ To facilitate a fair comparison between VGG16 and ViT interpretability, the foll
 % \end{itemize}
 
 By implementing these complementary interpretability techniques, this research provides insights into how different neural network architectures—traditional CNNs and modern Transformers—approach the same classification task and what are the distinguidhing features between the 2 classes. The visualizations reveal different feature priorities and decision strategies that each architecture employs, contributing to a deeper understanding of model behavior \href{https://arxiv.org/abs/2010.11929}{(Dosovitskiy et al., 2020)}.
+
+\appendix
+\section{Additional Interpretability Techniques}
+\label{appendix:add_interpret}
+
+In addition to the Grad-CAM method discussed in the main sections of this report, several other interpretability techniques were explored during this research. While not featured prominently in the main analysis, these methods offer complementary perspectives on model decision-making.
+
+\subsection{DeepLIFT}
+
+DeepLIFT (Deep Learning Important FeaTures) was implemented using the Captum library for the VGG16 and ViT models. This technique compares activations against a reference baseline (typically zeros) to determine feature importance:
+
+\begin{itemize}
+    \item A zero baseline tensor is created as a reference point
+    \item Attribution scores are calculated comparing actual activations to this baseline
+    \item Channel-wise attributions are aggregated and normalized for visualization
+    \item Color maps are applied to create interpretable heatmaps
+\end{itemize}
+
+While DeepLIFT provides more theoretically grounded attributions than simple gradient methods, it was not extended to all models due to it not being used as frequently by others as other techniques such as grad cam/
+\subsection{Saliency Maps}
+
+Basic saliency maps were implemented for both VGG16 and Vision Transformer models:
+
+\begin{itemize}
+    \item Input tensors are configured to track gradients
+    \item Forward and backward passes compute gradients from prediction to input
+    \item Absolute values of gradients reveal input sensitivity
+    \item Channel-wise maximum operations create single-channel visualizations
+\end{itemize}
+
+
+% This paper examines saliency methods, which are explanation techniques designed to highlight relevant features in inputs (particularly images) that influence a machine learning model's predictions. The authors propose a methodology to evaluate whether these explanation methods are actually providing meaningful insights about the model and data. Their key findings include:
+
+% Many popular saliency methods fail basic "sanity checks" - they produce explanations that are independent of model parameters and training data.
+% The authors propose two randomization tests to evaluate explanation methods:
+
+% Model parameter randomization test: Compares explanations from a trained model vs. a randomly initialized model
+% Data randomization test: Compares explanations from a model trained on proper data vs. one trained on randomly permuted labels
+
+
+% Several widely used methods (Guided BackProp and Guided GradCAM) fail these tests, meaning they can't provide insights about the model or data relationships.
+% Some methods (standard Gradients and GradCAM) pass the tests, suggesting they are more reliable.
+% The authors demonstrate that some saliency methods produce outputs visually similar to simple edge detectors, which require neither training data nor model knowledge.
+
+% The paper warns that visual assessment alone can be misleading when evaluating explanation methods. Methods that fail their proposed tests are inadequate for tasks like finding data outliers, explaining model relationships, or debugging models. The authors support their findings with theoretical analysis of linear models and simple convolutional neural networks.
+\subsection{Integrated Gradients for Vision Transformers}
+
+For the Vision Transformer model specifically, Integrated Gradients was implemented using Captum:
+
+\begin{itemize}
+    \item Path integrals are approximated between baseline and input images
+    \item 50 interpolation steps were used for the approximation
+    \item Attributions are processed to align with spatial image dimensions
+    \item Results are normalized for consistent visualization
+\end{itemize}
+
+While theoretically sound, Integrated Gradients requires significantly more computation time than Grad-CAM. Additionally, the literature review indicated that Grad-CAM adaptations for Vision Transformers often provide more intuitive visualizations for classification tasks \cite{chefer2021transformer}.
+
+\subsection{Guided Backpropagation for Vision Transformers}
+
+Guided Backpropagation was adapted specifically for Vision Transformers:
+
+\begin{itemize}
+    \item Modified gradient flow during backpropagation highlights positive influences
+    \item Implementation uses Captum's GuidedBackprop with model-specific wrappers
+    \item Results are post-processed to create single-channel visualizations
+\end{itemize}
+
+This method produces visually cleaner results than standard saliency maps but lacks the localization capabilities of Grad-CAM. Additionally, research has shown that guided backpropagation may highlight input patterns rather than decision-relevant features \cite{nie2018theoretical}.
+
+\subsection{Conclusion on Additional Methods}
+
+These additional interpretability techniques were implemented primarily for exploration and comparison. Grad-CAM was selected as the primary visualization method for the main analysis due to its:
+
+\begin{itemize}
+    \item Widespread adoption in the literature
+    \item Consistent performance across model architectures
+    \item Ability to produce class-discriminative visualizations
+    \item Better localization of discriminative regions
+    \item Lower computational requirements
+    \item Stronger theoretical foundation compared to simple gradient methods
+\end{itemize}
+
+The implementation details and experimental results for these additional techniques are preserved here to document the comprehensive approach taken toward model interpretability in this research.
+
+Though straightforward to implement, saliency maps,  guided backpropagation were not highlighted in the main analysis as they can be noisy and lack the class-discriminative properties of Grad-CAM. Additionally, as noted by \cite{adebayo2018sanity}, simple gradient methods sometimes fail sanity checks that Grad-CAM passes.
+
+3. Of the methods tested, Gradients and GradCAM pass the sanity checks, while Guided BackProp and
+Guided GradCAM are invariant to higher layer parameters; hence, fail.
+4. Consequently, our findings imply that the saliency methods that fail our proposed tests are incapable
+of supporting tasks that require explanations that are faithful to the model or the data generating
+process.  \href{https://arxiv.org/pdf/1810.03292}{(Guided and saliency not good)}
+% Add these to your bibliography
+% \bibitem{adebayo2018sanity} Adebayo, J., Gilmer, J., Muelly, M., Goodfellow, I., Hardt, M., \& Kim, B. (2018). Sanity checks for saliency maps. In Advances in Neural Information Processing Systems.
+% \bibitem{chefer2021transformer} Chefer, H., Gur, S., \& Wolf, L. (2021). Transformer interpretability beyond attention visualization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition.
+% \bibitem{nie2018theoretical} Nie, W., Zhang, Y., \& Patel, A. (2018). A theoretical explanation for perplexing behaviors of backpropagation-based visualizations. In International Conference on Machine Learning.
 
 \section{Feature Analysis and Interpretability for Fine-Grained Gull Classification}
 

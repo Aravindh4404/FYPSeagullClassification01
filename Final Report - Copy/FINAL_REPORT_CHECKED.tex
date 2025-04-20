@@ -8,6 +8,8 @@
 \usepackage{lastpage}
 \usepackage{natbib}
 \usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode} % For modern pseudocode syntax
 
 % Required in preamble
 \usepackage{pgfplots}      % Core plotting package
@@ -44,6 +46,84 @@
 
 
 \begin{document}
+
+\section{Feature Analysis and Interpretability for Fine-Grained Gull Classification}
+
+\subsection{Methodology for Wing and Wingtip Intensity Analysis}
+
+To quantitatively validate the visual differences in wing and wingtip coloration between Slaty-backed Gulls and Glaucous-winged Gulls, we developed a comprehensive image analysis pipeline. The methodology below is a precise reflection of our implemented codebase and the sequence of analytical steps it performs.
+
+\subsubsection{Image Selection and Preparation}
+
+High-resolution images of both species were selected for analysis. Each image was accompanied by a manually created segmentation mask, generated in Adobe Photoshop, with the following color codes:
+\begin{itemize}
+    \item \textbf{Red} (RGB: 255,0,0): Wing region
+    \item \textbf{Green} (RGB: 0,255,0): Wingtip region
+\end{itemize}
+Only the wing and wingtip regions were analyzed in this pipeline. Images were assumed to be appropriately filtered for quality and relevance prior to analysis.
+
+\subsubsection{Region Extraction and Intensity Normalization}
+
+For each image:
+\begin{enumerate}
+    \item Both the original image and its segmentation mask were loaded using OpenCV.
+    \item The original image was converted to grayscale and min-max normalized to the[255] range to account for variations in lighting conditions.
+    \item Pixels corresponding to the wing and wingtip regions were extracted from the normalized grayscale image using color thresholding on the segmentation mask.
+\end{enumerate}
+
+\subsubsection{Wing Region Intensity Analysis}
+
+For each extracted wing region, the following statistics were computed:
+\begin{itemize}
+    \item Mean intensity
+    \item Standard deviation
+    \item Median, minimum, and maximum intensity values
+    \item Skewness and kurtosis of the intensity distribution
+    \item Total pixel count in the region
+\end{itemize}
+These metrics were saved for all images and subsequently aggregated by species for summary statistics and statistical testing.
+
+\subsubsection{Wingtip Region Intensity and Contrast Analysis}
+
+For each extracted wingtip region, the following analyses were performed:
+\begin{itemize}
+    \item \textbf{Mean, standard deviation, median, min, and max intensity values}
+    \item \textbf{Pixel intensity distribution:} The percentage of wingtip pixels falling into 10-unit intensity bins across the full range (0--10, 10--20, ..., 240--255)
+    \item \textbf{Very dark pixel analysis:} The percentage and count of wingtip pixels below absolute intensity thresholds of 30, 40, 50, and 60 (\texttt{pct\_dark\_lt\_30}, \texttt{pct\_dark\_lt\_40}, etc.)
+    \item \textbf{Wing--wingtip contrast:} For each wingtip pixel, the difference from the mean wing intensity was computed. The percentage of wingtip pixels darker than the mean wing intensity (\texttt{pct\_darker\_pixels}) was calculated, as well as the percentage of pixels exceeding difference thresholds of 10, 20, 30, 40, 50, 60, 70, 80, 90, and 100 (\texttt{pct\_diff\_gt\_X}).
+\end{itemize}
+This multi-metric approach quantitatively characterizes both the absolute darkness of the wingtip and its contrast relative to the rest of the wing.
+
+\subsubsection{Statistical Analysis and Visualization}
+
+\begin{itemize}
+    \item \textbf{Species-level comparison:} All metrics were aggregated by species. For wing regions, a Welch's t-test was performed to assess the statistical significance of mean intensity differences between species.
+    \item \textbf{Visualization:} The distributions of wing and wingtip intensities, as well as the contrast metrics, were visualized using boxplots, violin plots, bar charts, line plots, and heatmaps to illustrate inter-species differences and the diagnostic value of each metric.
+\end{itemize}
+
+\subsubsection{Implementation Details}
+
+All analyses were implemented in Python using the following libraries:
+\begin{itemize}
+    \item \textbf{OpenCV}: Image loading, grayscale conversion, normalization, and region extraction
+    \item \textbf{NumPy and Pandas}: Data manipulation and statistical calculations
+    \item \textbf{SciPy}: Statistical testing (Welch's t-test)
+    \item \textbf{Matplotlib and Seaborn}: Data visualization
+\end{itemize}
+
+\subsubsection{Summary of Analytical Pipeline}
+
+\begin{enumerate}
+    \item Load each image and its segmentation mask.
+    \item Convert image to grayscale and normalize intensity.
+    \item Extract wing and wingtip pixels using color-coded masks.
+    \item Compute region-specific intensity statistics (mean, std, median, min, max, skewness, kurtosis).
+    \item Analyze wingtip pixel intensity distribution in 10-unit bins.
+    \item Quantify very dark pixels in the wingtip (\textless 30, 40, 50, 60).
+    \item Calculate wing--wingtip contrast metrics at multiple thresholds.
+    \item Aggregate results by species and perform statistical tests.
+    \item Generate visualizations to support interpretability and species comparison.
+\end{enumerate}
 
 
 \section{Transfer Learning Approach}
@@ -317,6 +397,7 @@ Unlike the transfer learning approaches used with pre-trained models, our custom
     \item \textbf{Specialized augmentation}: The custom CNN particularly benefited from more aggressive data augmentation strategies to compensate for the lack of pre-trained weights, including stronger rotations and more extensive color jittering than used with the transfer learning models.
 \end{itemize}
 
+
 \begin{algorithm}
     \caption{VGG16Modified Architecture}
     \begin{algorithmic}[1]
@@ -579,5 +660,6 @@ Unlike the transfer learning approaches used with pre-trained models, our custom
                                 \EndFunction
                                 \end{algorithmic}
                                 \end{algorithm}
+
 
 \end{document}

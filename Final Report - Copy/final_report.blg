@@ -5,9 +5,13 @@ Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: apa.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
+Warning--I didn't find a database entry for "Dosovitskiy2020"
+Warning--I didn't find a database entry for "chefer2021transformer"
+Warning--I didn't find a database entry for "nie2018theoretical"
+Warning--I didn't find a database entry for "adebayo2018sanity"
 You've used 42 entries,
             1940 wiz_defined-function locations,
-            717 strings with 11898 characters,
+            722 strings with 11984 characters,
 and the built_in function-call counts, 19908 in all, are:
 = -- 1921
 > -- 930
@@ -46,3 +50,4 @@ warning$ -- 0
 while$ -- 153
 width$ -- 0
 write$ -- 547
+(There were 4 warnings)
