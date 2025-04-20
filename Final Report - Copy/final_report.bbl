@@ -19,6 +19,13 @@ Alfatemi, A., Jamal, S.~A., Paykari, N., Rahouti, M., and Chehri, A. (2024).
 \newblock 28th International Conference on Knowledge Based and Intelligent
   information and Engineering Systems (KES 2024).
 
+\bibitem[\protect\astroncite{Alswaitti et~al.}{2025}]{transferln97}
+Alswaitti, M., Zihao, L., Alomoush, W., Alrosan, A., and Alissa, K. (2025).
+\newblock Effective classification of birds’ species based on transfer
+  learning.
+\newblock {\em International Journal of Electrical and Computer Engineering
+  (IJECE)}, 12(4):4172--4184.
+
 \bibitem[\protect\astroncite{Anjum et~al.}{2021}]{anjum2021}
 Anjum, M.~A., Hussain, S., Aadil, F., and Chaudhry, S. (2021).
 \newblock Collaborative cloud based online learning during {COVID-19} pandemic
@@ -155,13 +162,6 @@ Marini, A., Facon, J., and Koerich, A. (2018).
   learning architectures.
 \newblock In {\em International Conference on Systems, Signals and Image
   Processing (IWSSIP)}, pages 1--5. IEEE.
-
-\bibitem[\protect\astroncite{Mohammed~Alswaitti}{2025}]{transferln97}
-Mohammed~Alswaitti, Liao~Zihao, W. A. A. A. K.~A. (2025).
-\newblock Effective classification of birds’ species based on transfer
-  learning.
-\newblock {\em International Journal of Electrical and Computer Engineering
-  (IJECE)}, 12(4):4172--4184.
 
 \bibitem[\protect\astroncite{Montavon et~al.}{2018}]{montavon2018methods}
 Montavon, G., Samek, W., and M{\"u}ller, K. (2018).

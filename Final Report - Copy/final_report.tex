@@ -382,87 +382,11 @@ By focusing specifically on adult in-flight images where wingtip patterns are mo
 To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. The Glaucous-winged Gull dataset was also carefully curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features. Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed. This quality-focused approach aligns with findings from Zhou et al., who demonstrated that expert-curated datasets can achieve comparable or superior results with significantly smaller data volumes compared to larger uncurated collections \citet{zhou2022}.
 
 For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested. This multi-dataset evaluation approach follows best practices established in the BirdSet benchmark for avian classification studies \citet{birdset2023}.
-\section{Transfer Learning Methodology}
 
-\subsection{Theoretical Framework and Rationale}
-
-
-Transfer learning was employed in the implementation to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains with limited data. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns, which can then be fine-tuned for our specific classification task despite class imbalance challenges \href{https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}{Krizhevsky et al. (2012)}.
-
-Several pre-trained architectures were evaluated for this task, with VGG-16 \href{https://arxiv.org/abs/1409.1556}{Simonyan and Zisserman (2015)} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
-
-\section{Transfer Learning Approach}
-
-All models except for the custom CNN utilized transfer learning to leverage knowledge from pre-trained networks. The transfer learning strategy included:
-
-\begin{itemize}
-    \item Using models pre-trained on ImageNet as feature extractors
-    \item Fine-tuning the entire network with a reduced learning rate (typically 0.0001 to 0.001)
-    \item Replacing the final classification layer to output binary predictions (2 classes)
-    \item Implementing dropout layers before final classification to prevent overfitting
-\end{itemize}
-
-This approach follows the established pattern that features learned in early layers of convolutional networks are more general and transferable, while later layers become more task-specific. For handling class imbalance, implemented techniques including weighted loss functions and strategic data augmentation were implemented.
-
-
-%  Opposite things said:
-%  Recent work by \href{https://arxiv.org/abs/1805.08974}{Kornblith et al. (2019)} confirms that networks with better ImageNet performance generally transfer better to other tasks, supporting our architectural selection process. opposite
-%  Additionally, \href{https://arxiv.org/abs/1811.07056}{He et al. (2019)} demonstrate that even with significant domain shifts, transfer learning remains effective when fine-tuning is properly implemented.
-
-
-\subsection{Training Optimization Strategy} 
-
-To optimize training with limited data, several techniques were employed consistently:
-
-\begin{itemize}
-    \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using ReduceLROnPlateau or CosineAnnealingLR was implemented across models, reducing learning rates when validation metrics plateaued.
-    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting. \href{https://link.springer.com/chapter/10.1007/3-540-49430-8_3}{Early Stopping - But When?} 
-    \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updattes. \href{Zhang, J., He, T., Sra, S., & Jadbabaie, A. (2020). Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR).}{Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR)} \href{http://proceedings.mlr.press/v28/pascanu13.pdf}{here}
-    \item \textbf{Loss function:} Cross-entropy loss was used consistently as the optimization objective for the binary classification task.
-    \item \textbf{Mixed precision training:} For models like Inception V3, mixed precision training with torch.amp was used to improve computational efficiency.
-\end{itemize}
-
-The combination of these techniques enabled effective learning despite the challenges of limited data and class imbalance, with our best model achieving significantly better performance than traditional machine learning approaches on the same dataset.
-
-\subsection{Model Architecture Modifications}
-Each model architecture was modified to better handle the specific characteristics of the fine-grained classification task:
-\begin{itemize}
-\item \textbf{Final layer adaptation:} All pre-trained models had their final fully connected layers replaced with new layers containing 2 output nodes for binary classification.
-\item \textbf{Attention mechanisms:} Squeeze-and-Excitation (SE) blocks \href{https://arxiv.org/abs/1709.01507}{Hu et al.} were integrated into custom CNN architectures to enhance feature representations by modeling channel-wise relationships.
-\item \textbf{Dropout regularization:} Dropout layers (rate = 0.4) were consistently added before final classification layers to reduce overfitting due to my small dataset size \href{https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf}{Srivastava et al.}.
-\item \textbf{Batch normalization:} Used in custom CNN implementations to stabilize learning and improve convergence \href{https://arxiv.org/abs/1502.03167}{Ioffe and Szegedy}.
-\end{itemize}
-
-
-\subsection{Data Preparation and Augmentation}
-Data augmentation was crucial to address the limited dataset size and class imbalance issues. Following best practices from \href{https://arxiv.org/abs/1712.04621}{Cubuk et al.}, multiple augmentation techniques were applied consistently across all models:
-\begin{itemize}
-\item \textbf{Spatial transformations:} Random horizontal flips, rotations (typically 15 degrees), and random/center crops were applied to increase 
-geometric diversity.
-\item \textbf{Color space transformations:} Color jitter with brightness, contrast, and saturation adjustments of 0.2 magnitude was applied to make models robust to illumination variations.
-\item \textbf{Image enhancement:} In some implementations, sharpening filters were applied to improve feature clarity.
-\item \textbf{Normalization:} All images were normalized to match pre-trained model expectations \href{https://arxiv.org/abs/1803.08494}{Shin et al.}.
-\end{itemize}
-The augmentation strategy was deliberately more aggressive for the training set compared to validation and test sets, where only resizing, optional cropping, and normalization were applied to maintain evaluation consistency.
-
-These techniques enhance model robustness to natural variations in image appearance, reducing overfitting and improving generalization capability \href{https://arxiv.org/abs/1712.04621}{here}.
-
-\subsection{Optimization Strategy}
-We employed the AdamW optimizer, an extension of Adam that incorporates decoupled weight decay regularization:
 
 % \begin{lstlisting}[language=Python]
 % optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=0.001)
 % \end{lstlisting}
-
-This configuration used:
-\begin{itemize}
-    \item A conservative learning rate of 0.0001, appropriate for fine-tuning pre-trained models.
-    \item Weight decay of 0.001 to provide L2 regularization, countering overfitting tendencies \href{https://openreview.net/forum?id=Bkg6RiCqY7}{here}.
-\end{itemize}
-
-
-\subsection{Learning Rate Scheduling}
-An adaptive learning rate schedule was implemented using ReduceLROnPlateau which automatically reduces the learning rate by a factor of 0.1 when validation performance plateaus for 3 consecutive epochs, allowing for finer weight adjustments as training progresses \href{https://ieeexplore.ieee.org/document/7926641}{here}. This technique is particularly valuable for fine-tuning deep architectures where navigating the loss landscape requires progressively smaller step sizes.
 
 % \begin{lstlisting}[language=Python]
 % scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)
@@ -472,40 +396,182 @@ An adaptive learning rate schedule was implemented using ReduceLROnPlateau which
 % torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=2.0)
 % \end{lstlisting}
 
-\subsection{Dataset Management}
+        % Class imbalance describes a dataset with a skewed ratio of majority to minority samples. Leevy et al. [27] describe many of the existing solutions to high-class imbalance across data types. Our survey will show how class-balancing oversampling in image data can be done with Data Augmentation.
 
-To address the challenges of limited data availability, an 80:20 train-validation split was implemented using random split stratification to maintain class distribution across partitions. This approach ensured that the validation set remained representative of the overall dataset while maximizing the samples available for training {\href{https://dl.acm.org/doi/10.5555/1643031.1643047}{Kohavi, 1995}}.
 
-The batch size was set to 16, striking a balance between computational efficiency and optimization stability. Smaller batch sizes can increase gradient noise, which has been shown to act as an implicit regularizer that can improve generalization, particularly beneficial when working with limited training data {\href{https://arxiv.org/abs/1609.04836}{Keskar et al., 2016}, \href{https://arxiv.org/abs/1804.07612}{Masters \& Luschi, 2018}}.
+% \begin{lstlisting}[language=Python]
+% transform_val_test = transforms.Compose([
+%     transforms.Resize((224, 224)),
+%     transforms.ToTensor(),
+%     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+% ])
+% \end{lstlisting}
 
+% \begin{lstlisting}[language=Python]
+% transform_train = transforms.Compose([
+%     transforms.Resize((224, 224)),
+%     transforms.RandomHorizontalFlip(),
+%     transforms.RandomRotation(15),
+%     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
+%     transforms.ToTensor(),
+%     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+% ])
+% \end{lstlisting}
+
+
+% \begin{lstlisting}[language=Python]
+% # Set random seeds for reproducibility
+% torch.manual_seed(42)
+% np.random.seed(42)
+% random.seed(42)
+% \end{lstlisting}
+
+% \citep{simonyan2014vgg}
+
+% \begin{lstlisting}[language=Python]
+% class VGG16Modified(nn.Module):
+%     def __init__(self):
+%         super(VGG16Modified, self).__init__()
+%         from torchvision.models import VGG16_Weights
+%         self.vgg = models.vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
+%         # Replace the classifier with a custom binary classification layer
+%         num_ftrs = self.vgg.classifier[6].in_features
+%         self.vgg.classifier[6] = nn.Sequential(
+%             nn.Dropout(0.4),
+%             nn.Linear(num_ftrs, 2)
+%         )
+
+%     def forward(self, x):
+%         return self.vgg(x)
+% \end{lstlisting}
+
+\section{Debugging and Iterative Development Methodology}
+
+Initial implementations using ResNet50 with unrefined Stage 1 dataset yielded poor results (test accuracies below 60\%), indicating fundamental issues in either data quality or model implementation. To systematically address these challenges and improve performance for subsequent transfer learning approaches, a methodical debugging framework was employed following best practices outlined by \href{https://karpathy.github.io/2019/04/25/recipe/}{Karpathy (2019)}.
+
+\subsection{Pipeline Validation and Early Debugging}
+
+To systematically address the challenges encountered with initial poor results, the following approach was employed with Stage 2 dataset before implementing current well-performing models in the upcoming sections:
+
+\begin{itemize}
+    \item \textbf{Data Inspection and Visualization:}
+    \begin{itemize}
+        \item Images with unclear image patterns were identified and removed. With an imbalanced and a small dataset that we had, it was important not to provide unclear images to the model to prevent it from learning incorrect features although the resulting dataset was small.
+        \item Augmentation visualization confirmed that features critical for classification (particularly wingtip patterns) remained visible after transformation
+    \end{itemize}
+    
+    \item \textbf{Pipeline Verification with Simple Models:}
+    \begin{itemize}
+        \item A simple, lightweight Custom CNN was implemented as an initial baseline before advancing to complex architectures
+        \item This simplified model validated data loading procedures, augmentation effectiveness, and basic training operations
+    \end{itemize}
+    
+    \item \textbf{Single-Batch Overfitting Test:}
+    \begin{itemize}
+        \item To verify gradient flow and learning capability, a single batch was deliberately overfitted with the simple CNN implemented
+        \item Training loss reduction from 0.7072 (Epoch 1) to 0.0057 (Epoch 20) confirmed the pipeline's fundamental functionality
+        \item This critical test established that confirmed that the training pipeline was functioning correctly, and with validation the model demonstrated reasonable generalization given the simplicity of the model.
+    \end{itemize}
+    
+    \item \textbf{Controlled Experimentation:}
+    \begin{itemize}
+        \item Random seeds were fixed across all implementations (set to 42) to ensure reproducibility
+        \item This approach eliminated training variability as a confounding factor when comparing architectural modifications
+        \item Systematic adjustments to hyperparameters could be evaluated with confidence that performance differences were attributable to the specific changes rather than random initialization
+    \end{itemize}
+    
+    \item \textbf{Progressive Model Complexity:}
+    \begin{itemize}
+        \item Development followed a deliberate progression from custom CNNs to pre-trained architectures
+        \item Each implementation incorporated lessons from previous models, particularly regarding feature extraction for the fine-grained visual discrimination task
+    \end{itemize}
+\end{itemize}
+
+The insights gained through this process directly informed the subsequent implementation of more sophisticated architectures and the creation of a highly refined dataset focusing specifically on adult in-flight images with clear wingtip patterns.
+
+After establishing a robust development pipeline and refining the dataset, the transfer learning implementations described in the following sections achieved significantly improved results, with test accuracies exceeding 90\% for the best-performing models.
+
+
+\section{Transfer Learning Approach}
+
+Transfer learning was employed in the implementation to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains with limited data. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns, which can then be fine-tuned for our specific classification task despite class imbalance challenges \href{https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}{Krizhevsky et al. (2012)}.
+
+Several pre-trained architectures were evaluated for this task, with VGG-16 \href{https://arxiv.org/abs/1409.1556}{Simonyan and Zisserman (2015)} demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
+
+\subsection{Common Implementation Strategy}
+
+All models except for the custom CNN utilized transfer learning to leverage knowledge from pre-trained networks. All the models mentioned in this section used the Stage 3 dataset. The transfer learning strategy included:
+
+\begin{itemize}
+    \item Using models pre-trained on ImageNet as feature extractors
+    \item Fine-tuning the entire network with a reduced learning rate (typically 0.0001 to 0.001)
+    \item Replacing the final classification layer to output binary predictions (2 classes)
+    \item Implementing dropout layers before final classification to prevent overfitting
+\end{itemize}
+
+This approach follows the established pattern that features learned in early layers of convolutional networks are more general and transferable, while later layers become more task-specific.
+
+\subsection{Data Preparation and Augmentation}
+
+Data augmentation was crucial to address the limited dataset size and class imbalance issues. Following best practices from \href{https://arxiv.org/abs/1712.04621}{Cubuk et al.}, multiple augmentation techniques were applied consistently across all models:
+
+\begin{itemize}
+    \item \textbf{Spatial transformations:} Random horizontal flips, rotations (typically 15 degrees), and random/center crops were applied to increase geometric diversity.
+    \item \textbf{Color space transformations:} Color jitter with brightness, contrast, and saturation adjustments of 0.2 magnitude was applied to make models robust to illumination variations.
+    \item \textbf{Image enhancement:} In some implementations, sharpening filters were applied to improve feature clarity.
+    \item \textbf{Normalization:} All images were normalized to match pre-trained model expectations \href{https://arxiv.org/abs/1803.08494}{Shin et al.}.
+\end{itemize}
+
+The augmentation strategy was deliberately more aggressive for the training set compared to validation and test sets, where only resizing, optional cropping, and normalization were applied to maintain evaluation consistency.
+
+These techniques enhance model robustness to natural variations in image appearance, reducing overfitting and improving generalization capability \href{https://arxiv.org/abs/1712.04621}{here}.
+
+\subsection{Image Preprocessing}
+
+All images were preprocessed through a standardized pipeline:
+
+Images were resized to match the architecture's expected input dimensions (224×224 pixels for most models, 299×299 pixels for Inception v3). Pixel values were normalized using ImageNet mean values [0.485, 0.456, 0.406] and standard deviations [0.229, 0.224, 0.225], ensuring input distributions aligned with those seen during pre-training \href{https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf}{here}.
+
+\subsection{Training Optimization Strategy} 
+
+To optimize training with limited data, several techniques were employed consistently:
+
+\begin{itemize}
+    \item \textbf{Optimizer:} AdamW optimizer with learning rates between 0.0001-0.001 and weight decay of 0.001-0.0005 was used across implementations to provide adaptive learning with regularization \href{https://openreview.net/forum?id=Bkg6RiCqY7}{here}.
+    
+    \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using either ReduceLROnPlateau or CosineAnnealingLR was implemented across models, reducing learning rates when validation metrics plateaued.
+    
+    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting. \href{https://link.springer.com/chapter/10.1007/3-540-49430-8_3}{Early Stopping - But When?} 
+    
+    \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updates. \href{Zhang, J., He, T., Sra, S., & Jadbabaie, A. (2020). Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR).}{Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR)} \href{http://proceedings.mlr.press/v28/pascanu13.pdf}{here}
+    
+    \item \textbf{Loss function:} Cross-entropy loss was used consistently as the optimization objective for the binary classification task.
+    
+    \item \textbf{Mixed precision training:} For computationally intensive models like Inception V3, mixed precision training with torch.amp was used to improve computational efficiency.
+\end{itemize}
+
+The combination of these techniques enabled effective learning despite the challenges of limited data and class imbalance, with our best model achieving significantly better performance than traditional machine learning approaches on the same dataset.
 
 \subsection{Regularization Techniques}
+
 Multiple regularization strategies were employed to handle the limited data size and class imbalance:
+
 \begin{itemize}
-\item \textbf{Weight decay:} L2 regularization with weight decay values between 1e-4 and 1e-3 was applied across all models to prevent overfitting \href{https://papers.nips.cc/paper/1991/file/8eefcfdf5990e441f0fb6f3fad709e21-Paper.pdf}{Krogh \& Hertz}.
-\item \textbf{Data splitting:} Train/validation split of 80\%/20\% was consistently used to provide reliable validation metrics while maximizing training data.
-\item \textbf{Random seeds:} Fixed random seeds (42) were set for PyTorch, NumPy, and Python's random module to ensure reproducibility. Controlling randomness is essential for reliable hyper-parameter tuning, performance assessment, and research reproducibility \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=}{here}.
-\item \textbf{Auxiliary losses:} For models like Inception V3, auxiliary classifiers were utilized during training to improve gradient flow and model performance \href{https://arxiv.org/abs/1512.00567}{Szegedy et al.}.
+    \item \textbf{Dropout:} Layers with rates between 0.3-0.4 were consistently added before final classification layers to reduce overfitting due to our small dataset size \href{https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf}{Srivastava et al.}.
+    
+    \item \textbf{Weight decay:} L2 regularization with weight decay values between 1e-4 and 1e-3 was applied across all models to prevent overfitting \href{https://papers.nips.cc/paper/1991/file/8eefcfdf5990e441f0fb6f3fad709e21-Paper.pdf}{Krogh \& Hertz}.
+    
+    \item \textbf{Batch normalization:} Used in custom CNN implementations to stabilize learning and improve convergence \href{https://arxiv.org/abs/1502.03167}{Ioffe and Szegedy}.
+    
+    \item \textbf{Data splitting:} Train/validation split of 80\%/20\% was consistently used to provide reliable validation metrics while maximizing training data.
+    
+    \item \textbf{Random seeds:} Fixed random seeds (42) were set for PyTorch, NumPy, and Python's random module to ensure reproducibility. Controlling randomness is essential for reliable hyper-parameter tuning, performance assessment, and research reproducibility \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=}{here}.
 \end{itemize}
 
-\subsection{Model Checkpointing and Evaluation}
-
-Our implementation includes a robust evaluation framework with model checkpointing based on validation accuracy. This ensures that we preserve the best-performing model configuration throughout the training process. The model is trained for 20 epochs with early stopping implicitly implemented through best model saving. Performance is evaluated using accuracy on both validation and test sets, providing a comprehensive assessment of model generalization.
-
-By incorporating these architectural innovations and training strategies, our custom CNN approach aims to maximize classification performance despite the constraints of limited data and class imbalance in fine-grained visual classification.
-
-\subsection{Evaluation Strategy}
-Model performance was systematically evaluated using:
-\begin{itemize}
-\item \textbf{Validation accuracy:} Used during training to select optimal model checkpoints and trigger early stopping or learning rate adjustments.
-\item \textbf{Test accuracy:} Final evaluation metric on the unseen test set to measure generalization performance.
-\item \textbf{Visualization:} Training loss and validation accuracy curves were plotted to analyze model convergence and potential overfitting.
-\item \textbf{Checkpointing:} Best-performing models based on validation accuracy were saved for later evaluation and deployment.
-\end{itemize}
-
-\subsection{Addressing Class Imbalance in few models}
+\subsection{Addressing Class Imbalance}
 
 Our dataset exhibited significant class imbalance, which can degrade model performance by biasing predictions toward the majority class \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0192-5}{here}. To mitigate this challenge, multiple complementary strategies were implemented on the best performing models that included VGG16, and ViT:
+
 \begin{itemize}
     \item \textbf{Class-Weighted Loss Function}
     \begin{itemize}
@@ -525,7 +591,6 @@ Our dataset exhibited significant class imbalance, which can degrade model perfo
     \item \textbf{Class-Specific Data Augmentation}
     \begin{itemize}
         \item Aggressive minority class augmentation (Shorten \& Khoshgoftaar, 2019) \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0197-0}{[link]}
-        % Class imbalance describes a dataset with a skewed ratio of majority to minority samples. Leevy et al. [27] describe many of the existing solutions to high-class imbalance across data types. Our survey will show how class-balancing oversampling in image data can be done with Data Augmentation.
         \item Minority class transformations include:
         \begin{itemize}
             \item 30° random rotations
@@ -537,48 +602,32 @@ Our dataset exhibited significant class imbalance, which can degrade model perfo
     \end{itemize}
 \end{itemize}
 
-\subsection{Image Preprocessing}
-All images were preprocessed through a standardized pipeline:
+\subsection{Dataset Management}
 
-% \begin{lstlisting}[language=Python]
-% transform_val_test = transforms.Compose([
-%     transforms.Resize((224, 224)),
-%     transforms.ToTensor(),
-%     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-% ])
-% \end{lstlisting}
+To address the challenges of limited data availability, an 80:20 train-validation split was implemented using random split stratification to maintain class distribution across partitions. This approach ensured that the validation set remained representative of the overall dataset while maximizing the samples available for training {\href{https://dl.acm.org/doi/10.5555/1643031.1643047}{Kohavi, 1995}}.
 
-Images were resized to pixel size to match the architecture's expected input dimensions. Pixel values were normalized using ImageNet mean values [0.485, 0.456, 0.406] and standard deviations [0.229, 0.224, 0.225], ensuring input distributions aligned with those seen during pre-training \href{https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf}{here}.
+The batch size was set to 16, striking a balance between computational efficiency and optimization stability. Smaller batch sizes can increase gradient noise, which has been shown to act as an implicit regularizer that can improve generalization, particularly beneficial when working with limited training data {\href{https://arxiv.org/abs/1609.04836}{Keskar et al., 2016}, \href{https://arxiv.org/abs/1804.07612}{Masters \& Luschi, 2018}}.
 
+\subsection{Evaluation Strategy}
 
-% \begin{lstlisting}[language=Python]
-% transform_train = transforms.Compose([
-%     transforms.Resize((224, 224)),
-%     transforms.RandomHorizontalFlip(),
-%     transforms.RandomRotation(15),
-%     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-%     transforms.ToTensor(),
-%     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-% ])
-% \end{lstlisting}
+Model performance was systematically evaluated using:
 
+\begin{itemize}
+    \item \textbf{Validation accuracy:} Used during training to select optimal model checkpoints and trigger early stopping or learning rate adjustments.
+    \item \textbf{Test accuracy:} Final evaluation metric on the unseen test set to measure generalization performance.
+    \item \textbf{Visualization:} Training loss and validation accuracy curves were plotted to analyze model convergence and potential overfitting.
+    \item \textbf{Checkpointing:} Best-performing models based on validation accuracy were saved for later evaluation and deployment.
+\end{itemize}
 
-\subsection{Reproducibility Considerations}
-To ensure experimental reproducibility, random seed was fixed for all stochastic components.
+\subsection{Model Checkpointing and Evaluation}
 
-% \begin{lstlisting}[language=Python]
-% # Set random seeds for reproducibility
-% torch.manual_seed(42)
-% np.random.seed(42)
-% random.seed(42)
-% \end{lstlisting}
+Our implementation includes a robust evaluation framework with model checkpointing based on validation accuracy. This ensures that we preserve the best-performing model configuration throughout the training process. The model is trained for 20 epochs with early stopping implicitly implemented through best model saving. Performance is evaluated using accuracy on both validation and test sets, providing a comprehensive assessment of model generalization.
 
-% \citep{simonyan2014vgg}
+\section{Model Architectures and Specific Implementations}
 
-\section{VGG-16 Architecture}
+\subsection{VGG-16 Architecture}
 
 \subsubsection{Theoretical Foundation}
-
 
 VGG-16 is a convolutional neural network architecture developed by Simonyan and Zisserman (2014) at the Visual Geometry Group (VGG) at Oxford, consisting of 16 weight layers including 13 convolutional layers followed by 3 fully connected layers. The architecture is characterized by its simplicity and depth, using small 3×3 convolutional filters stacked in increasing depth, followed by max pooling layers. With approximately 138 million parameters, VGG-16 provides a strong foundation for feature extraction in computer vision tasks.
 
@@ -587,32 +636,15 @@ The primary advantage of employing VGG-16 for transfer learning in fine-grained 
 VGG-16 has demonstrated superior performance in fine-grained classification tasks compared to conventional techniques. Recent studies show that VGG-16 with logistic regression achieved 97.14\% accuracy on specialized datasets like Leaf12, significantly outperforming traditional approaches that combined color channel statistics, texture features, and classic classifiers which only reached 82.38\% accuracy \href{https://doi.org/10.3233/JIFS-169911}{here}. For our specific task of gull species classification, the hierarchical feature representation capabilities of VGG-16 proved particularly effective at capturing the subtle differences in wing patterns and morphological features that distinguish between the target species.
 
 \subsubsection{Model Adaptation for Fine-Grained Classification}
+
 For our specific fine-grained binary classification task with limited data and class imbalance, the VGG-16 architecture was adapted through a targeted modification strategy:
-
-% \begin{lstlisting}[language=Python]
-% class VGG16Modified(nn.Module):
-%     def __init__(self):
-%         super(VGG16Modified, self).__init__()
-%         from torchvision.models import VGG16_Weights
-%         self.vgg = models.vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
-%         # Replace the classifier with a custom binary classification layer
-%         num_ftrs = self.vgg.classifier[6].in_features
-%         self.vgg.classifier[6] = nn.Sequential(
-%             nn.Dropout(0.4),
-%             nn.Linear(num_ftrs, 2)
-%         )
-
-%     def forward(self, x):
-%         return self.vgg(x)
-% \end{lstlisting}
-
 
 \begin{itemize}
     \item The pre-trained VGG-16 model was loaded with ImageNet weights.
     \item The feature extraction layers (convolutional base) were preserved to maintain the rich hierarchical representations learned from ImageNet.
     \item The original 1000-class classifier was replaced with a custom binary classification head consisting of: 
     \begin{itemize}
-        \item A dropout layer with a rate of 0.4 to reduce overfitting, a critical consideration given our limited dataset \href{https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf}{here}.
+        \item A dropout layer with a rate of 0.4 to reduce overfitting.
         \item A fully-connected layer mapping from the original 4096 features to 2 output classes.
     \end{itemize}
 \end{itemize}
@@ -620,26 +652,13 @@ For our specific fine-grained binary classification task with limited data and c
 \citep{zhang2019bird} demonstrated that VGG-16 achieves 94.3\% accuracy on CUB-200-2011 by fine-tuning only the final three layers, a strategy mirrored in my VGG implementation where the classifier head was replaced while preserving ImageNet-initialized convolutional weights.
 This approach aligns with successful methodologies in avian species classification using VGG-16 as demonstrated by Brown et al. (2018), where fine-tuning the architecture by modifying the final classification layer enabled the model to retain general feature recognition capabilities while adapting to species-specific visual characteristics \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=}{here}.
 
+\subsection{Vision Transformer (ViT) Architecture}
 
-\subsection{Implementation Details}
-The model was implemented using PyTorch, with training conducted on T-4 GPU in Google Colab. Training progressed for up to 30 epochs. Batch processing used a size of 16-32 (varied between implementations), balancing computational efficiency with gradient estimation quality.
-
-% ROC curves, and precision-recall curves
-
-Visualization tools including confusion matrices were integrated into the evaluation pipeline to provide comprehensive assessment of model performance beyond scalar metrics. The model's effectiveness in fine-grained classification tasks has been further demonstrated in recent studies, with VGG-16 based architectures achieving significant improvements over conventional approaches in similar classification problems \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10648677&tag=1}{here}.
-
-%! Author = Aravindh P
-%! Date = 07-04-2025
-
-% Preamble
-
-\section{Vision Transformer (ViT) Architecture}
-
-\subsection{ViT for Fine-Grained Classification}
+\subsubsection{ViT for Fine-Grained Classification}
 
 Vision Transformers (ViT) have emerged as powerful alternatives to convolutional neural networks for visual recognition tasks. First introduced by Dosovitskiy et al. (\href{https://arxiv.org/abs/2010.11929}{Dosovitskiy et al., 2021}), ViTs process images as sequences of fixed-size patches, applying transformer-based self-attention mechanisms to model global relationships between image regions. This architecture enables the capture of long-range dependencies within images, making it particularly suitable for fine-grained classification tasks where subtle distinctions between similar classes may depend on relationships between distant image features.
 
-\subsection{Vision Transformer Implementation}
+\subsubsection{Vision Transformer Implementation}
 
 For our primary approach, a Vision Transformer using transfer learning from a pre-trained model was implemented:
 
@@ -652,11 +671,11 @@ For our primary approach, a Vision Transformer using transfer learning from a pr
 
 The model architecture preserves the core self-attention mechanism of ViT while adapting the final classification layer for our specific binary classification task. This approach follows established transfer learning principles for vision transformers (\href{https://arxiv.org/abs/2012.12877}{Touvron et al., 2021}), leveraging representations learned from large-scale datasets to overcome our limited training data constraints.
 
-\subsection{Alternative Implementations}
+\subsubsection{Alternative ViT Implementations}
 
 In addition to our primary implementation, we explored two attention-enhanced architectures:
 
-\subsubsection{InterpretableViT}
+\paragraph{InterpretableViT}
 We developed an InterpretableViT model that incorporates explicit attention mechanisms for improved focus on discriminative features:
 
 \begin{itemize}
@@ -668,11 +687,7 @@ We developed an InterpretableViT model that incorporates explicit attention mech
 
 A key advantage of this architecture is its compatibility with gradient-based visualization techniques. By separating the class token from patch tokens and implementing an explicit attention mechanism, the model facilitates more effective application of Grad-CAM (\href{https://arxiv.org/abs/1610.02391}{Selvaraju et al., 2017}), allowing for visualization of discriminative image regions contributing to classification decisions.
 
-The model stores both the token activations and their gradients through hooks, which allows for the Grad-CAM implementation to work with the transformer architecture.
-
-The computegradcam function then uses these stored activations and gradients to produce visualizations that highlight discriminative regions in the input image that are most influential for the classification decision.
-
-\subsubsection{EnhancedViT}
+\paragraph{EnhancedViT}
 We also implemented an EnhancedViT that applies attention-based weighting across all tokens:
 
 \begin{itemize}
@@ -683,21 +698,10 @@ We also implemented an EnhancedViT that applies attention-based weighting across
 
 This implementation draws from research on token aggregation strategies in vision transformers (\href{https://arxiv.org/abs/2012.09688}{Wang et al., 2021}), which shows that attention-weighted token aggregation can improve performance in data-limited regimes.
 
-\subsection{Training Methodology}
+\subsection{Inception v3 Architecture}
 
-To address the challenges of limited data and class imbalance, we employed a comprehensive training strategy:
+\subsubsection{Theoretical Background}
 
-\begin{itemize}
-    \item Optimizer: AdamW with learning rate 1e-4 and weight decay 1e-4 (\href{https://arxiv.org/abs/1711.05101}{Loshchilov \& Hutter, 2019})
-    \item Learning rate scheduling: Cosine annealing with warm-up phase
-    \item Class balancing: Weighted loss function to address class imbalance
-    \item Regularization: Dropout in classification layers (p=0.3) and early stopping
-\end{itemize}
-
-This approach follows best practices for fine-tuning vision transformers in data-constrained scenarios (\href{https://arxiv.org/abs/2108.08810}{Raghu et al., 2021}).
-\section{Inception v3 Architecture}
-
-\subsection*{Theoretical Background}
 Inception v3, developed by Szegedy et al. (2016), represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution pathways with varied kernel sizes. The key innovation in Inception architectures is the utilization of \textit{Inception modules} that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously (\href{https://arxiv.org/abs/1512.00567}{Szegedy et al., 2016}).
 
 Inception v3 builds upon earlier versions with several important architectural improvements:
@@ -711,82 +715,33 @@ Inception v3 builds upon earlier versions with several important architectural i
 
 These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. As demonstrated by Huang et al. (2019), Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens (\href{https://ieeexplore.ieee.org/document/8803812}{Huang et al., 2019}).
 
-\subsection*{Model Adaptation for Binary Gull Classification}
-Our implementation adapted the pre-trained Inception v3 model for fine-grained gull species classification using the following approach:
-\begin{enumerate}
-    \item Loading the pre-trained Inception v3 model with ImageNet weights.
-    \item Extracting the feature dimension from the original classifier (2048 features).
-    \item Replacing the final classifier with a custom sequence:
-    \begin{itemize}
-        \item Dropout layer ($p=0.4$) for regularization to mitigate overfitting.
-        \item Linear layer mapping 2048 features to 2 output classes.
-    \end{itemize}
-\end{enumerate}
+\subsubsection{Model-Specific Implementation Details}
 
-This approach leverages transfer learning, where knowledge acquired from large-scale image classification on ImageNet is transferred to our specific domain of gull species classification (\href{https://arxiv.org/abs/1805.08974}{Tan et al., 2018}).
+Our implementation adapted the pre-trained Inception v3 model for fine-grained gull species classification with the following specific elements:
 
-A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This approach helps combat the vanishing gradient problem and provides regularization (\href{https://arxiv.org/abs/1512.00567}{Szegedy et al., 2016}).
+\begin{itemize}
+    \item \textbf{Input Resolution:} Resize operations were performed to $299\times299$ pixels (the standard input size for Inception v3). The larger input resolution ($299\times299$ vs $224\times224$ used by VGG16) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species (\href{https://arxiv.org/abs/1911.0907}{Xie et al., 2020}).
+    
+    \item \textbf{Auxiliary Outputs:} A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This helps combat the vanishing gradient problem and provides regularization with auxiliary loss weight of 0.3 (\href{https://arxiv.org/abs/1902.04103}{He et al., 2019}).
+    
+    \item \textbf{Mixed-Precision Training:} We employed PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability (\href{https://arxiv.org/abs/1710.03740}{Micikevicius et al., 2018}). This technique allows the use of float16 precision where appropriate, which reduces memory usage and increases computational speed, especially beneficial when training on GPU-constrained environments like Google Colab.
+\end{itemize}
 
-The loss function was modified to incorporate both the main output and the auxiliary output during training:
-The auxiliary loss weight (0.3) was selected based on empirical optimization and aligns with recommendations in the literature for fine-tuning Inception architectures (\href{https://arxiv.org/abs/1902.04103}{He et al., 2019}).
-
-\subsection*{Advanced Training Techniques}
-The Inception v3 implementation incorporated several advanced training techniques to optimize performance:
-
-\paragraph*{Mixed-Precision Training:} We employed PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability (\href{https://arxiv.org/abs/1710.03740}{Micikevicius et al., 2018}). This technique allows the use of float16 precision where appropriate, which reduces memory usage and increases computational speed, especially beneficial when training on GPU-constrained environments like Google Colab.
-
-
-Resize operations were performed to $299\times299$ pixels (the standard input size for Inception v3). The larger input resolution ($299\times299$ vs $224\times224$ used by VGG16) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species (\href{https://arxiv.org/abs/1911.0907}{Xie et al., 2020}).
-
-\section{Residual Network (ResNet-50) Implementation}
+\subsection{Residual Network (ResNet-50) Implementation}
 
 Residual Networks (ResNet) have revolutionized deep learning architectures by introducing identity shortcut connections that bypass one or more layers, enabling the training of substantially deeper networks {\href{https://arxiv.org/abs/1512.03385}{He et al., 2016}}. These skip connections address the degradation problem by allowing gradients to flow more effectively during backpropagation, mitigating the vanishing gradient issue prevalent in very deep neural networks.
 
 For our fine-grained gull species classification task, a transfer learning approach based on the ResNet-50 architecture was implemented. This implementation was motivated by ResNet's demonstrated success in capturing hierarchical features at multiple levels of abstraction, which is particularly valuable for distinguishing the subtle morphological differences between visually similar gull species {\href{https://arxiv.org/abs/1603.05027}{He et al., 2016b}, \href{https://ieeexplore.ieee.org/document/8658831}{Zhao et al., 2019}}.
 
-\subsubsection{Architecture Adaptation}
+\subsubsection{Architecture-Specific Enhancements}
 
-Our implementation leveraged a pre-trained ResNet-50 model initialized with ImageNet weights to benefit from its learned feature representations. The model adaptation process involved:
-
-\begin{enumerate}
-    \item Retaining the convolutional backbone of ResNet-50 with frozen weights to preserve its feature extraction capabilities
-    \item Modifying the classification head by replacing the final fully connected layer with a custom sequence consisting of:
-    \begin{enumerate}
-        \item A dropout layer with probability 0.4 to reduce overfitting
-        \item A linear layer that maps the 2048-dimensional feature space to 2 output classes
-    \end{enumerate}
-\end{enumerate}
-
-The inclusion of dropout in the classification head follows recommendations by {\href{https://jmlr.org/papers/v15/srivastava14a.html}{Srivastava et al., 2014}} for regularizing networks when working with limited datasets. The relatively high dropout rate (0.4) was deliberately chosen to combat potential overfitting, a critical concern given the visual similarities between our target species and the dataset's limited size.
-
-\subsubsection{Image Enhancement}
-
-A distinctive aspect of our implementation was the incorporation of image sharpening as a preprocessing technique. We applied a 3×3 Laplacian sharpening kernel to enhance edge definition and accentuate the subtle diagnostic features crucial for distinguishing between gull species {\href{https://www.pearson.com/en-us/subject-catalog/p/digital-image-processing/P200000003546}{Gonzalez \& Woods, 2018}}. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks {\href{https://openaccess.thecvf.com/content_cvpr_2014/papers/Berg_Birdsnap_Large-scale_Fine-grained_2014_CVPR_paper.pdf}{Berg et al., 2014}}.
+A distinctive aspect of our ResNet-50 implementation was the incorporation of image sharpening as a preprocessing technique. We applied a 3×3 Laplacian sharpening kernel to enhance edge definition and accentuate the subtle diagnostic features crucial for distinguishing between gull species {\href{https://www.pearson.com/en-us/subject-catalog/p/digital-image-processing/P200000003546}{Gonzalez \& Woods, 2018}}. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks {\href{https://openaccess.thecvf.com/content_cvpr_2014/papers/Berg_Birdsnap_Large-scale_Fine-grained_2014_CVPR_paper.pdf}{Berg et al., 2014}}.
 
 The sharpening kernel was systematically applied to both training and evaluation pipelines using OpenCV's filter2D function, ensuring consistent feature enhancement across all dataset partitions. This preprocessing step proved particularly valuable for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species {\href{https://ieeexplore.ieee.org/document/8659085}{Dutta \& Zisserman, 2019}}.
 
-\subsubsection{Training Strategy}
+\subsection{Custom CNN with Squeeze-and-Excitation Blocks}
 
-Our training methodology employed several techniques to optimize model performance despite dataset limitations:
-
-\begin{itemize}
-    \item \textbf{Optimization:} We utilized the Adam optimizer with an initial learning rate of 0.001 and weight decay of 1e-4, following recommendations by {\href{https://arxiv.org/abs/1412.6980}{Kingma \& Ba, 2014}} for its effectiveness with transfer learning approaches. The inclusion of L2 regularization through weight decay further helped control overfitting.
-    
-    \item \textbf{Learning Rate Scheduling:} An adaptive learning rate reduction strategy using ReduceLROnPlateau with a patience of 3 epochs was implemented, reducing the learning rate by a factor of 10 when validation accuracy plateaued. This approach allowed for initial rapid convergence while enabling fine-grained optimization in later training stages {\href{https://arxiv.org/abs/1506.01186}{Smith, 2017}}.
-    
-    \item \textbf{Early Stopping:} To prevent overfitting, we employed early stopping with a patience of 5 epochs, monitoring validation accuracy as the performance metric. This technique, as demonstrated by {\href{https://link.springer.com/chapter/10.1007/978-3-642-35289-8_5}{Prechelt, 1998}}, serves as an effective regularization method when working with limited datasets.
-\end{itemize}
-
-
-\subsubsection{Performance Implications}
-
-The ResNet-50 implementation, with its deep architecture and customized regularization strategies, was specifically tailored to address the challenges of fine-grained classification with limited and imbalanced data. The combination of transfer learning, targeted image enhancement, and careful regularization allowed the model to effectively distinguish between visually similar gull species while minimizing overfitting risks.
-
-This implementation aligns with findings by {\href{https://arxiv.org/abs/1901.09076}{Kornblith et al., 2019}}, who demonstrated that ResNet architectures pre-trained on ImageNet provide robust feature representations that transfer well to specialized domains, particularly when complemented by appropriate fine-tuning strategies and regularization techniques for the target task.
-
-\section{Custom CNN with Squeeze-and-Excitation Blocks}
-
-\subsection{Architectural Design}
+\subsubsection{Architectural Design}
 
 To address the challenges of limited data and class imbalance in fine-grained classification, we developed a lightweight custom CNN architecture incorporating attention mechanisms. Our approach employs Squeeze-and-Excitation (SE) blocks, which enhance feature representation by modeling channel interdependencies through an attention mechanism. The SE block, as introduced by Hu et al. (\href{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}{2018}), adaptively recalibrates channel-wise feature responses to emphasize informative features while suppressing less useful ones.
 
@@ -798,23 +753,15 @@ The architecture consists of three convolutional blocks, each followed by batch 
 
 This channel-wise attention mechanism has been shown to improve model performance with minimal computational overhead (\href{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}{Hu et al., 2018}). The SE blocks in our implementation use a reduction ratio of 16, balancing parameter efficiency and representational power.
 
+\subsubsection{Custom CNN-Specific Training Approach}
 
-\subsection{Addressing Class Imbalance}
-
-Our implementation addresses the class imbalance problem through a train-validation split strategy rather than explicitly using weighted sampling. By employing a stratified random split that preserves the class distribution in both training and validation sets, we ensure balanced evaluation metrics. This approach aligns with best practices for handling imbalanced datasets in fine-grained classification tasks (\href{https://arxiv.org/abs/1710.05381}{Buda et al., 2018}).
-
-\subsection{Optimization Strategy}
-
-The training methodology incorporates several techniques to enhance convergence and model performance:
+Unlike the transfer learning approaches used with pre-trained models, our custom CNN was trained from scratch with some specific optimization strategies:
 
 \begin{itemize}
-    \item \textbf{Adam optimizer}: We utilize Adam with an initial learning rate of 0.001 and weight decay of 0.0005 to provide adaptive learning rates while preventing overfitting through regularization (\href{https://arxiv.org/abs/1412.6980}{Kingma and Ba, 2015}).
-    
     \item \textbf{Cosine Annealing scheduler}: Our learning rate schedule follows a cosine annealing pattern with a period of 10 epochs, allowing the learning rate to oscillate and potentially escape local minima (\href{https://arxiv.org/abs/1608.03983}{Loshchilov and Hutter, 2017}).
     
-    \item \textbf{Regularization}: Beyond weight decay, we implement dropout with a rate of 0.4 in the fully connected layer to further mitigate overfitting, particularly important given our limited dataset size (\href{https://jmlr.org/papers/v15/srivastava14a.html}{Srivastava et al., 2014}).
+    \item \textbf{Specialized augmentation}: The custom CNN particularly benefited from more aggressive data augmentation strategies to compensate for the lack of pre-trained weights, including stronger rotations and more extensive color jittering than used with the transfer learning models.
 \end{itemize}
-
 
 \section{Model Interpretability Methodologies}
 
@@ -851,7 +798,7 @@ The general Grad-CAM algorithm can be formalized as follows:
 
 The ReLU function is applied to the weighted combination of feature maps to focus only on features that have a positive influence on the class of interest, effectively eliminating features that suppress the class.
 
-\subsubsection{Methodology for VGG16}
+\subsubsection{Methodology for CNN models}
 
 In this study, Grad-CAM was implemented for the VGG16 model by targeting the final convolutional layer (features[-1]). The implementation involves several key steps:
 
