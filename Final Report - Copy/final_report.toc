@@ -36,73 +36,80 @@
 \contentsline {paragraph}{EnhancedViT}{24}{section*.12}%
 \contentsline {subsection}{\numberline {11.1}Inception v3 Architecture}{24}{subsection.11.1}%
 \contentsline {section}{\numberline {12}Modified Inception V3 Architecture}{24}{section.12}%
-\contentsline {subsubsection}{\numberline {12.0.1}Theoretical Background}{25}{subsubsection.12.0.1}%
+\contentsline {subsubsection}{\numberline {12.0.1}Theoretical Background}{24}{subsubsection.12.0.1}%
 \contentsline {subsubsection}{\numberline {12.0.2}Model-Specific Implementation Details}{25}{subsubsection.12.0.2}%
 \contentsline {subsection}{\numberline {12.1}Residual Network (ResNet-50) Implementation}{26}{subsection.12.1}%
-\contentsline {section}{\numberline {13}Modified ResNet50 Architecture}{27}{section.13}%
+\contentsline {section}{\numberline {13}Modified ResNet50 Architecture}{26}{section.13}%
 \contentsline {subsubsection}{\numberline {13.0.1}Architecture-Specific Enhancements}{27}{subsubsection.13.0.1}%
-\contentsline {subsection}{\numberline {13.1}Custom CNN with Squeeze-and-Excitation Blocks}{28}{subsection.13.1}%
-\contentsline {subsubsection}{\numberline {13.1.1}Architectural Design}{28}{subsubsection.13.1.1}%
+\contentsline {subsection}{\numberline {13.1}Custom CNN with Squeeze-and-Excitation Blocks}{27}{subsection.13.1}%
+\contentsline {subsubsection}{\numberline {13.1.1}Architectural Design}{27}{subsubsection.13.1.1}%
 \contentsline {subsubsection}{\numberline {13.1.2}Custom CNN-Specific Training Approach}{28}{subsubsection.13.1.2}%
 \contentsline {section}{\numberline {14}Model Interpretability Methodologies}{28}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Gradient-weighted Class Activation Mapping (Grad-CAM)}{29}{subsection.14.1}%
-\contentsline {subsubsection}{\numberline {14.1.1}Theoretical Foundation}{29}{subsubsection.14.1.1}%
+\contentsline {subsection}{\numberline {14.1}Gradient-weighted Class Activation Mapping (Grad-CAM)}{28}{subsection.14.1}%
+\contentsline {subsubsection}{\numberline {14.1.1}Theoretical Foundation}{28}{subsubsection.14.1.1}%
 \contentsline {subsubsection}{\numberline {14.1.2}Methodology for CNN models}{29}{subsubsection.14.1.2}%
 \contentsline {subsection}{\numberline {14.2}Attention Rollout for Vision Transformers}{30}{subsection.14.2}%
 \contentsline {subsubsection}{\numberline {14.2.1}Theoretical Foundation}{30}{subsubsection.14.2.1}%
 \contentsline {subsubsection}{\numberline {14.2.2}Methodology for ViT}{30}{subsubsection.14.2.2}%
 \contentsline {subsection}{\numberline {14.3}Grad-CAM for Vision Transformers}{31}{subsection.14.3}%
 \contentsline {subsection}{\numberline {14.4}Enhanced ViT Implementation}{31}{subsection.14.4}%
-\contentsline {subsection}{\numberline {14.5}Interpretable ViT Implementation}{32}{subsection.14.5}%
+\contentsline {subsection}{\numberline {14.5}Interpretable ViT Implementation}{31}{subsection.14.5}%
 \contentsline {subsection}{\numberline {14.6}Comparison Framework}{32}{subsection.14.6}%
 \contentsline {section}{\numberline {A}Additional Interpretability Techniques}{33}{appendix.A}%
 \contentsline {subsection}{\numberline {A.1}DeepLIFT}{33}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Saliency Maps}{34}{subsection.A.2}%
+\contentsline {subsection}{\numberline {A.2}Saliency Maps}{33}{subsection.A.2}%
 \contentsline {subsection}{\numberline {A.3}Integrated Gradients for Vision Transformers}{34}{subsection.A.3}%
-\contentsline {subsection}{\numberline {A.4}Guided Backpropagation for Vision Transformers}{35}{subsection.A.4}%
-\contentsline {subsection}{\numberline {A.5}Conclusion on Additional Methods}{35}{subsection.A.5}%
-\contentsline {section}{\numberline {B}Feature Analysis and Interpretability for Fine-Grained Gull Classification}{36}{appendix.B}%
-\contentsline {subsection}{\numberline {B.1}Methodology for Wing and Wingtip Intensity Analysis}{36}{subsection.B.1}%
-\contentsline {subsubsection}{\numberline {B.1.1}Image Selection and Preparation}{36}{subsubsection.B.1.1}%
+\contentsline {subsection}{\numberline {A.4}Guided Backpropagation for Vision Transformers}{34}{subsection.A.4}%
+\contentsline {subsection}{\numberline {A.5}Conclusion on Additional Methods}{34}{subsection.A.5}%
+\contentsline {section}{\numberline {B}Feature Analysis and Interpretability for Fine-Grained Gull Classification}{35}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}Methodology for Wing and Wingtip Intensity Analysis}{35}{subsection.B.1}%
+\contentsline {subsubsection}{\numberline {B.1.1}Image Selection and Preparation}{35}{subsubsection.B.1.1}%
 \contentsline {subsubsection}{\numberline {B.1.2}Manual Segmentation}{36}{subsubsection.B.1.2}%
 \contentsline {subsubsection}{\numberline {B.1.3}Feature Extraction Pipeline}{36}{subsubsection.B.1.3}%
-\contentsline {subsubsection}{\numberline {B.1.4}Wingtip Darkness Characterization}{37}{subsubsection.B.1.4}%
-\contentsline {subsubsection}{\numberline {B.1.5}Statistical Comparison}{38}{subsubsection.B.1.5}%
+\contentsline {subsubsection}{\numberline {B.1.4}Wingtip Darkness Characterization}{36}{subsubsection.B.1.4}%
+\contentsline {subsubsection}{\numberline {B.1.5}Statistical Comparison}{37}{subsubsection.B.1.5}%
 \contentsline {section}{\numberline {C}Local Binary Pattern Implementation for Seagull Species Analysis}{38}{appendix.C}%
 \contentsline {subsection}{\numberline {C.1}Introduction to Local Binary Patterns}{38}{subsection.C.1}%
-\contentsline {subsection}{\numberline {C.2}Implementation Methodology}{39}{subsection.C.2}%
-\contentsline {subsubsection}{\numberline {C.2.1}Image Preprocessing and Region Segmentation}{39}{subsubsection.C.2.1}%
+\contentsline {subsection}{\numberline {C.2}Implementation Methodology}{38}{subsection.C.2}%
+\contentsline {subsubsection}{\numberline {C.2.1}Image Preprocessing and Region Segmentation}{38}{subsubsection.C.2.1}%
 \contentsline {subsubsection}{\numberline {C.2.2}LBP Calculation Process}{39}{subsubsection.C.2.2}%
-\contentsline {subsubsection}{\numberline {C.2.3}Novel Abstract Pattern Analysis}{40}{subsubsection.C.2.3}%
-\contentsline {subsection}{\numberline {C.3}Comparative Analysis Implementation}{41}{subsection.C.3}%
+\contentsline {subsubsection}{\numberline {C.2.3}Novel Abstract Pattern Analysis}{39}{subsubsection.C.2.3}%
+\contentsline {subsection}{\numberline {C.3}Comparative Analysis Implementation}{40}{subsection.C.3}%
 \contentsline {subsection}{\numberline {C.4}Discriminative Power Analysis}{41}{subsection.C.4}%
-\contentsline {subsection}{\numberline {C.5}Implementation Workflow}{42}{subsection.C.5}%
+\contentsline {subsection}{\numberline {C.5}Implementation Workflow}{41}{subsection.C.5}%
 \contentsline {subsection}{\numberline {C.6}Validation Approach}{42}{subsection.C.6}%
-\contentsline {section}{\numberline {D}Clustering Analysis for Species Differentiation}{43}{appendix.D}%
-\contentsline {subsection}{\numberline {D.1}Overview of Clustering Approach}{43}{subsection.D.1}%
-\contentsline {subsection}{\numberline {D.2}Feature Extraction and Preprocessing}{43}{subsection.D.2}%
+\contentsline {section}{\numberline {D}Clustering Analysis for Species Differentiation}{42}{appendix.D}%
+\contentsline {subsection}{\numberline {D.1}Overview of Clustering Approach}{42}{subsection.D.1}%
+\contentsline {subsection}{\numberline {D.2}Feature Extraction and Preprocessing}{42}{subsection.D.2}%
 \contentsline {subsection}{\numberline {D.3}Clustering Algorithms Implementation}{43}{subsection.D.3}%
 \contentsline {subsubsection}{\numberline {D.3.1}K-means Clustering}{43}{subsubsection.D.3.1}%
-\contentsline {subsubsection}{\numberline {D.3.2}Hierarchical Clustering}{44}{subsubsection.D.3.2}%
-\contentsline {subsubsection}{\numberline {D.3.3}DBSCAN}{44}{subsubsection.D.3.3}%
-\contentsline {subsubsection}{\numberline {D.3.4}Gaussian Mixture Model}{44}{subsubsection.D.3.4}%
-\contentsline {subsection}{\numberline {D.4}Evaluation Framework}{44}{subsection.D.4}%
+\contentsline {subsubsection}{\numberline {D.3.2}Hierarchical Clustering}{43}{subsubsection.D.3.2}%
+\contentsline {subsubsection}{\numberline {D.3.3}DBSCAN}{43}{subsubsection.D.3.3}%
+\contentsline {subsubsection}{\numberline {D.3.4}Gaussian Mixture Model}{43}{subsubsection.D.3.4}%
+\contentsline {subsection}{\numberline {D.4}Evaluation Framework}{43}{subsection.D.4}%
 \contentsline {subsection}{\numberline {D.5}Visualization and Interpretation}{44}{subsection.D.5}%
-\contentsline {section}{\numberline {E}Clustering Analysis}{45}{appendix.E}%
-\contentsline {subsection}{\numberline {E.1}Implementation Overview}{45}{subsection.E.1}%
+\contentsline {section}{\numberline {E}Clustering Analysis}{44}{appendix.E}%
+\contentsline {subsection}{\numberline {E.1}Implementation Overview}{44}{subsection.E.1}%
 \contentsline {subsection}{\numberline {E.2}Performance Evaluation}{45}{subsection.E.2}%
-\contentsline {subsection}{\numberline {E.3}Visualization and Analysis}{46}{subsection.E.3}%
-\contentsline {section}{\numberline {F}Results}{46}{appendix.F}%
+\contentsline {subsection}{\numberline {E.3}Visualization and Analysis}{45}{subsection.E.3}%
+\contentsline {section}{\numberline {F}Results}{45}{appendix.F}%
 \contentsline {subsection}{\numberline {F.1}Intensity Analysis Results}{46}{subsection.F.1}%
 \contentsline {subsubsection}{\numberline {F.1.1}Wing Intensity Analysis}{46}{subsubsection.F.1.1}%
-\contentsline {subsubsection}{\numberline {F.1.2}Comparative Analysis}{49}{subsubsection.F.1.2}%
-\contentsline {subsection}{\numberline {F.2}Clustering Analysis Results}{50}{subsection.F.2}%
-\contentsline {subsubsection}{\numberline {F.2.1}K-means Clustering}{50}{subsubsection.F.2.1}%
-\contentsline {subsubsection}{\numberline {F.2.2}Hierarchical Clustering}{51}{subsubsection.F.2.2}%
-\contentsline {subsubsection}{\numberline {F.2.3}Gaussian Mixture Model}{52}{subsubsection.F.2.3}%
-\contentsline {subsection}{\numberline {F.3}Algorithm Comparison}{53}{subsection.F.3}%
-\contentsline {section}{\numberline {G}Wing Intensity Comparison Between Gull Species}{54}{appendix.G}%
-\contentsline {subsection}{\numberline {G.1}Wing Intensity Analysis}{54}{subsection.G.1}%
-\contentsline {subsection}{\numberline {G.2}Dark Pixel Analysis}{54}{subsection.G.2}%
-\contentsline {subsection}{\numberline {G.3}Raw Pixel Count Analysis}{55}{subsection.G.3}%
-\contentsline {section}{\numberline {H}Biological Significance}{55}{appendix.H}%
+\contentsline {subsubsection}{\numberline {F.1.2}Wingtip Darkness Analysis}{48}{subsubsection.F.1.2}%
+\contentsline {subsubsection}{\numberline {F.1.3}Pixel Intensity Distribution Analysis}{48}{subsubsection.F.1.3}%
+\contentsline {subsubsection}{\numberline {F.1.4}Wing-Wingtip Contrast Analysis}{51}{subsubsection.F.1.4}%
+\contentsline {subsubsection}{\numberline {F.1.5}Species Clustering Analysis}{51}{subsubsection.F.1.5}%
+\contentsline {subsection}{\numberline {F.2}Biological Significance of Intensity Analysis}{51}{subsection.F.2}%
+\contentsline {subsection}{\numberline {F.3}Intensity Analysis Results}{54}{subsection.F.3}%
+\contentsline {subsubsection}{\numberline {F.3.1}Wing Intensity Analysis}{54}{subsubsection.F.3.1}%
+\contentsline {subsubsection}{\numberline {F.3.2}Comparative Analysis}{55}{subsubsection.F.3.2}%
+\contentsline {subsection}{\numberline {F.4}Clustering Analysis Results}{55}{subsection.F.4}%
+\contentsline {subsubsection}{\numberline {F.4.1}K-means Clustering}{55}{subsubsection.F.4.1}%
+\contentsline {subsubsection}{\numberline {F.4.2}Hierarchical Clustering}{56}{subsubsection.F.4.2}%
+\contentsline {subsubsection}{\numberline {F.4.3}Gaussian Mixture Model}{57}{subsubsection.F.4.3}%
+\contentsline {subsection}{\numberline {F.5}Algorithm Comparison}{58}{subsection.F.5}%
+\contentsline {section}{\numberline {G}Wing Intensity Comparison Between Gull Species}{59}{appendix.G}%
+\contentsline {subsection}{\numberline {G.1}Wing Intensity Analysis}{59}{subsection.G.1}%
+\contentsline {subsection}{\numberline {G.2}Dark Pixel Analysis}{60}{subsection.G.2}%
+\contentsline {subsection}{\numberline {G.3}Raw Pixel Count Analysis}{60}{subsection.G.3}%
+\contentsline {section}{\numberline {H}Biological Significance}{60}{appendix.H}%

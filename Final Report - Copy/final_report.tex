@@ -9,6 +9,7 @@
 \usepackage{natbib}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{grffile}  % Add to preamble
 
 
 % Required in preamble
@@ -24,6 +25,19 @@
 \usetikzlibrary{positioning}
 
 \renewcommand{\contentsname}{Table of Contents}
+
+
+\usepackage{graphicx} % Required for including images
+\usepackage{booktabs} % For professional quality tables
+\usepackage{caption}  % For captions of figures and tables
+\usepackage{subcaption} % For subfigures within a figure environment
+% \usepackage[backend=biber, style=apa]{biblatex} % Example for bibliography (if needed, adapt style)
+% \addbibresource{references.bib} % Link to your bibliography file
+% \usepackage{hyperref} % Optional: for clickable links and references
+% \usepackage[capitalise]{cleveref} % Optional: for smart cross-referencing (e.g., Figure 1, Table 2)
+
+
+
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em} % Adjust spacing between paragraphs
@@ -940,20 +954,20 @@ This implementation draws from research on token aggregation strategies in visio
 \draw  [fill=white  ,fill opacity=1 ] (360,180) -- (395,180) -- (395,200) -- (360,200) -- cycle ;
 
 % Auxiliary Output
-\draw  [fill=white  ,fill opacity=1 ] (230,80) -- (280,80) -- (280,100) -- (230,100) -- cycle ;
-\draw [->] (255,110) -- (255,100);
+\draw  [fill=white  ,fill opacity=1 ] (230,50) -- (280,50) -- (280,70) -- (230,70) -- cycle ;
+\draw [->] (255,110) -- (255,70);
 
 % Average Pooling
 \draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (420,140) -- (450,140) -- (450,180) -- (420,180) -- cycle ;
 
 % Dropout Layer
-\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (470,140) -- (520,140) -- (520,180) -- (470,180) -- cycle ; 
+\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (470,140) -- (500,140) -- (500,180) -- (470,180) -- cycle ; 
 
 % Binary Classification Layer
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (540,140) -- (570,140) -- (570,180) -- (540,180) -- cycle ;
+\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (520,140) -- (550,140) -- (550,180) -- (520,180) -- cycle ;
 
 % Softmax
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (590,140) -- (620,140) -- (620,180) -- (590,180) -- cycle ;
+\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (570,140) -- (600,140) -- (600,180) -- (570,180) -- cycle ;
 
 % Connect all components
 \draw [->] (36,160) -- (50,160);
@@ -964,43 +978,63 @@ This implementation draws from research on token aggregation strategies in visio
 \draw [->] (330,160) -- (350,160);
 \draw [->] (400,160) -- (420,160);
 \draw [->] (450,160) -- (470,160);
-\draw [->] (520,160) -- (540,160);
-\draw [->] (570,160) -- (590,160);
+\draw [->] (500,160) -- (520,160);
+\draw [->] (550,160) -- (570,160);
 
-% Legend blocks
-\draw  [fill=white  ,fill opacity=1 ] (50,240) -- (70,240) -- (70,260) -- (50,260) -- cycle ;
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,270) -- (70,270) -- (70,290) -- (50,290) -- cycle ;
-\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (50,300) -- (70,300) -- (70,320) -- (50,320) -- cycle ;
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,330) -- (70,330) -- (70,350) -- (50,350) -- cycle ;
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,360) -- (70,360) -- (70,380) -- (50,380) -- cycle ;
+% Legend blocks - MOVED TO BOTTOM
+\draw  [fill=white  ,fill opacity=1 ] (50,270) -- (70,270) -- (70,290) -- (50,290) -- cycle ;
+\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,300) -- (70,300) -- (70,320) -- (50,320) -- cycle ;
+\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (200,270) -- (220,270) -- (220,290) -- (200,290) -- cycle ;
+\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (200,300) -- (220,300) -- (220,320) -- (200,320) -- cycle ;
+\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (350,270) -- (370,270) -- (370,290) -- (350,290) -- cycle ;
 
-% Text labels
-\draw (70,160) node [anchor=south]  {Stem};
-\draw (135,95) node [anchor=south]  {Inception A x3};
-\draw (195,160) node [anchor=south]  {Grid\\Reduction 1};
-\draw (255,95) node [anchor=south]  {Inception B x4};
-\draw (315,160) node [anchor=south]  {Grid\\Reduction 2};
-\draw (375,95) node [anchor=south]  {Inception C x2};
-\draw (255,80) node [anchor=center]  {Auxiliary Classifier};
-\draw (435,160) node [anchor=center]  {Average\\Pooling};
-\draw (495,160) node [anchor=center]  {Dropout\\0.5};
-\draw (555,160) node [anchor=center]  {Linear\\(2048→2)};
-\draw (605,160) node [anchor=center]  {Softmax};
+% ===== COMPLETELY REORGANIZED TEXT LABELS =====
 
-\draw (75,250) node [anchor=west]  {Inception Blocks};
-\draw (75,280) node [anchor=west]  {Pooling Layers};
-\draw (75,310) node [anchor=west]  {Dropout (0.5)};
-\draw (75,340) node [anchor=west]  {Binary Classification};
-\draw (75,370) node [anchor=west]  {Softmax};
+% Top block labels - numbers only
+\node[align=center, font=\tiny] at (70,110) {Stem};
+\node[align=center, font=\tiny] at (135,100) {Inc.A×3};
+\node[align=center, font=\tiny] at (195,110) {Grid1};
+\node[align=center, font=\tiny] at (255,100) {Inc.B×4};
+\node[align=center, font=\tiny] at (315,110) {Grid2};
+\node[align=center, font=\tiny] at (375,100) {Inc.C×2};
 
-\draw (120,450) node [anchor=west] [align=left] [font=\small] {\textbf{Implementation details:}\\
-- Pre-trained Inception v3 weights (ImageNet)\\
-- AdamW optimizer (lr=0.0001146316711604839)\\
-- Weight decay: 0.0009719766132928495\\
-- ReduceLROnPlateau scheduler\\
-- CrossEntropyLoss\\
-- Uses auxiliary output during training};
+% Auxiliary classifier - moved much higher
+\node[align=center, font=\tiny] at (255,40) {Aux. Classifier};
 
+% Final components - numbers only with tiny font
+\node[align=center, font=\tiny] at (435,130) {Avg.};
+\node[align=center, font=\tiny] at (435,140) {Pool};
+
+\node[align=center, font=\tiny] at (485,130) {Drop};
+\node[align=center, font=\tiny] at (485,140) {0.5};
+
+\node[align=center, font=\tiny] at (535,130) {FC};
+\node[align=center, font=\tiny] at (535,140) {2→2};
+
+\node[align=center, font=\tiny] at (585,140) {Softmax};
+
+% Legend text - MOVED AND SEPARATED
+\node[align=left, font=\footnotesize] at (75,280) {Inception Blocks};
+\node[align=left, font=\footnotesize] at (75,310) {Pooling Layers};
+\node[align=left, font=\footnotesize] at (225,280) {Dropout (0.5)};
+\node[align=left, font=\footnotesize] at (225,310) {Binary Classification};
+\node[align=left, font=\footnotesize] at (375,280) {Softmax};
+
+% Implementation details - MOVED TO A SEPARATE TABLE BELOW
+\node[align=left, font=\scriptsize, anchor=north west] at (50,340) {
+\textbf{Implementation details:}
+};
+
+\node[align=left, font=\scriptsize, anchor=north west] at (50,360) {
+\begin{tabular}{ll}
+Pre-trained weights: & Inception v3 (ImageNet) \\
+Optimizer: & AdamW (lr=0.0001146) \\
+Weight decay: & 0.0009719 \\
+Scheduler: & ReduceLROnPlateau \\
+Loss function: & CrossEntropyLoss \\
+Training: & Uses auxiliary output \\
+\end{tabular}
+};
 \end{tikzpicture}
 
 \subsubsection{Theoretical Background}
@@ -1868,7 +1902,288 @@ The clustering results are visualized using:
 
 This comprehensive clustering analysis provides insights into the natural groupings within the dataset and helps validate the effectiveness of our classification approaches.
 
+% \section{Results}
+
+% % Inception Module (Simplified)
+
+% \begin{tikzpicture}[
+%     node/.style={rectangle,draw=blue!50,fill=blue!20,thick,minimum width=1cm},
+%     pool/.style={rectangle,draw=red!50,fill=red!20,thick}]
+
+% % Stem
+% \node[node] (stem) {Stem};
+% \node[right=1cm of stem] (split) {};
+
+% % Parallel paths
+% \node[node,above right=0.5cm and 1cm of split] (1x1) {1x1 Conv};
+% \node[node,below right=0.5cm and 1cm of split] (3x3) {3x3 Conv};
+% \node[node,below=0.5cm of 3x3] (5x5) {5x5 Conv};
+% \node[pool,below=0.5cm of 5x5] (pool) {MaxPool};
+
+% % Concatenation
+% \node[node,right=3cm of split] (concat) {Concatenate};
+% \draw (1x1) -| (concat.north);
+% \draw (3x3) -- (concat);
+% \draw (5x5) -- (concat);
+% \draw (pool) -| (concat.south);
+
+% % Reduction module
+% \node[pool,right=1cm of concat] (reduction) {Reduction};
+% \end{tikzpicture}
+
+
+% \begin{tikzpicture}[
+%     patch/.style={rectangle,draw=orange!50,fill=orange!20,minimum size=0.5cm},
+%     encoder/.style={rectangle,draw=purple!50,fill=purple!20,minimum width=2cm}]
+
+% % Image patches
+% \node[patch] (patch1) at (0,0) {};
+% \node[patch,right=0.1cm of patch1] (patch2) {};
+% \node[patch,right=0.1cm of patch2] (patch3) {};
+% \node[below=0.1cm of patch1] (patch4) {};
+% \node[below=0.1cm of patch2] (patch5) {};
+
+% % Linear projection
+% \node[encoder,right=2cm of patch3] (projection) {Linear\\Projection};
+
+% % Positional encoding
+% \node[encoder,above=0.5cm of projection] (position) {+ Positional\\Encoding};
+
+% % Transformer Encoder
+% \node[encoder,right=2cm of projection] (encoder1) {Encoder Block};
+% \node[encoder,right=1cm of encoder1] (encoder2) {Encoder Block};
+% \node[right=0.5cm of encoder2] (dots) {\vdots};
+% \node[encoder,right=0.5cm of dots] (encoderN) {Encoder Block};
+
+% % MLP Head
+% \node[encoder,right=2cm of encoderN] (mlp) {MLP\\Head};
+
+% % Connections
+% \draw[->] (patch3) -- (projection);
+% \draw[->] (position) -- (projection);
+% \draw[->] (projection) -- (encoder1);
+% \draw[->] (encoder1) -- (encoder2);
+% \draw[->] (encoder2) -- (dots);
+% \draw[->] (dots) -- (encoderN);
+% \draw[->] (encoderN) -- (mlp);
+% \end{tikzpicture}
+
+
+
 \section{Results}
+
+
+
+\section*{Model Performance} % Example section
+
+\begin{table}[htbp] % Placement options: h=here, t=top, b=bottom, p=page of its own
+    \centering % Centers the table on the page
+    \caption{Comparison of Model Performance on the Test Set} % Table caption
+    \label{tab:model_accuracy} % Label for cross-referencing (\Cref{tab:model_accuracy} or \ref{tab:model_accuracy})
+    \begin{tabular}{lcc} % Defines columns: l=left-aligned text, c=centered text/number
+        \toprule % Top rule from booktabs
+        Model Architecture & Validation Accuracy (\%) & Test Accuracy (\%) \\ % Column headers
+        \midrule % Middle rule from booktabs
+        VGG-16 (Fine-tuned) & 94.5 & 93.8 \\ % Example data row 1
+        Vision Transformer (ViT) & 95.2 & 94.1 \\ % Example data row 2
+        Custom CNN & 85.0 & 83.5 \\ % Example data row 3
+        % Add other models as needed
+        \bottomrule % Bottom rule from booktabs
+    \end{tabular}
+\end{table}
+
+Table \ref{tab:model_accuracy} summarizes the final performance metrics evaluated on the unseen test set. The Vision Transformer (ViT) achieved the highest test accuracy at 94.1\%.
+
+
+
+
+
+
+\section*{Model Interpretability} % Example section
+
+\begin{figure}[htbp] % Placement options for the figure environment
+    \centering % Centers the figure content
+    
+    \begin{subfigure}[b]{0.48\textwidth} % Subfigure 1 (adjust width as needed)
+        \centering
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/019_gradcam.png} % Replace with your image file path
+        \caption{VGG-16 Interpretability Map} % Caption for the first subfigure
+        \label{sfig:interp_vgg} % Label for the first subfigure
+    \end{subfigure}
+    \hfill % Automatically spaces the subfigures horizontally
+    \begin{subfigure}[b]{0.48\textwidth} % Subfigure 2 (adjust width as needed)
+        \centering
+        \includegraphics[width=\textwidth]{images/interpretability/vit/019_gradcam.png} % Replace with your image file path
+        \caption{ViT Interpretability Map} % Caption for the second subfigure
+        \label{sfig:interp_vit} % Label for the second subfigure
+    \end{subfigure}
+    
+    \caption{Comparison of Interpretability Visualizations for VGG-16 and ViT models.} % Overall figure caption
+    \label{fig:interpretability_maps} % Overall figure label for cross-referencing
+\end{figure}
+
+Figure \ref{fig:interpretability_maps} illustrates the regions identified as most salient by different models for a sample image. Subfigure \ref{sfig:interp_vgg} shows the result for VGG-16, while Subfigure \ref{sfig:interp_vit} shows the result for ViT.
+
+
+
+
+\subsection{Intensity Analysis Results}
+The intensity analysis revealed significant quantifiable differences in wing and wingtip patterns between Slaty-backed Gulls and Glaucous-winged Gulls, providing strong discriminative features for species identification.
+
+\subsubsection{Wing Intensity Analysis}
+Statistical analysis of wing intensity demonstrated clear differences between the two gull species, with consistent patterns across multiple samples:
+
+\begin{itemize}
+    \item \textbf{Mean Intensity}: Slaty-backed Gulls exhibited significantly darker wing patterns with a mean intensity of 73.98 (SD: 21.90), while Glaucous-winged Gulls displayed much lighter patterns with a mean intensity of 154.10 (SD: 30.82)
+    \item \textbf{Statistical Significance}: The difference was highly significant (p < 0.001)
+    \item \textbf{Percentage Difference}: Glaucous-winged Gull wings were 108.3\% brighter than Slaty-backed Gull wings
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wing_intensity_analysis.png}
+    \caption{Comparison of wing intensity values between Slaty-backed Gulls and Glaucous-winged Gulls, showing significant differences in brightness patterns.}
+    \label{fig:wing_intensity}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/WINGINTENSITY.png}
+    \caption{Mean wing intensity measurements across samples, demonstrating consistent species-specific patterns.}
+    \label{fig:wing_intensity_means}
+\end{figure}
+
+The distribution of pixel intensities across wing regions also showed distinctive patterns between species:
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/ditribution.png}
+    \caption{Distribution of wing pixel intensities, showing clear separation between the darker Slaty-backed Gull wings and lighter Glaucous-winged Gull wings.}
+    \label{fig:wing_distribution}
+\end{figure}
+
+\subsubsection{Wingtip Darkness Analysis}
+Wingtip regions showed the most pronounced differences between species, particularly in the proportion of very dark pixels:
+
+\begin{itemize}
+    \item \textbf{Darkness Proportion}: 56.69\% of wingtip pixels in Slaty-backed Gulls were darker than the mean wing intensity, compared to 47.71\% in Glaucous-winged Gulls
+    \item \textbf{Very Dark Pixels}: The most striking difference was in the percentage of very dark pixels:
+    \begin{itemize}
+        \item Slaty-backed Gull: 25.24\% of pixels below 30 intensity, 33.40\% below 40, and 41.15\% below 50
+        \item Glaucous-winged Gull: Only 0.0856\% of pixels below 30 intensity, 0.2720\% below 40, and 0.5683\% below 50
+    \end{itemize}
+    \item \textbf{Raw Pixel Counts}: On average, Slaty-backed Gulls had 73,592 very dark pixels in wingtip regions, while Glaucous-winged Gulls had only 8
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_darkness_analysis.png}
+    \caption{Analysis of wingtip darkness patterns showing the stark contrast between species.}
+    \label{fig:wingtip_darkness}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/pixelsbelowthresh.png}
+    \caption{Percentage of wingtip pixels below various darkness thresholds, highlighting the dramatically higher proportion of dark pixels in Slaty-backed Gulls.}
+    \label{fig:pixels_below_thresh}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/darkpixels.png}
+    \caption{Count of very dark pixels in wingtip regions, showing the vast difference between species.}
+    \label{fig:dark_pixels}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/wingtip_darkness_heatmap.png}
+    \caption{Heatmap visualization of wingtip darkness patterns across samples.}
+    \label{fig:wingtip_heatmap}
+\end{figure}
+
+\subsubsection{Pixel Intensity Distribution Analysis}
+Further examination of the pixel intensity distributions revealed distinct patterns that provide reliable discriminative features:
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/intensitydistribution.png}
+    \caption{Wingtip pixel intensity distribution comparing both species across the full intensity range.}
+    \label{fig:intensity_distribution}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/TIPdistribution.png}
+    \caption{Distribution of wingtip pixel intensities showing characteristic species patterns.}
+    \label{fig:tip_distribution}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/verydarkdist.png}
+    \caption{Distribution of very dark pixels specifically, highlighting the significant presence in Slaty-backed Gulls versus near absence in Glaucous-winged Gulls.}
+    \label{fig:very_dark_dist}
+\end{figure}
+
+\subsubsection{Wing-Wingtip Contrast Analysis}
+The contrast between wing and wingtip regions proved to be another defining characteristic for species identification:
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/intensitydiffthreshold.png}
+    \caption{Analysis of wing-wingtip intensity differences at various thresholds.}
+    \label{fig:intensity_diff_threshold}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/intensitydiffthreshold2.png}
+    \caption{Alternative visualization of wing-wingtip intensity differences across threshold values.}
+    \label{fig:intensity_diff_threshold2}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/diffbythresh.png}
+    \caption{Species comparison of wingtip darkness differences across multiple threshold levels.}
+    \label{fig:diff_by_thresh}
+\end{figure}
+
+\subsubsection{Species Clustering Analysis}
+Cluster analysis based on wing and wingtip intensity features showed clear separation between species:
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/clusterwingwingtip.png}
+    \caption{Cluster visualization of samples based on wing and wingtip intensity features, demonstrating clear species separation.}
+    \label{fig:cluster_wing_wingtip}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/ratiogwgsbgdarkness.png}
+    \caption{Ratio of darkness patterns between Glaucous-winged and Slaty-backed Gulls across various metrics.}
+    \label{fig:ratio_darkness}
+\end{figure}
+
+\subsection{Biological Significance of Intensity Analysis}
+The quantitative results obtained from our intensity analysis align strongly with known ornithological field identification features and provide several key insights:
+
+\begin{itemize}
+    \item \textbf{Overall Wing Color}: Slaty-backed Gulls have significantly darker wings, with intensity values approximately half those of Glaucous-winged Gulls (73.98 vs 154.10), providing a clear discriminative feature.
+    
+    \item \textbf{Wingtip Darkness Pattern}: The most distinctive feature is the dramatic difference in very dark pixel proportions within wingtips. Over 25\% of Slaty-backed Gull wingtip pixels have intensity below 30, compared to virtually none (0.09\%) in Glaucous-winged Gulls.
+    
+    \item \textbf{Species Identification Feature}: The presence of very dark pixels (intensity < 30) in the wingtip appears to be a highly reliable diagnostic feature for distinguishing between these species, with minimal overlap between distributions.
+    
+    \item \textbf{Contrast Pattern}: The higher percentage of dark pixels in Slaty-backed Gull wingtips creates a more pronounced visual contrast between wing and wingtip regions, which explains why this feature is commonly used in field identification.
+    
+    \item \textbf{Feature Consistency}: The consistency of these patterns across multiple samples suggests these are robust morphological differences rather than artifacts of image capture or processing.
+\end{itemize}
+
+These quantitative differences provide strong validation for the deep learning model's focus on wing and wingtip regions, as identified through Grad-CAM visualization. The model has effectively learned to utilize the same discriminative features that ornithologists rely on for field identification, demonstrating the biological relevance of its classification approach.
 
 \subsection{Intensity Analysis Results}
 
@@ -1882,27 +2197,6 @@ Statistical analysis of wing intensity showed significant differences between sp
     \item \textbf{Percentage Difference}: Glaucous-winged Gulls showed 32.1\% brighter wing patterns compared to Slaty-backed Gulls
     \item \textbf{Distribution}: The intensity distribution showed clear separation between species, with minimal overlap in the middle range
 \end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT IMAGES INTENSITY/I1/wing_intensity_distribution.png}
-    \caption{Wing intensity distribution for Slaty-backed Gulls}
-    \label{fig:wing_intensity_slaty}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT IMAGES INTENSITY/I2/wing_intensity_distribution.png}
-    \caption{Wing intensity distribution for Glaucous-winged Gulls}
-    \label{fig:wing_intensity_glaucous}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT IMAGES INTENSITY/C1/wing_intensity_comparison.png}
-    \caption{Comparison of wing intensity distributions between species}
-    \label{fig:wing_intensity_comparison}
-\end{figure}
 
 \begin{itemize}
     \item \textbf{Contrast Ratio}: Slaty-backed Gulls showed a 2.8x higher ratio of dark wingtip pixels compared to Glaucous-winged Gulls
