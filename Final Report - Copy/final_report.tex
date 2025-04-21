@@ -742,7 +742,7 @@ Our implementation includes a robust evaluation framework with model checkpointi
 
 \draw (465.5,114) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$1\times 1\times 4096$};
 
-\draw (552.5,114) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$1\times 1\times 1000$};
+\draw (552.5,114) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$1\times 1\times 2$};
 
 
 \draw (319,214.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Convolution + ReLU};
@@ -754,82 +754,6 @@ Our implementation includes a robust evaluation framework with model checkpointi
 \draw (320,271.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Softmax};
 
 \draw (320,291.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Softmax};
-
-% Dropout label with arrow
-\draw [->] (570,110) -- (570,118);
-\draw (570,105) node [anchor=south] [font=\scriptsize] [align=center] {Dropout\\0.4};
-
-\end{tikzpicture}
-
-
-\section{Model Architectures and Specific Implementations}
-
-\subsection{Modified VGG-16 Architecture for Binary Classification}
-
-\tikzset{every picture/.style={line width=0.75pt}}
-\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
-
-% Conv1-1 
-\draw  [fill=white  ,fill opacity=1 ] (44,95.69) -- (124.19,15.5) -- (136,15.5) -- (136,200.31) -- (55.81,280.5) -- (44,280.5) -- cycle ; \draw   (136,15.5) -- (55.81,95.69) -- (44,95.69) ; \draw   (55.81,95.69) -- (55.81,280.5) ;
-% Conv 1-2
-\draw  [fill=white  ,fill opacity=1 ] (64,96.19) -- (144.19,16) -- (156,16) -- (156,200.81) -- (75.81,281) -- (64,281) -- cycle ; \draw   (156,16) -- (75.81,96.19) -- (64,96.19) ; \draw   (75.81,96.19) -- (75.81,281) ;
-% Pooling 1
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (100,105.5) -- (154,51.5) -- (164,51.5) -- (164,174.5) -- (110,228.5) -- (100,228.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (164,51.5) -- (110,105.5) -- (100,105.5) ; \draw  [color=red  ,draw opacity=1 ] (110,105.5) -- (110,228.5) ;
-% Conv 2-1
-\draw  [fill=white  ,fill opacity=1 ] (115,106.5) -- (169,52.5) -- (179,52.5) -- (179,175.5) -- (125,229.5) -- (115,229.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (179,52.5) -- (125,106.5) -- (115,106.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (125,106.5) -- (125,229.5) ;
-% Conv 2-2
-\draw  [fill=white  ,fill opacity=1 ] (131,107.5) -- (185,53.5) -- (195,53.5) -- (195,176.5) -- (141,230.5) -- (131,230.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (195,53.5) -- (141,107.5) -- (131,107.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (141,107.5) -- (141,230.5) ;
-% Pooling 2
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (161,113.5) -- (195,79.5) -- (205,79.5) -- (205,152.5) -- (171,186.5) -- (161,186.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (205,79.5) -- (171,113.5) -- (161,113.5) ; \draw  [color=red  ,draw opacity=1 ] (171,113.5) -- (171,186.5) ;
-% Conv 3-1
-\draw  [fill=white  ,fill opacity=1 ] (179,113.5) -- (213,79.5) -- (223,79.5) -- (223,152.5) -- (189,186.5) -- (179,186.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (223,79.5) -- (189,113.5) -- (179,113.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (189,113.5) -- (189,186.5) ;
-% Conv 3-2
-\draw  [fill=white  ,fill opacity=1 ] (198,114.5) -- (232,80.5) -- (242,80.5) -- (242,153.5) -- (208,187.5) -- (198,187.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (242,80.5) -- (208,114.5) -- (198,114.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (208,114.5) -- (208,187.5) ;
-% Conv 3-3
-\draw  [fill=white  ,fill opacity=1 ] (217,115.5) -- (251,81.5) -- (261,81.5) -- (261,154.5) -- (227,188.5) -- (217,188.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (261,81.5) -- (227,115.5) -- (217,115.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (227,115.5) -- (227,188.5) ;
-% Pooling 3
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (248,127.5) -- (264,111.5) -- (280,111.5) -- (280,151.5) -- (264,167.5) -- (248,167.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (280,111.5) -- (264,127.5) -- (248,127.5) ; \draw  [color=red  ,draw opacity=1 ] (264,127.5) -- (264,167.5) ;
-% Conv 4-1
-\draw  [fill=white  ,fill opacity=1 ] (270,128.5) -- (286,112.5) -- (302,112.5) -- (302,152.5) -- (286,168.5) -- (270,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (302,112.5) -- (286,128.5) -- (270,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (286,128.5) -- (286,168.5) ;
-% Conv 4-2
-\draw  [fill=white  ,fill opacity=1 ] (292,128.5) -- (308,112.5) -- (324,112.5) -- (324,152.5) -- (308,168.5) -- (292,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (324,112.5) -- (308,128.5) -- (292,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (308,128.5) -- (308,168.5) ;
-% Conv 4-3
-\draw  [fill=white  ,fill opacity=1 ] (314,128.5) -- (330,112.5) -- (346,112.5) -- (346,152.5) -- (330,168.5) -- (314,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (346,112.5) -- (330,128.5) -- (314,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (330,128.5) -- (330,168.5) ;
-% pooling 4
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (343,134.5) -- (352,125.5) -- (365,125.5) -- (365,143.5) -- (356,152.5) -- (343,152.5) -- cycle ; \draw  [color={rgb, 255:red, 251; green, 0; blue, 0 }  ,draw opacity=1 ] (365,125.5) -- (356,134.5) -- (343,134.5) ; \draw  [color={rgb, 255:red, 251; green, 0; blue, 0 }  ,draw opacity=1 ] (356,134.5) -- (356,152.5) ;
-% Conv 5-1
-\draw  [fill=white  ,fill opacity=1 ] (359,134.5) -- (368,125.5) -- (381,125.5) -- (381,143.5) -- (372,152.5) -- (359,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (381,125.5) -- (372,134.5) -- (359,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (372,134.5) -- (372,152.5) ;
-% Conv 5-2
-\draw  [fill=white  ,fill opacity=1 ] (375,134.5) -- (384,125.5) -- (397,125.5) -- (397,143.5) -- (388,152.5) -- (375,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (397,125.5) -- (388,134.5) -- (375,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (388,134.5) -- (388,152.5) ;
-% COnv 5-3
-\draw  [fill=white  ,fill opacity=1 ] (391,134.5) -- (400,125.5) -- (413,125.5) -- (413,143.5) -- (404,152.5) -- (391,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (413,125.5) -- (404,134.5) -- (391,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (404,134.5) -- (404,152.5) ;
-% Pooling 5
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (412,133.5) -- (416,129.5) -- (434,129.5) -- (434,139.5) -- (430,143.5) -- (412,143.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (434,129.5) -- (430,133.5) -- (412,133.5) ; \draw  [color=red  ,draw opacity=1 ] (430,133.5) -- (430,143.5) ;
-% dense 1
-\draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (438,134.07) -- (440.57,131.5) -- (496,131.5) -- (496,137.93) -- (493.43,140.5) -- (438,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (496,131.5) -- (493.43,134.07) -- (438,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (493.43,134.07) -- (493.43,140.5) ;
-% dense 2
-\draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (497.43,134.07) -- (500,131.5) -- (555.43,131.5) -- (555.43,137.93) -- (552.86,140.5) -- (497.43,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (555.43,131.5) -- (552.86,134.07) -- (497.43,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (552.86,134.07) -- (552.86,140.5) ;
-% Modified dense 3 (Binary classification)
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (555.86,134.07) -- (558.43,131.5) -- (582,131.5) -- (582,137.93) -- (579.43,140.5) -- (555.86,140.5) -- cycle ; \draw  [color=green  ,draw opacity=1 ] (582,131.5) -- (579.43,134.07) -- (555.86,134.07) ; \draw  [color=green  ,draw opacity=1 ] (579.43,134.07) -- (579.43,140.5) ;
-% softmax
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (582.43,134.07) -- (585,131.5) -- (608.57,131.5) -- (608.57,137.93) -- (606,140.5) -- (582.43,140.5) -- cycle ; \draw  [color=orange  ,draw opacity=1 ] (608.57,131.5) -- (606,134.07) -- (582.43,134.07) ; \draw  [color=orange  ,draw opacity=1 ] (606,134.07) -- (606,140.5) ;
-% input
-\draw   (6,140) -- (24,140) -- (24,130) -- (36,150) -- (24,170) -- (24,160) -- (6,160) -- cycle ;
-% arrow
-\draw    (426,88.25) -- (425.54,124.5) ;
-\draw [shift={(425.5,127.5)}, rotate = 270.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-% conv
-\draw  [fill=white  ,fill opacity=1 ] (296.19,223.25) -- (301.69,217.75) -- (314.5,217.75) -- (314.5,226.81) -- (309,232.31) -- (296.19,232.31) -- cycle ; \draw   (314.5,217.75) -- (309,223.25) -- (296.19,223.25) ; \draw   (309,223.25) -- (309,232.31) ;
-% max pool
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,242.31) -- (301.69,236.81) -- (314.5,236.81) -- (314.5,245.87) -- (309,251.37) -- (296.19,251.37) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (314.5,236.81) -- (309,242.31) -- (296.19,242.31) ; \draw  [color=red  ,draw opacity=1 ] (309,242.31) -- (309,251.37) ;
-% fully connected
-\draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,261.25) -- (301.69,255.75) -- (314.5,255.75) -- (314.5,264.81) -- (309,270.31) -- (296.19,270.31) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (314.5,255.75) -- (309,261.25) -- (296.19,261.25) ; \draw  [color=blue  ,draw opacity=1 ] (309,261.25) -- (309,270.31) ;
-% Binary classification
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,280.31) -- (301.69,274.81) -- (314.5,274.81) -- (314.5,283.87) -- (309,289.37) -- (296.19,289.37) -- cycle ; \draw  [color=green  ,draw opacity=1 ] (314.5,274.81) -- (309,280.31) -- (296.19,280.31) ; \draw  [color=green  ,draw opacity=1 ] (309,280.31) -- (309,289.37) ;
-% softmax
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,299.31) -- (301.69,293.81) -- (314.5,293.81) -- (314.5,302.87) -- (309,308.37) -- (296.19,308.37) -- cycle ; \draw  [color=orange  ,draw opacity=1 ] (314.5,293.81) -- (309,299.31) -- (296.19,299.31) ; \draw  [color=orange  ,draw opacity=1 ] (309,299.31) -- (309,308.37) ;
-% Dropout Layer
-\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (555.86,117) -- (582,117) -- (582,130) -- (555.86,130) -- cycle ; 
 
 % Dropout label with arrow
 \draw [->] (570,110) -- (570,118);
@@ -864,9 +788,14 @@ This approach aligns with successful methodologies in avian species classificati
 
 \subsection{Vision Transformer (ViT) Architecture}
 
-\section{Modified Vision Transformer (ViT) Architecture}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/architecture/vit.png}
+    \caption{Architecture of the Vision Transformer (ViT) model}
+    \label{fig:vit_architecture}
+\end{figure}
 
-\subsubsection{ViT for Fine-Grained Classification}
+\subsection{ViT for Fine-Grained Classification}
 
 Vision Transformers (ViT) have emerged as powerful alternatives to convolutional neural networks for visual recognition tasks. First introduced by Dosovitskiy et al. (\href{https://arxiv.org/abs/2010.11929}{Dosovitskiy et al., 2021}), ViTs process images as sequences of fixed-size patches, applying transformer-based self-attention mechanisms to model global relationships between image regions. This architecture enables the capture of long-range dependencies within images, making it particularly suitable for fine-grained classification tasks where subtle distinctions between similar classes may depend on relationships between distant image features.
 
@@ -912,132 +841,14 @@ This implementation draws from research on token aggregation strategies in visio
 
 \subsection{Inception v3 Architecture}
 
-\section{Modified Inception V3 Architecture}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/architecture/inception.png}
+    \caption{Architecture of the Inception v3 model}
+    \label{fig:inception_architecture}
+\end{figure}
 
-\tikzset{every picture/.style={line width=0.75pt}}
-\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
-
-% Input
-\draw   (6,150) -- (24,150) -- (24,140) -- (36,160) -- (24,180) -- (24,170) -- (6,170) -- cycle ;
-
-% Stem Block
-\draw  [fill=white  ,fill opacity=1 ] (50,120) -- (90,120) -- (90,200) -- (50,200) -- cycle ;
-
-% Inception A x3
-\draw  [fill=white  ,fill opacity=1 ] (110,110) -- (160,110) -- (160,210) -- (110,210) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (120,120) -- (135,120) -- (135,145) -- (120,145) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (140,120) -- (155,120) -- (155,145) -- (140,145) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (120,150) -- (135,150) -- (135,175) -- (120,175) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (140,150) -- (155,150) -- (155,175) -- (140,175) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (120,180) -- (155,180) -- (155,200) -- (120,200) -- cycle ;
-
-% Grid Reduction 1
-\draw  [fill=white  ,fill opacity=1 ] (180,120) -- (210,120) -- (210,200) -- (180,200) -- cycle ;
-
-% Inception B x4
-\draw  [fill=white  ,fill opacity=1 ] (230,110) -- (280,110) -- (280,210) -- (230,210) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (240,120) -- (255,120) -- (255,145) -- (240,145) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (260,120) -- (275,120) -- (275,145) -- (260,145) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (240,150) -- (255,150) -- (255,175) -- (240,175) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (260,150) -- (275,150) -- (275,175) -- (260,175) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (240,180) -- (275,180) -- (275,200) -- (240,200) -- cycle ;
-
-% Grid Reduction 2
-\draw  [fill=white  ,fill opacity=1 ] (300,120) -- (330,120) -- (330,200) -- (300,200) -- cycle ;
-
-% Inception C x2
-\draw  [fill=white  ,fill opacity=1 ] (350,110) -- (400,110) -- (400,210) -- (350,210) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (360,120) -- (375,120) -- (375,145) -- (360,145) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (380,120) -- (395,120) -- (395,145) -- (380,145) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (360,150) -- (375,150) -- (375,175) -- (360,175) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (380,150) -- (395,150) -- (395,175) -- (380,175) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (360,180) -- (395,180) -- (395,200) -- (360,200) -- cycle ;
-
-% Auxiliary Output
-\draw  [fill=white  ,fill opacity=1 ] (230,50) -- (280,50) -- (280,70) -- (230,70) -- cycle ;
-\draw [->] (255,110) -- (255,70);
-
-% Average Pooling
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (420,140) -- (450,140) -- (450,180) -- (420,180) -- cycle ;
-
-% Dropout Layer
-\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (470,140) -- (500,140) -- (500,180) -- (470,180) -- cycle ; 
-
-% Binary Classification Layer
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (520,140) -- (550,140) -- (550,180) -- (520,180) -- cycle ;
-
-% Softmax
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (570,140) -- (600,140) -- (600,180) -- (570,180) -- cycle ;
-
-% Connect all components
-\draw [->] (36,160) -- (50,160);
-\draw [->] (90,160) -- (110,160);
-\draw [->] (160,160) -- (180,160);
-\draw [->] (210,160) -- (230,160);
-\draw [->] (280,160) -- (300,160);
-\draw [->] (330,160) -- (350,160);
-\draw [->] (400,160) -- (420,160);
-\draw [->] (450,160) -- (470,160);
-\draw [->] (500,160) -- (520,160);
-\draw [->] (550,160) -- (570,160);
-
-% Legend blocks - MOVED TO BOTTOM
-\draw  [fill=white  ,fill opacity=1 ] (50,270) -- (70,270) -- (70,290) -- (50,290) -- cycle ;
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,300) -- (70,300) -- (70,320) -- (50,320) -- cycle ;
-\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (200,270) -- (220,270) -- (220,290) -- (200,290) -- cycle ;
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (200,300) -- (220,300) -- (220,320) -- (200,320) -- cycle ;
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (350,270) -- (370,270) -- (370,290) -- (350,290) -- cycle ;
-
-% ===== COMPLETELY REORGANIZED TEXT LABELS =====
-
-% Top block labels - numbers only
-\node[align=center, font=\tiny] at (70,110) {Stem};
-\node[align=center, font=\tiny] at (135,100) {Inc.A×3};
-\node[align=center, font=\tiny] at (195,110) {Grid1};
-\node[align=center, font=\tiny] at (255,100) {Inc.B×4};
-\node[align=center, font=\tiny] at (315,110) {Grid2};
-\node[align=center, font=\tiny] at (375,100) {Inc.C×2};
-
-% Auxiliary classifier - moved much higher
-\node[align=center, font=\tiny] at (255,40) {Aux. Classifier};
-
-% Final components - numbers only with tiny font
-\node[align=center, font=\tiny] at (435,130) {Avg.};
-\node[align=center, font=\tiny] at (435,140) {Pool};
-
-\node[align=center, font=\tiny] at (485,130) {Drop};
-\node[align=center, font=\tiny] at (485,140) {0.5};
-
-\node[align=center, font=\tiny] at (535,130) {FC};
-\node[align=center, font=\tiny] at (535,140) {2→2};
-
-\node[align=center, font=\tiny] at (585,140) {Softmax};
-
-% Legend text - MOVED AND SEPARATED
-\node[align=left, font=\footnotesize] at (75,280) {Inception Blocks};
-\node[align=left, font=\footnotesize] at (75,310) {Pooling Layers};
-\node[align=left, font=\footnotesize] at (225,280) {Dropout (0.5)};
-\node[align=left, font=\footnotesize] at (225,310) {Binary Classification};
-\node[align=left, font=\footnotesize] at (375,280) {Softmax};
-
-% Implementation details - MOVED TO A SEPARATE TABLE BELOW
-\node[align=left, font=\scriptsize, anchor=north west] at (50,340) {
-\textbf{Implementation details:}
-};
-
-\node[align=left, font=\scriptsize, anchor=north west] at (50,360) {
-\begin{tabular}{ll}
-Pre-trained weights: & Inception v3 (ImageNet) \\
-Optimizer: & AdamW (lr=0.0001146) \\
-Weight decay: & 0.0009719 \\
-Scheduler: & ReduceLROnPlateau \\
-Loss function: & CrossEntropyLoss \\
-Training: & Uses auxiliary output \\
-\end{tabular}
-};
-\end{tikzpicture}
-
-\subsubsection{Theoretical Background}
+\subsection*{Theoretical Background}
 
 Inception v3, developed by Szegedy et al. (2016), represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution pathways with varied kernel sizes. The key innovation in Inception architectures is the utilization of \textit{Inception modules} that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously (\href{https://arxiv.org/abs/1512.00567}{Szegedy et al., 2016}).
 
@@ -1066,172 +877,12 @@ Our implementation adapted the pre-trained Inception v3 model for fine-grained g
 
 \subsection{Residual Network (ResNet-50) Implementation}
 
-Residual Networks (ResNet) have revolutionized deep learning architectures by introducing identity shortcut connections that bypass one or more layers, enabling the training of substantially deeper networks {\href{https://arxiv.org/abs/1512.03385}{He et al., 2016}}. These skip connections address the degradation problem by allowing gradients to flow more effectively during backpropagation, mitigating the vanishing gradient issue prevalent in very deep neural networks.
-
-For our fine-grained gull species classification task, a transfer learning approach based on the ResNet-50 architecture was implemented. This implementation was motivated by ResNet's demonstrated success in capturing hierarchical features at multiple levels of abstraction, which is particularly valuable for distinguishing the subtle morphological differences between visually similar gull species {\href{https://arxiv.org/abs/1603.05027}{He et al., 2016b}, \href{https://ieeexplore.ieee.org/document/8658831}{Zhao et al., 2019}}.
-
-\section{Modified ResNet50 Architecture}
-
-\tikzset{every picture/.style={line width=0.75pt}}
-\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
-
-% Input
-\draw   (6,150) -- (24,150) -- (24,140) -- (36,160) -- (24,180) -- (24,170) -- (6,170) -- cycle ;
-
-% Stem: Conv + BN + ReLU + MaxPool
-\draw  [fill=white  ,fill opacity=1 ] (50,120) -- (100,120) -- (100,200) -- (50,200) -- cycle ;
-
-% Residual Blocks - Layer 1 (3 blocks)
-\draw  [fill=lightgray  ,fill opacity=0.3 ] (115,100) -- (195,100) -- (195,220) -- (115,220) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (125,120) -- (145,120) -- (145,140) -- (125,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (125,150) -- (145,150) -- (145,170) -- (125,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (125,180) -- (145,180) -- (145,200) -- (125,200) -- cycle ;
-\draw [->] (125,130) -- (145,130);
-\draw [->] (125,160) -- (145,160);
-\draw [->] (125,190) -- (145,190);
-\draw  [fill=white  ,fill opacity=1 ] (155,120) -- (175,120) -- (175,140) -- (155,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (155,150) -- (175,150) -- (175,170) -- (155,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (155,180) -- (175,180) -- (175,200) -- (155,200) -- cycle ;
-\draw [->] (145,130) -- (155,130);
-\draw [->] (145,160) -- (155,160);
-\draw [->] (145,190) -- (155,190);
-\draw [->] (175,130) -- (185,130);
-\draw [->] (175,160) -- (185,160);
-\draw [->] (175,190) -- (185,190);
-\draw  [fill=white  ,fill opacity=1 ] (185,120) -- (190,120) -- (190,200) -- (185,200) -- cycle ;
-\draw [-] (115,130) -- (125,130);
-\draw [-] (115,160) -- (125,160);
-\draw [-] (115,190) -- (125,190);
-\draw [->] (115,160) -- (190,160);
-
-% Residual Blocks - Layer 2 (4 blocks)
-\draw  [fill=lightgray  ,fill opacity=0.3 ] (210,100) -- (310,100) -- (310,220) -- (210,220) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (220,120) -- (240,120) -- (240,140) -- (220,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (220,150) -- (240,150) -- (240,170) -- (220,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (220,180) -- (240,180) -- (240,200) -- (220,200) -- cycle ;
-\draw [->] (220,130) -- (240,130);
-\draw [->] (220,160) -- (240,160);
-\draw [->] (220,190) -- (240,190);
-\draw  [fill=white  ,fill opacity=1 ] (250,120) -- (270,120) -- (270,140) -- (250,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (250,150) -- (270,150) -- (270,170) -- (250,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (250,180) -- (270,180) -- (270,200) -- (250,200) -- cycle ;
-\draw [->] (240,130) -- (250,130);
-\draw [->] (240,160) -- (250,160);
-\draw [->] (240,190) -- (250,190);
-\draw [->] (270,130) -- (280,130);
-\draw [->] (270,160) -- (280,160);
-\draw [->] (270,190) -- (280,190);
-\draw  [fill=white  ,fill opacity=1 ] (280,120) -- (290,120) -- (290,200) -- (280,200) -- cycle ;
-\draw [-] (210,130) -- (220,130);
-\draw [-] (210,160) -- (220,160);
-\draw [-] (210,190) -- (220,190);
-\draw [->] (210,160) -- (290,160);
-\draw  [fill=white  ,fill opacity=1 ] (295,120) -- (305,120) -- (305,200) -- (295,200) -- cycle ;
-
-% Residual Blocks - Layer 3 (6 blocks)
-\draw  [fill=lightgray  ,fill opacity=0.3 ] (325,100) -- (425,100) -- (425,220) -- (325,220) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (335,120) -- (355,120) -- (355,140) -- (335,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (335,150) -- (355,150) -- (355,170) -- (335,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (335,180) -- (355,180) -- (355,200) -- (335,200) -- cycle ;
-\draw [->] (335,130) -- (355,130);
-\draw [->] (335,160) -- (355,160);
-\draw [->] (335,190) -- (355,190);
-\draw  [fill=white  ,fill opacity=1 ] (365,120) -- (385,120) -- (385,140) -- (365,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (365,150) -- (385,150) -- (385,170) -- (365,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (365,180) -- (385,180) -- (385,200) -- (365,200) -- cycle ;
-\draw [->] (355,130) -- (365,130);
-\draw [->] (355,160) -- (365,160);
-\draw [->] (355,190) -- (365,190);
-\draw [->] (385,130) -- (395,130);
-\draw [->] (385,160) -- (395,160);
-\draw [->] (385,190) -- (395,190);
-\draw  [fill=white  ,fill opacity=1 ] (395,120) -- (405,120) -- (405,200) -- (395,200) -- cycle ;
-\draw [-] (325,130) -- (335,130);
-\draw [-] (325,160) -- (335,160);
-\draw [-] (325,190) -- (335,190);
-\draw [->] (325,160) -- (405,160);
-\draw  [fill=white  ,fill opacity=1 ] (410,120) -- (420,120) -- (420,200) -- (410,200) -- cycle ;
-
-% Residual Blocks - Layer 4 (3 blocks)
-\draw  [fill=lightgray  ,fill opacity=0.3 ] (440,100) -- (520,100) -- (520,220) -- (440,220) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (450,120) -- (470,120) -- (470,140) -- (450,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (450,150) -- (470,150) -- (470,170) -- (450,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (450,180) -- (470,180) -- (470,200) -- (450,200) -- cycle ;
-\draw [->] (450,130) -- (470,130);
-\draw [->] (450,160) -- (470,160);
-\draw [->] (450,190) -- (470,190);
-\draw  [fill=white  ,fill opacity=1 ] (480,120) -- (500,120) -- (500,140) -- (480,140) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (480,150) -- (500,150) -- (500,170) -- (480,170) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (480,180) -- (500,180) -- (500,200) -- (480,200) -- cycle ;
-\draw [->] (470,130) -- (480,130);
-\draw [->] (470,160) -- (480,160);
-\draw [->] (470,190) -- (480,190);
-\draw [->] (500,130) -- (510,130);
-\draw [->] (500,160) -- (510,160);
-\draw [->] (500,190) -- (510,190);
-\draw  [fill=white  ,fill opacity=1 ] (510,120) -- (515,120) -- (515,200) -- (510,200) -- cycle ;
-\draw [-] (440,130) -- (450,130);
-\draw [-] (440,160) -- (450,160);
-\draw [-] (440,190) -- (450,190);
-\draw [->] (440,160) -- (515,160);
-
-% Global Average Pooling
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (535,140) -- (555,140) -- (555,180) -- (535,180) -- cycle ;
-
-% Dropout Layer
-\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (570,140) -- (595,140) -- (595,180) -- (570,180) -- cycle ; 
-
-% Binary Classification Layer
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (610,140) -- (635,140) -- (635,180) -- (610,180) -- cycle ;
-
-% Softmax
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (650,140) -- (675,140) -- (675,180) -- (650,180) -- cycle ;
-
-% Connect all components
-\draw [->] (36,160) -- (50,160);
-\draw [->] (100,160) -- (115,160);
-\draw [->] (195,160) -- (210,160);
-\draw [->] (310,160) -- (325,160);
-\draw [->] (425,160) -- (440,160);
-\draw [->] (520,160) -- (535,160);
-\draw [->] (555,160) -- (570,160);
-\draw [->] (595,160) -- (610,160);
-\draw [->] (635,160) -- (650,160);
-
-% Text labels
-\draw (75,110) node [anchor=south]  {7x7 Conv, BN, ReLU,\\3x3 MaxPool};
-\draw (155,90) node [anchor=south]  {Layer 1 (3 blocks)};
-\draw (260,90) node [anchor=south]  {Layer 2 (4 blocks)};
-\draw (375,90) node [anchor=south]  {Layer 3 (6 blocks)};
-\draw (480,90) node [anchor=south]  {Layer 4 (3 blocks)};
-\draw (545,160) node [anchor=center]  {Global\\Average\\Pooling};
-\draw (582.5,160) node [anchor=center]  {Dropout\\0.5};
-\draw (622.5,160) node [anchor=center]  {Linear\\(2048→2)};
-\draw (662.5,160) node [anchor=center]  {Softmax};
-
-% Legend
-\draw  [fill=lightgray  ,fill opacity=0.3 ] (50,240) -- (70,240) -- (70,260) -- (50,260) -- cycle ;
-\draw  [fill=white  ,fill opacity=1 ] (50,270) -- (70,270) -- (70,290) -- (50,290) -- cycle ;
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,300) -- (70,300) -- (70,320) -- (50,320) -- cycle ;
-\draw  [color=purple  ,draw opacity=1 ][dash pattern={on 4.5pt off 4.5pt}][fill=white  ,fill opacity=1 ] (50,330) -- (70,330) -- (70,350) -- (50,350) -- cycle ;
-\draw  [color=green  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,360) -- (70,360) -- (70,380) -- (50,380) -- cycle ;
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (50,390) -- (70,390) -- (70,410) -- (50,410) -- cycle ;
-
-\draw (75,250) node [anchor=west]  {Residual Blocks};
-\draw (75,280) node [anchor=west]  {Convolutional Layers};
-\draw (75,310) node [anchor=west]  {Pooling Layers};
-\draw (75,340) node [anchor=west]  {Dropout (0.5)};
-\draw (75,370) node [anchor=west]  {Binary Classification};
-\draw (75,400) node [anchor=west]  {Softmax};
-
-\draw (120,450) node [anchor=west] [align=left] [font=\small] {\textbf{Implementation details:}\\
-- Pre-trained ResNet50 weights (ImageNet)\\
-- Adam optimizer (lr=0.001)\\
-- Weight decay: 1e-4\\
-- ReduceLROnPlateau scheduler\\
-- CrossEntropyLoss};
-
-\end{tikzpicture}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/architecture/resnet.png}
+    \caption{Architecture of the ResNet-50 model}
+    \label{fig:resnet_architecture}
+\end{figure}
 
 \subsubsection{Architecture-Specific Enhancements}
 
@@ -1240,6 +891,13 @@ A distinctive aspect of our ResNet-50 implementation was the incorporation of im
 The sharpening kernel was systematically applied to both training and evaluation pipelines using OpenCV's filter2D function, ensuring consistent feature enhancement across all dataset partitions. This preprocessing step proved particularly valuable for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species {\href{https://ieeexplore.ieee.org/document/8659085}{Dutta \& Zisserman, 2019}}.
 
 \subsection{Custom CNN with Squeeze-and-Excitation Blocks}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/architecture/improvedcnn.png}
+    \caption{Architecture of the Custom CNN with Squeeze-and-Excitation Blocks}
+    \label{fig:improvedcnn_architecture}
+\end{figure}
 
 \subsubsection{Architectural Design}
 
