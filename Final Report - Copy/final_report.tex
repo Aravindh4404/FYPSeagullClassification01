@@ -565,7 +565,7 @@ To optimize training with limited data, several techniques were employed consist
     
     \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting. \href{https://link.springer.com/chapter/10.1007/3-540-49430-8_3}{Early Stopping - But When?} 
     
-    \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updates. \href{Zhang, J., He, T., Sra, S., & Jadbabaie, A. (2020). Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR).}{Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR)} \href{http://proceedings.mlr.press/v28/pascanu13.pdf}{here}
+    \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updates. \href{Zhang, J., He, T., Sra, S., \& Jadbabaie, A. (2020). Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR).}{Why gradient clipping accelerates training: A theoretical justification for adaptivity. International Conference on Learning Representations (ICLR)} \href{http://proceedings.mlr.press/v28/pascanu13.pdf}{here}
     
     \item \textbf{Loss function:} Cross-entropy loss was used consistently as the optimization objective for the binary classification task.
     
@@ -1883,8 +1883,27 @@ Statistical analysis of wing intensity showed significant differences between sp
     \item \textbf{Distribution}: The intensity distribution showed clear separation between species, with minimal overlap in the middle range
 \end{itemize}
 
-\subsubsection{Wingtip Analysis}
-The wingtip analysis revealed more complex patterns:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT IMAGES INTENSITY/I1/wing_intensity_distribution.png}
+    \caption{Wing intensity distribution for Slaty-backed Gulls}
+    \label{fig:wing_intensity_slaty}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT IMAGES INTENSITY/I2/wing_intensity_distribution.png}
+    \caption{Wing intensity distribution for Glaucous-winged Gulls}
+    \label{fig:wing_intensity_glaucous}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/REPORT IMAGES INTENSITY/C1/wing_intensity_comparison.png}
+    \caption{Comparison of wing intensity distributions between species}
+    \label{fig:wing_intensity_comparison}
+\end{figure}
+
 \begin{itemize}
     \item \textbf{Contrast Ratio}: Slaty-backed Gulls showed a 2.8x higher ratio of dark wingtip pixels compared to Glaucous-winged Gulls
     \item \textbf{Threshold Analysis}: At intensity difference thresholds:
