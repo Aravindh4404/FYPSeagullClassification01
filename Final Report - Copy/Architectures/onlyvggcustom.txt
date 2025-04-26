@@ -1,0 +1,28 @@
+
+# Use Pre-trained VGG-16 model and modify it for binary classification
+class VGG16Modified(nn.Module)
+    def __init__(self)
+        super(VGG16Modified, self).__init__()
+        # Load pre-trained VGG-16 model
+        self.vgg = models.vgg16(pretrained=True)
+        # Freeze early layers if desired
+        # for param in self.vgg.features.parameters()
+        #     param.requires_grad = False
+        # Replace the classifier with a custom binary classification layer
+        num_ftrs = self.vgg.classifier[6].in_features
+        self.vgg.classifier[6] = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(num_ftrs, num_classes)  # num_classes = 2 for binary classification
+        )
+
+    def forward(self, x)
+        return self.vgg(x)
+
+# Initialize the VGG model
+num_classes = 2  # Binary classification
+model = VGG16Modified().to(device)
+
+# Define loss function and optimizer with class weights
+criterion = nn.CrossEntropyLoss(weight=class_weights_tensor)
+optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=0.001)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)

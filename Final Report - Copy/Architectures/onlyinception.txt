@@ -1,0 +1,35 @@
+
+# Create data loaders
+batch_size = 32
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+# Use Pre-trained Inception v3 model and modify it for binary classification
+class InceptionV3Modified(nn.Module):
+    def __init__(self):
+        super(InceptionV3Modified, self).__init__()
+        from torchvision.models import Inception_V3_Weights
+        self.inception = models.inception_v3(weights=Inception_V3_Weights.IMAGENET1K_V1)
+        # Replace the final fully connected layer to output 2 classes
+        num_ftrs = self.inception.fc.in_features
+        self.inception.fc = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(num_ftrs, 2)
+        )
+
+    def forward(self, x):
+        # Use the auxiliary output during training to improve accuracy
+        if self.training:
+            aux, x = self.inception(x)
+            return aux, x
+        else:
+            return self.inception(x)
+
+# Initialize the Inception model
+model = InceptionV3Modified().to(device)
+
+# Define loss function and optimizer with L2 regularization (weight decay)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.AdamW(model.parameters(), lr=0.0001146316711604839, weight_decay=0.0009719766132928495)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)

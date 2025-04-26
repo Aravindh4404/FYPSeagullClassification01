@@ -1,0 +1,22 @@
+class VGG16Modified(nn.Module):
+    def __init__(self):
+        super(VGG16Modified, self).__init__()
+        from torchvision.models import VGG16_Weights
+        self.vgg = models.vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
+        # Replace the classifier with a custom binary classification layer
+        num_ftrs = self.vgg.classifier[6].in_features
+        self.vgg.classifier[6] = nn.Sequential(
+            nn.Dropout(0.4),
+            nn.Linear(num_ftrs, 2)
+        )
+
+    def forward(self, x):
+        return self.vgg(x)
+
+# Initialize the VGG model
+model = VGG16Modified().to(device)
+
+# Define loss function and optimizer with L2 regularization (weight decay)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=0.001)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3)

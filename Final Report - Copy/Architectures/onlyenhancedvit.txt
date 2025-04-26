@@ -1,0 +1,66 @@
+
+# Enhanced Vision Transformer model with custom attention pooling and classifier head
+class EnhancedViT(nn.Module):
+    def __init__(self, dropout_rate=0.3, hidden_dim=512):
+        """
+        Initializes the enhanced ViT model.
+        - Loads a pre-trained ViT backbone.
+        - Removes the original classification head.
+        - Adds an attention mechanism to pool patch tokens.
+        - Adds a custom MLP classifier head.
+        """
+        super(EnhancedViT, self).__init__()
+        # Load a pre-trained ViT model from timm
+        self.vit = timm.create_model('vit_base_patch16_224', pretrained=True)
+        # Remove the original classification head
+        self.vit.head = nn.Identity()
+
+        # Get the embedding dimension (most timm ViT models have 'embed_dim')
+        if hasattr(self.vit, 'embed_dim'):
+            self.embed_dim = self.vit.embed_dim
+        else:
+            # Fallback: use the in_features of the original head if available
+            self.embed_dim = self.vit.head.in_features
+
+        # Attention mechanism: compute an attention score for each token (patch)
+        self.attention_layer = nn.Sequential(
+            nn.Linear(self.embed_dim, 1)  # Outputs a scalar score per token
+        )
+
+        # Custom classifier head: LayerNorm -> Dropout -> Linear -> ReLU -> Dropout -> Linear
+        self.classifier = nn.Sequential(
+            nn.LayerNorm(self.embed_dim),
+            nn.Dropout(dropout_rate),
+            nn.Linear(self.embed_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(hidden_dim, 2)  # Binary classification (2 classes)
+        )
+
+    def forward(self, x):
+        """
+        Forward pass:
+          1. Extract patch token embeddings via ViT's forward_features.
+          2. Compute attention scores for each token.
+          3. Aggregate tokens via a weighted sum.
+          4. Classify the aggregated feature vector.
+        """
+        # Get patch token embeddings; expected shape: [batch, num_tokens, embed_dim]
+        tokens = self.vit.forward_features(x)
+        # Compute attention scores for each token; shape: [batch, num_tokens, 1]
+        attn_scores = self.attention_layer(tokens)
+        # Normalize attention scores using softmax along the token dimension
+        attn_weights = torch.softmax(attn_scores, dim=1)
+        # Compute the weighted sum of token embeddings to form a global feature vector
+        weighted_feature = torch.sum(attn_weights * tokens, dim=1)  # Shape: [batch, embed_dim]
+        # Pass the aggregated features through the classifier head
+        out = self.classifier(weighted_feature)
+        return out
+
+# Initialize the enhanced ViT model and send it to the device
+model = EnhancedViT().to(device)
+
+# Define loss function and optimizer with L2 regularization (weight decay)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=1e-4)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3, verbose=True)

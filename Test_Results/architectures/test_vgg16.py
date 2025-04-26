@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from torchvision import models, transforms, datasets
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score
 import numpy as np
 import cv2
 from PIL import Image
@@ -84,6 +84,67 @@ def overlay_heatmap(image_path, heatmap, output_path):
     cv2.imwrite(output_path, superimposed_img)
 
 
+def save_metrics(output_dir, all_labels, all_preds, class_names):
+    # Calculate overall accuracy
+    overall_accuracy = accuracy_score(all_labels, all_preds)
+
+    # Calculate confusion matrix
+    cm = confusion_matrix(all_labels, all_preds)
+
+    # Calculate accuracy per class
+    class_accuracies = cm.diagonal() / cm.sum(axis=1)
+
+    # Create directory for metrics
+    metrics_dir = os.path.join(output_dir, "metrics")
+    os.makedirs(metrics_dir, exist_ok=True)
+
+    # Save metrics to a text file
+    metrics_file_path = os.path.join(metrics_dir, "classification_metrics.txt")
+    with open(metrics_file_path, "w") as f:
+        f.write(f"Overall Accuracy: {overall_accuracy:.4f}\n\n")
+        f.write("Confusion Matrix:\n")
+        f.write(np.array2string(cm))
+        f.write("\n\nAccuracy per Class:\n")
+        for i, class_name in enumerate(class_names):
+            f.write(f"{class_name}: {class_accuracies[i]:.4f}\n")
+
+    return metrics_file_path
+
+
+def save_gradcam_all_images(output_dir, image_path, heatmap, file_name, true_class, predicted_class, confidence):
+    gradcam_all_dir = os.path.join(output_dir, "gradcam_all")
+    os.makedirs(gradcam_all_dir, exist_ok=True)
+    output_path = os.path.join(gradcam_all_dir, file_name)
+    overlay_heatmap(image_path, heatmap, output_path)
+    
+    # Add prediction info
+    img = cv2.imread(output_path)
+    confidence_text = f"Confidence: {confidence:.2f}"
+    true_class_text = f"True: {true_class}"
+    predicted_text = f"Predicted: {predicted_class}"
+    
+    cv2.putText(img, true_class_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+    cv2.putText(img, predicted_text, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+    cv2.putText(img, confidence_text, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+    
+    cv2.imwrite(output_path, img)
+    return output_path
+
+
+def save_misclassified_list(output_dir, misclassified_images):
+    misclassified_dir = os.path.join(output_dir, "misclassified")
+    os.makedirs(misclassified_dir, exist_ok=True)
+    list_file_path = os.path.join(misclassified_dir, "misclassified_images.txt")
+    with open(list_file_path, "w") as f:
+        for img_info in misclassified_images:
+            img_path = img_info["path"]
+            true_class = img_info["true_class"]
+            predicted_class = img_info["predicted_class"]
+            confidence = img_info["confidence"]
+            f.write(f"Path: {img_path}, True: {true_class}, Predicted: {predicted_class}, Confidence: {confidence:.4f}\n")
+    return list_file_path
+
+
 # ------------------------------------
 # Main Function
 # ------------------------------------
@@ -113,6 +174,11 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 
     all_preds = []
     all_labels = []
+    misclassified_images = []  # Track misclassified images
+
+    # Create necessary directories
+    os.makedirs(os.path.join(output_dir, "correct"), exist_ok=True)
+    os.makedirs(os.path.join(output_dir, "misclassified"), exist_ok=True)
 
     # Process images
     for i, (inputs, labels) in enumerate(dataloader):
@@ -132,6 +198,13 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
         true_class = class_names[labels.item()]
         predicted_class = class_names[preds.item()]
         is_correct = preds.item() == labels.item()
+        confidence_value = confidence.item()
+
+        # Save all Grad-CAM images regardless of correctness
+        save_gradcam_all_images(
+            output_dir, image_path, heatmap, file_name, 
+            true_class, predicted_class, confidence_value
+        )
 
         if is_correct:
             # Save correctly classified
@@ -143,10 +216,18 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 
             # Add confidence score
             img = cv2.imread(output_path)
-            confidence_text = f"Confidence: {confidence.item():.2f}"
+            confidence_text = f"Confidence: {confidence_value:.2f}"
             cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             cv2.imwrite(output_path, img)
         else:
+            # Track misclassified image info
+            misclassified_images.append({
+                "path": image_path,
+                "true_class": true_class,
+                "predicted_class": predicted_class,
+                "confidence": confidence_value
+            })
+            
             # Save misclassified
             misclassified_dir = os.path.join(output_dir, "misclassified", true_class)
             os.makedirs(misclassified_dir, exist_ok=True)
@@ -157,7 +238,7 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 
             # Add prediction info
             img = cv2.imread(output_path)
-            confidence_text = f"Confidence: {confidence.item():.2f}"
+            confidence_text = f"Confidence: {confidence_value:.2f}"
             predicted_text = f"Predicted: {predicted_class}"
             cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             cv2.putText(img, predicted_text, (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
@@ -177,11 +258,20 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
     plt.xlabel("Predicted")
     plt.ylabel("True")
 
-    cm_output_path = os.path.join(output_dir, "vggmodified_confusion_matrix.png")
+    cm_output_path = os.path.join(output_dir, "metrics", "vggmodified_confusion_matrix.png")
+    os.makedirs(os.path.dirname(cm_output_path), exist_ok=True)
     plt.savefig(cm_output_path, bbox_inches='tight', dpi=300)
     plt.close()
 
+    # Save metrics to text file
+    metrics_file_path = save_metrics(output_dir, all_labels, all_preds, class_names)
+    
+    # Save list of misclassified images
+    misclassified_list_path = save_misclassified_list(output_dir, misclassified_images)
+
     print(f"Confusion matrix saved to: {cm_output_path}")
+    print(f"Metrics saved to: {metrics_file_path}")
+    print(f"Misclassified images list saved to: {misclassified_list_path}")
     print(f"Results saved to: {output_dir}")
 
 
@@ -189,9 +279,9 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 # Main Execution
 # ------------------------------------
 if __name__ == "__main__":
-    MODEL_PATH = r"D:\FYP\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
+    MODEL_PATH = r"D:\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
     DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
-    OUTPUT_DIR = r"D:\FYP\GradCAM_OutputFull\best_model_vgg_20250210bbg"
+    OUTPUT_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Results\best_model_vgg_20250210"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     generate_gradcam_and_confusion_matrix(MODEL_PATH, DATA_DIR, OUTPUT_DIR)

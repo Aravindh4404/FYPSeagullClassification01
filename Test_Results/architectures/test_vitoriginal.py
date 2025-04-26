@@ -1,0 +1,323 @@
+import os
+import glob
+import torch
+import torch.nn as nn
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+import timm
+from torchvision import transforms
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
+
+
+#############################################
+# 1. Define the Model & Helper Classes      #
+#############################################
+class ViTModified(nn.Module):
+    def __init__(self):
+        super(ViTModified, self).__init__()
+        self.vit = timm.create_model('vit_base_patch16_224', pretrained=True)
+        num_ftrs = self.vit.head.in_features
+        self.vit.head = nn.Linear(num_ftrs, 2)  # 2-class output
+
+    def forward(self, x):
+        return self.vit(x)
+
+
+class ViTAttentionRollout:
+    """
+    Collects attention maps from each Transformer block in a timm ViT model
+    and computes an attention rollout map for visualization.
+    """
+
+    def __init__(self, model, discard_ratio=0.0):
+        self.model = model
+        self.discard_ratio = discard_ratio
+        self.attentions = []
+
+        # Register hooks for each block in the ViT model
+        for blk in self.model.vit.blocks:
+            blk.attn.qkv.register_forward_hook(self._hook_qkv)
+
+    def _hook_qkv(self, module, input, output):
+        qkv = output  # shape: [B, tokens, 3 * C]
+        B, N, C = qkv.shape
+        num_heads = self.model.vit.blocks[0].attn.num_heads
+        qkv = qkv.reshape(B, N, 3, num_heads, C // (3 * num_heads))
+        qkv = qkv.permute(2, 0, 3, 1, 4)  # [3, B, num_heads, tokens, C_per_head]
+        q, k, v = qkv[0], qkv[1], qkv[2]
+        scale = (q.shape[-1]) ** -0.5
+        q = q * scale
+        attn = (q @ k.transpose(-2, -1)).softmax(dim=-1)  # shape: [B, heads, tokens, tokens]
+        self.attentions.append(attn.detach().cpu())
+
+    def _compute_rollout(self, all_attentions):
+        rollout = torch.eye(all_attentions[0].size(-1), device=all_attentions[0].device)
+        for attn in all_attentions:
+            attn_avg = attn.mean(dim=1)  # average over heads -> [B, tokens, tokens]
+            if self.discard_ratio > 0:
+                flat = attn_avg.view(attn_avg.size(0), -1)
+                n = flat.size(1)
+                vals, _ = flat.sort(dim=1)
+                threshold_idx = int(n * self.discard_ratio)
+                threshold = vals[:, threshold_idx].unsqueeze(1).expand(-1, n)
+                mask = (flat >= threshold).float().reshape_as(attn_avg)
+                attn_avg = attn_avg * mask
+            attn_avg = attn_avg / attn_avg.sum(dim=-1, keepdim=True)
+            rollout = torch.matmul(attn_avg, rollout)
+        return rollout
+
+    def get_attention_map(self):
+        if len(self.attentions) == 0:
+            raise RuntimeError("No attention collected. Did you do a forward pass?")
+        rollout = self._compute_rollout(self.attentions)[0]  # assume batch size 1
+        # Exclude the [CLS] token itself; compute attention from CLS to each patch
+        cls_attention = rollout[0, 1:]  # shape: [196] for 14x14 patches
+        return cls_attention
+
+    def clear(self):
+        self.attentions = []
+
+
+#############################################
+# 2. Preprocessing and Visualization        #
+#############################################
+def preprocess_image(image_path):
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406],
+                             [0.229, 0.224, 0.225])
+    ])
+    image = Image.open(image_path).convert("RGB")
+    original_image = np.array(image.resize((224, 224)))
+    image_tensor = transform(image).unsqueeze(0)
+    return image_tensor, original_image
+
+
+def save_attention_visualization(attn_map, original_image, true_class, predicted_class, confidence, output_path,
+                                 is_correct):
+    # Prepare attention map: reshape and upsample to image size
+    h = w = 14  # for 14x14 patches
+    attn_map_2d = attn_map.reshape(h, w).numpy()
+    attn_map_2d = (attn_map_2d - attn_map_2d.min()) / (attn_map_2d.max() - attn_map_2d.min() + 1e-8)
+    attn_map_2d = cv2.resize(attn_map_2d, (224, 224))
+
+    # Create heatmap and overlay
+    heatmap = cv2.applyColorMap(np.uint8(255 * attn_map_2d), cv2.COLORMAP_JET)
+    heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
+    overlay = cv2.addWeighted(original_image, 0.5, heatmap, 0.5, 0)
+
+    # Plot the results
+    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+    axs[0].imshow(original_image)
+    axs[0].set_title("Original Image")
+    axs[0].axis("off")
+
+    axs[1].imshow(attn_map_2d, cmap='jet')
+    axs[1].set_title("Attention Rollout Map")
+    axs[1].axis("off")
+
+    axs[2].imshow(overlay)
+    if is_correct:
+        axs[2].set_title(f"Overlay\nPredicted: {predicted_class}, Conf: {confidence:.2%}")
+    else:
+        axs[2].set_title(f"Overlay\nTrue: {true_class}\nPredicted: {predicted_class}, Conf: {confidence:.2%}")
+    axs[2].axis("off")
+
+    plt.tight_layout()
+    plt.savefig(output_path)
+    plt.close()
+
+
+# Function to save metrics to a text file
+def save_metrics(output_dir, all_true, all_pred, class_names):
+    # Calculate overall accuracy
+    overall_accuracy = accuracy_score(all_true, all_pred)
+
+    # Calculate confusion matrix
+    cm = confusion_matrix(all_true, all_pred, labels=class_names)
+
+    # Calculate per-class accuracy
+    class_accuracies = cm.diagonal() / cm.sum(axis=1)
+
+    # Create metrics directory
+    metrics_dir = os.path.join(output_dir, "metrics")
+    os.makedirs(metrics_dir, exist_ok=True)
+
+    # Save metrics to text file
+    metrics_file_path = os.path.join(metrics_dir, "classification_metrics.txt")
+    with open(metrics_file_path, "w") as f:
+        f.write(f"Overall Accuracy: {overall_accuracy:.4f}\n\n")
+        f.write("Confusion Matrix:\n")
+        f.write(np.array2string(cm, separator=', '))
+        f.write("\n\nAccuracy per Class:\n")
+        for i, class_name in enumerate(class_names):
+            f.write(f"{class_name}: {class_accuracies[i]:.4f}\n")
+
+    return metrics_file_path, metrics_dir, cm
+
+
+# Function to save misclassified images list
+def save_misclassified_list(output_dir, misclassified_images):
+    misclassified_dir = os.path.join(output_dir, "misclassified")
+    os.makedirs(misclassified_dir, exist_ok=True)
+
+    list_file_path = os.path.join(misclassified_dir, "misclassified_images.txt")
+    with open(list_file_path, "w") as f:
+        for img_info in misclassified_images:
+            img_path = img_info["path"]
+            true_class = img_info["true_class"]
+            predicted_class = img_info["predicted_class"]
+            confidence = img_info["confidence"]
+            f.write(
+                f"Path: {img_path}, True: {true_class}, Predicted: {predicted_class}, Confidence: {confidence:.4f}\n")
+
+    return list_file_path
+
+
+# Function to extract model name from path
+def get_model_name_from_path(model_path):
+    base_name = os.path.basename(model_path)
+    model_name = os.path.splitext(base_name)[0]  # Get filename without extension
+    return model_name
+
+
+#############################################
+# 3. Main Driver: Process Dataset           #
+#############################################
+if __name__ == "__main__":
+    # ----- Configuration -----
+    # Path to the trained model weights
+    MODEL_PATH = r"D:\MODELS\VIT\VIT2_HQ2_20241224\final_model_vit_20241224.pth"
+    # Dataset directory
+    DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
+    # Base output directory
+    BASE_OUTPUT_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Results"
+
+    # Extract model name from path
+    model_name = get_model_name_from_path(MODEL_PATH)
+
+    # Create model-specific output directory
+    OUTPUT_DIR = os.path.join(BASE_OUTPUT_DIR, model_name)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    # Define class names
+    class_names = ["Glaucous_Winged_Gull", "Slaty_Backed_Gull"]
+
+    # ----- Load Model and Setup Attention Rollout -----
+    model = ViTModified()
+    model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
+    model.eval()
+    attn_rollout = ViTAttentionRollout(model, discard_ratio=0.0)
+
+    # ----- Create directories for results -----
+    attention_all_dir = os.path.join(OUTPUT_DIR, "attention_all")
+    correct_dir = os.path.join(OUTPUT_DIR, "correct")
+    misclassified_dir = os.path.join(OUTPUT_DIR, "misclassified")
+
+    os.makedirs(attention_all_dir, exist_ok=True)
+    os.makedirs(correct_dir, exist_ok=True)
+    os.makedirs(misclassified_dir, exist_ok=True)
+
+    # ----- Loop over Dataset -----
+    true_labels = []
+    pred_labels = []
+    misclassified_images = []
+
+    for class_folder in os.listdir(DATA_DIR):
+        folder_path = os.path.join(DATA_DIR, class_folder)
+        if not os.path.isdir(folder_path):
+            continue
+
+        # Create output folders for this class
+        output_class_dir = os.path.join(OUTPUT_DIR, class_folder)
+        correct_class_dir = os.path.join(correct_dir, class_folder)
+        misclassified_class_dir = os.path.join(misclassified_dir, class_folder)
+
+        os.makedirs(output_class_dir, exist_ok=True)
+        os.makedirs(correct_class_dir, exist_ok=True)
+        os.makedirs(misclassified_class_dir, exist_ok=True)
+
+        # Process image files (adjust extensions as needed)
+        image_paths = glob.glob(os.path.join(folder_path, "*.*"))
+        for image_path in image_paths:
+            try:
+                input_tensor, original_image = preprocess_image(image_path)
+            except Exception as e:
+                print(f"Error processing {image_path}: {e}")
+                continue
+
+            # Clear previous attentions
+            attn_rollout.clear()
+            with torch.no_grad():
+                output = model(input_tensor)
+
+            # Determine prediction and confidence
+            pred_class_idx = output.argmax(dim=1).item()
+            confidence = torch.softmax(output, dim=1)[0, pred_class_idx].item()
+            predicted_label = class_names[pred_class_idx]
+
+            # Record true and predicted labels for confusion matrix
+            true_labels.append(class_folder)
+            pred_labels.append(predicted_label)
+
+            # Get attention map
+            attn_map = attn_rollout.get_attention_map()
+
+            # Save visualization for all images
+            base_name = os.path.basename(image_path)
+
+            # Save to attention_all directory
+            all_save_path = os.path.join(attention_all_dir, f"{class_folder}_{base_name}")
+            save_attention_visualization(attn_map, original_image, class_folder, predicted_label,
+                                         confidence, all_save_path, class_folder == predicted_label)
+
+            # Save to class-specific directory
+            class_save_path = os.path.join(output_class_dir, f"attn_{base_name}")
+            save_attention_visualization(attn_map, original_image, class_folder, predicted_label,
+                                         confidence, class_save_path, class_folder == predicted_label)
+
+            # Check if prediction is correct or wrong
+            if predicted_label == class_folder:
+                # Save to correct directory
+                correct_save_path = os.path.join(correct_class_dir, base_name)
+                save_attention_visualization(attn_map, original_image, class_folder, predicted_label,
+                                             confidence, correct_save_path, True)
+                print(f"Saved overlay for correct prediction: {correct_save_path}")
+            else:
+                # Track misclassified image
+                misclassified_images.append({
+                    "path": image_path,
+                    "true_class": class_folder,
+                    "predicted_class": predicted_label,
+                    "confidence": confidence
+                })
+
+                # Save to misclassified directory
+                misclass_save_path = os.path.join(misclassified_class_dir, base_name)
+                save_attention_visualization(attn_map, original_image, class_folder, predicted_label,
+                                             confidence, misclass_save_path, False)
+                print(f"Saved overlay for incorrect prediction: {misclass_save_path}")
+
+    # ----- Save Metrics and Confusion Matrix -----
+    metrics_file_path, metrics_dir, cm = save_metrics(OUTPUT_DIR, true_labels, pred_labels, class_names)
+
+    # ----- Save Confusion Matrix Image -----
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
+    fig, ax = plt.subplots(figsize=(8, 8))
+    disp.plot(ax=ax)
+    plt.title("Confusion Matrix")
+    cm_output_path = os.path.join(metrics_dir, "confusion_matrix.png")
+    plt.savefig(cm_output_path)
+    plt.close()
+
+    # ----- Save Misclassified Images List -----
+    misclassified_list_path = save_misclassified_list(OUTPUT_DIR, misclassified_images)
+
+    print(f"Processing complete!")
+    print(f"Metrics saved to: {metrics_file_path}")
+    print(f"Confusion matrix saved to: {cm_output_path}")
+    print(f"Misclassified images list saved to: {misclassified_list_path}")
+    print(f"All results saved to: {OUTPUT_DIR}")

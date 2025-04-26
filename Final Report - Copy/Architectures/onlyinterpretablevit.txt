@@ -1,0 +1,63 @@
+# ----------------------------
+# 3. Improved & Interpretable ViT Architecture
+# ----------------------------
+class InterpretableViT(nn.Module):
+    def __init__(self, dropout_rate=0.3, hidden_dim=512):
+        """
+        This model uses a pre-trained ViT backbone and removes its original classification head.
+        It then:
+          - Extracts the [CLS] token (which is already well-trained)
+          - Computes a learned attention over patch tokens (the remaining tokens)
+          - Aggregates the patch tokens via a weighted sum
+          - Concatenates the CLS token and the weighted patch summary
+          - Feeds the combined representation through a custom MLP classifier
+        The attention weights are returned for later visualization.
+        """
+        super(InterpretableViT, self).__init__()
+        self.vit = timm.create_model('vit_base_patch16_224', pretrained=True)
+        self.vit.head = nn.Identity()  # Remove the original classification head
+
+        # Determine embedding dimension (most ViT models have an attribute 'embed_dim')
+        self.embed_dim = self.vit.embed_dim if hasattr(self.vit, 'embed_dim') else 768
+
+        # Attention layer on patch tokens (ignoring the CLS token)
+        self.attention_layer = nn.Sequential(
+            nn.Linear(self.embed_dim, 1)
+        )
+
+        # Classifier head: use both the CLS token and a weighted average of patch tokens.
+        self.classifier = nn.Sequential(
+            nn.LayerNorm(self.embed_dim * 2),
+            nn.Dropout(dropout_rate),
+            nn.Linear(self.embed_dim * 2, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(hidden_dim, 2)
+        )
+
+    def forward(self, x):
+        # Get token embeddings from ViT; output shape: (B, N+1, embed_dim)
+        tokens = self.vit.forward_features(x)
+        # The first token is the [CLS] token
+        cls_token = tokens[:, 0, :]  # Shape: (B, embed_dim)
+        # Remaining tokens are patch tokens
+        patch_tokens = tokens[:, 1:, :]  # Shape: (B, N, embed_dim)
+        # Compute attention scores over patch tokens
+        attn_scores = self.attention_layer(patch_tokens)  # (B, N, 1)
+        attn_weights = torch.softmax(attn_scores, dim=1)    # (B, N, 1)
+        # Weighted average of patch tokens
+        weighted_patch = torch.sum(attn_weights * patch_tokens, dim=1)  # (B, embed_dim)
+        # Combine the CLS token and weighted patch representation
+        combined = torch.cat([cls_token, weighted_patch], dim=1)  # (B, 2*embed_dim)
+        logits = self.classifier(combined)  # (B, 2)
+        return logits, attn_weights  # Return logits and attention weights for interpretability
+
+# Initialize the model and send it to the device
+model = InterpretableViT().to(device)
+
+# ----------------------------
+# 4. Loss, Optimizer, and Scheduler
+# ----------------------------
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=1e-4)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3, verbose=True)

@@ -1,0 +1,20 @@
+class ResNet50Modified(nn.Module):
+    def __init__(self):
+        super(ResNet50Modified, self).__init__()
+        self.resnet = models.resnet50(pretrained=True)
+        num_ftrs = self.resnet.fc.in_features
+        self.resnet.fc = nn.Sequential(
+            nn.Dropout(0.5),  # Add dropout to the fully connected layer
+            nn.Linear(num_ftrs, 2)
+        )
+
+    def forward(self, x):
+        return self.resnet(x)
+
+# Initialize the ResNet50 model
+model = ResNet50Modified()
+
+# Define loss function and optimizer with L2 regularization (weight decay)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3, verbose=True)

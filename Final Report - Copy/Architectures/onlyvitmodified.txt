@@ -1,0 +1,19 @@
+
+# Use Pre-trained Vision Transformer (ViT) model and modify it for binary classification
+class ViTModified(nn.Module):
+    def __init__(self):
+        super(ViTModified, self).__init__()
+        self.vit = timm.create_model('vit_base_patch16_224', pretrained=True)
+        num_ftrs = self.vit.head.in_features
+        self.vit.head = nn.Linear(num_ftrs, 2)  # Modify the classifier to output 2 classes
+
+    def forward(self, x):
+        return self.vit(x)
+
+# Initialize the ViT model
+model = ViTModified()
+
+# Define loss function and optimizer with L2 regularization (weight decay)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=1e-4)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3, verbose=True)

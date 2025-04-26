@@ -1,13 +1,16 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt]{report}
 \usepackage[margin=0.5in]{geometry}
 \usepackage{hyperref}
 \usepackage{setspace}
-\usepackage{titling}
-\usepackage{lmodern}
 \usepackage{lastpage}
 \usepackage{natbib}
 \usepackage{float}
 \usepackage{grffile}  % Add to preamble
+\usepackage{titlesec} % Add this line for chapter formatting
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float} % If you use [H] placement
 
 
 % Required in preamble
@@ -34,8 +37,6 @@
 % \usepackage[capitalise]{cleveref} % Optional: for smart cross-referencing (e.g., Figure 1, Table 2)
 
 
-
-
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em} % Adjust spacing between paragraphs
 
@@ -48,69 +49,81 @@
     urlcolor=blue          % Color for external URLs
 }
 
+
+
+
+% Customize chapter heading: remove "Chapter" prefix and numbers
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries}
+  {}
+  {0pt}
+  {\vspace{-2em}}
+\titlespacing*{\chapter}{0pt}{-2em}{1em}
+
+
 \begin{document}
 
-% Cover Page
-\begin{titlepage}
-    \begin{center}
+% % Cover Page
+% \begin{titlepage}
+%     \begin{center}
 
-        \textbf{\LARGE{School of Computer Science}}\\[0.5em]
-        \textbf{\Large{Faculty of Science and Engineering}}\\[0.5em]
-        \textbf{\Large{University of Nottingham}}\\[0.5em]
-        \textbf{\Large{Malaysia}}\\[5em]
+%         \textbf{\LARGE{School of Computer Science}}\\[0.5em]
+%         \textbf{\Large{Faculty of Science and Engineering}}\\[0.5em]
+%         \textbf{\Large{University of Nottingham}}\\[0.5em]
+%         \textbf{\Large{Malaysia}}\\[5em]
 
-        \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[3em]
+%         \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[3em]
 
-        \textbf{\Large{UG FINAL YEAR DISSERTATION REPORT}}\\[6em]
-        \textbf{\large{\textit{Interpretable Seagull classification}}}\\[6em]
+%         \textbf{\Large{UG FINAL YEAR DISSERTATION REPORT}}\\[6em]
+%         \textbf{\large{\textit{Interpretable Seagull classification}}}\\[6em]
 
-    \end{center}
+%     \end{center}
 
-    \begin{center}
-        \begin{minipage}{0.6\textwidth}  % adjust width as needed
-            \raggedright
-            \textbf{Student's Name} \hspace{1.5cm}: Aravindh Palaniguru\\[1em]
-            \textbf{Student Number} \hspace{1.4cm}: 20511833\\[1em]
-            \textbf{Supervisor Name} \hspace{1.2cm}: Dr. Tomas Maul\\[1em]
-            \textbf{Year} \hspace{3.8cm}: 2025\\[4em]
-        \end{minipage}
-    \end{center}
+%     \begin{center}
+%         \begin{minipage}{0.6\textwidth}  % adjust width as needed
+%             \raggedright
+%             \textbf{Student's Name} \hspace{1.5cm}: Aravindh Palaniguru\\[1em]
+%             \textbf{Student Number} \hspace{1.4cm}: 20511833\\[1em]
+%             \textbf{Supervisor Name} \hspace{1.2cm}: Dr. Tomas Maul\\[1em]
+%             \textbf{Year} \hspace{3.8cm}: 2025\\[4em]
+%         \end{minipage}
+%     \end{center}
 
-    \vfill
+%     \vfill
 
-    \begin{center}
-        \begin{minipage}{\textwidth}
-            \centering
-            {\fontsize{12}{10}\selectfont\textbf{SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENTS FOR THE AWARD OF}}
-            {\fontsize{12}{10}\selectfont\textbf{BACHELOR OF SCIENCE IN COMPUTER SCIENCE WITH ARTIFICIAL INTELLIGENCE (HONS)}}\\
-            {\fontsize{12}{10}\selectfont\textbf{THE UNIVERSITY OF NOTTINGHAM}}
-        \end{minipage}
-    \end{center}
-\end{titlepage}
+%     \begin{center}
+%         \begin{minipage}{\textwidth}
+%             \centering
+%             {\fontsize{12}{10}\selectfont\textbf{SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENTS FOR THE AWARD OF}}
+%             {\fontsize{12}{10}\selectfont\textbf{BACHELOR OF SCIENCE IN COMPUTER SCIENCE WITH ARTIFICIAL INTELLIGENCE (HONS)}}\\
+%             {\fontsize{12}{10}\selectfont\textbf{THE UNIVERSITY OF NOTTINGHAM}}
+%         \end{minipage}
+%     \end{center}
+% \end{titlepage}
 
-% Title Page
-\newpage
-\begin{titlepage}
-    \begin{center}
-        \vspace{0.1em}
-        \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[6em]
+% % Title Page
+% \newpage
+% \begin{titlepage}
+%     \begin{center}
+%         \vspace{0.1em}
+%         \includegraphics[width=0.5\textwidth]{images/nottingham_logo.png}\\[6em]
 
-        \textbf{INTERPRETABLE SEAGULL CLASSIFICATION}\\[6em]
+%         \textbf{INTERPRETABLE SEAGULL CLASSIFICATION}\\[6em]
 
-        \fontsize{10}{10}{Submitted in May 2025, in partial fulfillment of the conditions of the award of the degrees B.Sc.}\\[4em]
+%         \fontsize{10}{10}{Submitted in May 2025, in partial fulfillment of the conditions of the award of the degrees B.Sc.}\\[4em]
 
-        Aravindh Palaniguru\\
-        School of Computer Science\\
-        Faculty of Science and Engineering\\
-        University of Nottingham\\
-        Malaysia\\[6em]
+%         Aravindh Palaniguru\\
+%         School of Computer Science\\
+%         Faculty of Science and Engineering\\
+%         University of Nottingham\\
+%         Malaysia\\[6em]
 
-        I hereby declare that this dissertation is all my own work, except as indicated in the text:\\[4em]
+%         I hereby declare that this dissertation is all my own work, except as indicated in the text:\\[4em]
 
-        Signature \underline{\hspace{7cm}}\\[2em]
-        Date \hspace{1cm} \underline{\hspace{1cm}} / \underline{\hspace{1cm}} / \underline{\hspace{2cm}}
-    \end{center}
-\end{titlepage}
+%         Signature \underline{\hspace{7cm}}\\[2em]
+%         Date \hspace{1cm} \underline{\hspace{1cm}} / \underline{\hspace{1cm}} / \underline{\hspace{2cm}}
+%     \end{center}
+% \end{titlepage}
 
 % Change margins for Table of Contents and subsequent pages
 \newgeometry{
@@ -148,7 +161,7 @@
 \setcounter{page}{1} % Restart page numbering at 1
 
 % Introduction
-\section{Introduction}
+\chapter{Introduction}
 
 Biodiversity is under unprecedented pressure due to climate change and human influence. The alarming rates at which species are disappearing indicate that the sixth mass extinction is underway \citep{Ceballos2017}. Precious life forms that took evolution millions of years to create are being lost before we become aware of their existence. Understanding what biodiversity we have and what we stand to lose is crucial for convincing decision-makers to take appropriate conservation action.
 
@@ -225,7 +238,7 @@ Yet the fine-grained bird classification task has greater challenges \citep{ani1
 
 % Related Work
 \newpage
-\section{Related Works}
+\chapter{Literature Review}
 \section*{Traditional Taxonomic Approaches}
 
 \section*{Deep Learning for Fine-Grained Image Classification}
@@ -312,6 +325,8 @@ These interpretability methods are particularly valuable in fine-grained classif
     \item To implement robust interpretability techniques that reveal which features influence model decisions, allowing validation against ornithological expertise.
     \item To analyze whether consistent morphological differences exist between the two species. 
     \item Identify key discriminative features and perform analyses to get statistical information.
+    \item To find out if the results of the analysis are statistically significant.
+    \item Whether the features can be used to identify the species of a gull in the field.
 \end{enumerate}
 
 \subsection*{Specific Objectives}
@@ -337,15 +352,12 @@ The project was carried out in four phases:
         \end{itemize}
 \end{enumerate}
 
-% Description of Work
-\newpage
-\section{Description of Work}
 
 % Methodology
 \newpage
-\section{Methodology}
+\chapter{Methodology}
 
-\subsection{Google Colab Platform}
+\section{Google Colab Platform}
 
 Google Colab was selected as the primary platform for developing and training deep learning models. As described by Anjum et al. \citet{anjum2021}, Google Colab offers significant advantages for machine learning research through its cloud-based environment with integrated GPU acceleration enabling fast model training. The platform's pre-installed libraries and integration with Google Drive provided an efficient workflow for model development, experimentation, and storage of datasets and trained models. This approach aligns with modern best practices in deep learning research where computational efficiency is crucial for iterative model development and refinement.
 
@@ -356,21 +368,23 @@ To mitigate these issues, two strategies were implemented. First, the relatively
 
 \subsection{Python and PyTorch Framework}
 
-The implementation was carried out using Python as the primary programming language, chosen for its extensive library support and widespread adoption in the machine learning community \citep{geron2019}. For the deep learning framework, PyTorch was selected over alternatives like TensorFlow or Keras due to its dynamic computational graph which allows for more flexible model development and easier debugging.
-
-PyTorch offered several key advantages for our transfer learning approach:
+The implementation utilized Python and PyTorch, chosen for their extensive machine learning ecosystem and dynamic computational graph capabilities \citep{geron2019}. PyTorch's key advantages included:
 
 \begin{itemize}
-    \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach allowed for intuitive debugging and model modification when adapting pre-trained architectures for our classification task.
+    \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach enabled 
+    intuitive debugging and rapid modification of pre-trained architectures.
     
-    \item \textbf{Flexible Model Customization:} The implementation benefited from PyTorch's object-oriented approach, making it straightforward to modify pre-trained models while preserving feature extraction capabilities.
+    \item \textbf{Flexible Model Customization:} Object-oriented design facilitated efficient
+    fine-tuning while preserving valuable feature extraction capabilities.
     
-    \item \textbf{Efficient Data Processing:} PyTorch's DataLoader and transformation pipelines facilitated batch processing and on-the-fly data augmentation, crucial for maximizing the utility of our limited dataset.
+    \item \textbf{Efficient Data Processing:} DataLoader and transformation pipelines supported
+    batch processing and on-the-fly augmentation for our limited dataset.
     
-    \item \textbf{Gradient Visualization:} Native support for gradient computation made implementing Grad-CAM and other visualization techniques more straightforward, enabling better model interpretability.
+    \item \textbf{Gradient Computation and Visualization:} Native gradient support simplified
+    implementation of Grad-CAM, enhancing model interpretability.
 \end{itemize}
 
-Similar to approaches described by Raffel et al. \citet{raffel2023}, the implementation prioritized efficiency to work within limited computational resources while achieving high-quality results.
+Similar to approaches described by Raffel et al. \citet{raffel2023}, the implementation prioritized efficiency while working within limited computational resources.
 
 
 % \subsection{Python and PyTorch Framework}
@@ -1625,7 +1639,7 @@ This comprehensive clustering analysis provides insights into the natural groupi
 
 
 
-\section{Results}
+\chapter{Results}
 
 
 
@@ -1680,6 +1694,180 @@ Table \ref{tab:model_accuracy} summarizes the final performance metrics evaluate
 Figure \ref{fig:interpretability_maps} illustrates the regions identified as most salient by different models for a sample image. Subfigure \ref{sfig:interp_vgg} shows the result for VGG-16, while Subfigure \ref{sfig:interp_vit} shows the result for ViT.
 
 
+\subsection{Overfitting Analysis of the VGG-16 Model}
+
+
+The proposed model demonstrates strong generalization capabilities with no significant indication of overfitting. As shown in Fig.~\ref{fig:training_curves}, validation metrics remain stable or improve throughout training, with validation accuracy increasing from 81.17\% to 95.45\% over 20 epochs. While training loss decreases to near-zero ($2.57 \times 10^{-4}$), validation performance continues to improve, reaching a balanced accuracy of 0.9084 and Matthews Correlation Coefficient (MCC) of 0.8304 in the final epochs.
+
+The consistent improvement in validation metrics, particularly ROC-AUC (0.9888) and Average Precision (0.9979), suggests the model is learning generalizable patterns rather than memorizing training data. The simultaneous convergence of multiple validation metrics (accuracy, balanced accuracy, MCC) after epoch 14 further supports this conclusion. These results indicate the model architecture and regularization techniques effectively prevent overfitting on this classification task.
+
+To assess whether the VGG-16 (fine-tuned) model was overfitting, its performance was compared across the training, validation, and test sets. Table~\ref{tab:model_accuracy} shows that the validation accuracy (94.5\%) and test accuracy (93.8\%) are closely matched, with only a 0.7\% difference, indicating minimal overfitting.
+
+Furthermore, the training and validation loss curves (Figure~\ref{fig:vgg_loss_curves}) demonstrate that the model’s validation loss did not diverge or increase significantly relative to the training loss, which would be expected if overfitting was occurring. Instead, both loss curves plateaued at similar values.
+
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{images/vgg_loss_curves.png} % Replace with your actual plot file
+%     \caption{Training and validation loss curves for VGG-16, showing minimal gap and no sign of overfitting.}
+%     \label{fig:vgg_loss_curves}
+% \end{figure}
+
+Finally, the performance on the unseen test set confirms that the model generalizes well to new data. Therefore, there is strong evidence that the VGG-16 model is not overfitting.
+
+\textbf{Summary of anti-overfitting evidence:}
+\begin{itemize}
+    \item Validation and test accuracy are nearly identical.
+    \item Loss curves for training and validation align closely without divergence.
+    \item High performance is maintained on the unseen test set.
+    \item Visual inspection of Grad-CAM maps shows that the model focuses on biologically-relevant features, reducing the likelihood of memorizing spurious correlations.
+\end{itemize}
+
+\subsection{Intensity Analysis Results}
+The intensity analysis revealed significant quantifiable differences in wing and wingtip patterns between Slaty-backed Gulls and Glaucous-winged Gulls, providing strong discriminative features for species identification.
+
+\subsubsection{Wing Intensity Analysis}
+Statistical analysis of wing intensity demonstrated clear differences between the two gull species, with consistent patterns across multiple samples:
+
+\begin{itemize}
+    \item \textbf{Mean Intensity}: Slaty-backed Gulls exhibited significantly darker wing patterns with a mean intensity of 73.98 (SD: 21.90), while Glaucous-winged Gulls displayed much lighter patterns with a mean intensity of 154.10 (SD: 30.82)
+    \item \textbf{Statistical Significance}: The difference was highly significant (p < 0.001)
+    \item \textbf{Percentage Difference}: Glaucous-winged Gull wings were 108.3\% brighter than Slaty-backed Gull wings
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wing_intensity_analysis.png}
+        \caption{Comparison of wing intensity values between species.}
+        \label{fig:wing_intensity}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/WINGINTENSITY.png}
+        \caption{Mean wing intensity across samples.}
+        \label{fig:wing_intensity_means}
+    \end{subfigure}
+    \caption{Wing intensity metrics for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}
+    \label{fig:wing_intensity_combined}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/ditribution.png}
+    \caption{Distribution of wing pixel intensities, clearly separating the darker Slaty-backed Gull from the lighter Glaucous-winged Gull.}
+    \label{fig:wing_distribution}
+\end{figure}
+
+\subsubsection{Wingtip Darkness Analysis}
+Wingtip regions showed the most pronounced differences between species, particularly in the proportion of very dark pixels:
+
+\begin{itemize}
+    \item \textbf{Darkness Proportion}: 56.69\% of wingtip pixels in Slaty-backed Gulls were darker than the mean wing intensity, compared to 47.71\% in Glaucous-winged Gulls
+    \item \textbf{Very Dark Pixels}:
+    \begin{itemize}
+        \item Slaty-backed Gull: 25.24\% of pixels below 30 intensity, 33.40\% below 40, 41.15\% below 50
+        \item Glaucous-winged Gull: 0.0856\% below 30, 0.2720\% below 40, 0.5683\% below 50
+    \end{itemize}
+    \item \textbf{Raw Pixel Counts}: Slaty-backed Gulls had 73,592 very dark pixels on average in wingtip regions, Glaucous-winged Gulls only 8.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_darkness_analysis.png}
+        \caption{Wingtip darkness patterns.}
+        \label{fig:wingtip_darkness}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/pixelsbelowthresh.png}
+        \caption{Percent of pixels below darkness thresholds.}
+        \label{fig:pixels_below_thresh}
+    \end{subfigure}
+    \caption{Analysis of wingtip darkness, showing species-specific thresholds and proportions.}
+    \label{fig:wingtip_darkness_combined}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/darkpixels.png}
+        \caption{Very dark pixel counts.}
+        \label{fig:dark_pixels}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/wingtip_darkness_heatmap.png}
+        \caption{Wingtip darkness heatmap.}
+        \label{fig:wingtip_heatmap}
+    \end{subfigure}
+    \caption{Quantitative and visual analysis of very dark pixels in wingtip regions for both gull species.}
+    \label{fig:dark_pixel_heat_combined}
+\end{figure}
+
+\subsubsection{Pixel Intensity Distribution Analysis}
+Further examination of the pixel intensity distributions revealed distinct, reliable discriminative features:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/intensitydistribution.png}
+        \caption{Wingtip pixel intensity distribution.}
+        \label{fig:intensity_distribution}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/TIPdistribution.png}
+        \caption{Distribution by species.}
+        \label{fig:tip_distribution}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/verydarkdist.png}
+        \caption{Very dark pixel distribution.}
+        \label{fig:very_dark_dist}
+    \end{subfigure}
+    \caption{Pixel intensity distributions and species-specific trends in wing and wingtip regions.}
+    \label{fig:intensity_dist_combined}
+\end{figure}
+
+\subsubsection{Wing-Wingtip Contrast Analysis}
+The contrast between wing and wingtip regions proved to be another defining characteristic for species identification:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/intensitydiffthreshold.png}
+        \caption{Intensity difference at thresholds.}
+        \label{fig:intensity_diff_threshold}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/intensitydiffthreshold2.png}
+        \caption{Alternative threshold visualization.}
+        \label{fig:intensity_diff_threshold2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/diffbythresh.png}
+        \caption{Darkness differences across thresholds.}
+        \label{fig:diff_by_thresh}
+    \end{subfigure}
+    \caption{Comparison of wing and wingtip intensity differences for species differentiation.}
+    \label{fig:wingtip_contrast_combined}
+\end{figure}
 
 
 \subsection{Intensity Analysis Results}

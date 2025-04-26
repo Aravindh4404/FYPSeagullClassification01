@@ -1,0 +1,21 @@
+Model Test Results
+=================
+
+Model: EnhancedViT
+Test Accuracy: 0.9787
+Confusion Matrix:
+[[14  0]
+ [ 1 32]]
+
+Model: VGG16Modified
+Test Accuracy: 0.9574
+Confusion Matrix:
+[[14  0]
+ [ 2 31]]
+
+Model: ViTModified
+Test Accuracy: 0.9149
+Confusion Matrix:
+[[13  1]
+ [ 3 30]]
+
