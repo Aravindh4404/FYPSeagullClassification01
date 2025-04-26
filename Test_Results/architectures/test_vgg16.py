@@ -110,24 +110,12 @@ def save_metrics(output_dir, all_labels, all_preds, class_names):
 
     return metrics_file_path
 
-
 def save_gradcam_all_images(output_dir, image_path, heatmap, file_name, true_class, predicted_class, confidence):
     gradcam_all_dir = os.path.join(output_dir, "gradcam_all")
     os.makedirs(gradcam_all_dir, exist_ok=True)
     output_path = os.path.join(gradcam_all_dir, file_name)
     overlay_heatmap(image_path, heatmap, output_path)
-    
-    # Add prediction info
-    img = cv2.imread(output_path)
-    confidence_text = f"Confidence: {confidence:.2f}"
-    true_class_text = f"True: {true_class}"
-    predicted_text = f"Predicted: {predicted_class}"
-    
-    cv2.putText(img, true_class_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
-    cv2.putText(img, predicted_text, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
-    cv2.putText(img, confidence_text, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
-    
-    cv2.imwrite(output_path, img)
+    # Do NOT add any text overlays here
     return output_path
 
 

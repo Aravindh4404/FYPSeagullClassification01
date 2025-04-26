@@ -86,29 +86,26 @@
 \contentsline {subsection}{\numberline {.5.2}Performance Evaluation}{42}{subsection.Alph0.5.2}%
 \contentsline {subsection}{\numberline {.5.3}Visualization and Analysis}{42}{subsection.Alph0.5.3}%
 \contentsline {chapter}{\numberline {A}Results}{43}{appendix.A}%
-\contentsline {subsection}{\numberline {A.0.1}Overfitting Analysis of the VGG-16 Model}{44}{subsection.A.0.1}%
-\contentsline {subsection}{\numberline {A.0.2}Intensity Analysis Results}{44}{subsection.A.0.2}%
+\contentsline {subsection}{\numberline {A.0.1}Overfitting Analysis of the VGG-16 Model}{43}{subsection.A.0.1}%
+\contentsline {subsection}{\numberline {A.0.2}Intensity Analysis Results}{45}{subsection.A.0.2}%
 \contentsline {subsubsection}{Wing Intensity Analysis}{45}{subsection.A.0.2}%
-\contentsline {subsubsection}{Wingtip Darkness Analysis}{45}{figure.caption.9}%
-\contentsline {subsubsection}{Pixel Intensity Distribution Analysis}{46}{figure.caption.11}%
-\contentsline {subsubsection}{Wing-Wingtip Contrast Analysis}{47}{figure.caption.12}%
-\contentsline {subsection}{\numberline {A.0.3}Intensity Analysis Results}{47}{subsection.A.0.3}%
-\contentsline {subsubsection}{Wing Intensity Analysis}{47}{subsection.A.0.3}%
-\contentsline {subsubsection}{Wingtip Darkness Analysis}{49}{figure.caption.16}%
-\contentsline {subsubsection}{Pixel Intensity Distribution Analysis}{49}{figure.caption.20}%
-\contentsline {subsubsection}{Wing-Wingtip Contrast Analysis}{52}{figure.caption.23}%
-\contentsline {subsubsection}{Species Clustering Analysis}{52}{figure.caption.26}%
-\contentsline {subsection}{\numberline {A.0.4}Biological Significance of Intensity Analysis}{52}{subsection.A.0.4}%
-\contentsline {subsection}{\numberline {A.0.5}Intensity Analysis Results}{55}{subsection.A.0.5}%
-\contentsline {subsubsection}{Wing Intensity Analysis}{55}{subsection.A.0.5}%
-\contentsline {subsubsection}{Comparative Analysis}{56}{subsection.A.0.5}%
-\contentsline {subsection}{\numberline {A.0.6}Clustering Analysis Results}{56}{subsection.A.0.6}%
-\contentsline {subsubsection}{K-means Clustering}{56}{subsection.A.0.6}%
-\contentsline {subsubsection}{Hierarchical Clustering}{57}{figure.caption.30}%
-\contentsline {subsubsection}{Gaussian Mixture Model}{58}{figure.caption.32}%
-\contentsline {subsection}{\numberline {A.0.7}Algorithm Comparison}{59}{subsection.A.0.7}%
-\contentsline {section}{\numberline {A.1}Wing Intensity Comparison Between Gull Species}{60}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}Wing Intensity Analysis}{60}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Dark Pixel Analysis}{61}{subsection.A.1.2}%
-\contentsline {subsection}{\numberline {A.1.3}Raw Pixel Count Analysis}{61}{subsection.A.1.3}%
-\contentsline {section}{\numberline {A.2}Biological Significance}{61}{section.A.2}%
+\contentsline {subsubsection}{Wingtip Darkness Analysis}{46}{figure.caption.10}%
+\contentsline {subsubsection}{Pixel Intensity Distribution Analysis}{47}{figure.caption.12}%
+\contentsline {subsubsection}{Wing-Wingtip Contrast Analysis}{48}{figure.caption.13}%
+\contentsline {subsection}{\numberline {A.0.3}Biological Significance of Intensity Analysis}{48}{subsection.A.0.3}%
+\contentsline {subsection}{\numberline {A.0.4}Intensity Analysis Results}{49}{subsection.A.0.4}%
+\contentsline {subsubsection}{Comparative Analysis}{49}{subsection.A.0.4}%
+\contentsline {subsection}{\numberline {A.0.5}LBP Pattern Results}{50}{subsection.A.0.5}%
+\contentsline {subsection}{\numberline {A.0.6}Most Discriminative Features}{50}{subsection.A.0.6}%
+\contentsline {subsection}{\numberline {A.0.7}LBP Code Distributions}{51}{subsection.A.0.7}%
+\contentsline {subsection}{\numberline {A.0.8}Summary}{52}{subsection.A.0.8}%
+\contentsline {subsection}{\numberline {A.0.9}Clustering Analysis Results}{52}{subsection.A.0.9}%
+\contentsline {subsubsection}{K-means Clustering}{52}{subsection.A.0.9}%
+\contentsline {subsubsection}{Hierarchical Clustering}{53}{figure.caption.21}%
+\contentsline {subsubsection}{Gaussian Mixture Model}{54}{figure.caption.23}%
+\contentsline {subsection}{\numberline {A.0.10}Algorithm Comparison}{55}{subsection.A.0.10}%
+\contentsline {section}{\numberline {A.1}Wing Intensity Comparison Between Gull Species}{56}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}Wing Intensity Analysis}{56}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}Dark Pixel Analysis}{57}{subsection.A.1.2}%
+\contentsline {subsection}{\numberline {A.1.3}Raw Pixel Count Analysis}{57}{subsection.A.1.3}%
+\contentsline {section}{\numberline {A.2}Biological Significance}{57}{section.A.2}%

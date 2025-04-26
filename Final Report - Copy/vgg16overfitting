@@ -1,0 +1,82 @@
+import React from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+// Your data from metrics.csv
+const data = [
+  {Epoch: 1, "Training Loss": 0.2249, "Validation Accuracy": 81.17, "Balanced Accuracy": 0.8553, "MCC": 0.5597, "ROC-AUC": 0.9532, "AP": 0.9900},
+  {Epoch: 2, "Training Loss": 0.0215, "Validation Accuracy": 94.16, "Balanced Accuracy": 0.8845, "MCC": 0.7818, "ROC-AUC": 0.9237, "AP": 0.9715},
+  {Epoch: 3, "Training Loss": 0.1441, "Validation Accuracy": 92.21, "Balanced Accuracy": 0.7922, "MCC": 0.6878, "ROC-AUC": 0.9522, "AP": 0.9901},
+  {Epoch: 4, "Training Loss": 0.0105, "Validation Accuracy": 90.26, "Balanced Accuracy": 0.7000, "MCC": 0.5986, "ROC-AUC": 0.8935, "AP": 0.9627},
+  {Epoch: 5, "Training Loss": 0.0887, "Validation Accuracy": 92.86, "Balanced Accuracy": 0.8767, "MCC": 0.7417, "ROC-AUC": 0.9746, "AP": 0.9948},
+  {Epoch: 6, "Training Loss": 0.0520, "Validation Accuracy": 94.81, "Balanced Accuracy": 0.8884, "MCC": 0.8036, "ROC-AUC": 0.9860, "AP": 0.9974},
+  {Epoch: 7, "Training Loss": 0.0106, "Validation Accuracy": 93.51, "Balanced Accuracy": 0.8967, "MCC": 0.7695, "ROC-AUC": 0.9882, "AP": 0.9978},
+  {Epoch: 8, "Training Loss": 0.0139, "Validation Accuracy": 92.86, "Balanced Accuracy": 0.7961, "MCC": 0.7158, "ROC-AUC": 0.9823, "AP": 0.9967},
+  {Epoch: 9, "Training Loss": 0.0449, "Validation Accuracy": 94.16, "Balanced Accuracy": 0.8522, "MCC": 0.7728, "ROC-AUC": 0.9802, "AP": 0.9961},
+  {Epoch: 10, "Training Loss": 0.0242, "Validation Accuracy": 94.16, "Balanced Accuracy": 0.8845, "MCC": 0.7818, "ROC-AUC": 0.9798, "AP": 0.9960},
+  {Epoch: 11, "Training Loss": 0.0017, "Validation Accuracy": 94.16, "Balanced Accuracy": 0.8684, "MCC": 0.7764, "ROC-AUC": 0.9780, "AP": 0.9956},
+  {Epoch: 12, "Training Loss": 0.0369, "Validation Accuracy": 94.16, "Balanced Accuracy": 0.8684, "MCC": 0.7764, "ROC-AUC": 0.9833, "AP": 0.9967},
+  {Epoch: 13, "Training Loss": 0.0019, "Validation Accuracy": 94.81, "Balanced Accuracy": 0.8884, "MCC": 0.8036, "ROC-AUC": 0.9870, "AP": 0.9975},
+  {Epoch: 14, "Training Loss": 0.0016, "Validation Accuracy": 95.45, "Balanced Accuracy": 0.9084, "MCC": 0.8304, "ROC-AUC": 0.9876, "AP": 0.9976},
+  {Epoch: 15, "Training Loss": 0.0002, "Validation Accuracy": 95.45, "Balanced Accuracy": 0.9084, "MCC": 0.8304, "ROC-AUC": 0.9876, "AP": 0.9976},
+  {Epoch: 16, "Training Loss": 0.0002, "Validation Accuracy": 94.81, "Balanced Accuracy": 0.8884, "MCC": 0.8036, "ROC-AUC": 0.9876, "AP": 0.9976},
+  {Epoch: 17, "Training Loss": 0.0002, "Validation Accuracy": 94.81, "Balanced Accuracy": 0.8884, "MCC": 0.8036, "ROC-AUC": 0.9876, "AP": 0.9976},
+  {Epoch: 18, "Training Loss": 0.0013, "Validation Accuracy": 95.45, "Balanced Accuracy": 0.9084, "MCC": 0.8304, "ROC-AUC": 0.9888, "AP": 0.9979},
+  {Epoch: 19, "Training Loss": 0.0009, "Validation Accuracy": 95.45, "Balanced Accuracy": 0.9084, "MCC": 0.8304, "ROC-AUC": 0.9888, "AP": 0.9979},
+  {Epoch: 20, "Training Loss": 0.0003, "Validation Accuracy": 95.45, "Balanced Accuracy": 0.9084, "MCC": 0.8304, "ROC-AUC": 0.9888, "AP": 0.9979},
+];
+
+export default function ModelMetricsChart() {
+  return (
+    <div className="w-full bg-white p-4 rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold text-center mb-4">Model Training and Validation Metrics</h2>
+      
+      {/* Loss Chart */}
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold mb-2">Training Loss</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="Epoch" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="Training Loss" stroke="#8884d8" activeDot={{ r: 8 }} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      
+      {/* Accuracy Metrics */}
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold mb-2">Accuracy Metrics</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="Epoch" />
+            <YAxis domain={[60, 100]} />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="Validation Accuracy" stroke="#82ca9d" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="Balanced Accuracy" stroke="#ffc658" activeDot={{ r: 8 }} strokeDasharray="5 5" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      
+      {/* Other Performance Metrics */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Other Performance Metrics</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="Epoch" />
+            <YAxis domain={[0.5, 1]} />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="MCC" stroke="#ff7300" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="ROC-AUC" stroke="#0088fe" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="AP" stroke="#00C49F" activeDot={{ r: 8 }} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}

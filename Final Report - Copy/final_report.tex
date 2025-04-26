@@ -27,7 +27,6 @@
 \renewcommand{\contentsname}{Table of Contents}
 
 
-\usepackage{graphicx} % Required for including images
 \usepackage{booktabs} % For professional quality tables
 \usepackage{caption}  % For captions of figures and tables
 \usepackage{subcaption} % For subfigures within a figure environment
@@ -36,6 +35,7 @@
 % \usepackage{hyperref} % Optional: for clickable links and references
 % \usepackage[capitalise]{cleveref} % Optional: for smart cross-referencing (e.g., Figure 1, Table 2)
 
+\usepackage{pgffor}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em} % Adjust spacing between paragraphs
@@ -294,7 +294,7 @@ The transfer learning process typically follows a two-phase approach as describe
 \section*{Data Augmentation and Class Imbalance Strategies}
 Working with limited datasets often introduces challenges related to class imbalance and overfitting. \citep{buda2018systematic} conducted a comprehensive analysis of class imbalance in convolutional neural networks and found that oversampling (duplicating samples from minority classes) generally outperforms undersampling for deep learning models.
 
-For fine-grained bird classification specifically, \citep{chu2020fine} employed extensive data augmentation techniques including random cropping, rotation, flipping, and color jittering to improve model robustness. They demonstrated that such augmentations were particularly effective for classes with fewer samples, improving overall accuracy by up to 3.2%.
+For fine-grained bird classification specifically, \citep{chu2020fine} employed extensive data augmentation techniques including random cropping, rotation, flipping, and color jittering to improve model robustness. They demonstrated that such augmentations were particularly effective for classes with fewer samples, improving overall accuracy by up to 3.2\%.
 
 More advanced techniques such as mixup \citep{zhang2018mixup}, which creates synthetic training examples by linearly interpolating between pairs of images and their labels, have shown effectiveness in fine-grained classification tasks. \citep{cui2019class} integrated mixup with class-balanced loss to address imbalance in fine-grained datasets, achieving state-of-the-art performance on CUB-200-2011.
 
@@ -1670,22 +1670,91 @@ Table \ref{tab:model_accuracy} summarizes the final performance metrics evaluate
 
 \section*{Model Interpretability} % Example section
 
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird1.jpg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird10.jpeg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird11.jpeg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird12.jpeg}
+        \caption{}
+    \end{subfigure}
+    
+    \vspace{0.3em}
+    
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird2.jpg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird3.jpg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird4.jpg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird5.jpg}
+        \caption{}
+    \end{subfigure}
+    
+    \vspace{0.3em}
+    
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird6.jpg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird7.jpg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird8.jpg}
+        \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.22\textwidth}
+        \includegraphics[width=\textwidth]{images/interpretability/vgg/bird9.jpeg}
+        \caption{}
+    \end{subfigure}
+    \caption{Bird interpretation visualizations.}
+    \label{fig:bird-interpretability}
+\end{figure}
+
 \begin{figure}[htbp] % Placement options for the figure environment
     \centering % Centers the figure content
     
-    \begin{subfigure}[b]{0.48\textwidth} % Subfigure 1 (adjust width as needed)
-        \centering
-        \includegraphics[width=\textwidth]{images/interpretability/vgg/019_gradcam.png} % Replace with your image file path
-        \caption{VGG-16 Interpretability Map} % Caption for the first subfigure
-        \label{sfig:interp_vgg} % Label for the first subfigure
-    \end{subfigure}
-    \hfill % Automatically spaces the subfigures horizontally
-    \begin{subfigure}[b]{0.48\textwidth} % Subfigure 2 (adjust width as needed)
-        \centering
-        \includegraphics[width=\textwidth]{images/interpretability/vit/019_gradcam.png} % Replace with your image file path
-        \caption{ViT Interpretability Map} % Caption for the second subfigure
-        \label{sfig:interp_vit} % Label for the second subfigure
-    \end{subfigure}
+    % \begin{subfigure}[b]{0.48\textwidth} % Subfigure 1 (adjust width as needed)
+    %     \centering
+    %     \includegraphics[width=\textwidth]{images/interpretability/vgg/019_gradcam.png} % Replace with your image file path
+    %     \caption{VGG-16 Interpretability Map} % Caption for the first subfigure
+    %     \label{sfig:interp_vgg} % Label for the first subfigure
+    % \end{subfigure}
+    % \hfill % Automatically spaces the subfigures horizontally
+    % \begin{subfigure}[b]{0.48\textwidth} % Subfigure 2 (adjust width as needed)
+    %     \centering
+    %     \includegraphics[width=\textwidth]{images/interpretability/vit/019_gradcam.png} % Replace with your image file path
+    %     \caption{ViT Interpretability Map} % Caption for the second subfigure
+    %     \label{sfig:interp_vit} % Label for the second subfigure
+    % \end{subfigure}
     
     \caption{Comparison of Interpretability Visualizations for VGG-16 and ViT models.} % Overall figure caption
     \label{fig:interpretability_maps} % Overall figure label for cross-referencing
@@ -1869,148 +1938,6 @@ The contrast between wing and wingtip regions proved to be another defining char
     \label{fig:wingtip_contrast_combined}
 \end{figure}
 
-
-\subsection{Intensity Analysis Results}
-The intensity analysis revealed significant quantifiable differences in wing and wingtip patterns between Slaty-backed Gulls and Glaucous-winged Gulls, providing strong discriminative features for species identification.
-
-\subsubsection{Wing Intensity Analysis}
-Statistical analysis of wing intensity demonstrated clear differences between the two gull species, with consistent patterns across multiple samples:
-
-\begin{itemize}
-    \item \textbf{Mean Intensity}: Slaty-backed Gulls exhibited significantly darker wing patterns with a mean intensity of 73.98 (SD: 21.90), while Glaucous-winged Gulls displayed much lighter patterns with a mean intensity of 154.10 (SD: 30.82)
-    \item \textbf{Statistical Significance}: The difference was highly significant (p < 0.001)
-    \item \textbf{Percentage Difference}: Glaucous-winged Gull wings were 108.3\% brighter than Slaty-backed Gull wings
-\end{itemize}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wing_intensity_analysis.png}
-    \caption{Comparison of wing intensity values between Slaty-backed Gulls and Glaucous-winged Gulls, showing significant differences in brightness patterns.}
-    \label{fig:wing_intensity}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/WINGINTENSITY.png}
-    \caption{Mean wing intensity measurements across samples, demonstrating consistent species-specific patterns.}
-    \label{fig:wing_intensity_means}
-\end{figure}
-
-The distribution of pixel intensities across wing regions also showed distinctive patterns between species:
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/ditribution.png}
-    \caption{Distribution of wing pixel intensities, showing clear separation between the darker Slaty-backed Gull wings and lighter Glaucous-winged Gull wings.}
-    \label{fig:wing_distribution}
-\end{figure}
-
-\subsubsection{Wingtip Darkness Analysis}
-Wingtip regions showed the most pronounced differences between species, particularly in the proportion of very dark pixels:
-
-\begin{itemize}
-    \item \textbf{Darkness Proportion}: 56.69\% of wingtip pixels in Slaty-backed Gulls were darker than the mean wing intensity, compared to 47.71\% in Glaucous-winged Gulls
-    \item \textbf{Very Dark Pixels}: The most striking difference was in the percentage of very dark pixels:
-    \begin{itemize}
-        \item Slaty-backed Gull: 25.24\% of pixels below 30 intensity, 33.40\% below 40, and 41.15\% below 50
-        \item Glaucous-winged Gull: Only 0.0856\% of pixels below 30 intensity, 0.2720\% below 40, and 0.5683\% below 50
-    \end{itemize}
-    \item \textbf{Raw Pixel Counts}: On average, Slaty-backed Gulls had 73,592 very dark pixels in wingtip regions, while Glaucous-winged Gulls had only 8
-\end{itemize}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_darkness_analysis.png}
-    \caption{Analysis of wingtip darkness patterns showing the stark contrast between species.}
-    \label{fig:wingtip_darkness}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/pixelsbelowthresh.png}
-    \caption{Percentage of wingtip pixels below various darkness thresholds, highlighting the dramatically higher proportion of dark pixels in Slaty-backed Gulls.}
-    \label{fig:pixels_below_thresh}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/darkpixels.png}
-    \caption{Count of very dark pixels in wingtip regions, showing the vast difference between species.}
-    \label{fig:dark_pixels}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/wingtip_darkness_heatmap.png}
-    \caption{Heatmap visualization of wingtip darkness patterns across samples.}
-    \label{fig:wingtip_heatmap}
-\end{figure}
-
-\subsubsection{Pixel Intensity Distribution Analysis}
-Further examination of the pixel intensity distributions revealed distinct patterns that provide reliable discriminative features:
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/intensitydistribution.png}
-    \caption{Wingtip pixel intensity distribution comparing both species across the full intensity range.}
-    \label{fig:intensity_distribution}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/TIPdistribution.png}
-    \caption{Distribution of wingtip pixel intensities showing characteristic species patterns.}
-    \label{fig:tip_distribution}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/verydarkdist.png}
-    \caption{Distribution of very dark pixels specifically, highlighting the significant presence in Slaty-backed Gulls versus near absence in Glaucous-winged Gulls.}
-    \label{fig:very_dark_dist}
-\end{figure}
-
-\subsubsection{Wing-Wingtip Contrast Analysis}
-The contrast between wing and wingtip regions proved to be another defining characteristic for species identification:
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/intensitydiffthreshold.png}
-    \caption{Analysis of wing-wingtip intensity differences at various thresholds.}
-    \label{fig:intensity_diff_threshold}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/intensitydiffthreshold2.png}
-    \caption{Alternative visualization of wing-wingtip intensity differences across threshold values.}
-    \label{fig:intensity_diff_threshold2}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/diffbythresh.png}
-    \caption{Species comparison of wingtip darkness differences across multiple threshold levels.}
-    \label{fig:diff_by_thresh}
-\end{figure}
-
-\subsubsection{Species Clustering Analysis}
-Cluster analysis based on wing and wingtip intensity features showed clear separation between species:
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/clusterwingwingtip.png}
-    \caption{Cluster visualization of samples based on wing and wingtip intensity features, demonstrating clear species separation.}
-    \label{fig:cluster_wing_wingtip}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/ratiogwgsbgdarkness.png}
-    \caption{Ratio of darkness patterns between Glaucous-winged and Slaty-backed Gulls across various metrics.}
-    \label{fig:ratio_darkness}
-\end{figure}
-
 \subsection{Biological Significance of Intensity Analysis}
 The quantitative results obtained from our intensity analysis align strongly with known ornithological field identification features and provide several key insights:
 
@@ -2032,14 +1959,7 @@ These quantitative differences provide strong validation for the deep learning m
 
 The intensity analysis revealed significant differences in wing and wingtip patterns between the two species, with multiple metrics providing strong discriminative features.
 
-\subsubsection{Wing Intensity Analysis}
-Statistical analysis of wing intensity showed significant differences between species:
-\begin{itemize}
-    \item \textbf{Mean Intensity}: Slaty-backed Gulls showed consistently darker wing patterns with a mean intensity of 85.3 (SD: 12.4), while Glaucous-winged Gulls exhibited lighter patterns with a mean intensity of 112.7 (SD: 15.8)
-    \item \textbf{Statistical Significance}: A t-test confirmed significant differences (p < 0.001) between species
-    \item \textbf{Percentage Difference}: Glaucous-winged Gulls showed 32.1\% brighter wing patterns compared to Slaty-backed Gulls
-    \item \textbf{Distribution}: The intensity distribution showed clear separation between species, with minimal overlap in the middle range
-\end{itemize}
+WRONG Information:
 
 \begin{itemize}
     \item \textbf{Contrast Ratio}: Slaty-backed Gulls showed a 2.8x higher ratio of dark wingtip pixels compared to Glaucous-winged Gulls
@@ -2062,6 +1982,67 @@ The combined analysis revealed several key discriminative features:
 
 These morphological differences were effectively captured by the deep learning model, contributing to high classification accuracy between these species.
 
+
+\subsection{LBP Pattern Results}
+
+To investigate subtle textural differences between Slaty-backed Gulls and Glaucous-winged Gulls, a comprehensive Local Binary Pattern (LBP) analysis was conducted on three anatomical regions: wing, wingtip, and head. Both standard LBP histograms and abstract pattern features (number of ones, transitions) were extracted. Key quantitative findings are summarized below.
+
+\subsection{Most Discriminative Features}
+
+The most effective features for distinguishing the two species were identified in the wingtip and wing regions (Table~\ref{tab:feature-diff}). Slaty-backed Gulls consistently showed greater texture variability and lower mean intensity, indicating darker and more complex patterns.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Features_Analysis//Results_LBP_Analysis_Uniform/top_discriminative_features.png}
+    \caption{Top discriminative LBP features for species separation. The bar plot ranks LBP-derived features by percentage difference between species.}
+    \label{fig:top-features}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Most discriminative features and their percentage differences.}
+\label{tab:feature-diff}
+\begin{tabular}{lcc}
+\hline
+\textbf{Feature} & \textbf{Region} & \textbf{Difference (\%)} \\
+\hline
+Standard Deviation of Intensity & Wingtip & 56.7 \\
+Mean Intensity & Wing & 50.1 \\
+Mean Intensity & Wingtip & 45.6 \\
+Energy \& Uniformity & Wingtip & 33.6 \\
+Number of Ones (Abstract LBP) & Wingtip & 3.1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{LBP Code Distributions}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/Results_LBP_Analysis_Uniform/wingtip_lbp_histogram.png}
+    \caption{LBP code distribution in the wingtip region. The distinct histogram shapes highlight fundamental wingtip texture differences.}
+    \label{fig:lbp-wingtip}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/Results_LBP_Analysis_Uniform/wingtip_ones_histogram.png}
+    \caption{Distribution of the number of ones in LBP codes (wingtip region). Slaty-backed Gulls show more frequent bright spots or edges in darker feather regions.}
+    \label{fig:ones-wingtip}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/Results_LBP_Analysis_Uniform/discriminative_power_heatmap.png}
+    \caption{Heatmap of discriminative power for LBP features across regions and metrics. Darker colors indicate higher discriminatory ability, notably in wingtip and wing regions.}
+    \label{fig:heatmap}
+\end{figure}
+
+\subsection{Summary}
+
+LBP-based texture analysis, particularly in the wingtip region, yields highly discriminative features for distinguishing Slaty-backed from Glaucous-winged Gulls. Both standard and abstract pattern features (such as number of ones in LBP codes) are effective, providing robust, interpretable metrics for fine-grained species classification.
+
+
 \subsection{Clustering Analysis Results}
 
 The clustering analysis provided strong validation of the species differentiation, with multiple algorithms demonstrating clear separation between the two species.
@@ -2071,14 +2052,14 @@ K-means clustering achieved an accuracy of 94.2\% in separating the species, as 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/kmeans_clustering.png}
+    \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_clustering.png}
     \caption{K-means clustering results showing clear separation between species}
     \label{fig:kmeans_clustering}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/kmeans_feature_importance.png}
+    \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_feature_importance.png}
     \caption{Feature importance analysis from K-means clustering}
     \label{fig:kmeans_feature_importance}
 \end{figure}
@@ -2088,14 +2069,14 @@ Hierarchical clustering demonstrated similar effectiveness, with a dendrogram sh
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/hierarchical_clustering.png}
+    \includegraphics[width=0.8\textwidth]{images/clustering/hierarchical_clustering.png}
     \caption{Hierarchical clustering dendrogram showing species separation}
     \label{fig:hierarchical_clustering}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/hierarchical_confusion_matrix.png}
+    \includegraphics[width=0.8\textwidth]{images/clustering/hierarchical_confusion_matrix.png}
     \caption{Confusion matrix for hierarchical clustering results}
     \label{fig:hierarchical_confusion_matrix}
 \end{figure}
@@ -2105,14 +2086,14 @@ The GMM approach provided the highest accuracy at 95.6\%, with clear separation 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/gmm_clustering.png}
+    \includegraphics[width=0.8\textwidth]{images/clustering/gmm_clustering.png}
     \caption{Gaussian Mixture Model clustering results}
     \label{fig:gmm_clustering}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/gmm_confusion_matrix.png}
+    \includegraphics[width=0.8\textwidth]{images/clustering/gmm_confusion_matrix.png}
     \caption{Confusion matrix for GMM clustering results}
     \label{fig:gmm_confusion_matrix}
 \end{figure}
@@ -2122,7 +2103,7 @@ Figure \ref{fig:algorithm_comparison} shows a comparative analysis of all cluste
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/algorithm_comparison.png}
+    \includegraphics[width=0.8\textwidth]{images/clustering/algorithm_comparison.png}
     \caption{Comparative analysis of clustering algorithms}
     \label{fig:algorithm_comparison}
 \end{figure}
