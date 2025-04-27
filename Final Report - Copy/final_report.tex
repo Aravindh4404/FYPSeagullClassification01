@@ -163,17 +163,14 @@
 % Introduction
 \chapter{Introduction}
 
-Biodiversity is under unprecedented pressure due to climate change and human influence. The alarming rates at which species are disappearing indicate that the sixth mass extinction is underway \citep{Ceballos2017}. Precious life forms that took evolution millions of years to create are being lost before we become aware of their existence. Understanding what biodiversity we have and what we stand to lose is crucial for convincing decision-makers to take appropriate conservation action.
+Biodiversity is under unprecedented pressure due to climate change and human influence. The alarming rates at which species are disappearing indicate that the sixth mass extinction is underway \citep{Ceballos2017}. Understanding what biodiversity we have and what we stand to lose is crucial for convincing decision-makers to take appropriate conservation action. The gaps in taxonomic knowledge and shortage of experts constitute what is known as the "taxonomic impediment" \citep{taxonomicimpediment}, which hampers our ability to document and protect biodiversity effectively. Determining whether two populations can be consistently distinguished based on morphological traits remains essential for establishing taxonomic boundaries and designing appropriate conservation strategies.
 
-Accurate species identification is a key starting point for scientific research and conservation efforts. Taxonomy, the scientific field charged with describing and classifying life on Earth, is an endeavor as old as humanity itself. Throughout its development, taxonomy has proven to be more than just a descriptive discipline; it is a fundamental science upon which ecology, evolution, and conservation depend. Unfortunately, taxonomic research progresses slowly. The gaps in taxonomic knowledge and shortage of experts constitute what is known as the "taxonomic impediment" \citep{taxonomicimpediment}, which hampers our ability to document and protect biodiversity effectively.
+Birds are frequently utilized to assess environmental quality due to their sensitivity to ecological changes and ease of observation during field studies. Researchers often rely on bird diversity as an indicator of the diversity within other species groups and the overall health of human environments. Examples include monitoring environmental changes through bird population shifts, tracking climate change via bird migration patterns, and evaluating biodiversity by counting bird species. Accurate identification of bird species is essential for detecting species diversity and conserving rare or endangered birds promoting scientific research and conservation efforts.\citep{ani13020264}
 
-Determining whether two populations can be consistently distinguished based on morphological traits remains essential for establishing taxonomic boundaries and designing appropriate conservation strategies. This process forms the foundation of biodiversity assessment and conservation planning in an era of unprecedented environmental change. Automated taxon identification systems (ATIs) could both handle routine identifications and potentially assist in identifying new species. Traditional ATIs, however, have been limited by their reliance on hand-crafted features \citep{valan}, are time-consuming hindering large-scale surveys, making them difficult to generalize across different taxonomic groups.
+Among birds, gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. The wing and wingtip patterns—particularly the colour, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species. 
+%TODO CHECK FEATURES
 
-Birds are frequently utilized to assess environmental quality due to their sensitivity to ecological changes and ease of observation during field studies. Researchers often rely on bird diversity as an indicator of the diversity within other species groups and the overall health of human environments. Examples include monitoring environmental changes through bird population shifts, tracking climate change via bird migration patterns, and evaluating biodiversity by counting bird species. Accurate identification of bird species is essential for detecting species diversity and conserving rare or endangered birds.\citep{ani13020264}
-
-Among birds, gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. The wing and wingtip patterns—particularly the colour, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species.
-
-The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent. These difficulties stem from several interrelated factors. 
+The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent.
 Multiple confounding factors complicate identification \citep{adriaens2022}:
 \begin{itemize}
     \item \textbf{Hybridization:} Species can interbreed in overlapping ranges, creating intermediate forms.
@@ -189,38 +186,28 @@ As noted by ornithologists:
     ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \citep{ayyash2024}.
 \end{quote}
 
-This project addresses the complex task of fine-grained classification between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics. 
+This project addresses the multifaceted challenge of fine-grained analysis between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics that make accurate identification highly complex.
 
 \begin{quote}
-    ``Glaucous-winged Gulls also exhibit variably pigmented wingtips... these differences are often chalked up to individual
+    Glaucous-winged Gulls also exhibit variably pigmented wingtips... these differences are often chalked up to individual
     variation, at least by this author, but they're inconveniently found in several hybrid zones, creating potential for much
-    confusion.\citep{adriaens2022}
-    \end{quote}
+    confusion.
     
-    \begin{quote}
-        ``The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood'' \citep{adriaens2022gulls}.
-    \end{quote}
+    The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood \citep{adriaens2022gulls}.
+\end{quote}
 
-\section{Motivation}
-
-Manual identification to classify species requires per specimen analysis by expert taxonomists which is time consuming. As mentioned by \citep{Lu2024}, "While using machine learning techniques to solve the problem of fine-grained classification, traditional feature extraction methods necessitate manually designed features, such as edge detection, color histograms, feature point matching, and visual word bags, which have limited expressive capabilities and require extensive annotation details like bounding boxes and key points. The drawback of these methods lies in the extensive manual intervention required for feature selection and extraction."
-
+There are many methods that can be used for classification. Manual identification to classify species requires per specimen analysis by expert taxonomists which is time consuming. As mentioned by \citep{Lu2024}, "While using machine learning techniques to solve the problem of fine-grained classification, traditional feature extraction methods necessitate manually designed features, such as edge detection, color histograms, feature point matching, and visual word bags, which have limited expressive capabilities and require extensive annotation details like bounding boxes and key points. The drawback of these methods lies in the extensive manual intervention required for feature selection and extraction."
 
 Fine-grained image classification (FGIC), which focuses on identifying subtle differences between subclasses within the same category, has advanced rapidly over the past decade with the development of sophisticated deep neural network architectures. Deep learning approaches offer promising solutions to this taxonomic challenge through their ability to automatically learn discriminative features from large datasets\citep{source4}. 
 
-Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks~\citep{valan}. Features extracted through convolution are learned automatically by multilayer convolutional neural networks, offering the model greater adaptability to various tasks and datasets, with features possessing enhanced expressive and abstract capabilities. The benefit of convolutional feature extraction is its ability to perform feature extraction and classification within the same network, with the quality and quantity of features adjustable through the network's structure and parameters. \citep{source2}.
+Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks~\citep{valan}. Features extracted through convolution are learned automatically by multilayer convolutional neural networks, offering the model greater adaptability to various tasks and datasets, with features possessing enhanced expressive and abstract capabilities. The benefit of convolutional feature extraction is its ability to perform feature extraction and classification within the same network, with the quality and quantity of features adjustable through the network's structure and parameters \citep{source2} offering the model greater adaptability to various tasks and datasets \citep{Lu2024}. Getting good quality results in traditional machine Learning models is dependent on how good the data is labelled, whereas Deep Learning architectures don't necessarily require labelling, as Neural Networks are great at learning without guidelines~\cite{source5}.
+//TODO check references
 
 As demonstrated in comparative studies, 
 
-For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and VGG have demonstrated exceptional capabilities \cite{essay101313}, with recent studies such as \citep{transferln97} who mentioned that "deep learning is more effective than traditional machine learning algorithms in image recognition as the number of bird species increases." achieving accuracy rates exceeding 97\% in bird species classification tasks. \citep{ALFATEMI2024558} who compared deep learning and traditional machine learning algorithms achieved high accuracy of 94\% tackle the challenge of classifying bird species with high visual similarity and subtle variations. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species.
+For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and VGG have demonstrated exceptional capabilities \cite{essay101313}, with recent studies such as \citep{transferln97} who mentioned that "deep learning is more effective than traditional machine learning algorithms in image recognition as the number of bird species increases" achieving accuracy rates exceeding 97\% in bird species classification tasks. \citep{ALFATEMI2024558} compared deep learning and traditional machine learning algorithms achieved high accuracy of 94\% tackle the challenge of classifying bird species with high visual similarity and subtle variations. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species.
 
-% \cite{source3}
-
-Due to the impressive outcomes of deep learning, most recognition frameworks now depend on advanced convolutions for feature extraction where features extracted through convolution are learned automatically by multilayer convolutional neural networks, offering the model greater adaptability to various tasks and datasets\citep{Lu2024}.
-
-There are many advantages of using Deep Learning Architectures for Image Classification. Getting good quality results in Machine Learning models is dependent on how good the data is labelled, whereas Deep Learning architectures don't necessarily require labelling, as Neural Networks are great at learning without guidelines~\cite{source5}. One more advantage is that in certain domains like speech, language and vision, deep Learning consistently produces excellent results that significantly outperforms other alternatives. ~\citep{source6}. Furthermore, in domains like vision, "Deep Learning consistently produces excellent results that significantly outperforms other alternatives".
-
-Yet the fine-grained bird classification task has greater challenges \citep{ani13020264}:
+Yet the fine-grained bird classification task has greater challenges even when using deep learning techniques \cite{source3} \citep{ani13020264}:
 \begin{enumerate}
     \item High intraclass variance. Birds belonging to the same category usually present distinctly different postures and perspectives.
     \item Low inter-class variance. Some of the different categories of birds may have only minor differences; for example, some of the differences are only in the color pattern on the head.
@@ -236,10 +223,13 @@ Yet the fine-grained bird classification task has greater challenges \citep{ani1
     \item Overfitting is a prevalent problem in Deep Learning and can sometimes negatively affect the model performance in real-time scenarios.
 \end{enumerate}
 
+This project aims to develop and evaluat deep learning models for automated classification. Additionally, this research focuses on uncovering and analyzing the most influential features that distinguish these two gull species. Interpretability mechanisms such as Grad-CAM (Gradient-weighted Class Activation Mapping) is used to visualize and interpret the regions and morphological traits that deep neural networks prioritize during classification. Complementing this, statistical analysis and unsupervised clustering methods are employed to quantitatively assess which visual features most effectively separate the species, further validating the biological relevance of the model’s learned features. By doing so, this project not only seeks to achieve high classification accuracy, but also aims to provide interpretable insights into the distinguishing characteristics of each gull species. This dual approach bridges ecology and computer science, increasing both the practical utility and scientific transparency of AI-powered biodiversity monitoring.
+
 % Related Work
 \newpage
 \chapter{Literature Review}
 \section*{Traditional Taxonomic Approaches}
+Automated taxon identification systems (ATIs) could both handle routine identifications and potentially assist in identifying new species. Traditional ATIs, however, have been limited by their reliance on hand-crafted features \citep{valan}, are time-consuming hindering large-scale surveys, making them difficult to generalize across different taxonomic groups.
 
 \section*{Deep Learning for Fine-Grained Image Classification}
 Fine-grained image classification presents unique challenges compared to general image classification tasks. As Li et al. (2021) note, fine-grained classification "necessitates discrimination between semantic and instance levels, while considering the similarity and diversity among categories"\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. This is particularly challenging in bird classification due to three key factors: high intra-class variance (birds of the same species in different postures), low inter-class variance (different species with only minor differences), and limited training data availability, especially for rare species\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}.
@@ -317,9 +307,9 @@ Beyond visualization, quantitative interpretability methods have been developed 
 These interpretability methods are particularly valuable in fine-grained classification tasks where the differences between categories are subtle and potentially unknown. By highlighting regions that drive model decisions, techniques like Grad-CAM can reveal discriminative features that might not be obvious even to expert observers, potentially advancing biological understanding alongside classification accuracy. By implementing methods like Grad-CAM, the project can not only achieve high classification accuracy but also provide insights into the morphological features that drive model decisions, making the results more valuable for scientific applications\href{https://www.atlantis-press.com/article/125986223.pdf}{5}.
 
 
-\section*{Aims and Objectives}
+\chapter{Aims and Objectives}
 
-\subsection*{Primary Aims}
+\section{Primary Aims}
 \begin{enumerate}
     \item To develop high-performance deep learning models capable of distinguishing between Slaty-backed and Glaucous-winged Gulls based on their morphological characteristics.
     \item To implement robust interpretability techniques that reveal which features influence model decisions, allowing validation against ornithological expertise.
@@ -2200,7 +2190,7 @@ These results demonstrate clear, quantifiable differences between the two gull s
 These quantitative differences align with field observations that Slaty-backed Gulls have darker wings and more prominent dark wingtips compared to Glaucous-winged Gulls, providing a reliable basis for species identification in image analysis.
 
 
-\bibliographystyle{apa}
+\bibliographystyle{ieee}
 \bibliography{references}
 
 \end{document}
