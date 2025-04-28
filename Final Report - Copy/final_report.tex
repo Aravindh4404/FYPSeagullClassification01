@@ -325,7 +325,7 @@ VERY USEFUL: some gradcam biased like mentioned in paper above. can use for vit 
 
 Beyond visualization, quantitative interpretability methods have been developed to measure feature importance. \citep{lundberg2017unified} proposed SHAP (SHapley Additive exPlanations), which assigns each feature an importance value for a particular prediction. In \citep{chen2019looks}, the authors applied SHAP to fine-grained bird classification models and found that the features deemed important by the model often matched field guide descriptions of distinguishing characteristics.
 
-These interpretability methods are particularly valuable in fine-grained classification tasks where the differences between categories are subtle and potentially unknown. By highlighting regions that drive model decisions, techniques like Grad-CAM can reveal discriminative features that might not be obvious even to expert observers, potentially advancing biological understanding alongside classification accuracy.
+These interpretability methods are particularly valuable in fine-grained classification tasks where the differences between categories are subtle and potentially unknown. By highlighting regions that drive model decisions, techniques like Grad-CAM can reveal discriminative features that can be useful to expert observers, potentially advancing biological understanding alongside classification accuracy.
 
 % \href{https://www.atlantis-press.com/article/125986223.pdf}{5}.
 
@@ -372,9 +372,9 @@ The project was carried out in four phases:
 
 \section{Google Colab Platform}
 
-Google Colab was selected as the primary platform for developing and training deep learning models. As described by Anjum et al. \citet{anjum2021}, Google Colab offers significant advantages for machine learning research through its cloud-based environment with integrated GPU acceleration enabling fast model training. The platform's pre-installed libraries and integration with Google Drive provided an efficient workflow for model development, experimentation, and storage of datasets and trained models. This approach aligns with modern best practices in deep learning research where computational efficiency is crucial for iterative model development and refinement.
+Google Colab was selected as the primary platform for developing and training deep learning models. Google Colab offers significant advantages for machine learning research through its cloud-based environment with integrated GPU acceleration enabling fast model training. The platform's pre-installed libraries and integration with Google Drive provided an efficient workflow for model development, experimentation, and storage of datasets and trained models. This approach aligns with modern best practices in deep learning research where computational efficiency is crucial for iterative model development and refinement.
 
-Despite its advantages, Google Colab presented a few challenges. The platform frequently disconnected during training sessions, interrupting the model training process before completing all epochs. These disconnections likely stemmed from limited RAM allocation, runtime timeouts, or resource constraints of the shared free GPU environment. As noted by \citet{carneiro2018}, while Colab provides robust GPU resources that can match dedicated servers for certain tasks, these free resources ``are far from enough to solve demanding real-world problems and are not scalable.''
+Despite its advantages, Google Colab presented a few challenges. The platform frequently disconnected during training sessions, interrupting the model training process before completing all epochs. These disconnections likely stemmed from limited RAM allocation, runtime timeouts, or resource constraints of the shared free GPU environment. As noted by \citep{carneiro2018}, while Colab provides robust GPU resources that can match dedicated servers for certain tasks, these free resources ``are far from enough to solve demanding real-world problems and are not scalable.''
 
 To mitigate these issues, two strategies were implemented. First, the relatively small size of our dataset helped minimize resource demands. Second, checkpoint saving was implemented throughout the training process, allowing training to resume from the last saved state if disconnections were encountered. This approach ensured that progress wasn't lost when disconnections occurred, though it introduced some workflow inefficiencies.
 
@@ -424,24 +424,26 @@ Similar to approaches described by Raffel et al. \citet{raffel2023}, the impleme
 
 \section{Dataset Preparation and Refinement}
 
-The dataset preparation followed a three-stage iterative refinement process, each addressing specific challenges identified during model development. This approach aligns with established methodologies in fine-grained bird classification research, where dataset quality has been shown to significantly impact model performance \citet{ghani2024}.
+The dataset preparation followed a three-stage iterative refinement process, each addressing specific challenges identified during model development.
+%  This approach aligns with established methodologies in fine-grained bird classification research, where dataset quality has been shown to significantly impact model performance \citet{ghani2024}.
 
 \subsection{Stage 1: Initial Dataset Collection}
 
-The initial dataset was collected from public repositories including eBird and iNaturalist, comprising 451 images of Glaucous-winged Gulls and 486 images of Slaty-backed Gulls. This dataset included gulls of various ages (juveniles and adults) in different postures (sitting, standing, and flying). Initial model testing on this dataset yielded poor performance (below 50\% accuracy), highlighting the need for dataset refinement. Similar challenges with diverse postures and class imbalance have been documented by Kahl et al. in their work on BirdNET systems \citet{kahl2021}.
+The initial dataset was collected from public repositories including eBird and iNaturalist, comprising 451 images of Glaucous-winged Gulls and 486 images of Slaty-backed Gulls. This dataset included gulls of various ages (juveniles and adults) in different postures (sitting, standing, and flying). Initial model testing on this dataset yielded poor performance (below 60\% accuracy), highlighting the need for dataset refinement. 
+% Similar challenges with class imbalance have been documented by Kahl et al. in their work on BirdNET systems \citet{kahl2021}.
 
 
 \subsection{Stage 2: Refined Dataset - Focus on Adult In-flight Images}
 
-Consultation with Professor Gibbins, an ornithological expert, revealed that adult wingtip patterns are the most reliable distinguishing features between these species, and these patterns are most visible in flight. This expert-guided refinement approach parallels methods described by Wang et al. in their work on avian dataset construction, where domain expertise significantly improved classification accuracy for visually similar species. \citet{wang2022}. Consequently, the dataset was refined to focus exclusively on adult in-flight images, resulting in a curated collection of 124 Glaucous-winged Gull images and 127 Slaty-backed Gull images. This targeted approach significantly improved model performance, with accuracy increasing to approximately 70\%.
+Consultation with Professor Gibbins, an ornithological expert, revealed that wing and wingtip patterns were the most reliable distinguishing features between these species. These patterns are most visible in flight. Juvenile images were removed due to their less defined wingtip features and differing plumage. Consequently, the dataset was refined to focus exclusively on adult in-flight images, resulting in a curated collection of 124 Glaucous-winged Gull images and 127 Slaty-backed Gull images. This targeted approach significantly improved model performance, with accuracy increasing to approximately 70\%.
 
 By focusing specifically on adult in-flight images where wingtip patterns are most visible, this project addresses the core taxonomic question while minimizing confounding variables. The resulting interpretable classification system aims to provide both a practical identification tool and a scientific instrument for exploring morphological variation within and between these closely related species.
 
 \subsection{Stage 3: High-Quality Dataset}
 
-To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. The Glaucous-winged Gull dataset was also carefully curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features. Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed. This quality-focused approach aligns with findings from Zhou et al., who demonstrated that expert-curated datasets can achieve comparable or superior results with significantly smaller data volumes compared to larger uncurated collections \citet{zhou2022}.
+To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. The Glaucous-winged Gull dataset was also carefully curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features.  Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed.
 
-For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested. This multi-dataset evaluation approach follows best practices established in the BirdSet benchmark for avian classification studies \citet{birdset2023}.
+For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested.
 
 
 % \begin{lstlisting}[language=Python]
@@ -506,9 +508,9 @@ For comparative analysis, an unrefined dataset containing 632 adult in-flight Gl
 % \end{lstlisting}
 
 
-\section{Debugging and Iterative Development Methodology}
+\section{Iterative Development Methodology and Debugging}
 
-Initial implementations using ResNet50 with unrefined Stage 1 dataset yielded poor results (test accuracies below 60\%), indicating fundamental issues in either data quality or model implementation. To systematically address these challenges and improve performance for subsequent transfer learning approaches, a methodical debugging framework was employed following best practices outlined by \href{https://karpathy.github.io/2019/04/25/recipe/}{Karpathy (2019)}.
+Initial implementations using ResNet50 with unrefined Stage 1 dataset yielded poor results (test accuracies below 60\%), indicating fundamental issues in either data quality or model implementation. To systematically address these challenges and improve performance for subsequent transfer learning approaches, a methodical debugging framework was employed following best practices outlined by \citep{karpathy2019recipe}.
 
 \subsection{Pipeline Validation and Early Debugging}
 
