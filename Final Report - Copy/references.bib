@@ -127,6 +127,237 @@ Literaturereview interpretability
 }
 
 
+% TL begin
+@inproceedings{krizhevsky2012imagenet,
+  title={ImageNet Classification with Deep Convolutional Neural Networks},
+  author={Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
+  booktitle={Advances in Neural Information Processing Systems 25},
+  pages={1097--1105},
+  year={2012},
+  publisher={Curran Associates, Inc.},
+  address={Lake Tahoe, Nevada},
+  url={https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}
+}
+
+@misc{perez2017effectivenessdataaugmentationimage,
+      title={The Effectiveness of Data Augmentation in Image Classification using Deep Learning}, 
+      author={Luis Perez and Jason Wang},
+      year={2017},
+      eprint={1712.04621},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/1712.04621}, 
+}
+
+@misc{wu2018groupnormalization,
+      title={Group Normalization}, 
+      author={Yuxin Wu and Kaiming He},
+      year={2018},
+      eprint={1803.08494},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/1803.08494}, 
+}
+
+@Inbook{Prechelt1998,
+author="Prechelt, Lutz",
+editor="Orr, Genevieve B.
+and M{\"u}ller, Klaus-Robert",
+title="Early Stopping - But When?",
+bookTitle="Neural Networks: Tricks of the Trade",
+year="1998",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="55--69",
+abstract="Validation can be used to detect when overfitting starts during supervised training of a neural network; training is then stopped before convergence to avoid the overfitting (``early stopping''). The exact criterion used for validation-based early stopping, however, is usually chosen in an ad-hoc fashion or training is stopped interactively. This trick describes how to select a stopping criterion in a systematic fashion; it is a trick for either speeding learning procedures or improving generalization, whichever is more important in the particular situation. An empirical investigation on multi-layer perceptrons shows that there exists a tradeoff between training time and generalization: From the given mix of 1296 training runs using difierent 12 problems and 24 difierent network architectures I conclude slower stopping criteria allow for small improvements in generalization (here: about 4{\%} on average), but cost much more training time (here: about factor 4 longer on average).",
+isbn="978-3-540-49430-0",
+doi="10.1007/3-540-49430-8_3",
+url="https://doi.org/10.1007/3-540-49430-8_3"
+}
+
+@misc{zhang2020gradientclippingacceleratestraining,
+      title={Why gradient clipping accelerates training: A theoretical justification for adaptivity}, 
+      author={Jingzhao Zhang and Tianxing He and Suvrit Sra and Ali Jadbabaie},
+      year={2020},
+      eprint={1905.11881},
+      archivePrefix={arXiv},
+      primaryClass={math.OC},
+      url={https://arxiv.org/abs/1905.11881}, 
+}
+
+
+% Class imbalance
+@article{srivastava2014dropout,
+  title={Dropout: A simple way to prevent neural networks from overfitting},
+  author={Srivastava, Nitish and Hinton, Geoffrey and Krizhevsky, Alex and Sutskever, Ilya and Salakhutdinov, Ruslan},
+  journal={Journal of Machine Learning Research},
+  volume={15},
+  number={1},
+  pages={1929--1958},
+  year={2014},
+  publisher={JMLR},
+  url={https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf}
+}
+
+@inproceedings{krogh1992simple,
+  title={A simple weight decay can improve generalization},
+  author={Krogh, Anders and Hertz, John A},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={950--957},
+  year={1992},
+  url={https://papers.nips.cc/paper/1991/file/8eefcfdf5990e441f0fb6f3fad709e21-Paper.pdf}
+}
+
+@inproceedings{ioffe2015batch,
+  title={Batch normalization: Accelerating deep network training by reducing internal covariate shift},
+  author={Ioffe, Sergey and Szegedy, Christian},
+  booktitle={International Conference on Machine Learning},
+  pages={448--456},
+  year={2015},
+  organization={PMLR},
+  url={https://arxiv.org/abs/1502.03167}
+}
+
+@article{krawczyk2016learning,
+  title={Learning from imbalanced data: open challenges and future directions},
+  author={Krawczyk, Bartosz},
+  journal={Progress in Artificial Intelligence},
+  volume={5},
+  number={4},
+  pages={221--232},
+  year={2016},
+  publisher={Springer},
+  url={https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0192-5}
+}
+
+@inproceedings{cui2019classbalanced,
+  title={Class-balanced loss based on effective number of samples},
+  author={Cui, Yin and Jia, Menglin and Lin, Tsung-Yi and Song, Yang},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={9268--9277},
+  year={2019},
+  url={https://openaccess.thecvf.com/content_CVPR_2019/papers/Cui_Class-Balanced_Loss_Based_on_Effective_Number_of_Samples_CVPR_2019_paper.pdf}
+}
+
+@article{buda2018systematic,
+  title={A systematic study of the class imbalance problem in convolutional neural networks},
+  author={Buda, Mateusz and Maki, Atsuto and Mazurowski, Maciej A},
+  journal={Neural Networks},
+  volume={106},
+  pages={249--259},
+  year={2018},
+  publisher={Elsevier},
+  url={https://www.sciencedirect.com/science/article/pii/S0893608018302107}
+}
+
+@inproceedings{kohavi1995study,
+  title={A study of cross-validation and bootstrap for accuracy estimation and model selection},
+  author={Kohavi, Ron},
+  booktitle={Proceedings of the 14th International Joint Conference on Artificial Intelligence (IJCAI)},
+  volume={2},
+  pages={1137--1143},
+  year={1995},
+  organization={Morgan Kaufmann},
+  url={https://dl.acm.org/doi/10.5555/1643031.1643047}
+}
+
+@article{keskar2016largebatch,
+  title={On large-batch training for deep learning: Generalization gap and sharp minima},
+  author={Keskar, Nitish Shirish and Mudigere, Dheevatsa and Nocedal, Jorge and Smelyanskiy, Mikhail and Tang, Ping},
+  journal={arXiv preprint arXiv:1609.04836},
+  year={2016},
+  url={https://arxiv.org/abs/1609.04836}
+}
+
+@article{masters2018revisiting,
+  title={Revisiting small batch training for deep neural networks},
+  author={Masters, Dominic and Luschi, Carlo},
+  journal={arXiv preprint arXiv:1804.07612},
+  year={2018},
+  url={https://arxiv.org/abs/1804.07612}
+}
+
+
+% VGG model
+@article{pearline2019study,
+  title={A study on plant recognition using conventional image processing and deep learning approaches},
+  author={Pearline, Anubha S and Kumar, V Sathiesh and Harini, S and Thampi, Sabu M and El-Alfy, El-Sayed M},
+  journal={Journal of Intelligent \& Fuzzy Systems},
+  volume={36},
+  number={3},
+  pages={1997--2004},
+  year={2019},
+  publisher={IOS Press},
+  doi={10.3233/JIFS-169911}
+}
+
+@INPROCEEDINGS{10533638,
+  author={M.E., K. Sherin and M.E., A.R. Darshika Kelin and P, Sanjai and Senthilvelan, Surendar},
+  booktitle={2024 International Conference on Advances in Data Engineering and Intelligent Computing Systems (ADICS)}, 
+  title={Birds Species Identification Using Deep Learning Model}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-7},
+  keywords={Deep learning;Photography;Computational modeling;User interfaces;Birds;Data engineering;Data models;Bird species identification;Deep-learning models;Flask web application;Image classification;User-friendly interface;Bird-watching community;Education tool;Bird photography verification;Model accuracy;Community engagement},
+  doi={10.1109/ADICS58448.2024.10533638}}
+
+VIT
+@misc{dosovitskiy2021imageworth16x16words,
+      title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale}, 
+      author={Alexey Dosovitskiy and Lucas Beyer and Alexander Kolesnikov and Dirk Weissenborn and Xiaohua Zhai and Thomas Unterthiner and Mostafa Dehghani and Matthias Minderer and Georg Heigold and Sylvain Gelly and Jakob Uszkoreit and Neil Houlsby},
+      year={2021},
+      eprint={2010.11929},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2010.11929}, 
+}
+
+@misc{touvron2021trainingdataefficientimagetransformers,
+      title={Training data-efficient image transformers & distillation through attention}, 
+      author={Hugo Touvron and Matthieu Cord and Matthijs Douze and Francisco Massa and Alexandre Sablayrolles and Hervé Jégou},
+      year={2021},
+      eprint={2012.12877},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2012.12877}, 
+}
+
+@article{Selvaraju_2019,
+   title={Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization},
+   volume={128},
+   ISSN={1573-1405},
+   url={http://dx.doi.org/10.1007/s11263-019-01228-7},
+   DOI={10.1007/s11263-019-01228-7},
+   number={2},
+   journal={International Journal of Computer Vision},
+   publisher={Springer Science and Business Media LLC},
+   author={Selvaraju, Ramprasaath R. and Cogswell, Michael and Das, Abhishek and Vedantam, Ramakrishna and Parikh, Devi and Batra, Dhruv},
+   year={2019},
+   month=oct, pages={336–359} }
+
+Inception
+@misc{szegedy2015rethinkinginceptionarchitecturecomputer,
+      title={Rethinking the Inception Architecture for Computer Vision}, 
+      author={Christian Szegedy and Vincent Vanhoucke and Sergey Ioffe and Jonathon Shlens and Zbigniew Wojna},
+      year={2015},
+      eprint={1512.00567},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/1512.00567}, 
+}
+
+@article{micikevicius2018mixed,
+  title={Mixed Precision Training},
+  author={Micikevicius, Paulius and Narang, Sharan and Alben, Jonah and Diamos, Greg and Elsen, Erich and Garcia, David and Ginsburg, Boris and Houston, Michael and Kuchaiev, Oleksii and Venkatesh, Ganesh and others},
+  journal={arXiv preprint arXiv:1710.03740},
+  year={2018},
+  url={https://arxiv.org/abs/1710.03740}
+}
+
+
+
+
 
 
 
