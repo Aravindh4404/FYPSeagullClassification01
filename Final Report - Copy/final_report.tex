@@ -1577,11 +1577,11 @@ The entire analysis pipeline was implemented in Python, utilizing libraries incl
 %     \item Wang, H., Ge, S., Lipton, Z., & Xing, E. P. (2019). Learning Robust Global Representations by Penalizing Local Predictive Power. \href{https://arxiv.org/abs/1905.13549}{arXiv:1905.13549}.
 % \end{enumerate}
 
-\section{Clustering Analysis for Species Differentiation}
+\section{Verification by Clustering for Species Differentiation}
 
 \subsection{Overview of Clustering Approach}
 
-To validate and complement the deep learning-based classification results, we implemented a comprehensive clustering analysis framework that leverages traditional machine learning techniques to identify natural groupings in the morphological features of Slaty-backed and Glaucous-winged Gulls. This approach provides an alternative perspective on species differentiation and helps validate the discriminative features identified by the deep learning models.
+To validate and complement the results achieved through the analysis of the region-specific features that were significantly different among the 2 species, a comprehensive clustering analysis framework was implemented that leverages traditional machine learning techniques to identify natural groupings in the morphological features of Slaty-backed and Glaucous-winged Gulls. This approach provides an alternative perspective on species differentiation and helps validate the discriminative features identified by the deep learning models that were quantified.
 
 \subsection{Feature Extraction and Preprocessing}
 
@@ -1662,6 +1662,12 @@ The clustering results are visualized using:
 \end{itemize}
 
 This comprehensive clustering analysis provides insights into the natural groupings within the dataset and helps validate the effectiveness of our classification approaches.
+
+
+
+
+
+
 
 \chapter{Results}
 
@@ -1839,12 +1845,6 @@ Statistical analysis of wing intensity demonstrated clear differences between th
     \label{fig:wing_intensity_combined}
 \end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.6\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/ditribution.png}
-%     \caption{Distribution of wing pixel intensities, clearly separating the darker Slaty-backed Gull from the lighter Glaucous-winged Gull.}
-%     \label{fig:wing_distribution}
-% \end{figure}
 
 \subsubsection{Wingtip Darkness Analysis}
 Wingtip regions showed the most pronounced differences between species, particularly in the proportion of very dark pixels:
