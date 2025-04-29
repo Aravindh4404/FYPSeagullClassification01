@@ -22,7 +22,6 @@
 \usepackage{algpseudocode}  % For algorithmic structure (functions, loops, etc.)
 \usepackage{xspace}         % For smart spacing after macros (optional but recommended)
 
-
 \usepackage{csquotes}
 
 \renewcommand{\familydefault}{\sfdefault}
@@ -56,16 +55,14 @@
     urlcolor=blue          % Color for external URLs
 }
 
+\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{0.5em}{}
 
-
-
-% Customize chapter heading: remove "Chapter" prefix and numbers
-\titleformat{\chapter}[display]
-  {\normalfont\Huge\bfseries}
-  {}
-  {0pt}
-  {\vspace{-2em}}
-\titlespacing*{\chapter}{0pt}{-2em}{1em}
+% \titleformat{\chapter}[display]
+%   {\normalfont\Huge\bfseries}
+%   {}
+%   {0pt}
+%   {\vspace{-2em}}
+% \titlespacing*{\chapter}{0pt}{-2em}{1em}
 
 
 \begin{document}
@@ -232,7 +229,7 @@ Yet the fine-grained bird classification task has greater challenges even when u
     \item Overfitting is a prevalent problem in Deep Learning and can sometimes negatively affect the model performance in real-time scenarios.
 \end{enumerate}
 
-This project aims to develop and evaluat deep learning models for automated classification. Additionally, this research focuses on uncovering and analyzing the most influential features that distinguish these two gull species. Interpretability mechanisms such as Grad-CAM (Gradient-weighted Class Activation Mapping) is used to visualize and interpret the regions and morphological traits that deep neural networks prioritize during classification. Complementing this, statistical analysis and unsupervised clustering methods are employed to quantitatively assess which visual features most effectively separate the species, further validating the biological relevance of the model’s learned features. By doing so, this project not only seeks to achieve high classification accuracy, but also aims to provide interpretable insights into the distinguishing characteristics of each gull species. This dual approach bridges ecology and computer science, increasing both the practical utility and scientific transparency of AI-powered biodiversity monitoring.
+This project aims to develop and evaluat deep learning models for automated classification. Additionally, this research focuses on uncovering and analyzing the most influential features that distinguish these two gull species. Interpretability mechanisms such as Grad-CAM (Gradient-weighted Class Activation Mapping) is used to visualize and interpret the regions and morphological traits that deep neural networks prioritize during classification. Complementing this, statistical analysis and unsupervised clustering methods are employed to quantitatively assess which visual features most effectively separate the species, further validating the biological relevance of the model's learned features. By doing so, this project not only seeks to achieve high classification accuracy, but also aims to provide interpretable insights into the distinguishing characteristics of each gull species. This dual approach bridges ecology and computer science, increasing both the practical utility and scientific transparency of AI-powered biodiversity monitoring.
 
 % Related Work
 \newpage
@@ -988,11 +985,11 @@ Deep learning models, particularly Convolutional Neural Networks (CNNs) and Visi
 
 \subsection{Gradient-weighted Class Activation Mapping (Grad-CAM)}
 
-Gradient-weighted Class Activation Mapping (Grad-CAM) is a widely adopted visualization technique that produces visual explanations for decisions made by CNN-based models without requiring architectural changes or retraining \href{https://arxiv.org/abs/1610.02391}{(Selvaraju et al., 2017)}. It generates coarse localization maps highlighting the regions in the input image that significantly influenced the model's prediction for a specific class.
+Gradient-weighted Class Activation Mapping (Grad-CAM) is a widely adopted visualization technique that produces visual explanations for decisions made by CNN-based models without requiring architectural changes or retraining \citep{selvaraju2017grad}. It generates coarse localization maps highlighting the regions in the input image that significantly influenced the model's prediction for a specific class.
 
 \subsubsection{Theoretical Foundation}
 
-Grad-CAM extends the Class Activation Mapping (CAM) approach \href{https://arxiv.org/abs/1512.04150}{(Zhou et al., 2016)} by utilizing the gradient information flowing into the final convolutional layer of a CNN. Unlike CAM, which requires modifications to the network architecture and retraining, Grad-CAM can be applied to any CNN-based architecture without architectural changes, making it more versatile.
+Grad-CAM extends the Class Activation Mapping (CAM) approach \citep{zhou2015learningdeepfeaturesdiscriminative} by utilizing the gradient information flowing into the final convolutional layer of a CNN. Unlike CAM, which requires modifications to the network architecture and retraining, Grad-CAM can be applied to any CNN-based architecture without architectural changes, making it more versatile.
 
 The fundamental principle behind Grad-CAM is that the final convolutional layer in a CNN retains spatial information while encoding high-level semantics. By analyzing how the gradients of a specific class score flow into this layer, Grad-CAM can identify the regions in the input image that are most influential for the prediction.
 
@@ -1043,7 +1040,7 @@ Similar implementation was implemented for other models: Inceptionv3, ResNet50, 
 
 \subsection{Attention Rollout for Vision Transformers}
 
-Vision Transformers process images differently from CNNs, using self-attention mechanisms rather than convolution operations to model relationships between image patches. Therefore, a different approach called Attention Rollout is used to visualize ViT decision-making \href{https://arxiv.org/abs/2005.00928}{(Abnar \& Zuidema, 2020)}.
+Vision Transformers process images differently from CNNs, using self-attention mechanisms rather than convolution operations to model relationships between image patches. Therefore, a different approach called Attention Rollout is used to visualize ViT decision-making \citep{abnar2020attention}.
 
 \subsubsection{Theoretical Foundation}
 
@@ -1071,7 +1068,7 @@ The implementation of Attention Rollout for the ViT model follows these steps:
     \item \textbf{Reshaping and Visualization}: These weights are reshaped to match the spatial dimensions of the input image (typically 14×14 for ViT-Base with patch size 16) and then upsampled to create a heatmap that can be overlaid on the original image.
 \end{enumerate}
 
-This method provides insights into how the ViT model attends to different parts of an image when making a prediction \href{https://arxiv.org/abs/2012.09838}{(Chefer et al., 2021)}.
+This method provides insights into how the ViT model attends to different parts of an image when making a prediction \citep{chefer2021generic}.
 
 \subsection{Grad-CAM for Vision Transformers}
 
@@ -1163,9 +1160,7 @@ By implementing these complementary interpretability techniques, this research p
 %     \item \textbf{Visualization}: Consistent with the VGG16 Grad-CAM approach for comparison
 % \end{itemize}
 
-By implementing these complementary interpretability techniques, this research provides insights into how different neural network architectures—traditional CNNs and modern Transformers—approach the same classification task and what are the distinguidhing features between the 2 classes. The visualizations reveal different feature priorities and decision strategies that each architecture employs, contributing to a deeper understanding of model behavior \href{https://arxiv.org/abs/2010.11929}{(Dosovitskiy et al., 2020)}.
-
-\appendix
+% \appendix
 \section{Additional Interpretability Techniques}
 \label{appendix:add_interpret}
 
@@ -1249,41 +1244,155 @@ These additional interpretability techniques were implemented primarily for expl
 
 The implementation details and experimental results for these additional techniques are preserved here to document the comprehensive approach taken toward model interpretability in this research.
 
-Though straightforward to implement, saliency maps,  guided backpropagation were not highlighted in the main analysis as they can be noisy and lack the class-discriminative properties of Grad-CAM. Additionally, as noted by \cite{adebayo2018sanity}, simple gradient methods sometimes fail sanity checks that Grad-CAM passes.
+Though straightforward to implement, saliency maps,  guided backpropagation were not highlighted in the main analysis as they can be noisy and lack the class-discriminative properties of Grad-CAM. Additionally, as noted by \cite{shi2018saliency}, simple gradient methods sometimes fail sanity checks that Grad-CAM passes.
 
 3. Of the methods tested, Gradients and GradCAM pass the sanity checks, while Guided BackProp and
 Guided GradCAM are invariant to higher layer parameters; hence, fail.
 4. Consequently, our findings imply that the saliency methods that fail our proposed tests are incapable
 of supporting tasks that require explanations that are faithful to the model or the data generating
 process.  \href{https://arxiv.org/pdf/1810.03292}{(Guided and saliency not good)}
+
+% velow TODO
+% \appendix
+% \section{Additional Interpretability Techniques}
+% \label{appendix:add_interpret}
+
+% In addition to the Grad-CAM method discussed in the main sections of this report, several other interpretability techniques were explored during this research.
+
+% \subsection{DeepLIFT}
+
+% DeepLIFT (Deep Learning Important FeaTures) was implemented using the Captum library for the VGG16 and ViT models. This technique compares activations against a reference baseline (typically zeros) to determine feature importance:
+
+% \begin{itemize}
+% \item A zero baseline tensor is created as a reference point
+% \item Attribution scores are calculated comparing actual activations to this baseline
+% \item Channel-wise attributions are aggregated and normalized for visualization
+% \end{itemize}
+
+% While DeepLIFT provides theoretically grounded attributions, it was not adopted for the main analysis due to its limited adoption in the literature compared to Grad-CAM and its computational overhead for large-scale experiments.
+
+% \subsection{Saliency Maps}
+
+% \begin{itemize}
+% \item Gradients of predictions with respect to input pixels are computed
+% \item Absolute values of gradients are visualized as sensitivity maps
+% \end{itemize}
+
+% Saliency maps, though computationally efficient, often produce noisy visualizations and lack class-discriminative properties. As shown in prior work \citep{shi2018saliency}, they may also fail basic sanity checks, making them unreliable for tasks requiring faithful explanations.
+
+% \subsection{Integrated Gradients for Vision Transformers}
+
+% Integrated Gradients was implemented for ViT using 50 interpolation steps:
+
+% \begin{itemize}
+%     \item Path integrals are approximated between baseline and input images
+%     \item 50 interpolation steps were used for the approximation
+%     \item Attributions are processed to align with spatial image dimensions
+%     \item Results are normalized for consistent visualization
+% \end{itemize}
+
+% Despite its theoretical soundness, Integrated Gradients requires significantly more computation than Grad-CAM. Additionally, the literature review indicated that Grad-CAM adaptations for Vision Transformers often provide more intuitive visualizations for classification tasks \cite{chefer2021transformer}
+
+% \subsection{Guided Backpropagation for ViT}
+
+
+% \begin{itemize}
+%     \item Modified gradient flow during backpropagation highlights positive influences
+%     \item Implementation uses Captum's GuidedBackprop with model-specific wrappers
+%     \item Results are post-processed to create single-channel visualizations
+% \end{itemize}
+
+% While visually cleaner than saliency maps, Guided Backpropagation has two key limitations: (1) it lacks localization capabilities, and (2) as demonstrated by \citep{shi2018saliency}, it fails parameter randomization tests, (3) it may highlight input patterns rather than model decision logic \cite{nie2018theoretical}.
+
+% \subsection{Justification for Grad-CAM}
+
+% Grad-CAM was chosen as the primary interpretability method for this study due to its unique advantages over the alternatives:
+
+% \begin{itemize}
+% \item \textbf{Theoretical Robustness}: Grad-CAM passes sanity checks (e.g., parameter randomization tests) that methods like Guided Backpropagation and Guided Grad-CAM fail \citep{shi2018saliency}.
+% \item \textbf{Class-Discriminative}: Unlike saliency maps or Integrated Gradients, Grad-CAM highlights regions relevant to specific predicted classes.
+% \item \textbf{Architecture Flexibility}: Works consistently across CNNs (e.g., VGG16, ResNet) and adapted Vision Transformers.
+% \item \textbf{Computational Efficiency}: Requires only a single backward pass per class, unlike path-based methods (e.g., Integrated Gradients).
+% \item \textbf{Empirical Validation}: Supported by extensive literature \citep{selvaraju2017grad, chefer2021generic} demonstrating its effectiveness for classification tasks.
+% \end{itemize}
 % Add these to your bibliography
 % \bibitem{adebayo2018sanity} Adebayo, J., Gilmer, J., Muelly, M., Goodfellow, I., Hardt, M., \& Kim, B. (2018). Sanity checks for saliency maps. In Advances in Neural Information Processing Systems.
 % \bibitem{chefer2021transformer} Chefer, H., Gur, S., \& Wolf, L. (2021). Transformer interpretability beyond attention visualization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition.
 % \bibitem{nie2018theoretical} Nie, W., Zhang, Y., \& Patel, A. (2018). A theoretical explanation for perplexing behaviors of backpropagation-based visualizations. In International Conference on Machine Learning.
 
-\section{Feature Analysis and Interpretability for Fine-Grained Gull Classification}
+\section{Feature Analysis for Fine-Grained Gull Classification}
 
-\subsection{Methodology for Wing and Wingtip Intensity Analysis}
-
-The interpretability analysis of our VGG-based transfer learning model indicated a strong focus on wing and wingtip regions when differentiating between Slaty-backed Gulls and Glaucous-winged Gulls. This aligns with ornithological knowledge, as these species exhibit distinct differences in wing coloration patterns, particularly in the wingtip regions \href{https://doi.org/10.1111/j.1474-919X.2007.00703.x}{(Olsen and Larsson, 2007)}. To quantitatively validate these differences, we conducted an in-depth image analysis focusing on intensity values in these critical regions.
-
+\subsection{Wing and Wingtip Intensity Analysis}
+% \href{https://doi.org/10.1111/j.1474-919X.2007.00703.x}{(Olsen and Larsson, 2007)}
+The interpretability analysis of our VGG model indicated a strong focus on wing and wingtip regions when differentiating between Slaty-backed Gulls and Glaucous-winged Gulls. This aligns with ornithological knowledge, as these species exhibit distinct differences in wing coloration patterns, particularly in the wing and wingtip regions. To quantitatively validate these differences and check whether the differences are significant, an in-depth image analysis was conducted focusing on these critical regions.
+% TODO
 We employed a multi-stage approach to extract and analyze region-specific features:
 
-\subsubsection{Image Selection and Preparation}
-We selected high-resolution images of both species that were correctly classified by our model and showed strong Grad-CAM activations in wing regions. This ensured our analysis focused on images where the model had successfully identified the relevant discriminative features.
-
-\subsubsection{Manual Segmentation}
-Each selected image was manually segmented using Adobe Photoshop, creating mask images with distinct color codes for different anatomical regions:
+\subsection{Image Selection and Preparation} 
+We selected 200 high-resolution images (100 per species) meeting strict criteria:
 \begin{itemize}
-    \item Red (RGB: 255,0,0) for wing regions
-    \item Green (RGB: 0,255,0) for wingtip regions
-    \item Blue (RGB: 0,0,255) for head regions
+    \item Correct classification by our VGG-16 model
+    \item Strong Grad-CAM activations in wing or wingtip regions
+    \item Clear visibility of upperwing and wingtips in the image
 \end{itemize}
 
-This segmentation approach allowed us to precisely isolate the anatomical regions of interest for subsequent quantitative analysis.
+\subsection{Manual Segmentation and Region Extraction}
+Using Adobe Photoshop, segmentation masks with color-coded regions were created with a specific color for each type of region: wing, wingtip, and head,
 
-\subsubsection{Feature Extraction Pipeline}
-We developed a comprehensive Python pipeline to analyze the intensity characteristics of the segmented regions:
+Using OpenCV's \texttt{inRange} for color-based thresholding, pixels within $\pm$10 intensity values of each target color were extracted.
+
+\subsection{Feature Extraction Pipeline}
+The Python pipeline executed these steps for each image:
+\begin{enumerate}
+    \item \textbf{Intensity Normalization}: Applied min-max normalization (0-255) to grayscale conversions using OpenCV's \texttt{NORM\_MINMAX}
+    
+    \item \textbf{Region-Specific Analysis}: Calculated intensity statistics (mean, median, std, skewness, kurtosis, minimum and maximum values) per region
+ 
+    \item \textbf{Wingtip Characterization}:
+    \begin{itemize}
+        \item Analyzed intensity distribution across 25 bins (10-unit intervals):
+        \begin{verbatim}
+        intensity_ranges = [
+            (0,10), (10,20), ..., (240,255)  # 25 total bins
+        ]
+        \end{verbatim}
+        \item Quantified dark pixels using thresholds: <30, <40, <50, <60 intensity
+    \end{itemize}
+    \item \textbf{Wing-Wingtip Difference}
+    \begin{itemize}
+        \item Computed percentage of wingtip pixels darker than mean wing intensity of the bird.
+        \item \textbf{Thresholds}: Calculated the proportion of wingtip pixels exceeding specific difference thresholds (10, 20, ..., 100) compared to the mean wing intensity, quantifying the contrast between regions.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Statistical Comparison}
+Statistical testing using SciPy was performed:
+
+\begin{itemize}
+    \item \textbf{Welch's t-test} (unequal variances) for mean intensity comparisons
+    \item Mann-Whitney U tests for non-normal distributions
+    \item Bonferroni correction for multiple comparisons (with alpha = 0.01)
+\end{itemize}
+
+Key parameters were harmonized across implementation and analysis:
+
+\begin{table}[ht]
+    \centering
+    \caption{Alignment between biological hypotheses and code implementation}
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Metric} & \textbf{Biological Definition} & \textbf{Code Parameter} \\
+        \midrule
+        Intensity bins & 25-unit ranges & 10-unit bins (\texttt{intensity\_ranges}) \\
+        Dark thresholds & Field marks <50 & [30,40,50,60] (\texttt{dark\_thresholds}) \\
+        Wing-wingtip contrast & >25 difference & [10,20,...,100] (\texttt{diff\_thresholds}) \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+% Limitations
+% \paragraph{Limitations and Future Work} While manual segmentation ensured biological accuracy, it introduced human variability. Future implementations could use U-Net models \cite{ronneberger2015unet} for automated segmentation. The 10-unit intensity bins provided granular analysis but may obscure broader patterns visible in 25-unit groupings used by field guides \cite{pyle2015identification}.
+
+OLD
 
 \begin{enumerate}
     \item \textbf{Image Loading}: Both original images and their corresponding segmentation masks were loaded using OpenCV.
@@ -1302,7 +1411,7 @@ We developed a comprehensive Python pipeline to analyze the intensity characteri
     \end{itemize}
 \end{enumerate}
 
-\subsubsection{Wingtip Darkness Characterization}
+\subsection{Wingtip Darkness Characterization}
 To specifically quantify the wingtip darkness patterns that ornithologists use for field identification several specialized metrics were implemented:
 % \href{https://doi.org/10.1642/AUK-15-31.1}{(Pyle, 2015)}, 
 \begin{enumerate}
@@ -1324,7 +1433,7 @@ To specifically quantify the wingtip darkness patterns that ornithologists use f
 
 This multi-metric approach allowed us to represent expert ornithological knowledge about field identification marks in a quantitative framework amenable to machine learning applications.
 
-\subsubsection{Statistical Comparison}
+\subsection{Statistical Comparison}
 To determine whether the observed differences between species were statistically significant, we performed:
 
 \begin{itemize}
@@ -1339,16 +1448,14 @@ These statistical analyses allowed us to objectively validate whether the visual
 
 The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. This methodological approach bridges traditional ornithological identification techniques with quantitative computer vision analysis, providing a foundation for explaining the features that drive our fine-grained classification model.
 
-\section{Local Binary Pattern Implementation for Seagull Species Analysis}
+\section{Local Binary Pattern}
 
-\subsection{Introduction to Local Binary Patterns}
-
-Local Binary Patterns (LBP) represents a powerful and computationally efficient approach for texture analysis, first introduced by Ojala et al. (\href{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1017623}{2002}). The fundamental principle of LBP is remarkably elegant - it characterizes the local spatial structure of an image's texture by comparing each pixel with its neighbors, generating a binary pattern that serves as a texture descriptor. This method offers several key advantages for biological image analysis:
+Local Binary Patterns (LBP) represents a powerful and computationally efficient approach for texture analysis, first introduced by Ojala et al. \Citep{1017623}. The fundamental principle of LBP is that it characterizes the local spatial structure of an image's texture by comparing each pixel with its neighbors, generating a binary pattern that serves as a texture descriptor. This method offers several key advantages for biological image analysis:
 
 \begin{itemize}
     \item Gray-scale invariance, making it robust to lighting variations
     \item Computational simplicity while maintaining high discriminative power
-    \item Rotation invariance when implemented with appropriate techniques
+    \item \textbf{Rotation-invariant abstract features} derived from binary patterns (number of 1s and transitions) rather than raw LBP codes{Rotation-invariant abstract features} derived from binary patterns (number of 1s and transitions) rather than raw LBP codes
     \item Robustness to monotonic illumination changes
     \item Ability to capture micro-patterns in texture that may be imperceptible to human observers
 \end{itemize}
@@ -1367,7 +1474,6 @@ The analysis begins with a carefully designed preprocessing pipeline to isolate 
 \item \textbf{Region Extraction}: Using color thresholding on the segmentation masks, we extracted pixels corresponding to each anatomical region (wings, wingtips) from the original images.
 
 \item \textbf{Intensity Normalization}: Min-max normalization was applied to standardize intensity values across images, accounting for variations in lighting conditions during image capture.
-
 \end{itemize}
 
 Each extracted region, extracted using the manual segmentation masks of different colors for different regions, created for each image is converted to grayscale and applied minmax normalization to to standardize the input for texture analysis, ensuring consistent processing regardless of original coloration.
@@ -1501,6 +1607,7 @@ The implementation includes a few validation mechanisms:
     \item \textbf{Normalized histograms} to account for varying region sizes
     \item \textbf{Multiple comparison metrics} to ensure robust similarity assessment
     \item \textbf{Statistical significance testing} on feature differences
+    \item \textbf{Quantitative comparison metrics} (KL divergence, percentage differences) to assess feature differences
 \end{enumerate}
 
 By combining these validation approaches, the implementation provides a comprehensive and reliable framework for identifying texture-based differences between the two seagull species.
@@ -1621,79 +1728,9 @@ The clustering results are visualized using:
 
 This comprehensive clustering analysis provides insights into the natural groupings within the dataset and helps validate the effectiveness of our classification approaches.
 
-% \section{Results}
-
-% % Inception Module (Simplified)
-
-% \begin{tikzpicture}[
-%     node/.style={rectangle,draw=blue!50,fill=blue!20,thick,minimum width=1cm},
-%     pool/.style={rectangle,draw=red!50,fill=red!20,thick}]
-
-% % Stem
-% \node[node] (stem) {Stem};
-% \node[right=1cm of stem] (split) {};
-
-% % Parallel paths
-% \node[node,above right=0.5cm and 1cm of split] (1x1) {1x1 Conv};
-% \node[node,below right=0.5cm and 1cm of split] (3x3) {3x3 Conv};
-% \node[node,below=0.5cm of 3x3] (5x5) {5x5 Conv};
-% \node[pool,below=0.5cm of 5x5] (pool) {MaxPool};
-
-% % Concatenation
-% \node[node,right=3cm of split] (concat) {Concatenate};
-% \draw (1x1) -| (concat.north);
-% \draw (3x3) -- (concat);
-% \draw (5x5) -- (concat);
-% \draw (pool) -| (concat.south);
-
-% % Reduction module
-% \node[pool,right=1cm of concat] (reduction) {Reduction};
-% \end{tikzpicture}
-
-
-% \begin{tikzpicture}[
-%     patch/.style={rectangle,draw=orange!50,fill=orange!20,minimum size=0.5cm},
-%     encoder/.style={rectangle,draw=purple!50,fill=purple!20,minimum width=2cm}]
-
-% % Image patches
-% \node[patch] (patch1) at (0,0) {};
-% \node[patch,right=0.1cm of patch1] (patch2) {};
-% \node[patch,right=0.1cm of patch2] (patch3) {};
-% \node[below=0.1cm of patch1] (patch4) {};
-% \node[below=0.1cm of patch2] (patch5) {};
-
-% % Linear projection
-% \node[encoder,right=2cm of patch3] (projection) {Linear\\Projection};
-
-% % Positional encoding
-% \node[encoder,above=0.5cm of projection] (position) {+ Positional\\Encoding};
-
-% % Transformer Encoder
-% \node[encoder,right=2cm of projection] (encoder1) {Encoder Block};
-% \node[encoder,right=1cm of encoder1] (encoder2) {Encoder Block};
-% \node[right=0.5cm of encoder2] (dots) {\vdots};
-% \node[encoder,right=0.5cm of dots] (encoderN) {Encoder Block};
-
-% % MLP Head
-% \node[encoder,right=2cm of encoderN] (mlp) {MLP\\Head};
-
-% % Connections
-% \draw[->] (patch3) -- (projection);
-% \draw[->] (position) -- (projection);
-% \draw[->] (projection) -- (encoder1);
-% \draw[->] (encoder1) -- (encoder2);
-% \draw[->] (encoder2) -- (dots);
-% \draw[->] (dots) -- (encoderN);
-% \draw[->] (encoderN) -- (mlp);
-% \end{tikzpicture}
-
-
-
 \chapter{Results}
 
-
-
-\section*{Model Performance} % Example section
+\section{Model Performance} % Example section
 
 \begin{table}[htbp] % Placement options: h=here, t=top, b=bottom, p=page of its own
     \centering % Centers the table on the page
@@ -1713,12 +1750,7 @@ This comprehensive clustering analysis provides insights into the natural groupi
 
 Table \ref{tab:model_accuracy} summarizes the final performance metrics evaluated on the unseen test set. The Vision Transformer (ViT) achieved the highest test accuracy at 94.1\%.
 
-
-
-
-
-
-\section*{Model Interpretability} % Example section
+\section{Model Interpretability} % Example section
 
 \begin{figure}[htbp]
     \centering
@@ -1822,7 +1854,7 @@ The consistent improvement in validation metrics, particularly ROC-AUC (0.9888) 
 
 To assess whether the VGG-16 (fine-tuned) model was overfitting, its performance was compared across the training, validation, and test sets. Table~\ref{tab:model_accuracy} shows that the validation accuracy (94.5\%) and test accuracy (93.8\%) are closely matched, with only a 0.7\% difference, indicating minimal overfitting.
 
-Furthermore, the training and validation loss curves (Figure~\ref{fig:vgg_loss_curves}) demonstrate that the model’s validation loss did not diverge or increase significantly relative to the training loss, which would be expected if overfitting was occurring. Instead, both loss curves plateaued at similar values.
+% Furthermore, the training and validation loss curves (Figure~\ref{fig:vgg_loss_curves}) demonstrate that the model's validation loss did not diverge or increase significantly relative to the training loss, which would be expected if overfitting was occurring. Instead, both loss curves plateaued at similar values.
 
 % \begin{figure}[htbp]
 %     \centering
@@ -2041,12 +2073,12 @@ To investigate subtle textural differences between Slaty-backed Gulls and Glauco
 
 The most effective features for distinguishing the two species were identified in the wingtip and wing regions (Table~\ref{tab:feature-diff}). Slaty-backed Gulls consistently showed greater texture variability and lower mean intensity, indicating darker and more complex patterns.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{Features_Analysis//Results_LBP_Analysis_Uniform/top_discriminative_features.png}
-    \caption{Top discriminative LBP features for species separation. The bar plot ranks LBP-derived features by percentage difference between species.}
-    \label{fig:top-features}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{Features_Analysis//Results_LBP_Analysis_Uniform/top_discriminative_features.png}
+%     \caption{Top discriminative LBP features for species separation. The bar plot ranks LBP-derived features by percentage difference between species.}
+%     \label{fig:top-features}
+% \end{figure}
 
 \begin{table}[H]
 \centering
