@@ -1322,131 +1322,26 @@ process.  \href{https://arxiv.org/pdf/1810.03292}{(Guided and saliency not good)
 
 \section{Feature Analysis for Fine-Grained Gull Classification}
 
-\subsection{Wing and Wingtip Intensity Analysis}
-% \href{https://doi.org/10.1111/j.1474-919X.2007.00703.x}{(Olsen and Larsson, 2007)}
-The interpretability analysis of our VGG model indicated a strong focus on wing and wingtip regions when differentiating between Slaty-backed Gulls and Glaucous-winged Gulls. This aligns with ornithological knowledge, as these species exhibit distinct differences in wing coloration patterns, particularly in the wing and wingtip regions. To quantitatively validate these differences and check whether the differences are significant, an in-depth image analysis was conducted focusing on these critical regions.
-% TODO
-We employed a multi-stage approach to extract and analyze region-specific features:
+A multi-stage approach was employed to extract and analyze region-specific features.
 
-\subsection{Image Selection and Preparation} 
-We selected 200 high-resolution images (100 per species) meeting strict criteria:
+\subsection{Image Selection}
+From the normalized dataset, 200 high-resolution images (100 per species) were selected based on the following criteria:
 \begin{itemize}
-    \item Correct classification by our VGG-16 model
-    \item Strong Grad-CAM activations in wing or wingtip regions
-    \item Clear visibility of upperwing and wingtips in the image
-\end{itemize}
+\item Correct classification by the best-performing VGG-16 model
+\item Prominent Grad-CAM activations in wing or wingtip regions
+\item Clear visibility of upperwing or wingtip in the image
+\item High resolution image
 
-\subsection{Manual Segmentation and Region Extraction}
-Using Adobe Photoshop, segmentation masks with color-coded regions were created with a specific color for each type of region: wing, wingtip, and head,
+\subsection{Manual Segmentation}
+Using Adobe Photoshop, segmentation masks with color-coded regions were created with a specific color for each type of region: wing, wingtip, and head.
 
-Using OpenCV's \texttt{inRange} for color-based thresholding, pixels within $\pm$10 intensity values of each target color were extracted.
+\subsection{Normalization}
+Applied min-max normalization\citep{monzon_image_normalization} (0-255) to grayscale conversions using OpenCV's \texttt{NORM\_MINMAX}.
+This helped standardize intensity values and mitigate the effects of differing lighting conditions ensuring that pixel intensity values were scaled consistently across the dataset, providing a reliable foundation for subsequent region-based analysis.
 
-\subsection{Feature Extraction Pipeline}
-The Python pipeline executed these steps for each image:
-\begin{enumerate}
-    \item \textbf{Intensity Normalization}: Applied min-max normalization (0-255) to grayscale conversions using OpenCV's \texttt{NORM\_MINMAX}
-    
-    \item \textbf{Region-Specific Analysis}: Calculated intensity statistics (mean, median, std, skewness, kurtosis, minimum and maximum values) per region
- 
-    \item \textbf{Wingtip Characterization}:
-    \begin{itemize}
-        \item Analyzed intensity distribution across 25 bins (10-unit intervals):
-        \begin{verbatim}
-        intensity_ranges = [
-            (0,10), (10,20), ..., (240,255)  # 25 total bins
-        ]
-        \end{verbatim}
-        \item Quantified dark pixels using thresholds: <30, <40, <50, <60 intensity
-    \end{itemize}
-    \item \textbf{Wing-Wingtip Difference}
-    \begin{itemize}
-        \item Computed percentage of wingtip pixels darker than mean wing intensity of the bird.
-        \item \textbf{Thresholds}: Calculated the proportion of wingtip pixels exceeding specific difference thresholds (10, 20, ..., 100) compared to the mean wing intensity, quantifying the contrast between regions.
-    \end{itemize}
-\end{enumerate}
+\subsection{Region Extraction}
 
-\subsection{Statistical Comparison}
-Statistical testing using SciPy was performed:
-
-\begin{itemize}
-    \item \textbf{Welch's t-test} (unequal variances) for mean intensity comparisons
-    \item Mann-Whitney U tests for non-normal distributions
-    \item Bonferroni correction for multiple comparisons (with alpha = 0.01)
-\end{itemize}
-
-Key parameters were harmonized across implementation and analysis:
-
-\begin{table}[ht]
-    \centering
-    \caption{Alignment between biological hypotheses and code implementation}
-    \begin{tabular}{lcc}
-        \toprule
-        \textbf{Metric} & \textbf{Biological Definition} & \textbf{Code Parameter} \\
-        \midrule
-        Intensity bins & 25-unit ranges & 10-unit bins (\texttt{intensity\_ranges}) \\
-        Dark thresholds & Field marks <50 & [30,40,50,60] (\texttt{dark\_thresholds}) \\
-        Wing-wingtip contrast & >25 difference & [10,20,...,100] (\texttt{diff\_thresholds}) \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-% Limitations
-% \paragraph{Limitations and Future Work} While manual segmentation ensured biological accuracy, it introduced human variability. Future implementations could use U-Net models \cite{ronneberger2015unet} for automated segmentation. The 10-unit intensity bins provided granular analysis but may obscure broader patterns visible in 25-unit groupings used by field guides \cite{pyle2015identification}.
-
-OLD
-
-\begin{enumerate}
-    \item \textbf{Image Loading}: Both original images and their corresponding segmentation masks were loaded using OpenCV.
-    
-    \item \textbf{Region Extraction}: Using color thresholding on the segmentation masks, we extracted pixels corresponding to each anatomical region (wings, wingtips) from the original images.
-    
-    \item \textbf{Intensity Normalization}: Min-max normalization was applied to standardize intensity values across images, accounting for variations in lighting conditions during image capture.
-    
-    \item \textbf{Statistical Analysis}: For each region, we calculated:
-    \begin{itemize}
-        \item Mean intensity
-        \item Standard deviation
-        \item Median intensity
-        \item Minimum and maximum intensity values
-        \item Distribution of pixels across intensity ranges
-    \end{itemize}
-\end{enumerate}
-
-\subsection{Wingtip Darkness Characterization}
-To specifically quantify the wingtip darkness patterns that ornithologists use for field identification several specialized metrics were implemented:
-% \href{https://doi.org/10.1642/AUK-15-31.1}{(Pyle, 2015)}, 
-\begin{enumerate}
-    \item \textbf{Percentage of Darker Pixels}: For each image, we computed the percentage of wingtip pixels that were darker than the mean wing intensity of the same bird, providing a measure of wingtip contrast.
-    
-    \item \textbf{Intensity Range Distribution}: We analyzed the distribution of wingtip pixels across multiple intensity ranges:
-    \begin{verbatim}
-    intensity_ranges = [
-        (0, 25), (25, 50), (50, 75), (75, 100),
-        (100, 125), (125, 150), (150, 175), (175, 200),
-        (200, 225), (225, 255)
-    ]
-    \end{verbatim}
-    
-    \item \textbf{Darkness Thresholds}: We established multiple darkness thresholds to characterize the proportion of very dark pixels (intensity < 25, < 50, < 75) in the wingtip regions.
-    
-    \item \textbf{Wing-Wingtip Difference Thresholds}: We calculated the proportion of wingtip pixels exceeding specific difference thresholds (25, 50, 75, 100) compared to the mean wing intensity, quantifying the contrast between regions.
-\end{enumerate}
-
-This multi-metric approach allowed us to represent expert ornithological knowledge about field identification marks in a quantitative framework amenable to machine learning applications.
-
-\subsection{Statistical Comparison}
-To determine whether the observed differences between species were statistically significant, we performed:
-
-\begin{itemize}
-    \item t-tests comparing mean intensity values between species
-    \item Analysis of the percentage of pixels falling into each intensity range
-    \item Comparison of the wing-wingtip contrast metrics between species
-\end{itemize}
-
-% \href{https://doi.org/10.1676/13-107.1}{(Howell and Dunn, 2014)}
-
-These statistical analyses allowed us to objectively validate whether the visual differences are quantitatively significant and detectable through our image processing pipeline.
-
-The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. This methodological approach bridges traditional ornithological identification techniques with quantitative computer vision analysis, providing a foundation for explaining the features that drive our fine-grained classification model.
+Using OpenCV's \texttt{inRange} for color-based thresholding, pixels within $\pm$10 intensity values of each target color were extracted and used for further analysis.
 
 \section{Local Binary Pattern}
 
@@ -1455,7 +1350,7 @@ Local Binary Patterns (LBP) represents a powerful and computationally efficient 
 \begin{itemize}
     \item Gray-scale invariance, making it robust to lighting variations
     \item Computational simplicity while maintaining high discriminative power
-    \item \textbf{Rotation-invariant abstract features} derived from binary patterns (number of 1s and transitions) rather than raw LBP codes{Rotation-invariant abstract features} derived from binary patterns (number of 1s and transitions) rather than raw LBP codes
+    \item \textbf{Rotation-invariant abstract features} derived from binary patterns (number of 1s and transitions) rather than raw LBP codes
     \item Robustness to monotonic illumination changes
     \item Ability to capture micro-patterns in texture that may be imperceptible to human observers
 \end{itemize}
@@ -1463,20 +1358,6 @@ Local Binary Patterns (LBP) represents a powerful and computationally efficient 
 For our seagull species differentiation task, these properties are particularly valuable as they allow us to analyze subtle texture differences in plumage that may remain consistent across varying lighting conditions and viewing angles.
 
 \subsection{Implementation Methodology}
-
-\subsubsection{Image Preprocessing and Region Segmentation}
-
-The analysis begins with a carefully designed preprocessing pipeline to isolate anatomically relevant regions from each seagull image:
-
-\begin{itemize}
-\item \textbf{Image Loading}: Both original images and their corresponding segmentation masks were loaded using OpenCV.
-    
-\item \textbf{Region Extraction}: Using color thresholding on the segmentation masks, we extracted pixels corresponding to each anatomical region (wings, wingtips) from the original images.
-
-\item \textbf{Intensity Normalization}: Min-max normalization was applied to standardize intensity values across images, accounting for variations in lighting conditions during image capture.
-\end{itemize}
-
-Each extracted region, extracted using the manual segmentation masks of different colors for different regions, created for each image is converted to grayscale and applied minmax normalization to to standardize the input for texture analysis, ensuring consistent processing regardless of original coloration.
 
 \subsubsection{LBP Calculation Process}
 
@@ -1491,7 +1372,7 @@ The core LBP calculation involves several carefully calibrated parameters:
 For each region, only pixels within the segmentation mask are considered for LBP calculation. The LBP operation proceeds as follows:
 
 \begin{enumerate}
-    \item For each pixel in the grayscale image, a circular neighborhood of radius R with P sampling points is examined
+    \item For each pixel in the selected region of the normalised image, a circular neighborhood of radius R with P sampling points is examined
     \item Each sampling point is compared to the center pixel value
     \item If the sampling point value is greater than or equal to the center pixel value, a '1' is assigned; otherwise, a '0'
     \item The resulting binary pattern is converted to a decimal value, which becomes the LBP code for that pixel
@@ -1500,7 +1381,7 @@ For each region, only pixels within the segmentation mask are considered for LBP
 
 \subsubsection{Novel Abstract Pattern Analysis}
 
-A key contribution of our methodology is the extraction of abstract pattern features from the binary LBP codes. This approach was done to prevent the angles of the regions in the image from causing rotation variance.
+A key contribution of our methodology is the extraction of abstract pattern features from the binary LBP codes. This approach was done to prevent the angles of the regions in the image that varied across from causing rotation variance.
 
 \begin{enumerate}
     \item \textbf{Binary Pattern Generation}: Converting each LBP value to its N\_POINTS-bit binary representation
@@ -1516,7 +1397,6 @@ A key contribution of our methodology is the extraction of abstract pattern feat
     \end{itemize}
     \item \textbf{Histogram Creation}: Compiling the distributions of these abstract features into normalized histograms
 \end{enumerate}
-
 
 From the LBP histograms, several statistical texture features were calculated:
 
@@ -1539,11 +1419,11 @@ To quantify the differences between species, the implementation calculates sever
 \begin{enumerate}
     \item \textbf{KL Divergence}: A symmetric version of the Kullback-Leibler divergence that measures how one probability distribution diverges from another
 
-    % \item \textbf{Earth Mover's Distance}: Measures the minimum ``work'' required to transform one histogram into another, considering the distance between bins
+    \item \textbf{Earth Mover's Distance}: Measures the minimum ``work'' required to transform one histogram into another, considering the distance between bins
 
     \item \textbf{Chi-Square Distance}: A statistical test that measures the difference between observed and expected frequency distributions
 
-    % \item \textbf{Jensen-Shannon Distance}: A symmetric and smoothed version of the KL divergence with better numerical properties
+    \item \textbf{Jensen-Shannon Distance}: A symmetric and smoothed version of the KL divergence with better numerical properties
 \end{enumerate}
 
 Each metric captures different aspects of distribution similarity, providing a robust framework for comparing texture patterns between species.
@@ -1606,11 +1486,66 @@ The implementation includes a few validation mechanisms:
 \begin{enumerate}
     \item \textbf{Normalized histograms} to account for varying region sizes
     \item \textbf{Multiple comparison metrics} to ensure robust similarity assessment
-    \item \textbf{Statistical significance testing} on feature differences
     \item \textbf{Quantitative comparison metrics} (KL divergence, percentage differences) to assess feature differences
 \end{enumerate}
 
 By combining these validation approaches, the implementation provides a comprehensive and reliable framework for identifying texture-based differences between the two seagull species.
+
+\section{Wing and Wingtip Intensity Analysis}
+% \href{https://doi.org/10.1111/j.1474-919X.2007.00703.x}{(Olsen and Larsson, 2007)}
+The interpretability analysis of our VGG model indicated a strong focus on wing and wingtip regions when differentiating between Slaty-backed Gulls and Glaucous-winged Gulls. This aligns with ornithological knowledge, as these species exhibit distinct differences in wing coloration patterns, particularly in the wing and wingtip regions. To quantitatively validate these differences and check whether the differences are significant, an in-depth image analysis was conducted focusing on these critical regions.
+
+% This aligns with known plumage differences documented in ornithological studies \cite{olsen2007gulls}.
+
+% TODO
+We employed a multi-stage approach to extract and analyze region-specific features:
+
+\subsection{Feature Extraction Pipeline}
+The Python pipeline executed these steps for each image:
+\begin{enumerate}
+    \item \textbf{Region-Specific Analysis}: Calculated intensity statistics (mean, median, std, skewness, kurtosis, minimum and maximum values) per region
+ 
+    \item \textbf{Wingtip Characterization}:
+    \begin{itemize}
+        \item Analyzed intensity distribution across 25 bins (10-unit intervals):
+        \begin{verbatim}
+        intensity_ranges = [
+            (0,10), (10,20), ..., (240,255)  # 25 total bins
+        ]
+        \end{verbatim}
+        \item Quantified dark pixels using thresholds: <30, <40, <50, <60 intensity
+    \end{itemize}
+    \item \textbf{Wing-Wingtip Difference}
+    \begin{itemize}
+        \item Computed percentage of wingtip pixels darker than mean wing intensity of the bird.
+        \item \textbf{Thresholds}: Calculated the proportion of wingtip pixels exceeding specific difference thresholds (10, 20, ..., 100) compared to the mean wing intensity, quantifying the contrast between regions.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Statistical Comparison}
+Statistical testing using SciPy was performed where t-test for unequal variances was implemented.
+
+
+% Limitations
+% \paragraph{Limitations and Future Work} While manual segmentation ensured biological accuracy, it introduced human variability. Future implementations could use U-Net models \cite{ronneberger2015unet} for automated segmentation. The 10-unit intensity bins provided granular analysis but may obscure broader patterns visible in 25-unit groupings used by field guides \cite{pyle2015identification}.
+
+% \subsection{Statistical Comparison}
+% To determine whether the observed differences between species were statistically significant, we performed:
+
+% \begin{itemize}
+%     \item t-tests comparing mean intensity values between species
+%     \item Analysis of the percentage of pixels falling into each intensity range
+%     \item Comparison of the wing-wingtip contrast metrics between species
+% \end{itemize}
+
+% \href{https://doi.org/10.1676/13-107.1}{(Howell and Dunn, 2014)}
+
+These statistical analyses allowed us to find and objectively validate whether the differences in areas highlighted by Grad-CAM between species are quantitatively significant.
+
+The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. 
+
+% This methodological approach bridges traditional ornithological identification techniques with quantitative computer vision analysis, providing a foundation for explaining the features that drive our fine-grained classification model.
+
 
 % \subsection{Conclusion}
 
@@ -1904,12 +1839,12 @@ Statistical analysis of wing intensity demonstrated clear differences between th
     \label{fig:wing_intensity_combined}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/ditribution.png}
-    \caption{Distribution of wing pixel intensities, clearly separating the darker Slaty-backed Gull from the lighter Glaucous-winged Gull.}
-    \label{fig:wing_distribution}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/ditribution.png}
+%     \caption{Distribution of wing pixel intensities, clearly separating the darker Slaty-backed Gull from the lighter Glaucous-winged Gull.}
+%     \label{fig:wing_distribution}
+% \end{figure}
 
 \subsubsection{Wingtip Darkness Analysis}
 Wingtip regions showed the most pronounced differences between species, particularly in the proportion of very dark pixels:
