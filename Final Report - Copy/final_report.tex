@@ -270,7 +270,7 @@ In a noteworthy study on medical image analysis, researchers evaluated the compa
 
 % % Traditional approaches to fine-grained classification required extensive manual annotation of parts or regions of interest. As noted by \citep{zhang2022unsupervised} IRRELEVANT, earlier methods "localize object or parts in an image with object or part annotations, which are expensive and labor-consuming." To address this limitation, researchers have increasingly turned to deep learning approaches that can automatically extract relevant features without explicit part annotations.
 
-Transfer learning addresses the primary challenges of deep learning: the need for large datasets and extensive computational resources. By leveraging pretrained models that have already learned general visual features from massive datasets, transfer learning enables the development of highly accurate classifiers with relatively domain-specific datasets. This is particularly valuable for this project, which focuses on distinguishing between two specific gull species with limited available data. \citep{Iman_2023} emphasizes that recent transfer learning methods aim to reduce training process time and cost, and the necessity of extensive training datasets. \citep{transferln97} using CNN models pretrained from ImageNet achieved above 90\% accuracy in many CNN most that were tried for bird classification using transfer learning emphasize, "when the sample data is small, transfer learning can help the deep neural network classifier to improve classification accuracy." This makes transfer learning an ideal approach for specialized tasks like distinguishing between closely related gull species.
+Transfer learning addresses the primary challenges of deep learning: the need for large datasets and extensive computational resources. By leveraging pretrained models that have already learned general visual features from massive datasets, transfer learning enables the development of highly accurate classifiers with relatively domain-specific datasets. This is particularly valuable for this project, which focuses on distinguishing between two specific gull species with limited available data. \citep{iman2022review} emphasizes that recent transfer learning methods aim to reduce training process time and cost, and the necessity of extensive training datasets. \citep{transferln97} using CNN models pretrained from ImageNet achieved above 90\% accuracy in many CNN most that were tried for bird classification using transfer learning emphasize, "when the sample data is small, transfer learning can help the deep neural network classifier to improve classification accuracy." This makes transfer learning an ideal approach for specialized tasks like distinguishing between closely related gull species.
 
 % \citep{tan2018survey}
 
@@ -305,7 +305,7 @@ VERY USEFUL say too much oversampling caused overfitting that is y it was remove
 
 
 % NOT USED
-% More advanced techniques such as mixup \citep{zhang2018mixup}, which creates synthetic training examples by linearly interpolating between pairs of images and their labels, have shown effectiveness in fine-grained classification tasks. \citep{cui2019class} integrated mixup with class-balanced loss to address imbalance in fine-grained datasets, achieving state-of-the-art performance on CUB-200-2011.
+% More advanced techniques such as mixup \citep{zhang2018mixup}, which creates synthetic training examples by linearly interpolating between pairs of images and their labels, have shown effectiveness in fine-grained classification tasks. \citep{cui2019classbalancesd} integrated mixup with class-balanced loss to address imbalance in fine-grained datasets, achieving state-of-the-art performance on CUB-200-2011.
 
 
 \section*{Interpretability Techniques for Deep Learning Models}
@@ -1120,7 +1120,7 @@ To facilitate a fair comparison between CNN model and ViT interpretability, the 
 \item \textbf{Quantitative Assessment:} Confusion matrices are generated for all models to quantitatively assess their performance alongside the visual interpretations.
 \end{itemize}
 
-By implementing these complementary interpretability techniques, this research provides insights into how different neural network architectures—traditional CNNs and modern Transformers—approach the same classification task and what are the distinguishing features between the two classes. The visualizations reveal different feature priorities and decision strategies that each architecture employs, contributing to a deeper understanding of model behavior \cite{Dosovitskiy2020}.
+By implementing these complementary interpretability techniques, this research provides insights into how different neural network architectures—traditional CNNs and modern Transformers—approach the same classification task and what are the distinguishing features between the two classes. The visualizations reveal different feature priorities and decision strategies that each architecture employs, contributing to a deeper understanding of model behavior \cite{dosovitskiy2021imageworth16x16words}.
 
 
 % \begin{itemize}
