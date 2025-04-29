@@ -46,9 +46,17 @@
 % \usepackage[capitalise]{cleveref} % Optional: for smart cross-referencing (e.g., Figure 1, Table 2)
 
 \usepackage{pgffor}
+% MAKE Smaller
+% make lists small
+\usepackage{enumitem}
+\setlist{nosep} % Removes extra space in itemize/enumerate
 
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{1em} % Adjust spacing between paragraphs
+\titlespacing*{\section}{0pt}{0.5em}{0.5em}
+\titlespacing*{\subsection}{0pt}{0.5em}{0.5em}
+
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0.5em} % Adjust spacing between paragraphs
 
 % Customise hyperlink appearance (Optional)
 \hypersetup{
@@ -59,14 +67,14 @@
     urlcolor=blue          % Color for external URLs
 }
 
-\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{0.5em}{}
+% \titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{0.5em}{}
 
-% \titleformat{\chapter}[display]
-%   {\normalfont\Huge\bfseries}
-%   {}
-%   {0pt}
-%   {\vspace{-2em}}
-% \titlespacing*{\chapter}{0pt}{-2em}{1em}
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries}
+  {}
+  {0pt}
+  {\vspace{-2em}}
+\titlespacing*{\chapter}{0pt}{-2em}{1em}
 
 
 \begin{document}
