@@ -3,7 +3,11 @@
 \usepackage{hyperref}
 \usepackage{setspace}
 \usepackage{lastpage}
-\usepackage{natbib}
+
+% for apa with apa
+% \usepackage{natbib} 
+% for ieee with IEEEtran
+\usepackage[numbers]{natbib}
 \usepackage{float}
 \usepackage{grffile}  % Add to preamble
 \usepackage{titlesec} % Add this line for chapter formatting
@@ -314,7 +318,7 @@ Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particula
 
 % While deep learning models achieve impressive classification accuracy, their "black box" nature presents challenges for scientific applications where understanding decision mechanisms is crucial. As noted by \citep{montavon2018methods}, "black-box models that cannot be interpreted have limited applicability, especially in scientific contexts where understanding the basis for classifications is as important as the classifications themselves."
 
-Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions that influence model decisions. \citep{selvaraju2017grad} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to almost any CNN-based model.
+Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions that influence model decisions. \citep{Selvaraju_2019} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to almost any CNN-based model.
 
 VERY USEFUL: some gradcam biased like mentioned in paper above. can use for vit and other accuracy models
 
@@ -985,7 +989,7 @@ Deep learning models, particularly Convolutional Neural Networks (CNNs) and Visi
 
 \subsection{Gradient-weighted Class Activation Mapping (Grad-CAM)}
 
-Gradient-weighted Class Activation Mapping (Grad-CAM) is a widely adopted visualization technique that produces visual explanations for decisions made by CNN-based models without requiring architectural changes or retraining \citep{selvaraju2017grad}. It generates coarse localization maps highlighting the regions in the input image that significantly influenced the model's prediction for a specific class.
+Gradient-weighted Class Activation Mapping (Grad-CAM) is a widely adopted visualization technique that produces visual explanations for decisions made by CNN-based models without requiring architectural changes or retraining \citep{Selvaraju_2019}. It generates coarse localization maps highlighting the regions in the input image that significantly influenced the model's prediction for a specific class.
 
 \subsubsection{Theoretical Foundation}
 
@@ -1313,7 +1317,7 @@ process.  \href{https://arxiv.org/pdf/1810.03292}{(Guided and saliency not good)
 % \item \textbf{Class-Discriminative}: Unlike saliency maps or Integrated Gradients, Grad-CAM highlights regions relevant to specific predicted classes.
 % \item \textbf{Architecture Flexibility}: Works consistently across CNNs (e.g., VGG16, ResNet) and adapted Vision Transformers.
 % \item \textbf{Computational Efficiency}: Requires only a single backward pass per class, unlike path-based methods (e.g., Integrated Gradients).
-% \item \textbf{Empirical Validation}: Supported by extensive literature \citep{selvaraju2017grad, chefer2021generic} demonstrating its effectiveness for classification tasks.
+% \item \textbf{Empirical Validation}: Supported by extensive literature \citep{Selvaraju_2019, chefer2021generic} demonstrating its effectiveness for classification tasks.
 % \end{itemize}
 % Add these to your bibliography
 % \bibitem{adebayo2018sanity} Adebayo, J., Gilmer, J., Muelly, M., Goodfellow, I., Hardt, M., \& Kim, B. (2018). Sanity checks for saliency maps. In Advances in Neural Information Processing Systems.
@@ -1331,6 +1335,7 @@ From the normalized dataset, 200 high-resolution images (100 per species) were s
 \item Prominent Grad-CAM activations in wing or wingtip regions
 \item Clear visibility of upperwing or wingtip in the image
 \item High resolution image
+\end{itemize}
 
 \subsection{Manual Segmentation}
 Using Adobe Photoshop, segmentation masks with color-coded regions were created with a specific color for each type of region: wing, wingtip, and head.
@@ -1592,76 +1597,106 @@ The clustering analysis utilizes three key morphological features extracted from
     \item Count of darker pixels in wingtip regions
 \end{itemize}
 
-These features are standardized using StandardScaler to ensure consistent scaling across different measurements. Principal Component Analysis (PCA) is then applied to reduce dimensionality for visualization while preserving the most significant variations in the data.
+Prior to clustering analysis, the following preprocessing steps were implemented:
+\begin{enumerate}
+    \item \textbf{Data Loading}: The dataset was loaded from the CSV file, with features and species labels separated for analysis.
+    \item \textbf{Feature Standardization}: All features were standardized using \texttt{StandardScaler} to ensure each feature contributed equally to the clustering algorithms, preventing features with larger magnitudes from dominating the analysis.
+    \item \textbf{Dimensionality Reduction}: Principal Component Analysis (PCA) was applied to reduce the three-dimensional feature space to two dimensions for visualization purposes. The explained variance ratio was calculated to assess how much information was preserved in the lower-dimensional representation.
+\end{enumerate}
 
 \subsection{Clustering Algorithms Implementation}
 
-We implemented and compared four distinct clustering algorithms, each offering different approaches to identifying natural groupings in the data:
+Four distinct clustering algorithms were implemented to provide a comprehensive evaluation of the feature space:
 
 \subsubsection{K-means Clustering}
-The K-means algorithm, initialized with k=2 clusters, was implemented to identify compact, spherical clusters in the feature space. The algorithm minimizes the within-cluster sum of squares, making it particularly effective for identifying distinct morphological groups.
+K-means clustering was implemented with the following parameters:
+\begin{itemize}
+    \item Number of clusters: 2 (corresponding to the two gull species)
+    \item Random state: 42 (for reproducibility)
+    \item Multiple initializations (\texttt{n\_init = 10}) to avoid local optima
+\end{itemize}
+
+K-means partitions the data by minimizing the within-cluster sum of squares, iteratively assigning points to the nearest cluster centroid and then recalculating centroids until convergence.
 
 \subsubsection{Hierarchical Clustering}
-Agglomerative hierarchical clustering was implemented using the Ward linkage method, which minimizes the variance within clusters. This approach is particularly valuable for understanding the hierarchical relationships between different morphological characteristics.
+Hierarchical clustering was implemented with:
+\begin{itemize}
+    \item Number of clusters: 2
+    \item Linkage method: Ward's linkage
+\end{itemize}
+
+This approach builds a hierarchical structure of clusters by initially treating each observation as a singleton cluster and then successively merging the closest pairs of clusters. Ward's linkage was specifically chosen as it minimizes the increase in the sum of squares when two clusters are merged, making it suitable for creating compact, spherical clusters.
 
 \subsubsection{DBSCAN}
-Density-Based Spatial Clustering of Applications with Noise (DBSCAN) was implemented to identify clusters based on density connectivity. This approach is particularly useful for detecting outliers and handling non-spherical cluster shapes that might arise from natural variation in gull morphology.
+\begin{itemize}
+    \item Epsilon ($\varepsilon$): 20 (the maximum distance between two samples for one to be considered as in the neighborhood of the other)
+    \item Minimum samples: 20 (the number of samples in a neighborhood for a point to be considered a core point)
+\end{itemize}
+
+Unlike the previous algorithms, DBSCAN does not require specifying the number of clusters beforehand. It identifies clusters based on areas of high density separated by areas of low density, with the additional advantage of being able to detect outliers.
 
 \subsubsection{Gaussian Mixture Model}
-A Gaussian Mixture Model (GMM) was implemented to model the feature distributions as a mixture of two Gaussian components. This probabilistic approach provides soft assignments to clusters and can better capture the natural variation in morphological features.
-
-\subsection{Evaluation Framework}
-
-The clustering results are evaluated using multiple metrics:
+GMM clustering was implemented with:
 \begin{itemize}
-    \item Silhouette Score: Measures the quality of clustering by comparing the tightness and separation of clusters
-    \item Adjusted Rand Index: Compares clustering results with known species labels
-    \item Confusion Matrix: Visualizes the alignment between clusters and true species labels
+    \item Number of components: 2
+    \item Random state: 42 (for reproducibility)
 \end{itemize}
+
+GMM assumes that the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters. It assigns points to clusters probabilistically rather than deterministically, allowing for more flexible cluster shapes.
+
+\subsection{Evaluation Metrics}
+
+The effectiveness of each clustering algorithm was evaluated using multiple metrics:
+
+\subsubsection{Unsupervised Evaluation}
+
+\textbf{Silhouette Score}: Measures how similar an object is to its own cluster compared to other clusters. Values range from -1 to 1, with higher values indicating better-defined clusters.
+
+\subsubsection{Supervised Evaluation (Using Known Species Labels)}
+
+\textbf{Adjusted Rand Index (ARI)}: Measures the similarity between the true species assignments and the clustering results, adjusted for chance. Values range from -1 to 1, with higher values indicating greater similarity.
+
+\textbf{Confusion Matrix}: Visualizes the number of correctly and incorrectly clustered specimens after mapping cluster labels to species labels.
+
+\textbf{Clustering Accuracy}: Calculated as the percentage of specimens correctly classified after mapping clusters to the majority species within each cluster.
+
+\subsection{Cluster Mapping and Misclassification Analysis}
+
+To interpret the clustering results in terms of species classification:
+
+\begin{enumerate}
+    \item \textbf{Cluster-to-Species Mapping}: For each cluster, the majority species was identified, creating a mapping from cluster labels to species labels.
+    \item \textbf{Misclassification Analysis}: Using this mapping, specimens were identified as correctly or incorrectly clustered. Misclassified specimens were visualized in the PCA space and exported to CSV files for further analysis.
+\end{enumerate}
 
 \subsection{Visualization and Interpretation}
 
-The clustering results are visualized using:
-\begin{itemize}
-    \item PCA-based scatter plots showing cluster assignments
-    \item Confusion matrices comparing cluster assignments with true species labels
-    \item Feature importance plots based on cluster centroids
-    \item Misclassification analysis highlighting cases where clustering differs from expert classification
-\end{itemize}
+Multiple visualizations were generated to aid interpretation:
+\begin{enumerate}
+    \item \textbf{PCA Plots}: Showing the distribution of specimens in the reduced two-dimensional space with color-coding by cluster assignment.
+    \item \textbf{Cluster Centers}: For K-means and GMM, cluster centers were plotted in the PCA space.
+    \item \textbf{Misclassification Visualization}: Highlighting correctly and incorrectly clustered specimens in the PCA space.
+    \item \textbf{Feature Importance Plots}: Bar charts showing the relative importance of each feature based on cluster center differences.
+    \item \textbf{Algorithm Comparison}: Bar charts comparing the silhouette scores across all clustering algorithms.
+\end{enumerate}
 
 This comprehensive clustering analysis provides valuable insights into the natural grouping of morphological features and helps validate the discriminative power of the features identified by the deep learning models.
 
 \section{Clustering Analysis}
 
-\subsection{Implementation Overview}
-Our clustering analysis implements multiple clustering algorithms to evaluate their effectiveness in identifying natural groupings within the gull species dataset. The implementation includes four distinct clustering approaches:
+\subsection{Implementation Details}
 
+The entire analytical workflow was implemented in Python using the following libraries:
 \begin{itemize}
-    \item \textbf{K-Means Clustering}: A centroid-based algorithm that partitions the data into K clusters by minimizing the sum of squared distances between points and their assigned centroids.
-    \item \textbf{Hierarchical Clustering}: An agglomerative approach that builds a hierarchy of clusters by iteratively merging the most similar clusters.
-    \item \textbf{DBSCAN}: A density-based algorithm that identifies clusters of arbitrary shapes by grouping points that are closely packed together.
-    \item \textbf{Gaussian Mixture Models (GMM)}: A probabilistic approach that assumes the data is generated from a mixture of Gaussian distributions.
+    \item \texttt{scikit-learn} for clustering algorithms, PCA, and evaluation metrics
+    \item \texttt{pandas} for data management
+    \item \texttt{NumPy} for numerical operations
+    \item \texttt{Matplotlib} and \texttt{Seaborn} for visualization
 \end{itemize}
 
-\subsection{Performance Evaluation}
-The clustering implementations are evaluated using multiple metrics to assess their effectiveness:
+A consistent random state (42) was used throughout the analysis to ensure reproducibility. Results were automatically saved to an output directory for documentation and further analysis.
 
-\begin{itemize}
-    \item \textbf{Silhouette Score}: Measures how similar an object is to its own cluster compared to other clusters, ranging from -1 to 1.
-    \item \textbf{Adjusted Rand Index}: Evaluates the similarity between two clusterings by considering all pairs of samples.
-    \item \textbf{Confusion Matrix}: Maps predicted clusters to actual species labels to assess classification accuracy.
-\end{itemize}
-
-\subsection{Visualization and Analysis}
-The clustering results are visualized using:
-
-\begin{itemize}
-    \item \textbf{PCA-based Visualization}: Reduces dimensionality to 2D for visual inspection of cluster formations.
-    \item \textbf{Cluster-Species Mapping}: Analyzes the relationship between identified clusters and actual species labels.
-    \item \textbf{Misclassification Analysis}: Identifies and exports cases where clustering assignments differ from species labels.
-\end{itemize}
-
-This comprehensive clustering analysis provides insights into the natural groupings within the dataset and helps validate the effectiveness of our classification approaches.
+This comprehensive methodology allowed for a robust evaluation of whether the extracted statistical features could effectively distinguish between the two gull species through unsupervised clustering, providing valuable insights into feature significance for species classification.
 
 
 
@@ -2217,7 +2252,7 @@ These results demonstrate clear, quantifiable differences between the two gull s
 These quantitative differences align with field observations that Slaty-backed Gulls have darker wings and more prominent dark wingtips compared to Glaucous-winged Gulls, providing a reliable basis for species identification in image analysis.
 
 
-\bibliographystyle{ieee}
+\bibliographystyle{IEEEtran}
 \bibliography{references}
 
 \end{document}

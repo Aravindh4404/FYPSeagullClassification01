@@ -1,53 +1,82 @@
 This is BibTeX, Version 0.99d
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: final_report.aux
-Reallocating 'name_of_file' (item size: 1) to 5 items.
-I couldn't open style file ieee.bst
----line 282 of file final_report.aux
- : \bibstyle{ieee
- :               }
-I'm skipping whatever remains of this command
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: IEEEtran.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
-I found no style file---while reading file final_report.aux
-You've used 62 entries,
-            0 wiz_defined-function locations,
-            159 strings with 1735 characters,
-and the built_in function-call counts, 0 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 0
-:= -- 0
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
-chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 0
-format.name$ -- 0
-if$ -- 0
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Database file #1: references.bib
+Repeated entry---line 1403 of file references.bib
+ : @article{buda2018systematic
+ :                            ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1489 of file references.bib
+ : @inproceedings{selvaraju2017grad
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1949 of file references.bib
+ : @inproceedings{micikevicius2018mixed
+ :                                     ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2481 of file references.bib
+ : @article{iman2022review
+ :                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2585 of file references.bib
+ : @article{srivastava2014dropout
+ :                               ,
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "Dosovitskiy2020"
+Warning--I didn't find a database entry for "chefer2021transformer"
+Warning--I didn't find a database entry for "nie2018theoretical"
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+You've used 60 entries,
+            4087 wiz_defined-function locations,
+            1190 strings with 20675 characters,
+and the built_in function-call counts, 44467 in all, are:
+= -- 3607
+> -- 1134
+< -- 330
++ -- 619
+- -- 214
+* -- 2157
+:= -- 6851
+add.period$ -- 124
+call.type$ -- 60
+change.case$ -- 63
+chr.to.int$ -- 774
+cite$ -- 60
+duplicate$ -- 3159
+empty$ -- 3514
+format.name$ -- 255
+if$ -- 10304
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 0
-num.names$ -- 0
-pop$ -- 0
-preamble$ -- 0
+int.to.str$ -- 60
+missing$ -- 567
+newline$ -- 271
+num.names$ -- 64
+pop$ -- 1371
+preamble$ -- 1
 purify$ -- 0
-quote$ -- 0
-skip$ -- 0
+quote$ -- 2
+skip$ -- 3424
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 1897
+swap$ -- 2534
+text.length$ -- 72
 text.prefix$ -- 0
-top$ -- 0
-type$ -- 0
+top$ -- 5
+type$ -- 60
 warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 0
-(There were 2 error messages)
+while$ -- 182
+width$ -- 62
+write$ -- 670
+(There were 5 error messages)
