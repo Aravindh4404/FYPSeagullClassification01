@@ -269,7 +269,7 @@ Deep learning, while powerful, comes with two major constraints: dependency on e
 Several studies have demonstrated the efficacy of transfer learning for bird species classification. A study on bird species identification using deep learning achieved accuracies of above 90\% by leveraging pretrained CNN networks with a base model to encode images\citep{Vo2023BirdDA}. Research on bird species identification by \citep{Mochurad2024ANE} using modified deep transfer learning achieved 98.86\% accuracy using the pretrained EfficientNetB5 model. The results with various pretrained models achieving high accuracy rates with few models exceeding 98\% demonstrate that transfer learning approaches can achieve high performance even with limited training data.
 %ref double check
 
-Various pretrained models have been evaluated for bird classification tasks, including VGG16, VGG19, ResNet, DenseNet, and EfficientNet architectures. Comparative studies have shown that while all these models can perform effectively, some consistently outperform others. For example, research on drones-birds classification found that "the accuracy and F-Score of ResNet18 exceeds 98\% in all cases"\citep{Mohamed2023EfficientDC}, while another study on binary classification with the problem of small dataset reported that "DenseNet201 achieves the best classification accuracy of 98.89\%."\citep{Ren2023MonkeypoxDD}.
+Various pretrained models have been evaluated for bird classification tasks, including VGG16, ResNet, DenseNet, and EfficientNet architectures. Comparative studies have shown that while all these models can perform effectively, some consistently outperform others. For example, research on drones-birds classification found that "the accuracy and F-Score of ResNet18 exceeds 98\% in all cases"\citep{Mohamed2023EfficientDC}, while another study on binary classification with the problem of small dataset reported that "DenseNet201 achieves the best classification accuracy of 98.89\%."\citep{Ren2023MonkeypoxDD}.
 %ref ok
 
 In a noteworthy study on medical image analysis, researchers evaluated the comparative performance of MobileNetV2 and Inception-v3 classification models. The investigation employed four distinct methodologies: implementing Inception-v3 both with and without transfer learning, and similarly applying MobileNetV2 with and without transfer learning techniques. The experimental results demonstrated that the MobileNetV2 architecture leveraging transfer learning capabilities achieved superior performance, reaching approximately 91.00\% accuracy in classification tasks \citep{Rahman2020}. An experiment conducted by \citep{9402686} conducted a comprehensive evaluation of different CNN architectures for identifying local bird species. With only 100 images per class before data augmentation high accuracies of above 90\% were achieved.
@@ -570,8 +570,7 @@ Transfer learning was employed in the implementation to leverage the robust feat
 
 % \href{https://arxiv.org/abs/1409.1556}{Simonyan and Zisserman (2015)} 
 
-Several pre-trained architectures were evaluated for this task, with VGG-16 model (a CNN model
-proposed by K. Simonyan and A. Zisserman) demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
+Several pre-trained architectures were evaluated for this task, with VGG-16 model (a CNN model proposed by K. Simonyan and A. Zisserman) demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
 
 \subsection{Common Implementation Strategy}
 
@@ -618,7 +617,7 @@ To optimize training with limited data, several techniques were employed consist
     
     \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using either ReduceLROnPlateau or CosineAnnealingLR was implemented across models, reducing learning rates when validation metrics plateaued.
     
-    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting. \citep{Prechelt1998}
+    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting.\citep{Prechelt1998}
     
     \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updates. 
     
