@@ -13,21 +13,38 @@ import shutil  # Added for file copying
 
 
 # Use Pre-trained VGG-16 model and modify it for binary classification
+# class VGG16Modified(nn.Module):
+#     def __init__(self):
+#         super(VGG16Modified, self).__init__()
+#         from torchvision.models import VGG16_Weights
+#         self.vgg = models.vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
+#         # Replace the classifier with a custom binary classification layer
+#         num_ftrs = self.vgg.classifier[6].in_features
+#         self.vgg.classifier[6] = nn.Sequential(
+#             nn.Dropout(0.4),
+#             nn.Linear(num_ftrs, 2)
+#         )
+#
+#     def forward(self, x):
+#         return self.vgg(x)
+
 class VGG16Modified(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes=2, dropout_rate=0.4):
         super(VGG16Modified, self).__init__()
-        from torchvision.models import VGG16_Weights
-        self.vgg = models.vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
-        # Replace the classifier with a custom binary classification layer
+        from torchvision.models import vgg16, VGG16_Weights
+
+        # Load pre-trained VGG16 model
+        self.vgg = vgg16(weights=VGG16_Weights.IMAGENET1K_V1)
+
+        # Replace the classifier with a custom classification layer
         num_ftrs = self.vgg.classifier[6].in_features
         self.vgg.classifier[6] = nn.Sequential(
-            nn.Dropout(0.4),
-            nn.Linear(num_ftrs, 2)
+            nn.Dropout(dropout_rate),
+            nn.Linear(num_ftrs, num_classes)
         )
 
     def forward(self, x):
         return self.vgg(x)
-
 
 # ------------------------------------
 # Grad-CAM Implementation
@@ -189,9 +206,9 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 # Main Execution
 # ------------------------------------
 if __name__ == "__main__":
-    MODEL_PATH = r"D:\FYP\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
+    MODEL_PATH = r"D:\MODELS\VGGModel\HQ3latest_20250426\checkpoint_model_vgg_20250426.pth"
     DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
-    OUTPUT_DIR = r"D:\FYP\GradCAM_OutputFull\best_model_vgg_20250210bbg"
+    OUTPUT_DIR = r"D:\FYP\OverfitCheck\checkpoint_model_vgg_20250426"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     generate_gradcam_and_confusion_matrix(MODEL_PATH, DATA_DIR, OUTPUT_DIR)
