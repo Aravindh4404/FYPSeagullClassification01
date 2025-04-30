@@ -1,7 +1,8 @@
 # WORKS ONLY FOR CHECKPOINTS
 
 # Use
-# python  VGG\analyze_overfitting.py --model_dir "D:\MODELS\VGGModel" --models "HQ3latest_20250429\_valloss\early_stopping_model_vgg_20250429.pth" "HQ3latest_20250426\checkpoint_model_vgg_20250426.pth" --test_data "D:\FYPSeagullClassification01\Test_Results\Test_Data" --output_dir "D:\FYP\OverfitCheck\comparison"
+# python  VGG\analyze_overfitting.py --model_dir "D:\MODELS\VGGModel" --models "Improved_20250210\current_model_vgg_improved.pth" "\HQ3latst_20250210\best_model_vgg_20250210.pth" --test_data "D:\FYPSeagullClassification01\Test_Results\Test_Data" --output_dir "D:\FYP\OverfitCheck\comparison"
+
 import os
 import torch
 import pandas as pd

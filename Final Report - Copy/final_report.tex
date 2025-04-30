@@ -348,7 +348,7 @@ These interpretability methods are particularly valuable in fine-grained classif
     \item To analyze whether consistent morphological differences exist between the two species. 
     \item Identify key discriminative features and perform analyses to get statistical information.
     \item To find out if the results of the analysis are statistically significant.
-    \item Whether the features can be used to identify the species of a gull in the field.
+    \item Whether the features can be used to identify the species of a gull with high confidence.
 \end{enumerate}
 
 \subsection*{Specific Objectives}
@@ -869,7 +869,7 @@ Vision Transformers (ViT) have emerged as powerful alternatives to convolutional
 For our primary approach, a Vision Transformer using transfer learning from a pre-trained model was implemented:
 
 \begin{itemize}
-    \item Base architecture: 'vit\_base\_patch16\_224' pre-trained on ImageNet from the TIMM library (\href{https://github.com/rwightman/pytorch-image-models}{Wightman, 2021})
+    \item Base architecture: 'vit\_base\_patch16\_224' pre-trained on ImageNet from the TIMM library \citep{rwightman2021pytorch}
     \item Input resolution: 224×224 pixels with 16×16 pixel patches
     \item Feature dimension: 768-dimensional embeddings
     \item Adaptation strategy: Replacement of the classification head with a binary classifier while preserving the pre-trained transformer blocks
@@ -1770,40 +1770,40 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
   \label{fig:vgg16_gradcam}
 \end{figure}
 
-% === ViT Interpretability ===
-\subsection{Vision Transformer Attention Maps}
-\begin{figure}[htbp]
-  \centering
-  \begin{tabular}{cc}
-    \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird1.png} &
-    \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird2.png} \\[0.5em]
-    \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird3.png} &
-    \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird4.png}
-  \end{tabular}
-  \caption{Attention‐based saliency maps for the Vision Transformer on the same four examples.}
-  \label{fig:vit_attention}
-\end{figure}
+% % === ViT Interpretability ===
+% \subsection{Vision Transformer Attention Maps}
+% \begin{figure}[htbp]
+%   \centering
+%   \begin{tabular}{cc}
+%     \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird1.png} &
+%     \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird2.png} \\[0.5em]
+%     \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird3.png} &
+%     \includegraphics[width=0.45\linewidth]{images/interpretability/vit/bird4.png}
+%   \end{tabular}
+%   \caption{Attention‐based saliency maps for the Vision Transformer on the same four examples.}
+%   \label{fig:vit_attention}
+% \end{figure}
 
-% === Side-by-Side Comparison ===
-\subsection{Side-by-Side Comparison}
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}[b]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{images/interpretability/vgg/019_gradcam.png}
-    \caption{VGG-16 Grad-CAM}
-    \label{fig:cmp_vgg}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{images/interpretability/vit/019_attmap.png}
-    \caption{ViT Attention Map}
-    \label{fig:cmp_vit}
-  \end{subfigure}
-  \caption{Comparison of interpretability outputs for a single test image.}
-  \label{fig:interpretability_comparison}
-\end{figure}
+% % === Side-by-Side Comparison ===
+% \subsection{Side-by-Side Comparison}
+% \begin{figure}[htbp]
+%   \centering
+%   \begin{subfigure}[b]{0.48\textwidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{images/interpretability/vgg/019_gradcam.png}
+%     \caption{VGG-16 Grad-CAM}
+%     \label{fig:cmp_vgg}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}[b]{0.48\textwidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{images/interpretability/vit/019_attmap.png}
+%     \caption{ViT Attention Map}
+%     \label{fig:cmp_vit}
+%   \end{subfigure}
+%   \caption{Comparison of interpretability outputs for a single test image.}
+%   \label{fig:interpretability_comparison}
+% \end{figure}
 
 
 
@@ -1899,162 +1899,162 @@ Table \ref{tab:model_accuracy} summarizes the final performance metrics evaluate
     \label{fig:bird-interpretability}
 \end{figure}
 
-\begin{figure}[htbp] % Placement options for the figure environment
-    \centering % Centers the figure content
+% \begin{figure}[htbp] % Placement options for the figure environment
+%     \centering % Centers the figure content
     
-    % \begin{subfigure}[b]{0.48\textwidth} % Subfigure 1 (adjust width as needed)
-    %     \centering
-    %     \includegraphics[width=\textwidth]{images/interpretability/vgg/019_gradcam.png} % Replace with your image file path
-    %     \caption{VGG-16 Interpretability Map} % Caption for the first subfigure
-    %     \label{sfig:interp_vgg} % Label for the first subfigure
-    % \end{subfigure}
-    % \hfill % Automatically spaces the subfigures horizontally
-    % \begin{subfigure}[b]{0.48\textwidth} % Subfigure 2 (adjust width as needed)
-    %     \centering
-    %     \includegraphics[width=\textwidth]{images/interpretability/vit/019_gradcam.png} % Replace with your image file path
-    %     \caption{ViT Interpretability Map} % Caption for the second subfigure
-    %     \label{sfig:interp_vit} % Label for the second subfigure
-    % \end{subfigure}
+%     % \begin{subfigure}[b]{0.48\textwidth} % Subfigure 1 (adjust width as needed)
+%     %     \centering
+%     %     \includegraphics[width=\textwidth]{images/interpretability/vgg/019_gradcam.png} % Replace with your image file path
+%     %     \caption{VGG-16 Interpretability Map} % Caption for the first subfigure
+%     %     \label{sfig:interp_vgg} % Label for the first subfigure
+%     % \end{subfigure}
+%     % \hfill % Automatically spaces the subfigures horizontally
+%     % \begin{subfigure}[b]{0.48\textwidth} % Subfigure 2 (adjust width as needed)
+%     %     \centering
+%     %     \includegraphics[width=\textwidth]{images/interpretability/vit/019_gradcam.png} % Replace with your image file path
+%     %     \caption{ViT Interpretability Map} % Caption for the second subfigure
+%     %     \label{sfig:interp_vit} % Label for the second subfigure
+%     % \end{subfigure}
     
-    \caption{Comparison of Interpretability Visualizations for VGG-16 and ViT models.} % Overall figure caption
-    \label{fig:interpretability_maps} % Overall figure label for cross-referencing
-\end{figure}
+%     \caption{Comparison of Interpretability Visualizations for VGG-16 and ViT models.} % Overall figure caption
+%     \label{fig:interpretability_maps} % Overall figure label for cross-referencing
+% \end{figure}
 
-Figure \ref{fig:interpretability_maps} illustrates the regions identified as most salient by different models for a sample image. Subfigure \ref{sfig:interp_vgg} shows the result for VGG-16, while Subfigure \ref{sfig:interp_vit} shows the result for ViT.
+% Figure \ref{fig:interpretability_maps} illustrates the regions identified as most salient by different models for a sample image. Subfigure \ref{sfig:interp_vgg} shows the result for VGG-16, while Subfigure \ref{sfig:interp_vit} shows the result for ViT.
 
 
-\subsection{Overfitting Analysis of the VGG-16 Model}
+% \subsection{Overfitting Analysis of the VGG-16 Model}
 
-\subsection{Overfitting Prevention and Analysis in the VGG-16 Model}
+% \subsection{Overfitting Prevention and Analysis in the VGG-16 Model}
 
-Model overfitting represents a critical challenge in deep learning applications, particularly in medical image classification where generalizability is paramount. This section presents an in-depth analysis of how the VGG-16 architecture was optimized to prevent overfitting in our COVID-19 classification task, with a specific focus on the implementation and effectiveness of early stopping.
+% Model overfitting represents a critical challenge in deep learning applications, particularly in medical image classification where generalizability is paramount. This section presents an in-depth analysis of how the VGG-16 architecture was optimized to prevent overfitting in our COVID-19 classification task, with a specific focus on the implementation and effectiveness of early stopping.
 
-\subsubsection{Early Stopping Implementation}
+% \subsubsection{Early Stopping Implementation}
 
-Early stopping was implemented as a key regularization technique to prevent overfitting. This method monitors validation metrics during training and halts the process when validation performance begins to deteriorate, even if training performance continues to improve. Our implementation included:
+% Early stopping was implemented as a key regularization technique to prevent overfitting. This method monitors validation metrics during training and halts the process when validation performance begins to deteriorate, even if training performance continues to improve. Our implementation included:
 
-\begin{itemize}
-    \item Patience factor of 5 epochs, allowing the model to continue training through minor fluctuations
-    \item Monitoring of validation loss as the primary metric for stopping decisions
-    \item Checkpoint saving to retain the best-performing model state based on validation accuracy
-\end{itemize}
+% \begin{itemize}
+%     \item Patience factor of 5 epochs, allowing the model to continue training through minor fluctuations
+%     \item Monitoring of validation loss as the primary metric for stopping decisions
+%     \item Checkpoint saving to retain the best-performing model state based on validation accuracy
+% \end{itemize}
 
-\subsubsection{Comparative Analysis: With vs. Without Early Stopping}
+% \subsubsection{Comparative Analysis: With vs. Without Early Stopping}
 
-Figure~\ref{fig:early_stopping_comparison} illustrates the training dynamics of two identical VGG-16 models: one with early stopping enabled and one allowed to train for the full 30 epochs regardless of validation performance.
+% Figure~\ref{fig:early_stopping_comparison} illustrates the training dynamics of two identical VGG-16 models: one with early stopping enabled and one allowed to train for the full 30 epochs regardless of validation performance.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{images/early_stopping_comparison.png}
-    \caption{Comparison of training and validation metrics for models with and without early stopping. (a) Loss curves showing divergence after epoch 6 in the non-early-stopped model. (b) Accuracy progression demonstrating stability in the early-stopped model versus potential degradation in validation accuracy in the non-early-stopped model.}
-    \label{fig:early_stopping_comparison}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{images/early_stopping_comparison.png}
+%     \caption{Comparison of training and validation metrics for models with and without early stopping. (a) Loss curves showing divergence after epoch 6 in the non-early-stopped model. (b) Accuracy progression demonstrating stability in the early-stopped model versus potential degradation in validation accuracy in the non-early-stopped model.}
+%     \label{fig:early_stopping_comparison}
+% \end{figure}
 
-The model without early stopping exhibited classic signs of overfitting after approximately the 6th epoch:
+% The model without early stopping exhibited classic signs of overfitting after approximately the 6th epoch:
 
-\begin{itemize}
-    \item Training loss continued to decrease asymptotically toward zero (reaching as low as 0.000001 by epoch 11)
-    \item Validation loss began to fluctuate and increase inconsistently (from 0.060114 in epoch 11 to values as high as 0.300291 in epoch 8)
-    \item Growing discrepancy between training and validation loss
-\end{itemize}
+% \begin{itemize}
+%     \item Training loss continued to decrease asymptotically toward zero (reaching as low as 0.000001 by epoch 11)
+%     \item Validation loss began to fluctuate and increase inconsistently (from 0.060114 in epoch 11 to values as high as 0.300291 in epoch 8)
+%     \item Growing discrepancy between training and validation loss
+% \end{itemize}
 
-By contrast, the model with early stopping terminated training at epoch 6, where:
+% By contrast, the model with early stopping terminated training at epoch 6, where:
 
-\begin{itemize}
-    \item Best validation loss of 0.018944 was achieved
-    \item Validation accuracy peaked at 99.12\%
-    \item Training was halted before validation metrics could deteriorate
-\end{itemize}
+% \begin{itemize}
+%     \item Best validation loss of 0.018944 was achieved
+%     \item Validation accuracy peaked at 99.12\%
+%     \item Training was halted before validation metrics could deteriorate
+% \end{itemize}
 
-Table~\ref{tab:early_stopping_metrics} provides a quantitative comparison of the two approaches.
+% Table~\ref{tab:early_stopping_metrics} provides a quantitative comparison of the two approaches.
 
-\begin{table}[htbp]
-\centering
-\caption{Performance Comparison: Models With and Without Early Stopping}
-\label{tab:early_stopping_metrics}
-\begin{tabular}{lcc}
-\hline
-\textbf{Metric} & \textbf{With Early Stopping} & \textbf{Without Early Stopping} \\
-\hline
-Best Validation Accuracy & 99.12\% & 98.68\% \\
-Best Validation F1 Score & 0.9949 & 0.9921 \\
-Best Validation ROC-AUC & 0.9994 & 0.9997 \\
-Final Training Loss & 0.099987 & 0.000001 \\
-Best Validation Loss & 0.018944 & 0.032870 \\
-Training Epochs Required & 6 & 11 \\
-Test Accuracy & [TO BE ADDED] & [TO BE ADDED] \\
-\hline
-\end{tabular}
-\end{table}
+% \begin{table}[htbp]
+% \centering
+% \caption{Performance Comparison: Models With and Without Early Stopping}
+% \label{tab:early_stopping_metrics}
+% \begin{tabular}{lcc}
+% \hline
+% \textbf{Metric} & \textbf{With Early Stopping} & \textbf{Without Early Stopping} \\
+% \hline
+% Best Validation Accuracy & 99.12\% & 98.68\% \\
+% Best Validation F1 Score & 0.9949 & 0.9921 \\
+% Best Validation ROC-AUC & 0.9994 & 0.9997 \\
+% Final Training Loss & 0.099987 & 0.000001 \\
+% Best Validation Loss & 0.018944 & 0.032870 \\
+% Training Epochs Required & 6 & 11 \\
+% Test Accuracy & [TO BE ADDED] & [TO BE ADDED] \\
+% \hline
+% \end{tabular}
+% \end{table}
 
-\subsubsection{Visualization of Overfitting Patterns}
+% \subsubsection{Visualization of Overfitting Patterns}
 
-Figure~\ref{fig:overfitting_indicators} presents a detailed visualization of overfitting indicators across training epochs for both models.
+% Figure~\ref{fig:overfitting_indicators} presents a detailed visualization of overfitting indicators across training epochs for both models.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{images/overfitting_indicators.png}
-    \caption{Indicators of overfitting observed throughout training. (a) Train-validation loss gap widening after epoch 6 in the non-early-stopped model. (b) Validation performance stability in the early-stopped model versus fluctuations in the non-early-stopped model. The gray vertical line indicates the early stopping point.}
-    \label{fig:overfitting_indicators}
-\end{figure}
+% % \begin{figure}[htbp]
+% %     \centering
+% %     \includegraphics[width=0.85\textwidth]{images/overfitting_indicators.png}
+% %     \caption{Indicators of overfitting observed throughout training. (a) Train-validation loss gap widening after epoch 6 in the non-early-stopped model. (b) Validation performance stability in the early-stopped model versus fluctuations in the non-early-stopped model. The gray vertical line indicates the early stopping point.}
+% %     \label{fig:overfitting_indicators}
+% % \end{figure}
 
-A key observation is the validation loss pattern in the non-early-stopped model. Despite achieving high validation accuracy (98.68\%), the validation loss showed inconsistency and occasional spikes, suggesting that the model was becoming overly confident in some predictions while making more significant errors on others—a classic sign of overfitting.
+% A key observation is the validation loss pattern in the non-early-stopped model. Despite achieving high validation accuracy (98.68\%), the validation loss showed inconsistency and occasional spikes, suggesting that the model was becoming overly confident in some predictions while making more significant errors on others—a classic sign of overfitting.
 
-\subsubsection{Early Stopping Effectiveness}
+% \subsubsection{Early Stopping Effectiveness}
 
-Early stopping proved highly effective in our context for several reasons:
+% Early stopping proved highly effective in our context for several reasons:
 
-\begin{enumerate}
-    \item \textbf{Optimal Model Selection}: The technique successfully identified the epoch (epoch 6) where the model achieved optimal generalization, with validation loss at 0.018944 and validation accuracy at 99.12\%.
+% \begin{enumerate}
+%     \item \textbf{Optimal Model Selection}: The technique successfully identified the epoch (epoch 6) where the model achieved optimal generalization, with validation loss at 0.018944 and validation accuracy at 99.12\%.
     
-    \item \textbf{Computational Efficiency}: Training was terminated after only 6 epochs instead of the full 30, representing an 80\% reduction in computational resources without sacrificing performance.
+%     \item \textbf{Computational Efficiency}: Training was terminated after only 6 epochs instead of the full 30, representing an 80\% reduction in computational resources without sacrificing performance.
     
-    \item \textbf{Preventing Memorization}: The early-stopped model was prevented from memorizing training data, as evidenced by the moderate final training loss (0.099987) compared to the near-zero training loss (0.000001) in the non-early-stopped model.
+%     \item \textbf{Preventing Memorization}: The early-stopped model was prevented from memorizing training data, as evidenced by the moderate final training loss (0.099987) compared to the near-zero training loss (0.000001) in the non-early-stopped model.
     
-    \item \textbf{Generalization}: The validation metrics at the stopping point (accuracy: 99.12\%, F1: 0.9949, ROC-AUC: 0.9994) indicate excellent generalization capabilities.
-\end{enumerate}
+%     \item \textbf{Generalization}: The validation metrics at the stopping point (accuracy: 99.12\%, F1: 0.9949, ROC-AUC: 0.9994) indicate excellent generalization capabilities.
+% \end{enumerate}
 
-\subsubsection{Statistical Stability Analysis}
+% \subsubsection{Statistical Stability Analysis}
 
-Figure~\ref{fig:metric_stability} illustrates the statistical stability of model performance across different validation metrics.
+% Figure~\ref{fig:metric_stability} illustrates the statistical stability of model performance across different validation metrics.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{images/metric_stability.png}
-    \caption{Statistical stability of validation metrics across training epochs. Note the increased variability after the early stopping point (indicated by vertical dashed line) in the non-early-stopped model.}
-    \label{fig:metric_stability}
-\end{figure}
+% % \begin{figure}[htbp]
+% %     \centering
+% %     \includegraphics[width=0.85\textwidth]{images/metric_stability.png}
+% %     \caption{Statistical stability of validation metrics across training epochs. Note the increased variability after the early stopping point (indicated by vertical dashed line) in the non-early-stopped model.}
+% %     \label{fig:metric_stability}
+% % \end{figure}
 
-The early-stopped model demonstrated more consistent performance across all metrics, with validation F1-score (0.9949) and ROC-AUC (0.9994) closely aligned with accuracy measurements. This alignment suggests that the model maintains balanced performance across different classes and decision thresholds.
+% The early-stopped model demonstrated more consistent performance across all metrics, with validation F1-score (0.9949) and ROC-AUC (0.9994) closely aligned with accuracy measurements. This alignment suggests that the model maintains balanced performance across different classes and decision thresholds.
 
-\subsubsection{Evidence of Generalization}
+% \subsubsection{Evidence of Generalization}
 
-Multiple indicators support the conclusion that the early-stopped VGG-16 model successfully generalized without overfitting:
+% Multiple indicators support the conclusion that the early-stopped VGG-16 model successfully generalized without overfitting:
 
-\begin{itemize}
-    \item \textbf{Validation-Test Alignment}: The small difference between validation accuracy (99.12\%) and test accuracy [TO BE ADDED] indicates consistent performance on unseen data.
+% \begin{itemize}
+%     \item \textbf{Validation-Test Alignment}: The small difference between validation accuracy (99.12\%) and test accuracy [TO BE ADDED] indicates consistent performance on unseen data.
     
-    \item \textbf{Moderate Training Loss}: The training loss at stopping point (0.099987) remains non-trivial, suggesting the model learned general patterns rather than memorizing specific examples.
+%     \item \textbf{Moderate Training Loss}: The training loss at stopping point (0.099987) remains non-trivial, suggesting the model learned general patterns rather than memorizing specific examples.
     
-    \item \textbf{High ROC-AUC Value}: The validation ROC-AUC of 0.9994 demonstrates excellent discriminative capability across different operating thresholds.
+%     \item \textbf{High ROC-AUC Value}: The validation ROC-AUC of 0.9994 demonstrates excellent discriminative capability across different operating thresholds.
     
-    \item \textbf{F1 Score Consistency}: The high F1 score (0.9949) indicates balanced precision and recall, suggesting the model performs well across all classes without bias toward the majority class.
+%     \item \textbf{F1 Score Consistency}: The high F1 score (0.9949) indicates balanced precision and recall, suggesting the model performs well across all classes without bias toward the majority class.
     
-    \item \textbf{Grad-CAM Verification}: Visual inspection of Grad-CAM activation maps confirms the model focuses on biologically-relevant features rather than background or artifacts.
-\end{itemize}
+%     \item \textbf{Grad-CAM Verification}: Visual inspection of Grad-CAM activation maps confirms the model focuses on biologically-relevant features rather than background or artifacts.
+% \end{itemize}
 
-\subsection{Conclusion on Model Robustness}
+% \subsection{Conclusion on Model Robustness}
 
-Early stopping proved to be an effective regularization technique for our VGG-16 model, producing an optimal model with superior generalization capacity. By halting training at epoch 6, we achieved:
+% Early stopping proved to be an effective regularization technique for our VGG-16 model, producing an optimal model with superior generalization capacity. By halting training at epoch 6, we achieved:
 
-\begin{enumerate}
-    \item Prevention of overfitting as evidenced by stable validation metrics
-    \item Computational efficiency through reduced training time
-    \item Optimal model selection with peak validation performance (99.12\% accuracy)
-    \item Balanced performance across all evaluation metrics
-\end{enumerate}
+% \begin{enumerate}
+%     \item Prevention of overfitting as evidenced by stable validation metrics
+%     \item Computational efficiency through reduced training time
+%     \item Optimal model selection with peak validation performance (99.12\% accuracy)
+%     \item Balanced performance across all evaluation metrics
+% \end{enumerate}
 
-The comparative analysis between early-stopped and non-early-stopped models clearly demonstrates the value of this technique in developing robust deep learning models for medical image classification. The early-stopped VGG-16 model represents an optimal balance between fitting to the training data and maintaining generalization capabilities, making it suitable for real-world clinical applications where performance on unseen data is critical.
+% The comparative analysis between early-stopped and non-early-stopped models clearly demonstrates the value of this technique in developing robust deep learning models for medical image classification. The early-stopped VGG-16 model represents an optimal balance between fitting to the training data and maintaining generalization capabilities, making it suitable for real-world clinical applications where performance on unseen data is critical.
 
 
 

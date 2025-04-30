@@ -203,9 +203,9 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 # Main Execution
 # ------------------------------------
 if __name__ == "__main__":
-    MODEL_PATH = r"D:\MODELS\VGGModel\HQ3latest_20250429\_valloss\early_stopping_model_vgg_20250429.pth"
+    MODEL_PATH = r"D:\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
     DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
-    OUTPUT_DIR = r"D:\FYP\OverfitCheck\early_stopping_model_vgg_20250429"
+    OUTPUT_DIR = r"D:\FYP\OverfitCheck\best_model_vgg_20250210TEST"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     generate_gradcam_and_confusion_matrix(MODEL_PATH, DATA_DIR, OUTPUT_DIR)
