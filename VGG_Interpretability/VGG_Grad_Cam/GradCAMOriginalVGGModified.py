@@ -159,10 +159,10 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
             overlay_heatmap(image_path, heatmap, output_path)
 
             # Add confidence score
-            img = cv2.imread(output_path)
-            confidence_text = f"Confidence: {confidence.item():.2f}"
-            cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            cv2.imwrite(output_path, img)
+            # img = cv2.imread(output_path)
+            # confidence_text = f"Confidence: {confidence.item():.2f}"
+            # cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            # cv2.imwrite(output_path, img)
         else:
             # Save misclassified
             misclassified_dir = os.path.join(output_dir, "misclassified", true_class)
@@ -206,9 +206,12 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 # Main Execution
 # ------------------------------------
 if __name__ == "__main__":
-    MODEL_PATH = r"D:\MODELS\VGGModel\HQ3latest_20250426\checkpoint_model_vgg_20250426.pth"
-    DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
-    OUTPUT_DIR = r"D:\FYP\OverfitCheck\checkpoint_model_vgg_20250426"
+    # MODEL_PATH = r"D:\MODELS\VGGModel\HQ3latest_20250426\checkpoint_model_vgg_20250426.pth"
+    # DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
+    # OUTPUT_DIR = r"D:\FYP\OverfitCheck\checkpoint_model_vgg_20250426"
+    MODEL_PATH = r"D:\MODELS\VGGModel\HQ3latst_20250210\best_model_vgg_20250210.pth"
+    DATA_DIR = r"D:\FYP\FYP DATASETS USED\Dataset HQ\HQ3\train"
+    OUTPUT_DIR = r"D:\FYP\GradALL\best_model_vgg_20250210"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     generate_gradcam_and_confusion_matrix(MODEL_PATH, DATA_DIR, OUTPUT_DIR)

@@ -891,7 +891,7 @@ We developed an InterpretableViT model that incorporates explicit attention mech
     \item Employs a multi-layer classifier with dropout regularization
 \end{itemize}
 
-A key advantage of this architecture is its compatibility with gradient-based visualization techniques. By separating the class token from patch tokens and implementing an explicit attention mechanism, the model facilitates more effective application of Grad-CAM (\href{https://arxiv.org/abs/1610.02391}{Selvaraju et al., 2017}), allowing for visualization of discriminative image regions contributing to classification decisions.
+A key advantage of this architecture is its compatibility with gradient-based visualization techniques. By separating the class token from patch tokens and implementing an explicit attention mechanism, the model facilitates more effective application of Grad-CAM \citep{Selvaraju_2019}, allowing for visualization of discriminative image regions contributing to classification decisions.
 
 % check above referencea and cite as Selvaraju_2019
 
@@ -955,9 +955,9 @@ Our implementation adapted the pre-trained Inception v3 model for fine-grained g
 
 \subsubsection{Architecture-Specific Enhancements}
 
-A distinctive aspect of our ResNet-50 implementation was the incorporation of image sharpening as a preprocessing technique. We applied a 3×3 Laplacian sharpening kernel to enhance edge definition and accentuate the subtle diagnostic features crucial for distinguishing between gull species {\href{https://www.pearson.com/en-us/subject-catalog/p/digital-image-processing/P200000003546}{Gonzalez \& Woods, 2018}}. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks {\href{https://openaccess.thecvf.com/content_cvpr_2014/papers/Berg_Birdsnap_Large-scale_Fine-grained_2014_CVPR_paper.pdf}{Berg et al., 2014}}.
+A distinctive aspect of our ResNet-50 implementation was the incorporation of image sharpening as a preprocessing technique. We applied a 3×3 Laplacian sharpening kernel to enhance edge definition and accentuate the subtle diagnostic features crucial for distinguishing between gull species. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks {\href{https://openaccess.thecvf.com/content_cvpr_2014/papers/Berg_Birdsnap_Large-scale_Fine-grained_2014_CVPR_paper.pdf}{Berg et al., 2014}}.
 
-The sharpening kernel was systematically applied to both training and evaluation pipelines using OpenCV's filter2D function, ensuring consistent feature enhancement across all dataset partitions. This preprocessing step proved particularly valuable for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species {\href{https://ieeexplore.ieee.org/document/8659085}{Dutta \& Zisserman, 2019}}.
+The sharpening kernel was systematically applied to both training and evaluation pipelines using OpenCV's filter2D function, ensuring consistent feature enhancement across all dataset partitions. This preprocessing step proved particularly valuable for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species.
 
 \subsection{Custom CNN with Squeeze-and-Excitation Blocks}
 
@@ -970,7 +970,7 @@ The sharpening kernel was systematically applied to both training and evaluation
 
 \subsubsection{Architectural Design}
 
-To address the challenges of limited data and class imbalance in fine-grained classification, we developed a lightweight custom CNN architecture incorporating attention mechanisms. Our approach employs Squeeze-and-Excitation (SE) blocks, which enhance feature representation by modeling channel interdependencies through an attention mechanism. The SE block, as introduced by Hu et al. (\href{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}{2018}), adaptively recalibrates channel-wise feature responses to emphasize informative features while suppressing less useful ones.
+To address the challenges of limited data and class imbalance in fine-grained classification, we developed a lightweight custom CNN architecture incorporating attention mechanisms. Our approach employs Squeeze-and-Excitation (SE) blocks, which enhance feature representation by modeling channel interdependencies through an attention mechanism. The SE block, as introduced by Hu et al. \citep{Hu_2018_CVPR}, adaptively recalibrates channel-wise feature responses to emphasize informative features while suppressing less useful ones.
 
 The architecture consists of three convolutional blocks, each followed by batch normalization, ReLU activation, and an SE block. The SE block performs two key operations:
 \begin{itemize}
@@ -978,21 +978,23 @@ The architecture consists of three convolutional blocks, each followed by batch 
     \item \textbf{Excitation}: A fully connected layer that produces modulation weights for each channel
 \end{itemize}
 
-This channel-wise attention mechanism has been shown to improve model performance with minimal computational overhead (\href{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}{Hu et al., 2018}). The SE blocks in our implementation use a reduction ratio of 16, balancing parameter efficiency and representational power.
+This channel-wise attention mechanism has been shown to improve model performance with minimal computational overhead \citep{Hu_2018_CVPR}. The SE blocks in our implementation use a reduction ratio of 16, balancing parameter efficiency and representational power.
 
 \subsubsection{Custom CNN-Specific Training Approach}
 
 Unlike the transfer learning approaches used with pre-trained models, our custom CNN was trained from scratch with some specific optimization strategies:
 
 \begin{itemize}
-    \item \textbf{Cosine Annealing scheduler}: Our learning rate schedule follows a cosine annealing pattern with a period of 10 epochs, allowing the learning rate to oscillate and potentially escape local minima (\href{https://arxiv.org/abs/1608.03983}{Loshchilov and Hutter, 2017}).
+    \item \textbf{Cosine Annealing scheduler}: Our learning rate schedule follows a cosine annealing pattern with a period of 20 epochs, allowing the learning rate to oscillate and potentially escape local minima.
+    
+% IRRELEVANT (\href{https://arxiv.org/abs/1608.03983}{Loshchilov and Hutter, 2017})
     
     \item \textbf{Specialized augmentation}: The custom CNN particularly benefited from more aggressive data augmentation strategies to compensate for the lack of pre-trained weights, including stronger rotations and more extensive color jittering than used with the transfer learning models.
 \end{itemize}
 
 \section{Model Interpretability Methodologies}
 
-Deep learning models, particularly Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), are often criticized for their lack of transparency, functioning as "black boxes" wherein the decision-making process remains opaque to human observers. For critical applications like wildlife species classification, understanding how these models arrive at their predictions is essential for establishing trust and validating results \href{https://arxiv.org/abs/1610.02391}{(Selvaraju et al., 2017)}. This section outlines the methodologies implemented to visualize and interpret the classification decisions of both the CNN architecture and Vision Transformer (ViT) models used in this study.
+Deep learning models, particularly Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), are often criticized for their lack of transparency, functioning as "black boxes" wherein the decision-making process remains opaque to human observers. For critical applications like wildlife species classification, understanding how these models arrive at their predictions is essential for establishing trust and validating results \citep{Selvaraju_2019}. This section outlines the methodologies implemented to visualize and interpret the classification decisions of both the CNN architecture and Vision Transformer (ViT) models used in this study.
 
 \subsection{Gradient-weighted Class Activation Mapping (Grad-CAM)}
 
@@ -1255,7 +1257,7 @@ These additional interpretability techniques were implemented primarily for expl
 
 The implementation details and experimental results for these additional techniques are preserved here to document the comprehensive approach taken toward model interpretability in this research.
 
-Though straightforward to implement, saliency maps,  guided backpropagation were not highlighted in the main analysis as they can be noisy and lack the class-discriminative properties of Grad-CAM. Additionally, as noted by \cite{shi2018saliency}, simple gradient methods sometimes fail sanity checks that Grad-CAM passes.
+Though straightforward to implement, saliency maps,  guided backpropagation were not highlighted in the main analysis as they can be noisy and lack the class-discriminative properties of Grad-CAM. Additionally, as noted by \cite{Adebayo2018}, simple gradient methods sometimes fail sanity checks that Grad-CAM passes.
 
 3. Of the methods tested, Gradients and GradCAM pass the sanity checks, while Guided BackProp and
 Guided GradCAM are invariant to higher layer parameters; hence, fail.
@@ -1263,69 +1265,69 @@ Guided GradCAM are invariant to higher layer parameters; hence, fail.
 of supporting tasks that require explanations that are faithful to the model or the data generating
 process.  \href{https://arxiv.org/pdf/1810.03292}{(Guided and saliency not good)}
 
-% velow TODO
+velow TODO
 % \appendix
-% \section{Additional Interpretability Techniques}
-% \label{appendix:add_interpret}
+\section{Additional Interpretability Techniques}
+\label{appendix:add_interpret}
 
-% In addition to the Grad-CAM method discussed in the main sections of this report, several other interpretability techniques were explored during this research.
+In addition to the Grad-CAM and attention rollout methods discussed in the main sections of this report, several other interpretability techniques were explored during this research.
 
-% \subsection{DeepLIFT}
+\subsection{DeepLIFT}
 
-% DeepLIFT (Deep Learning Important FeaTures) was implemented using the Captum library for the VGG16 and ViT models. This technique compares activations against a reference baseline (typically zeros) to determine feature importance:
+DeepLIFT (Deep Learning Important FeaTures) was implemented using the Captum library for the VGG16 and ViT models. This technique compares activations against a reference baseline (typically zeros) to determine feature importance:
 
-% \begin{itemize}
-% \item A zero baseline tensor is created as a reference point
-% \item Attribution scores are calculated comparing actual activations to this baseline
-% \item Channel-wise attributions are aggregated and normalized for visualization
-% \end{itemize}
+\begin{itemize}
+\item A zero baseline tensor is created as a reference point
+\item Attribution scores are calculated comparing actual activations to this baseline
+\item Channel-wise attributions are aggregated and normalized for visualization
+\end{itemize}
 
-% While DeepLIFT provides theoretically grounded attributions, it was not adopted for the main analysis due to its limited adoption in the literature compared to Grad-CAM and its computational overhead for large-scale experiments.
+While DeepLIFT provides theoretically grounded attributions, it was not adopted for the main analysis due to its limited adoption in the literature compared to prevalent techniques like Grad-CAM.
 
-% \subsection{Saliency Maps}
+\subsection{Saliency Maps}
 
-% \begin{itemize}
-% \item Gradients of predictions with respect to input pixels are computed
-% \item Absolute values of gradients are visualized as sensitivity maps
-% \end{itemize}
+\begin{itemize}
+\item Gradients of predictions with respect to input pixels are computed
+\item Absolute values of gradients are visualized as sensitivity maps
+\end{itemize}
 
-% Saliency maps, though computationally efficient, often produce noisy visualizations and lack class-discriminative properties. As shown in prior work \citep{shi2018saliency}, they may also fail basic sanity checks, making them unreliable for tasks requiring faithful explanations.
+Saliency maps, though computationally efficient, often produce noisy visualizations and lack class-discriminative properties. As shown in prior work \citep{Adebayo2018}, they may also fail basic sanity checks, making them unreliable for tasks requiring faithful explanations.
 
-% \subsection{Integrated Gradients for Vision Transformers}
+\subsection{Integrated Gradients for Vision Transformers}
 
-% Integrated Gradients was implemented for ViT using 50 interpolation steps:
+Integrated Gradients was implemented for ViT using 50 interpolation steps:
 
-% \begin{itemize}
-%     \item Path integrals are approximated between baseline and input images
-%     \item 50 interpolation steps were used for the approximation
-%     \item Attributions are processed to align with spatial image dimensions
-%     \item Results are normalized for consistent visualization
-% \end{itemize}
+\begin{itemize}
+    \item Path integrals are approximated between baseline and input images
+    \item 50 interpolation steps were used for the approximation
+    \item Attributions are processed to align with spatial image dimensions
+    \item Results are normalized for consistent visualization
+\end{itemize}
 
-% Despite its theoretical soundness, Integrated Gradients requires significantly more computation than Grad-CAM. Additionally, the literature review indicated that Grad-CAM adaptations for Vision Transformers often provide more intuitive visualizations for classification tasks \cite{chefer2021transformer}
+Despite its theoretical soundness, Integrated Gradients requires significantly more computation than Grad-CAM. Additionally, the literature review indicated that Grad-CAM adaptations for Vision Transformers often provide more intuitive visualizations for classification tasks \cite{chefer2021transformer}
 
-% \subsection{Guided Backpropagation for ViT}
+\subsection{Guided Backpropagation for ViT}
 
 
-% \begin{itemize}
-%     \item Modified gradient flow during backpropagation highlights positive influences
-%     \item Implementation uses Captum's GuidedBackprop with model-specific wrappers
-%     \item Results are post-processed to create single-channel visualizations
-% \end{itemize}
+\begin{itemize}
+    \item Modified gradient flow during backpropagation highlights positive influences
+    \item Implementation uses Captum's GuidedBackprop with model-specific wrappers
+    \item Results are post-processed to create single-channel visualizations
+\end{itemize}
 
-% While visually cleaner than saliency maps, Guided Backpropagation has two key limitations: (1) it lacks localization capabilities, and (2) as demonstrated by \citep{shi2018saliency}, it fails parameter randomization tests, (3) it may highlight input patterns rather than model decision logic \cite{nie2018theoretical}.
+While visually cleaner than saliency maps, Guided Backpropagation has two key limitations: (1) it lacks localization capabilities, and (2) as demonstrated by \citep{Adebayo2018}, it fails parameter randomization tests, (3) it may highlight input patterns rather than model decision logic \cite{nie2018theoretical}.
 
-% \subsection{Justification for Grad-CAM}
+\subsection{Justification for Grad-CAM}
 
-% Grad-CAM was chosen as the primary interpretability method for this study due to its unique advantages over the alternatives:
+Grad-CAM was chosen as the primary interpretability method for this study due to its unique advantages over the alternatives:
 
-% \begin{itemize}
-% \item \textbf{Theoretical Robustness}: Grad-CAM passes sanity checks (e.g., parameter randomization tests) that methods like Guided Backpropagation and Guided Grad-CAM fail \citep{shi2018saliency}.
-% \item \textbf{Class-Discriminative}: Unlike saliency maps or Integrated Gradients, Grad-CAM highlights regions relevant to specific predicted classes.
-% \item \textbf{Architecture Flexibility}: Works consistently across CNNs (e.g., VGG16, ResNet) and adapted Vision Transformers.
-% \item \textbf{Computational Efficiency}: Requires only a single backward pass per class, unlike path-based methods (e.g., Integrated Gradients).
-% \item \textbf{Empirical Validation}: Supported by extensive literature \citep{Selvaraju_2019, chefer2021generic} demonstrating its effectiveness for classification tasks.
-% \end{itemize}
+\begin{itemize}
+\item \textbf{Theoretical Robustness}: Grad-CAM passes sanity checks (e.g., parameter randomization tests) that methods like Guided Backpropagation and Guided Grad-CAM fail \citep{Adebayo2018}.
+\item \textbf{Class-Discriminative}: Unlike saliency maps or Integrated Gradients, Grad-CAM highlights regions relevant to specific predicted classes.
+\item \textbf{Architecture Flexibility}: Works consistently across CNNs (e.g., VGG16, ResNet) and adapted Vision Transformers.
+\item \textbf{Computational Efficiency}: Requires only a single backward pass per class, unlike path-based methods (e.g., Integrated Gradients).
+\item \textbf{Empirical Validation}: Supported by extensive literature \citep{Selvaraju_2019, chefer2021generic} demonstrating its effectiveness for classification tasks.
+\end{itemize}
 % Add these to your bibliography
 % \bibitem{adebayo2018sanity} Adebayo, J., Gilmer, J., Muelly, M., Goodfellow, I., Hardt, M., \& Kim, B. (2018). Sanity checks for saliency maps. In Advances in Neural Information Processing Systems.
 % \bibitem{chefer2021transformer} Chefer, H., Gur, S., \& Wolf, L. (2021). Transformer interpretability beyond attention visualization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition.
@@ -1705,15 +1707,7 @@ A consistent random state (42) was used throughout the analysis to ensure reprod
 
 This comprehensive methodology allowed for a robust evaluation of whether the extracted statistical features could effectively distinguish between the two gull species through unsupervised clustering, providing valuable insights into feature significance for species classification.
 
-
-
-
-
-
-
 \chapter{Results}
-
-\section{Model Performance} % Example section
 
 \section{Model Performance}
 
@@ -1726,10 +1720,12 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
     \toprule
     \textbf{Model} & \textbf{Validation Acc.\,(\%)} & \textbf{Test Acc.\,(\%)} \\
     \midrule
-    VGG-16 (Transfer Learning)       & 98.80 & 100.00 \\
-    Vision Transformer (ViT)         & 98.70 &  96.67 \\
+    VGG-16 (Transfer Learning)       & 97.37 & 100.00 \\
+    Interpretable ViT                & 94.74 &  96.67 \\
     Inception v3 (Transfer Learning) & 97.47 &  86.96 \\
     ResNet50 (Transfer Learning)     & 96.20 &  87.80 \\
+    EnhancedViT                      & 94.52 &        \\
+    ViT Original                     & 98.70 &        \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1804,11 +1800,6 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
 %   \caption{Comparison of interpretability outputs for a single test image.}
 %   \label{fig:interpretability_comparison}
 % \end{figure}
-
-
-
-
-
 
 \begin{table}[htbp] % Placement options: h=here, t=top, b=bottom, p=page of its own
     \centering % Centers the table on the page

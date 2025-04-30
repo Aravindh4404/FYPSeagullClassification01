@@ -133,13 +133,13 @@ def save_attention_visualization(attn_map, original_image, class_name, confidenc
 if __name__ == "__main__":
     # ----- Configuration -----
     # Path to the trained model weights
-    model_weights_path = r"D:\FYP\MODELS\VIT\VIT2_HQ2_20241224\final_model_vit_20241224.pth"
+    model_weights_path = r"D:\MODELS\VIT\VITModified_HQ3_20250430\final_model_vit_20250430.pth"
     # Model name (used for naming the output folder)
-    model_name = "VIT2_HQ2_20241224"
+    model_name = "final_model_vit_20250430"
     # Dataset directory: each subfolder is assumed to be a class (e.g., "Glaucous_Winged_Gull", "Slaty_Backed_Gull")
-    dataset_dir = r"D:\FYP\Black BG\Black Background"
+    dataset_dir = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
     # Base directory to store outputs (correct predictions and confusion matrix)
-    output_base_dir = os.path.join("D:/FYP/OUTPUTS", model_name)
+    output_base_dir = os.path.join("D:\FYP\GradALL", model_name)
     os.makedirs(output_base_dir, exist_ok=True)
 
     # Define class names (adjust these if your folder names differ)
