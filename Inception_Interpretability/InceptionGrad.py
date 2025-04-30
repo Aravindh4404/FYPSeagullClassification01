@@ -225,9 +225,9 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 # Main Execution
 # ------------------------------------
 if __name__ == "__main__":
-    MODEL_PATH = r"D:\MODELS\InceptionModel\best_model_inception_20250215.pth"
-    DATA_DIR = r"D:\FYP\FYP DATASETS USED\Dataset HQ\HQ3\test"
-    OUTPUT_DIR = r"D:\FYP\GradALL\best_model_inception_20250215"
+    MODEL_PATH = r"D:\MODELS\InceptionModel\HQ3ltst_20250430\final_model_inception_20250430.pth"
+    DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
+    OUTPUT_DIR = r"D:\FYP\GradALL\final_model_inception_20250430"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     generate_gradcam_and_confusion_matrix(MODEL_PATH, DATA_DIR, OUTPUT_DIR)

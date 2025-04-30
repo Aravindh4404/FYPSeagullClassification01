@@ -4,6 +4,10 @@
 \usepackage{setspace}
 \usepackage{lastpage}
 
+
+\usepackage{multicol}
+\usepackage{caption}
+
 % for apa with apa
 % \usepackage{natbib} 
 % for ieee with IEEEtran
@@ -1820,6 +1824,76 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
 Table \ref{tab:model_accuracy} summarizes the final performance metrics evaluated on the unseen test set. The Vision Transformer (ViT) achieved the highest test accuracy at 94.1\%.
 
 \section{Model Interpretability} % Example section
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tabular}{cccccc}
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird1.jpg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird2.jpg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird3.jpg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird4.jpg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird5.jpg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird6.jpg} \\
+        
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird7.jpg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird8.jpg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird9.jpeg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird10.jpeg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird11.jpeg} &
+        \includegraphics[width=0.15\textwidth]{images/interpretability/vgg/bird12.jpg} \\
+    \end{tabular}
+    \caption{Bird interpretation visualizations.}
+    \label{fig:bird-interpretability}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.13\textwidth}
+        \includegraphics[height=3cm]{images/interpretability/vgg/bird1.jpg}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.13\textwidth}
+        \includegraphics[height=3cm]{images/interpretability/vgg/bird2.jpg}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.13\textwidth}
+        \includegraphics[height=3cm]{images/interpretability/vgg/bird3.jpg}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.13\textwidth}
+        \includegraphics[height=3cm]{images/interpretability/vgg/bird4.jpg}
+    \end{subfigure}
+    % Add more images as needed
+    \caption{Collage of images.}
+    \label{fig:collage}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{multicols}{6}
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird1.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird2.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird3.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird4.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird5.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird6.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird7.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird8.jpg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird9.jpeg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird10.jpeg}
+        
+        \includegraphics[width=\linewidth]{images/interpretability/vgg/bird11.jpeg}
+    \end{multicols}
+    \caption{Collage of images.}
+    \label{fig:collage}
+\end{figure}
 
 \begin{figure}[htbp]
     \centering
