@@ -161,11 +161,12 @@ if __name__ == "__main__":
     # Define class names (these should correspond to the folder names)
     class_names = ['Glaucous_Winged_Gull', 'Slaty_Backed_Gull']
     # root_folder = "D:/FYP/FYP DATASETS USED/Dataset HQ/HQ3/train"
-    root_folder = "D:/FYP/Black BG/Black Background"
+    root_folder = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
+    output_folder = r"D:\FYP\GradALL\final_model_vit_20250208"
 
     # Create a results folder using the model name
     model_name = os.path.basename(os.path.dirname(model_path))
-    results_folder = os.path.join("gradcam_results", model_name)
+    results_folder = r"D:\FYP\GradALL\final_model_vit_20250208"
     os.makedirs(results_folder, exist_ok=True)
 
     # Process the folder, saving Grad-CAM overlays only for correctly predicted images,

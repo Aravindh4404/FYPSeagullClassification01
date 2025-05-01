@@ -186,12 +186,12 @@ def plot_and_save_confusion_matrix(cm, class_names, save_path):
 # Example Usage
 if __name__ == "__main__":
     model = InterpretableViTGradCAM(dropout_rate=0.3, hidden_dim=512)
-    model.load_state_dict(torch.load("D:/FYP/MODELS/VIT/InterpretableViT_20250213/final_model_vit_20250213.pth", map_location="cpu"))
+    model.load_state_dict(torch.load("D:/MODELS/VIT/InterpretableViT_20250213/final_model_vit_20250213.pth", map_location="cpu"))
     model.eval()
-
+    # InterpretableViT_20250213 / final_model_vit_20250213.pth
     class_names = ["Glaucous_Winged_Gull", "Slaty_Backed_Gull"]
-    root_folder = r"D:\FYP\Black BG\Black Background"
-    output_folder = r"D:\FYP\GradCAM_Output"
+    root_folder = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
+    output_folder = r"D:\FYP\GradALL\final_model_vit_20250213"
     os.makedirs(output_folder, exist_ok=True)
 
     # Process the folder and collect true and predicted labels

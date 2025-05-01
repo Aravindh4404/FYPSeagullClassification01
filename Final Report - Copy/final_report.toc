@@ -95,29 +95,43 @@
 \contentsline {chapter}{\numberline {5}Results}{35}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Model Performance}{35}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Well-Performing Models}{35}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Earlier Model Trials}{35}{subsection.5.1.2}%
-\contentsline {section}{\numberline {5.2}Model Interpretability}{35}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}VGG-16 Grad-CAM Examples}{35}{subsection.5.2.1}%
-\contentsline {section}{\numberline {5.3}Model Interpretability}{39}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Intensity Analysis Results}{39}{subsection.5.3.1}%
-\contentsline {subsubsection}{Wing Intensity Analysis}{39}{subsection.5.3.1}%
-\contentsline {subsubsection}{Wingtip Darkness Analysis}{39}{figure.caption.14}%
-\contentsline {subsubsection}{Pixel Intensity Distribution Analysis}{40}{figure.caption.16}%
-\contentsline {subsubsection}{Wing-Wingtip Contrast Analysis}{41}{figure.caption.17}%
-\contentsline {subsection}{\numberline {5.3.2}Biological Significance of Intensity Analysis}{41}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Intensity Analysis Results}{42}{subsection.5.3.3}%
-\contentsline {subsubsection}{Comparative Analysis}{42}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}LBP Pattern Results}{42}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Most Discriminative Features}{42}{subsection.5.3.5}%
-\contentsline {subsection}{\numberline {5.3.6}LBP Code Distributions}{43}{subsection.5.3.6}%
-\contentsline {subsection}{\numberline {5.3.7}Summary}{44}{subsection.5.3.7}%
-\contentsline {subsection}{\numberline {5.3.8}Clustering Analysis Results}{44}{subsection.5.3.8}%
-\contentsline {subsubsection}{K-means Clustering}{44}{subsection.5.3.8}%
-\contentsline {subsubsection}{Hierarchical Clustering}{45}{figure.caption.24}%
-\contentsline {subsubsection}{Gaussian Mixture Model}{46}{figure.caption.26}%
-\contentsline {subsection}{\numberline {5.3.9}Algorithm Comparison}{47}{subsection.5.3.9}%
-\contentsline {section}{\numberline {5.4}Wing Intensity Comparison Between Gull Species}{48}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Wing Intensity Analysis}{48}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Dark Pixel Analysis}{48}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Raw Pixel Count Analysis}{49}{subsection.5.4.3}%
-\contentsline {section}{\numberline {5.5}Biological Significance}{49}{section.5.5}%
+\contentsline {subsection}{\numberline {5.1.2}Earlier Model Trials}{36}{subsection.5.1.2}%
+\contentsline {section}{\numberline {5.2}Model Interpretability}{36}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}VGG-16 Grad-CAM Examples}{36}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Model Interpretability}{36}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Results}{36}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Wing Intensity Analysis Perplexity}{36}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Wingtip Darkness Analysis}{36}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Pixel Intensity Distribution Analysis}{40}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Wing-Wingtip Contrast Analysis}{41}{subsection.5.3.5}%
+\contentsline {section}{\numberline {5.4}Discussion}{43}{section.5.4}%
+\contentsline {subsubsection}{Wing Intensity Analysis Deepseek}{43}{section.5.4}%
+\contentsline {subsubsection}{Wingtip Darkness Characteristics}{44}{section.5.4}%
+\contentsline {subsubsection}{Pixel Intensity Distribution}{44}{table.caption.25}%
+\contentsline {subsubsection}{Wing-Wingtip Contrast}{44}{table.caption.26}%
+\contentsline {subsection}{\numberline {5.4.1}Discussion}{45}{subsection.5.4.1}%
+\contentsline {subsubsection}{Biological Significance of Intensity Patterns}{45}{subsection.5.4.1}%
+\contentsline {subsubsection}{Methodological Implications}{45}{subsection.5.4.1}%
+\contentsline {subsubsection}{Comparative Analysis with Field Observations}{45}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Intensity Analysis Results Original}{46}{subsection.5.4.2}%
+\contentsline {subsubsection}{Wing Intensity Analysis}{46}{subsection.5.4.2}%
+\contentsline {subsubsection}{Wingtip Darkness Analysis}{46}{figure.caption.30}%
+\contentsline {subsubsection}{Pixel Intensity Distribution Analysis}{47}{figure.caption.32}%
+\contentsline {subsubsection}{Wing-Wingtip Contrast Analysis}{48}{figure.caption.33}%
+\contentsline {subsection}{\numberline {5.4.3}Biological Significance of Intensity Analysis}{48}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Intensity Analysis Results}{49}{subsection.5.4.4}%
+\contentsline {subsubsection}{Comparative Analysis}{49}{subsection.5.4.4}%
+\contentsline {subsection}{\numberline {5.4.5}LBP Pattern Results}{49}{subsection.5.4.5}%
+\contentsline {subsection}{\numberline {5.4.6}Most Discriminative Features}{50}{subsection.5.4.6}%
+\contentsline {subsection}{\numberline {5.4.7}LBP Code Distributions}{50}{subsection.5.4.7}%
+\contentsline {subsection}{\numberline {5.4.8}Summary}{51}{subsection.5.4.8}%
+\contentsline {subsection}{\numberline {5.4.9}Clustering Analysis Results}{51}{subsection.5.4.9}%
+\contentsline {subsubsection}{K-means Clustering}{51}{subsection.5.4.9}%
+\contentsline {subsubsection}{Hierarchical Clustering}{52}{figure.caption.40}%
+\contentsline {subsubsection}{Gaussian Mixture Model}{53}{figure.caption.42}%
+\contentsline {subsection}{\numberline {5.4.10}Algorithm Comparison}{54}{subsection.5.4.10}%
+\contentsline {section}{\numberline {5.5}Wing Intensity Comparison Between Gull Species}{55}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Wing Intensity Analysis}{55}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Dark Pixel Analysis}{55}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Raw Pixel Count Analysis}{56}{subsection.5.5.3}%
+\contentsline {section}{\numberline {5.6}Biological Significance}{56}{section.5.6}%
