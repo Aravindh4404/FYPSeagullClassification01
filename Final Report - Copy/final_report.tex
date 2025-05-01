@@ -1722,6 +1722,61 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
 
 \chapter{Results}
 
+\section{Model Performance on latest Stage 3 dataset}
+
+% Table 4: Validation and Test Accuracy Comparison
+\begin{table}[htbp]
+    \centering
+    \caption{Validation and Test Accuracy Comparison}
+    \label{tab:val_test_comparison}
+    \begin{tabular}{lccc}
+    \toprule
+    \textbf{Model} & \textbf{Val. Acc. (\%)} & \textbf{Test Acc. (\%)} \\
+    \midrule
+    VGG-16  & 97.37 & 95.74 \\
+    ViT & 94.74 & 93.62 \\
+    Inception v3 & 97.80 & 91.49  \\
+    ResNet50 & 96.04 & 82.98 \\
+    EnhancedViT & 94.52 & 95.74  \\
+    InterpretableViT & 94.74 & 95.74 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+    \centering
+    \caption{Comprehensive Model Performance Metrics on Test Dataset}
+    \label{tab:combined_performance}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{lcccccc}
+    \toprule
+    \multirow{2}{*}{\textbf{Model}} & \multicolumn{3}{c}{\textbf{Glaucous Winged}} & \multicolumn{3}{c}{\textbf{Slaty Backed}} \\
+    \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+    & \textbf{Precision (\%)} & \textbf{Recall (\%)} & \textbf{F1 (\%)} & \textbf{Precision (\%)} & \textbf{Recall (\%)} & \textbf{F1 (\%)} \\
+    \midrule
+    VGG-16 & 87.50 & 100.00 & 93.33 & 100.00 & 93.94 & 96.88 \\
+    ViT & 100.00 & 78.57 & 88.00 & 91.67 & 100.00 & 95.65 \\
+    Inception v3 & 77.78 & 100.00 & 87.50 & 100.00 & 87.88 & 93.55 \\
+    ResNet50 & 66.67 & 85.71 & 75.00 & 93.10 & 81.82 & 87.10 \\
+    EnhancedViT & 87.50 & 100.00 & 93.33 & 100.00 & 93.94 & 96.88 \\
+    InterpretableViT & 92.86 & 92.86 & 92.86 & 96.97 & 96.97 & 96.97 \\
+    \bottomrule
+    \end{tabular}%
+    }
+\end{table}
+
+
+\section{Grad-CAM outputs of best performing VGG-16 model}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/interpretresults/vgg/1.png}
+    \caption{Grad-CAM visualizations for a selection of test images highlighting wing and wingtip regions of the VGG-16 model}
+    \label{fig:vgg16_gradcam}
+\end{figure}
+
+
 \section{Intensity Analysis Results}
 % images/REPORT_IMAGES_INTENSITY/I2/intensitydistribution.png
 
