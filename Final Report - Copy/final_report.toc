@@ -93,45 +93,47 @@
 \contentsline {section}{\numberline {4.13}Clustering Analysis}{34}{section.4.13}%
 \contentsline {subsection}{\numberline {4.13.1}Implementation Details}{34}{subsection.4.13.1}%
 \contentsline {chapter}{\numberline {5}Results}{35}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Model Performance}{35}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Well-Performing Models}{35}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Earlier Model Trials}{36}{subsection.5.1.2}%
-\contentsline {section}{\numberline {5.2}Model Interpretability}{36}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}VGG-16 Grad-CAM Examples}{36}{subsection.5.2.1}%
-\contentsline {section}{\numberline {5.3}Model Interpretability}{36}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Results}{36}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Wing Intensity Analysis Perplexity}{36}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Wingtip Darkness Analysis}{36}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}Pixel Intensity Distribution Analysis}{40}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Wing-Wingtip Contrast Analysis}{41}{subsection.5.3.5}%
-\contentsline {section}{\numberline {5.4}Discussion}{43}{section.5.4}%
-\contentsline {subsubsection}{Wing Intensity Analysis Deepseek}{43}{section.5.4}%
-\contentsline {subsubsection}{Wingtip Darkness Characteristics}{44}{section.5.4}%
-\contentsline {subsubsection}{Pixel Intensity Distribution}{44}{table.caption.25}%
-\contentsline {subsubsection}{Wing-Wingtip Contrast}{44}{table.caption.26}%
-\contentsline {subsection}{\numberline {5.4.1}Discussion}{45}{subsection.5.4.1}%
-\contentsline {subsubsection}{Biological Significance of Intensity Patterns}{45}{subsection.5.4.1}%
-\contentsline {subsubsection}{Methodological Implications}{45}{subsection.5.4.1}%
-\contentsline {subsubsection}{Comparative Analysis with Field Observations}{45}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Intensity Analysis Results Original}{46}{subsection.5.4.2}%
-\contentsline {subsubsection}{Wing Intensity Analysis}{46}{subsection.5.4.2}%
-\contentsline {subsubsection}{Wingtip Darkness Analysis}{46}{figure.caption.30}%
-\contentsline {subsubsection}{Pixel Intensity Distribution Analysis}{47}{figure.caption.32}%
-\contentsline {subsubsection}{Wing-Wingtip Contrast Analysis}{48}{figure.caption.33}%
-\contentsline {subsection}{\numberline {5.4.3}Biological Significance of Intensity Analysis}{48}{subsection.5.4.3}%
-\contentsline {subsection}{\numberline {5.4.4}Intensity Analysis Results}{49}{subsection.5.4.4}%
-\contentsline {subsubsection}{Comparative Analysis}{49}{subsection.5.4.4}%
-\contentsline {subsection}{\numberline {5.4.5}LBP Pattern Results}{49}{subsection.5.4.5}%
-\contentsline {subsection}{\numberline {5.4.6}Most Discriminative Features}{50}{subsection.5.4.6}%
-\contentsline {subsection}{\numberline {5.4.7}LBP Code Distributions}{50}{subsection.5.4.7}%
-\contentsline {subsection}{\numberline {5.4.8}Summary}{51}{subsection.5.4.8}%
-\contentsline {subsection}{\numberline {5.4.9}Clustering Analysis Results}{51}{subsection.5.4.9}%
-\contentsline {subsubsection}{K-means Clustering}{51}{subsection.5.4.9}%
-\contentsline {subsubsection}{Hierarchical Clustering}{52}{figure.caption.40}%
-\contentsline {subsubsection}{Gaussian Mixture Model}{53}{figure.caption.42}%
-\contentsline {subsection}{\numberline {5.4.10}Algorithm Comparison}{54}{subsection.5.4.10}%
-\contentsline {section}{\numberline {5.5}Wing Intensity Comparison Between Gull Species}{55}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Wing Intensity Analysis}{55}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}Dark Pixel Analysis}{55}{subsection.5.5.2}%
-\contentsline {subsection}{\numberline {5.5.3}Raw Pixel Count Analysis}{56}{subsection.5.5.3}%
-\contentsline {section}{\numberline {5.6}Biological Significance}{56}{section.5.6}%
+\contentsline {subsection}{\numberline {5.0.1}Intensity Analysis Results Original}{35}{subsection.5.0.1}%
+\contentsline {subsubsection}{Wing Intensity Analysis}{35}{subsection.5.0.1}%
+\contentsline {subsubsection}{Wingtip Intensity Analysis}{36}{figure.caption.7}%
+\contentsline {section}{\numberline {5.1}Distributions of Wing and Wingtip Intensities}{36}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Mean Intensity Distributions}{36}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Wingtip Pixel Intensity Distributions}{36}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Relationship Between Wing and Wingtip Intensities}{37}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Summary}{37}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Distributions of Wing and Wingtip Intensities}{40}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Wingtip Pixel Intensity Distribution}{41}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Wing Mean Intensity Distribution}{41}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Summary of Observed Patterns}{41}{subsection.5.2.3}%
+\contentsline {subsubsection}{Pixel Intensity Distribution Analysis}{42}{subsection.5.2.3}%
+\contentsline {subsubsection}{Wing-Wingtip Contrast Analysis}{42}{figure.caption.21}%
+\contentsline {subsection}{\numberline {5.2.4}Wing Intensity Analysis Perplexity}{43}{subsection.5.2.4}%
+\contentsline {subsection}{\numberline {5.2.5}Wingtip Darkness Analysis}{43}{subsection.5.2.5}%
+\contentsline {subsection}{\numberline {5.2.6}Pixel Intensity Distribution Analysis}{44}{subsection.5.2.6}%
+\contentsline {subsection}{\numberline {5.2.7}Wing-Wingtip Contrast Analysis}{45}{subsection.5.2.7}%
+\contentsline {section}{\numberline {5.3}Discussion}{46}{section.5.3}%
+\contentsline {subsubsection}{Wing Intensity Analysis Deepseek}{47}{section.5.3}%
+\contentsline {subsubsection}{Wingtip Darkness Characteristics}{47}{section.5.3}%
+\contentsline {subsubsection}{Pixel Intensity Distribution}{47}{table.caption.33}%
+\contentsline {subsubsection}{Wing-Wingtip Contrast}{47}{table.caption.34}%
+\contentsline {subsection}{\numberline {5.3.1}Discussion}{48}{subsection.5.3.1}%
+\contentsline {subsubsection}{Biological Significance of Intensity Patterns}{48}{subsection.5.3.1}%
+\contentsline {subsubsection}{Methodological Implications}{48}{subsection.5.3.1}%
+\contentsline {subsubsection}{Comparative Analysis with Field Observations}{48}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Biological Significance of Intensity Analysis}{49}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Intensity Analysis Results}{49}{subsection.5.3.3}%
+\contentsline {subsubsection}{Comparative Analysis}{50}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}LBP Pattern Results}{50}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Most Discriminative Features}{50}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}LBP Code Distributions}{51}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.7}Summary}{52}{subsection.5.3.7}%
+\contentsline {subsection}{\numberline {5.3.8}Clustering Analysis Results}{52}{subsection.5.3.8}%
+\contentsline {subsubsection}{K-means Clustering}{52}{subsection.5.3.8}%
+\contentsline {subsubsection}{Hierarchical Clustering}{53}{figure.caption.42}%
+\contentsline {subsubsection}{Gaussian Mixture Model}{54}{figure.caption.44}%
+\contentsline {subsection}{\numberline {5.3.9}Algorithm Comparison}{55}{subsection.5.3.9}%
+\contentsline {section}{\numberline {5.4}Wing Intensity Comparison Between Gull Species}{56}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Wing Intensity Analysis}{56}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Dark Pixel Analysis}{56}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Raw Pixel Count Analysis}{56}{subsection.5.4.3}%
+\contentsline {section}{\numberline {5.5}Biological Significance}{57}{section.5.5}%
