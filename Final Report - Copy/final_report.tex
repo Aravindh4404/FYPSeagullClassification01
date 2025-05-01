@@ -819,22 +819,22 @@ Our implementation includes a robust evaluation framework with model checkpointi
 \end{tikzpicture}
 
 
-\begin{algorithm}
-    \caption{VGG16Modified Architecture}
-    \begin{algorithmic}[1]
-    \Function{VGG16Modified}{}
-        \State Load pre-trained VGG-16 with ImageNet weights
-        \State Extract number of features from final layer: $num\_ftrs \gets$ VGG.classifier[6].in\_features
-        \State Replace final classifier layer with:
-            \State Dropout(p=0.4)
-            \State Linear($num\_ftrs \to 2$) \Comment{Binary classification}
-    \EndFunction
+% \begin{algorithm}
+%     \caption{VGG16Modified Architecture}
+%     \begin{algorithmic}[1]
+%     \Function{VGG16Modified}{}
+%         \State Load pre-trained VGG-16 with ImageNet weights
+%         \State Extract number of features from final layer: $num\_ftrs \gets$ VGG.classifier[6].in\_features
+%         \State Replace final classifier layer with:
+%             \State Dropout(p=0.4)
+%             \State Linear($num\_ftrs \to 2$) \Comment{Binary classification}
+%     \EndFunction
     
-    \Function{Forward}{$x$}
-        \State \Return VGG($x$)
-    \EndFunction
-    \end{algorithmic}
-    \end{algorithm}
+%     \Function{Forward}{$x$}
+%         \State \Return VGG($x$)
+%     \EndFunction
+%     \end{algorithmic}
+%     \end{algorithm}
 
 \subsubsection{Theoretical Foundation}
 
@@ -1187,98 +1187,98 @@ By implementing these complementary interpretability techniques, this research p
 % \end{itemize}
 
 % \appendix
-\section{Additional Interpretability Techniques}
-\label{appendix:add_interpret}
+% \section{Additional Interpretability Techniques}
+% \label{appendix:add_interpret}
 
-In addition to the Grad-CAM method discussed in the main sections of this report, several other interpretability techniques were explored during this research. While not featured prominently in the main analysis, these methods offer complementary perspectives on model decision-making.
+% In addition to the Grad-CAM method discussed in the main sections of this report, several other interpretability techniques were explored during this research. While not featured prominently in the main analysis, these methods offer complementary perspectives on model decision-making.
 
-\subsection{DeepLIFT}
+% \subsection{DeepLIFT}
 
-DeepLIFT (Deep Learning Important FeaTures) was implemented using the Captum library for the VGG16 and ViT models. This technique compares activations against a reference baseline (typically zeros) to determine feature importance:
+% DeepLIFT (Deep Learning Important FeaTures) was implemented using the Captum library for the VGG16 and ViT models. This technique compares activations against a reference baseline (typically zeros) to determine feature importance:
 
-\begin{itemize}
-    \item A zero baseline tensor is created as a reference point
-    \item Attribution scores are calculated comparing actual activations to this baseline
-    \item Channel-wise attributions are aggregated and normalized for visualization
-    \item Color maps are applied to create interpretable heatmaps
-\end{itemize}
+% \begin{itemize}
+%     \item A zero baseline tensor is created as a reference point
+%     \item Attribution scores are calculated comparing actual activations to this baseline
+%     \item Channel-wise attributions are aggregated and normalized for visualization
+%     \item Color maps are applied to create interpretable heatmaps
+% \end{itemize}
 
-While DeepLIFT provides more theoretically grounded attributions than simple gradient methods, it was not extended to all models due to it not being used as frequently by others as other techniques such as grad cam/
-\subsection{Saliency Maps}
+% While DeepLIFT provides more theoretically grounded attributions than simple gradient methods, it was not extended to all models due to it not being used as frequently by others as other techniques such as grad cam/
+% \subsection{Saliency Maps}
 
-Basic saliency maps were implemented for both VGG16 and Vision Transformer models:
+% Basic saliency maps were implemented for both VGG16 and Vision Transformer models:
 
-\begin{itemize}
-    \item Input tensors are configured to track gradients
-    \item Forward and backward passes compute gradients from prediction to input
-    \item Absolute values of gradients reveal input sensitivity
-    \item Channel-wise maximum operations create single-channel visualizations
-\end{itemize}
-
-
-% This paper examines saliency methods, which are explanation techniques designed to highlight relevant features in inputs (particularly images) that influence a machine learning model's predictions. The authors propose a methodology to evaluate whether these explanation methods are actually providing meaningful insights about the model and data. Their key findings include:
-
-% Many popular saliency methods fail basic "sanity checks" - they produce explanations that are independent of model parameters and training data.
-% The authors propose two randomization tests to evaluate explanation methods:
-
-% Model parameter randomization test: Compares explanations from a trained model vs. a randomly initialized model
-% Data randomization test: Compares explanations from a model trained on proper data vs. one trained on randomly permuted labels
+% \begin{itemize}
+%     \item Input tensors are configured to track gradients
+%     \item Forward and backward passes compute gradients from prediction to input
+%     \item Absolute values of gradients reveal input sensitivity
+%     \item Channel-wise maximum operations create single-channel visualizations
+% \end{itemize}
 
 
-% Several widely used methods (Guided BackProp and Guided GradCAM) fail these tests, meaning they can't provide insights about the model or data relationships.
-% Some methods (standard Gradients and GradCAM) pass the tests, suggesting they are more reliable.
-% The authors demonstrate that some saliency methods produce outputs visually similar to simple edge detectors, which require neither training data nor model knowledge.
+% % This paper examines saliency methods, which are explanation techniques designed to highlight relevant features in inputs (particularly images) that influence a machine learning model's predictions. The authors propose a methodology to evaluate whether these explanation methods are actually providing meaningful insights about the model and data. Their key findings include:
 
-% The paper warns that visual assessment alone can be misleading when evaluating explanation methods. Methods that fail their proposed tests are inadequate for tasks like finding data outliers, explaining model relationships, or debugging models. The authors support their findings with theoretical analysis of linear models and simple convolutional neural networks.
-\subsection{Integrated Gradients for Vision Transformers}
+% % Many popular saliency methods fail basic "sanity checks" - they produce explanations that are independent of model parameters and training data.
+% % The authors propose two randomization tests to evaluate explanation methods:
 
-For the Vision Transformer model specifically, Integrated Gradients was implemented using Captum:
+% % Model parameter randomization test: Compares explanations from a trained model vs. a randomly initialized model
+% % Data randomization test: Compares explanations from a model trained on proper data vs. one trained on randomly permuted labels
 
-\begin{itemize}
-    \item Path integrals are approximated between baseline and input images
-    \item 50 interpolation steps were used for the approximation
-    \item Attributions are processed to align with spatial image dimensions
-    \item Results are normalized for consistent visualization
-\end{itemize}
 
-While theoretically sound, Integrated Gradients requires significantly more computation time than Grad-CAM. Additionally, the literature review indicated that Grad-CAM adaptations for Vision Transformers often provide more intuitive visualizations for classification tasks \cite{chefer2021transformer}.
+% % Several widely used methods (Guided BackProp and Guided GradCAM) fail these tests, meaning they can't provide insights about the model or data relationships.
+% % Some methods (standard Gradients and GradCAM) pass the tests, suggesting they are more reliable.
+% % The authors demonstrate that some saliency methods produce outputs visually similar to simple edge detectors, which require neither training data nor model knowledge.
 
-\subsection{Guided Backpropagation for Vision Transformers}
+% % The paper warns that visual assessment alone can be misleading when evaluating explanation methods. Methods that fail their proposed tests are inadequate for tasks like finding data outliers, explaining model relationships, or debugging models. The authors support their findings with theoretical analysis of linear models and simple convolutional neural networks.
+% \subsection{Integrated Gradients for Vision Transformers}
 
-Guided Backpropagation was adapted specifically for Vision Transformers:
+% For the Vision Transformer model specifically, Integrated Gradients was implemented using Captum:
 
-\begin{itemize}
-    \item Modified gradient flow during backpropagation highlights positive influences
-    \item Implementation uses Captum's GuidedBackprop with model-specific wrappers
-    \item Results are post-processed to create single-channel visualizations
-\end{itemize}
+% \begin{itemize}
+%     \item Path integrals are approximated between baseline and input images
+%     \item 50 interpolation steps were used for the approximation
+%     \item Attributions are processed to align with spatial image dimensions
+%     \item Results are normalized for consistent visualization
+% \end{itemize}
 
-This method produces visually cleaner results than standard saliency maps but lacks the localization capabilities of Grad-CAM. Additionally, research has shown that guided backpropagation may highlight input patterns rather than decision-relevant features \cite{nie2018theoretical}.
+% While theoretically sound, Integrated Gradients requires significantly more computation time than Grad-CAM. Additionally, the literature review indicated that Grad-CAM adaptations for Vision Transformers often provide more intuitive visualizations for classification tasks \cite{chefer2021transformer}.
 
-\subsection{Conclusion on Additional Methods}
+% \subsection{Guided Backpropagation for Vision Transformers}
 
-These additional interpretability techniques were implemented primarily for exploration and comparison. Grad-CAM was selected as the primary visualization method for the main analysis due to its:
+% Guided Backpropagation was adapted specifically for Vision Transformers:
 
-\begin{itemize}
-    \item Widespread adoption in the literature
-    \item Consistent performance across model architectures
-    \item Ability to produce class-discriminative visualizations
-    \item Better localization of discriminative regions
-    \item Lower computational requirements
-    \item Stronger theoretical foundation compared to simple gradient methods
-\end{itemize}
+% \begin{itemize}
+%     \item Modified gradient flow during backpropagation highlights positive influences
+%     \item Implementation uses Captum's GuidedBackprop with model-specific wrappers
+%     \item Results are post-processed to create single-channel visualizations
+% \end{itemize}
 
-The implementation details and experimental results for these additional techniques are preserved here to document the comprehensive approach taken toward model interpretability in this research.
+% This method produces visually cleaner results than standard saliency maps but lacks the localization capabilities of Grad-CAM. Additionally, research has shown that guided backpropagation may highlight input patterns rather than decision-relevant features \cite{nie2018theoretical}.
 
-Though straightforward to implement, saliency maps,  guided backpropagation were not highlighted in the main analysis as they can be noisy and lack the class-discriminative properties of Grad-CAM. Additionally, as noted by \cite{Adebayo2018}, simple gradient methods sometimes fail sanity checks that Grad-CAM passes.
+% \subsection{Conclusion on Additional Methods}
 
-3. Of the methods tested, Gradients and GradCAM pass the sanity checks, while Guided BackProp and
-Guided GradCAM are invariant to higher layer parameters; hence, fail.
-4. Consequently, our findings imply that the saliency methods that fail our proposed tests are incapable
-of supporting tasks that require explanations that are faithful to the model or the data generating
-process.  \href{https://arxiv.org/pdf/1810.03292}{(Guided and saliency not good)}
+% These additional interpretability techniques were implemented primarily for exploration and comparison. Grad-CAM was selected as the primary visualization method for the main analysis due to its:
 
-velow TODO
+% \begin{itemize}
+%     \item Widespread adoption in the literature
+%     \item Consistent performance across model architectures
+%     \item Ability to produce class-discriminative visualizations
+%     \item Better localization of discriminative regions
+%     \item Lower computational requirements
+%     \item Stronger theoretical foundation compared to simple gradient methods
+% \end{itemize}
+
+% The implementation details and experimental results for these additional techniques are preserved here to document the comprehensive approach taken toward model interpretability in this research.
+
+% Though straightforward to implement, saliency maps,  guided backpropagation were not highlighted in the main analysis as they can be noisy and lack the class-discriminative properties of Grad-CAM. Additionally, as noted by \cite{Adebayo2018}, simple gradient methods sometimes fail sanity checks that Grad-CAM passes.
+
+% 3. Of the methods tested, Gradients and GradCAM pass the sanity checks, while Guided BackProp and
+% Guided GradCAM are invariant to higher layer parameters; hence, fail.
+% 4. Consequently, our findings imply that the saliency methods that fail our proposed tests are incapable
+% of supporting tasks that require explanations that are faithful to the model or the data generating
+% process.  \href{https://arxiv.org/pdf/1810.03292}{(Guided and saliency not good)}
+
+% TODO
 % \appendix
 \section{Additional Interpretability Techniques}
 \label{appendix:add_interpret}
@@ -1803,6 +1803,39 @@ The distributions of wingtip pixel intensities for both species are shown in Fig
     \label{fig:wingtip_intensity_distributions}
 \end{figure}
 
+\subsection{Presence of Very Dark Pixels}
+
+A detailed analysis of wingtip pixel intensity reveals a striking difference in the prevalence of very dark pixels between Slaty-backed Gulls and Glaucous-winged Gulls. As shown in Figure~\ref{fig:pixels_below_thresh}, Slaty-backed Gulls have a much higher percentage of wingtip pixels below each intensity threshold examined ($<$30, $<$40, $<$50, $<$60), with values rising from 25\% to nearly 48\%. In contrast, Glaucous-winged Gulls have negligible proportions of such dark pixels at all thresholds.
+
+Figure~\ref{fig:verydarkdist} further demonstrates that this difference is consistent across all sub-ranges within the very dark pixel spectrum (0--60), with Slaty-backed Gulls consistently showing a substantially greater percentage of pixels in each bin.
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/pixelsbelowthresh.png}
+        \caption{Percentage of wingtip pixels below each intensity threshold.}
+        \label{fig:pixels_below_thresh}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/verydarkdist.png}
+        \caption{Distribution of very dark pixels (0--60) in wingtip regions.}
+        \label{fig:verydarkdist}
+    \end{subfigure}
+    \caption{Comparison of very dark pixel proportions in wingtip regions for Slaty-backed and Glaucous-winged Gulls.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/darkpixels.png}
+    \caption{Left: Percentage of very dark pixels ($<$30) by species. Right: Average count of very dark pixels ($<$30) per wingtip region, shown on a logarithmic scale.}
+    \label{fig:darkpixels}
+\end{figure}
+
+These results demonstrate that the presence and abundance of very dark pixels in the wingtip region are highly distinctive for Slaty-backed Gulls, providing a robust quantitative feature for differentiating them from Glaucous-winged Gulls.
+
+
 \subsection{Presence of Very Dark Pixels}:
     \begin{itemize}
         \item Slaty-backed Gull: 25.24\% of pixels below 30 intensity, 33.40\% below 40, 41.15\% below 50
@@ -1862,7 +1895,7 @@ Figure~\ref{fig:wing_vs_wingtip_intensity} visualizes the relationship between m
 
 To comprehensively compare the wingtip characteristics distinguishing Slaty-backed and Glaucous-winged Gulls, we analyzed two key features: (1) the proportion of wingtip pixels that are darker than the wing by varying intensity thresholds, and (2) the proportion of pixels that are absolutely dark, below fixed intensity values.
 
-Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summarizing these metrics for both species. The heatmap in subfigure~\ref{fig:heatmap} displays, on the left, the percentage of wingtip pixels darker than the wing by various thresholds, and on the right, the percentage of absolutely dark pixels. Subfigure~\ref{fig:diff_bar} shows the absolute difference in the proportion of dark pixels between species at each threshold, while subfigure~\ref{fig:diff_curve} plots the difference curve (Slaty-backed minus Glaucous-winged) across thresholds, highlighting where the species gap is largest. Subfigure~\ref{fig:ratio_plot} quantifies the relative difference by showing the ratio of dark pixel proportions (Slaty-backed/Glaucous-winged) at each threshold, with the ratio peaking near 2.8--2.9$\times$ between thresholds of 50 and 80. Collectively, these visualizations demonstrate that Slaty-backed Gulls consistently have a much higher proportion of both strongly contrasting and absolutely dark pixels, making these features highly discriminative.
+Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summarizing these metrics for both species. The heatmap in subfigure~\ref{fig:intensity_heatmap} displays, on the left, the percentage of wingtip pixels darker than the wing by various thresholds, and on the right, the percentage of absolutely dark pixels. Subfigure~\ref{fig:diff_bar} shows the absolute difference in the proportion of dark pixels between species at each threshold, while subfigure~\ref{fig:diff_curve} plots the difference curve (Slaty-backed minus Glaucous-winged) across thresholds, highlighting where the species gap is largest. Subfigure~\ref{fig:ratio_plot} quantifies the relative difference by showing the ratio of dark pixel proportions (Slaty-backed/Glaucous-winged) at each threshold, with the ratio peaking near 2.8--2.9$\times$ between thresholds of 50 and 80. Collectively, these visualizations demonstrate that Slaty-backed Gulls consistently have a much higher proportion of both strongly contrasting and absolutely dark pixels, making these features highly discriminative.
 
 \begin{figure}[H]
     \centering
@@ -1871,7 +1904,7 @@ Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summa
         \centering
         \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I1/wingtip_darkness_heatmap.png}
         \caption{Heatmap of wingtip darkness and contrast features for each species.}
-        \label{fig:heatmap}
+        \label{fig:intensity_heatmap}
     \end{subfigure}
     \hfill
     % (b) Difference bar plot
@@ -1900,16 +1933,6 @@ Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summa
     \caption{Summary of wingtip darkness and contrast metrics distinguishing Slaty-backed and Glaucous-winged Gulls. (a) Heatmap of key features; (b) absolute difference by threshold; (c) difference curve; (d) ratio of proportions. These visualizations collectively highlight the strong and persistent contrast in wingtip darkness between the two species.}
     \label{fig:wingtip_darkness_summary}
 \end{figure}
-
-\subsection{Wingtip Contrast and Darkness Feature Comparison}
-
-To comprehensively compare the wingtip characteristics distinguishing Slaty-backed and Glaucous-winged Gulls, we analyzed two key features: (1) the proportion of wingtip pixels that are darker than the wing by varying intensity thresholds, and (2) the proportion of pixels that are absolutely dark, below fixed intensity values.
-
-Figure~\ref{fig:wingtip_heatmap} provides a heatmap summary of these metrics for both species. The left half of the heatmap displays the percentage of wingtip pixels that are darker than the rest of the wing by various thresholds, while the right half shows the percentage of pixels that are absolutely dark (below fixed intensity values). This visualization highlights that Slaty-backed Gulls consistently have a much higher proportion of both strongly contrasting and absolutely dark pixels, making these features highly discriminative.
-
-For a more detailed view, Figures~\ref{fig:diff_by_threshold}, \ref{fig:dark_by_threshold}, and \ref{fig:intensity_diff_curve} present complementary perspectives: absolute differences in darkness by threshold, the percentage of pixels darker than the wing for each species, and the difference in percentage between species, respectively. These plots show that the difference is most pronounced at lower intensity thresholds and for extreme darkness.
-
-Importantly, Figure~\ref{fig:ratio_darkness_threshold} quantifies the relative difference between species by plotting the ratio of the proportion of dark wingtip pixels in Slaty-backed Gulls to that in Glaucous-winged Gulls across thresholds. The ratio consistently exceeds 1, peaking near 2.8--2.9$\times$ between thresholds of 50 and 80, indicating that Slaty-backed Gulls have up to nearly three times the proportion of dark pixels compared to Glaucous-winged Gulls at these thresholds. This persistent and substantial contrast further underscores the discriminative value of these features.
 
  ENDDDDDDDDDDDDDDD
 
