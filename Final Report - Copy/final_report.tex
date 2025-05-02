@@ -225,7 +225,7 @@ Unlike traditional machine learning methods that rely on hand-engineered feature
 
 For species identification , convolutional neural networks (CNNs) such as ResNet, Inception, and VGG have demonstrated exceptional capabilities \cite{essay101313}, with studies such as \citep{transferln97} mentioned that "deep learning is more effective than traditional machine learning algorithms in image recognition as the number of bird species increases" achieving accuracy rates exceeding 97\% in bird species classification tasks. \citep{ALFATEMI2024558} compared deep learning and traditional machine learning algorithms and achieved an accuracy of 94\% tackle the challenge of classifying bird species with high visual similarity and subtle variations. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species.
 
-Yet the fine-grained bird classification task has greater challenges even when using deep learning as noted by \cite{source3} \citep{ani13020264}. Key issues include high intraclass variance, low inter-class variance, limited training data, intensity and pose variability, bird localization and background variability, occlusions, size variations, class imbalance, and limited samples. Additionally, deep learning requires extensive data and is prone to overfitting. 
+Yet the fine-grained bird classification task has greater challenges even when using deep learning. Key issues include high intraclass variance, low inter-class variance, limited training data, intensity and pose variability, bird localization and background variability, occlusions, size variations, class imbalance \citep{10.1007/978-981-15-1387-9_3}, and limited samples\cite{source3} \citep{ani13020264}. Additionally, deep learning requires extensive data and is prone to overfitting. 
 
 This dissertation aims to develop and evaluate deep learning models for the automated classification of the Slaty-backed Gull and the Glaucous-winged Gull, to use them to identify the most influential regions that distinguish these two species and analyse them to extract statistical features from these regions and assess their significance and validity in classification.
 
@@ -235,7 +235,7 @@ This dissertation aims to develop and evaluate deep learning models for the auto
 \section*{Deep Learning for Fine-Grained Image Classification}
 Fine-grained image classification presents unique challenges compared to general image classification tasks. Fine-grained classification \enquote{necessitates discrimination between semantic and instance levels, while considering the similarity and diversity among categories} \citep{source2}. This is particularly challenging in bird classification due to three key factors: high intra-class variance (birds of the same species in different postures), low inter-class variance (different species with only minor differences), and limited training data availability, especially for rare species\citep{source2}.
 
-Early approaches to fine-grained classification relied on fixed rectangular bounding boxes and part annotations to obtain visual differences, but these methods required extensive human annotation effort. Recent research has shifted toward weakly supervised approaches that only require image-level labels, developing localization subnetworks to identify critical parts followed by classification subnetwork. \citep{source2} These models facilitate learning while maintaining high accuracy without needing pre-selected boxes, making them more practical for real-world applications.
+Early approaches to fine-grained classification relied on fixed rectangular bounding boxes and part annotations to obtain visual differences, but these methods required extensive human annotation effort. Recent research has shifted toward weakly supervised approaches that only require image-level labels, developing localization subnetworks to identify critical parts followed by classification subnetwork \citep{source2}. These models facilitate learning while maintaining high accuracy without needing pre-selected boxes, making them more practical for real-world applications.
 
 % Recent research emphasizes that effective fine-grained classification depends on identifying and integrating information from multiple discriminative regions rather than focusing on a single region. As highlighted in recent literature, "it is imperative to integrate information from various regions rather than relying on a singular region"\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. This insight has led to the development of methods combining features from different levels via attention modules, thereby enhancing the semantic and discriminative capacity of features for fine-grained classification\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}.
 
@@ -244,8 +244,8 @@ Early approaches to fine-grained classification relied on fixed rectangular boun
 
 % For extremely challenging cases with visually similar species, researchers have developed specialized techniques. \citep{he2022bird} proposed a multi-attention mechanism that dynamically focuses on discriminative regions, achieving 96.8\% accuracy on a dataset of visually similar bird species. This approach is particularly relevant to our study of gull species with subtle distinguishing characteristics.
 % % TODO ref above is wrong
-
-https://ijece.iaescore.com/index.php/IJECE/article/view/24833/15821 good
+% USEFUL
+% https://ijece.iaescore.com/index.php/IJECE/article/view/24833/15821 good
 
 
 \section*{Transfer Learning for Image Classification}
@@ -268,15 +268,15 @@ Transfer learning addresses the primary challenges of deep learning: the need fo
 
 % \citep{tan2018survey}
 
-VERY USEFUL
-The experimental results showed that training the bird dataset with a pre-trained model requires no more than
-10 epochs to obtain the best classification accuracy. Some models even require only 2 to 3 epochs, while
-training with an untrained model requires at least 40 to 50 epochs to achieve the highest classification
-accuracy. This is a big improvement on deep learning, which requires hardware support and a lot of training
-time.
+% VERY USEFUL
+% The experimental results showed that training the bird dataset with a pre-trained model requires no more than
+% 10 epochs to obtain the best classification accuracy. Some models even require only 2 to 3 epochs, while
+% training with an untrained model requires at least 40 to 50 epochs to achieve the highest classification
+% accuracy. This is a big improvement on deep learning, which requires hardware support and a lot of training
+% time.
 
 
-TODO \citep{kornblith2019better} 
+% TODO \citep{kornblith2019better} 
 
 
 % For extremely limited datasets, researchers have employed specialized transfer learning techniques. \citep{cui2018large} introduced a method called "transfer-learning by borrowing examples" that achieved state-of-the-art performance on small fine-grained datasets by selectively transferring knowledge from similar classes in larger datasets. 
@@ -291,7 +291,7 @@ TODO \citep{kornblith2019better}
 
 Working with limited datasets often introduces challenges related to class imbalance and overfitting. \citep{buda2018systematic} conducted a comprehensive analysis of class imbalance in convolutional neural networks and found that oversampling (duplicating samples from minority classes) generally outperforms undersampling for deep learning models. Standard data augmentation techniques such as resizing, random horizontal and vertical flipping, rotation, affine translation, and color jittering can improve model generalization and robustness \citep{yang2022augmentation,wu2024augmentation}.
 
-VERY USEFUL say too much oversampling caused overfitting that is y it was removed.
+% VERY USEFUL say too much oversampling caused overfitting that is y it was removed.
 
 % For fine-grained bird classification specifically, \citep{chu2020fine} employed extensive data augmentation techniques including random cropping, rotation, flipping, and color jittering to improve model robustness. They demonstrated that such augmentations were particularly effective for classes with fewer samples, improving overall accuracy by up to 3.2\%.
 
@@ -305,25 +305,25 @@ VERY USEFUL say too much oversampling caused overfitting that is y it was remove
 \section*{Interpretability Techniques for Deep Learning Models}
 While deep learning models achieve impressive accuracy in classification tasks, their "black box" nature limits their usefulness in scientific contexts where understanding the basis for classifications is crucial. Interpretability techniques address this limitation by providing insights into model decision-making processes, making them essential tools for applications where transparency is as important as accuracy.
 
-Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions of images that influence classification decisions. As described in recent literature, Grad-CAM "uses the gradients of each target that flows into the least convolutional layer to produce a bearish localization map, highlighting important regions in the image for concept prediction"\citep{Hasibuan2023Large}. This approach enables validating model decisions against expert knowledge and potentially discover new insights about morphological features with regards to this project.
+Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions of images that influence classification decisions. \citep{Selvaraju_2019} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to almost any CNN-based model. As described in recent literature, Grad-CAM "uses the gradients of each target that flows into the least convolutional layer to produce a bearish localization map, highlighting important regions in the image for concept prediction"\citep{Hasibuan2023Large}. This approach enables validating model decisions against expert knowledge and potentially discover new insights about morphological features with regards to this project.
+
+Selvaraju et al.\ \cite{Selvaraju_2019} demonstrated that Guided Grad-CAM outperforms baseline approaches such as Guided Backpropagation and Deconvolution in generating class-discriminative visualizations. Their results show that Guided Grad-CAM not only produces high-resolution explanations but also clearly highlights the specific image regions that influence the model's classification decision---a property that is vital for our project, where understanding the distinguishing features between classes is essential. As illustrated in their paper, the visualizations allow us to see the exact areas that contributed to the class decision, thereby increasing transparency and trust in the classifier.
+
+% VERY USEFUL: some gradcam biased like mentioned in paper above. can use for vit and other accuracy models
 
 %NOT USEFUL
 % Visualization studies comparing baseline models with enhanced architectures demonstrate that while basic models often focus on the most conspicuous parts of bird images (such as wings), more sophisticated approaches can discern more intricate features vital for species differentiation\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}. As noted in recent research, enhanced models excel "in identifying not only the prominent features but also the subtle, fine-grained characteristics essential for distinguishing between different bird types"\href{https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2024.1391791/full}{4}.
 
 % While deep learning models achieve impressive classification accuracy, their "black box" nature presents challenges for scientific applications where understanding decision mechanisms is crucial. As noted by \citep{montavon2018methods}, "black-box models that cannot be interpreted have limited applicability, especially in scientific contexts where understanding the basis for classifications is as important as the classifications themselves."
 
-Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions that influence model decisions. \citep{Selvaraju_2019} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to almost any CNN-based model.
-
-VERY USEFUL: some gradcam biased like mentioned in paper above. can use for vit and other accuracy models
 
 % For fine-grained classification, interpretability techniques can reveal whether models are focusing on biologically relevant features. \citep{zhang2018interpretable} demonstrated that CNN attention mechanisms often correspond to taxonomically important physical characteristics in birds. Their study showed that models trained only on image labels could automatically discover part-based attention patterns that aligned with expert knowledge.
 
-Beyond visualization, quantitative interpretability methods have been developed to measure feature importance. \citep{lundberg2017unified} proposed SHAP (SHapley Additive exPlanations), which assigns each feature an importance value for a particular prediction. In \citep{chen2019looks}, the authors applied SHAP to fine-grained bird classification models and found that the features deemed important by the model often matched field guide descriptions of distinguishing characteristics.
+% Beyond visualization, quantitative interpretability methods have been developed to measure feature importance. \citep{lundberg2017unified} proposed SHAP (SHapley Additive exPlanations), which assigns each feature an importance value for a particular prediction. In \citep{chen2019looks}, the authors applied SHAP to fine-grained bird classification models and found that the features deemed important by the model often matched field guide descriptions of distinguishing characteristics.
 
-These interpretability methods are particularly valuable in fine-grained classification tasks where the differences between categories are subtle and potentially unknown. By highlighting regions that drive model decisions, techniques like Grad-CAM can reveal discriminative features that can be useful to expert observers, potentially advancing biological understanding alongside classification accuracy.
+% These interpretability methods are particularly valuable in fine-grained classification tasks where the differences between categories are subtle and potentially unknown. By highlighting regions that drive model decisions, techniques like Grad-CAM can reveal discriminative features that can be useful to expert observers, potentially advancing biological understanding alongside classification accuracy.
 
 % \href{https://www.atlantis-press.com/article/125986223.pdf}{5}.
-
 
 \chapter{Aims and Objectives}
 
@@ -334,7 +334,7 @@ These interpretability methods are particularly valuable in fine-grained classif
     \item To analyze whether consistent morphological differences exist between the two species. 
     \item Identify key discriminative features and perform analyses to get statistical information.
     \item To find out if the results of the analysis are statistically significant.
-    \item Whether the features can be used to identify the species of a gull with high confidence.
+    \item Test whether the features can be used to identify the species of a gull with high confidence.
 \end{enumerate}
 
 \subsection*{Specific Objectives}
@@ -344,7 +344,7 @@ The project was carried out in four phases:
         \begin{itemize}
             \item Curate a high-quality dataset of adult in-flight gull images with clearly visible diagnostic features.
             \item Implement and compare multiple deep learning architectures (CNNs, Vision Transformers) for fine-grained classification.
-            \item Evaluate models using appropriate metrics on unseen test sets.
+            \item Evaluate models on unseen test sets.
         \end{itemize}
     \item Interpretability Implementation
         \begin{itemize}
@@ -357,6 +357,7 @@ The project was carried out in four phases:
             \item Perform quantitative analysis of image regions highlighted by interpretability techniques.
             \item Compare intensity, texture, and pattern characteristics between species.
             \item Identify statistically significant morphological differences between correctly classified specimens.
+            \item Validate the features that are significantly different to check if they can be used for classification
         \end{itemize}
 \end{enumerate}
 
