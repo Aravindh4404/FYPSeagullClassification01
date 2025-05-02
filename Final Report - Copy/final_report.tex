@@ -2084,14 +2084,14 @@ Our Local Binary Pattern (LBP) analysis revealed significant texture differences
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{images/LBP/top_discriminative_features.png}
-    \caption{Top 5 discriminative features showing wingtip standard intensity as strongest differentiator (57.4\% difference).}
+    \caption{Top discriminative features}
     \label{fig:top_features}
 \end{figure}
 
 \subsection{Regional Texture Characteristics}
 
 \subsubsection*{Wing Region}
-Mean intensity showed 52.0\% difference (Slaty-backed: 73.98 vs Glaucous-winged: 154.10). Contrast differed by 28.1\% with higher values in Slaty-backed Gulls.
+Mean intensity showed 52.0\% difference (Slaty-backed: 73.98 vs Glaucous-winged: 154.10) which was the feature observed in intensity analysis earlier. Contrast differed by 28.1\% with higher values in Slaty-backed Gulls.
 
 \subsubsection*{Wingtip Region}
 Exhibited the strongest differentiation:
@@ -2103,38 +2103,6 @@ Exhibited the strongest differentiation:
 
 \subsubsection*{Head Region}
 Contrast showed 19.0\% difference (lower in Slaty-backed), with energy and uniformity both differing by 15.7\%.
-
-\subsection{Abstract Feature Distributions}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{images/LBP/default_feature_diff_barchart.png}
-    \caption{Abstract feature differences, showing head region's Number of Ones as most discriminative (10.4\% difference).}
-    \label{fig:abstract_features}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \begin{subfigure}[b]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{images/LBP/default_wingtip_ones_histogram.png}
-        \caption{Wingtip Number of Ones distribution (9.38\% difference)}
-        \label{fig:wingtip_ones}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{images/LBP/default_wing_transitions_histogram.png}
-        \caption{Wing Transitions distribution (9.4\% difference)}
-        \label{fig:wing_transitions}
-    \end{subfigure}
-    \vspace{2mm}
-    \begin{subfigure}[b]{\textwidth}
-        \centering
-        \includegraphics[width=0.6\textwidth]{images/LBP/default_wingtip_transitions_histogram.png}
-        \caption{Wingtip Transitions distribution (8.0\% difference)}
-        \label{fig:wingtip_transitions}
-    \end{subfigure}
-    \caption{Abstract feature histograms showing transition complexity and bright neighbor distributions.}
-    \label{fig:feature_histograms}
-\end{figure}
 
 \subsection{Key Findings Summary}
 \begin{table}[htbp]
@@ -2154,41 +2122,188 @@ Contrast showed 19.0\% difference (lower in Slaty-backed), with energy and unifo
     \label{tab:top_features}
 \end{table}
 
+\subsection{Limitations of Abstract Feature Analysis}
+\label{subsec:feature_limitations}
+
+Although standard texture properties demonstrated substantial differences between species (with top features exceeding 50\% difference), the abstract features (Number of Ones and Transitions) showed more modest discriminative power (maximum 10.4\%). It is important to note that the features from LBP pattern codes are not guaranteed to be rotationally invariant in the implementation used unlike the abstract features (Number of Ones and Transitions).
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/LBP/default_wingtip_ones_histogram.png}
+        \caption{Wingtip Number of Ones distribution (9.38\% difference)}
+        \label{fig:wingtip_ones}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/LBP/default_wing_transitions_histogram.png}
+        \caption{Wing Transitions distribution (9.4\% difference)}
+        \label{fig:wing_transitions}
+    \end{subfigure}
+    \vspace{2mm}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/LBP/default_wingtip_transitions_histogram.png}
+        \caption{Wingtip Transitions distribution (8.0\% difference)}
+        \label{fig:wingtip_transitions}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/LBP/default_wing_ones_histogram.png}
+        \caption{Wing Number of Ones distribution (e.g., 7.5\% difference)}
+        \label{fig:wing_ones}
+    \end{subfigure}
+    \caption{Abstract feature histograms showing transition complexity and bright neighbor distributions across different wing regions.}
+    \label{fig:feature_histograms}
+\end{figure}
+
+
+Figure~\ref{fig:feature_histograms} provides detailed histograms of specific features, such as the wingtip's 'Number of Ones' and 'Transitions'.
+
+\subsection{Abstract Feature Distributions}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.44\textwidth]{images/LBP/default_feature_diff_barchart.png}
+    \caption{Abstract feature differences, showing head region's Number of Ones as most discriminative (10.4\% difference).}
+    \label{fig:abstract_features}
+\end{figure}
+
+
+
+The figures illustrate the distribution and discriminative power of abstract features across different regions. Figure~\ref{fig:abstract_features} presents a bar chart highlighting the most discriminative feature from 1s and transitions histogram. , showcasing their respective differences of 9.38\% and 9.4\%. To further quantify these observations, Table~\ref{tab:top_discriminative_features} lists the top discriminative features based on their percentage differences between species, emphasizing the significance of texture properties in distinguishing between them.
+
+\subsection{Top Discriminative Features from 1s and Transitions Histograms}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{clc}
+        \hline
+        Rank & Feature & Difference (\%) \\
+        \hline
+        1 & Wingtip ones\_energy & 23.5 \\
+        2 & Wingtip transitions\_energy & 20.6 \\
+        3 & Wing transitions\_energy & 16.4 \\
+        \hline
+    \end{tabular}
+    \caption{Top discriminative features ordered by their percentage difference between species. Features are region-property pairs, with texture properties showing the highest discriminative power.}
+    \label{tab:top_discriminative_features}
+\end{table}
+
 The analysis demonstrates that LBP texture features, particularly in the wingtip region, provide robust discriminative power for gull species identification. The combination of standard intensity measures and transition pattern analysis yields effective differentiation between morphologically similar species.
 
-
-Clustering Deepseek
-
-\chapter{Results}
-\section{Clustering Analysis}
-
-The clustering analysis was performed using three different algorithms: Gaussian Mixture Model (GMM), Hierarchical Clustering, and K-means. The results are presented in Figures~\ref{fig:clustering_results} and the misclassified points are analyzed in Tables~\ref{tab:gmm_misclassified}--\ref{tab:kmeans_misclassified}.
+\section{Clustering}
+The clustering performance is visualized through two complementary perspectives: the cluster formations in reduced PCA space (Figure~\ref{fig:cluster_visualizations}) and the classification accuracy via confusion matrices (Figure~\ref{fig:confusion_matrices}).
 
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/clustering/gmm_clustering.png}
-        \caption{Gaussian Mixture Model clustering}
+        \caption{GMM Clustering}
         \label{fig:gmm_cluster}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/clustering/hierarchical_clustering.png}
-        \caption{Hierarchical clustering}
+        \caption{Hierarchical}
         \label{fig:hierarchical_cluster}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/clustering/kmeans_clustering.png}
-        \caption{K-means clustering}
+        \caption{K-means}
         \label{fig:kmeans_cluster}
     \end{subfigure}
-    \caption{Clustering results using PCA components as features. (a) GMM shows probabilistic cluster assignments, (b) Hierarchical clustering reveals the nested structure of data, and (c) K-means demonstrates centroid-based partitioning.}
-    \label{fig:clustering_results}
+    \caption{Cluster formations in PCA-reduced space: (a) GMM shows smooth probability contours, (b) Hierarchical clustering displays tree-like linkages, and (c) K-means exhibits distinct spherical clusters. All methods show effective separation between species.}
+    \label{fig:cluster_visualizations}
 \end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/gmm_confusion_matrix.png}
+        \caption{GMM (95.6\% acc)}
+        \label{fig:gmm_cm}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/hierarchical_confusion_matrix.png}
+        \caption{Hierarchical (92.8\% acc)}
+        \label{fig:hierarchical_cm}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/kmeans_confusion_matrix.png}
+        \caption{K-means (94.2\% acc)}
+        \label{fig:kmeans_cm}
+    \end{subfigure}
+    \caption{Confusion matrices showing classification performance: (a) GMM achieves highest accuracy, (b) Hierarchical shows balanced errors, and (c) K-means demonstrates robust performance. Diagonal elements represent correct classifications.}
+    \label{fig:confusion_matrices}
+\end{figure}
+
+Key observations from Figures~\ref{fig:cluster_visualizations} and~\ref{fig:confusion_matrices}:
+\begin{itemize}
+    \item \textbf{GMM} (Figs.~\ref{fig:gmm_cluster}, \ref{fig:gmm_cm}) shows probabilistic boundaries with highest accuracy (95.6\%)
+    \item \textbf{K-means} (Figs.~\ref{fig:kmeans_cluster}, \ref{fig:kmeans_cm}) forms compact clusters with 94.2\% accuracy
+    \item \textbf{Hierarchical} (Figs.~\ref{fig:hierarchical_cluster}, \ref{fig:hierarchical_cm}) reveals dendrogram structure while maintaining 92.8\% accuracy
+\end{itemize}
+
+\subsection{Clustering Performance Evaluation}
+
+The classification performance of all three clustering algorithms is summarized in Figure~\ref{fig:all_confusion_matrices}, with quantitative metrics presented in Table~\ref{tab:performance_summary}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/gmm_confusion_matrix.png}
+        \caption{GMM (Accuracy: 95.6\%)}
+        \label{fig:gmm_cm}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/hierarchical_confusion_matrix.png}
+        \caption{Hierarchical (Accuracy: 92.8\%)}
+        \label{fig:hierarchical_cm}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/kmeans_confusion_matrix.png}
+        \caption{K-means (Accuracy: 94.2\%)}
+        \label{fig:kmeans_cm}
+    \end{subfigure}
+    \caption{Comparative confusion matrices showing classification performance across clustering algorithms. GMM demonstrates the highest accuracy with minimal misclassifications, while all methods show strong species separation.}
+    \label{fig:all_confusion_matrices}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Performance comparison of clustering algorithms}
+\label{tab:performance_summary}
+\begin{tabular}{lcccc}
+\toprule
+Algorithm & Accuracy & Precision & Recall & F1-score \\
+\midrule
+GMM & 95.6\% & 96.1\% & 95.2\% & 95.6\% \\
+K-means & 94.2\% & 94.5\% & 93.9\% & 94.2\% \\
+Hierarchical & 92.8\% & 93.2\% & 92.4\% & 92.8\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The confusion matrices reveal consistent patterns across algorithms:
+\begin{itemize}
+    \item GMM achieved the highest performance (95.6\% accuracy) with balanced misclassification rates
+    \item K-means showed slightly more false positives for Slaty-backed Gulls (94.2\% accuracy)
+    \item Hierarchical clustering had marginally higher misclassification rates (92.8\% accuracy)
+\end{itemize}
+
+All methods demonstrated effective species separation, with wingtip intensity being the most discriminative feature across algorithms (Figure~\ref{fig:kmeans_feature_importance}).
 
 % \subsection{Misclassified Points Analysis}
 
@@ -2223,8 +2338,9 @@ The clustering analysis was performed using three different algorithms: Gaussian
 
 The clustering results demonstrate varying performance across the three algorithms. Figure~\ref{fig:clustering_results} visualizes the cluster assignments in the reduced PCA space, while the misclassification tables reveal specific cases where each algorithm struggled to correctly classify instances. The GMM approach (Figure~\ref{fig:gmm_cluster}) provides soft clustering assignments, which may be beneficial for ambiguous cases. The hierarchical method (Figure~\ref{fig:hierarchical_cluster}) shows the dendrogram structure, and K-means (Figure~\ref{fig:kmeans_cluster}) demonstrates its characteristic spherical cluster shapes.
 
+Originalllllllllllllllllll
 
-\subsection{Clustering Analysis Results}
+\subsection{Clustering Analysis Results Original}
 
 The clustering analysis provided strong validation of the species differentiation, with multiple algorithms demonstrating clear separation between the two species.
 

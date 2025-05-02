@@ -1,0 +1,94 @@
+ABSTRACT FEATURES DETAILED ANALYSIS
+==================================
+
+Species analyzed: Slaty_Backed_Gull, Glaucous_Winged_Gull
+Regions analyzed: wing, wingtip, head
+
+FEATURE DISTRIBUTIONS
+--------------------
+
+Region: wing
+
+Number of Ones Analysis:
+  Slaty-backed Gull mean: 12.18
+  Glaucous-winged Gull mean: 11.34
+  Absolute difference: 0.84
+  Percentage difference: 6.93%
+  Entropy difference: 1.42%
+  Interpretation: Slaty-backed Gulls have more neighbors brighter than central pixel
+
+Transitions Analysis:
+  Slaty-backed Gull mean: 2.80
+  Glaucous-winged Gull mean: 3.10
+  Absolute difference: 0.29
+  Percentage difference: 9.43%
+  Entropy difference: 10.08%
+  Interpretation: Glaucous-winged Gulls have more complex texture patterns
+
+Region: wingtip
+
+Number of Ones Analysis:
+  Slaty-backed Gull mean: 12.35
+  Glaucous-winged Gull mean: 11.19
+  Absolute difference: 1.16
+  Percentage difference: 9.38%
+  Entropy difference: 4.25%
+  Interpretation: Slaty-backed Gulls have more neighbors brighter than central pixel
+
+Transitions Analysis:
+  Slaty-backed Gull mean: 2.69
+  Glaucous-winged Gull mean: 2.93
+  Absolute difference: 0.24
+  Percentage difference: 8.03%
+  Entropy difference: 12.36%
+  Interpretation: Glaucous-winged Gulls have more complex texture patterns
+
+Region: head
+
+Number of Ones Analysis:
+  Slaty-backed Gull mean: 11.78
+  Glaucous-winged Gull mean: 10.55
+  Absolute difference: 1.22
+  Percentage difference: 10.40%
+  Entropy difference: 0.22%
+  Interpretation: Slaty-backed Gulls have more neighbors brighter than central pixel
+
+Transitions Analysis:
+  Slaty-backed Gull mean: 2.52
+  Glaucous-winged Gull mean: 2.65
+  Absolute difference: 0.13
+  Percentage difference: 4.95%
+  Entropy difference: 8.96%
+  Interpretation: Glaucous-winged Gulls have more complex texture patterns
+
+
+INTERPRETATION GUIDE
+-------------------
+Number of Ones: Measures how many neighboring pixels are brighter than center
+  - Higher values: More bright spots or edges within darker regions
+  - Lower values: More uniform dark or bright regions
+
+Transitions: Counts how many times the binary pattern switches between 0 and 1
+  - Higher values: More complex textures with frequent brightness changes
+  - Lower values: Smoother textures with fewer brightness changes
+
+SIGNIFICANCE FOR SPECIES IDENTIFICATION
+--------------------------------------
+
+The most discriminative abstract feature is Number of Ones in the head region with a difference of 10.40%.
+2. Transitions in wing: 9.43% difference
+3. Number of Ones in wingtip: 9.38% difference
+4. Transitions in wingtip: 8.03% difference
+5. Number of Ones in wing: 6.93% difference
+
+CONCLUSION
+----------
+Abstract pattern analysis reveals Number of Ones in the head as the most distinctive texture feature between the two gull species.
+
+The Number of Ones feature captures the brightness relationship pattern between neighboring pixels.
+This suggests that the two gull species differ significantly in how brightness is distributed in their feathers,
+which may reflect differences in their feather structure and coloration patterns.
+
+Both abstract pattern features provide robust metrics for identification that can complement
+traditional intensity-based measurements. These features are particularly useful because they
+can remain distinctive even when lighting conditions vary, providing reliable differentiating characteristics.
