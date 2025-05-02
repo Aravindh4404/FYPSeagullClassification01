@@ -33,7 +33,7 @@ def load_and_prepare_data(csv_path):
     return df
 
 
-def analyze_ones_patterns(data, lbp_method="uniform"):
+def analyze_ones_patterns(data, lbp_method):
     """Analyze and visualize number of ones patterns"""
     regions = data['region'].unique()
 
@@ -120,10 +120,10 @@ def analyze_ones_patterns(data, lbp_method="uniform"):
 def main():
     """Main function to analyze both uniform and default LBP data for number of ones"""
     # Analyze uniform LBP data
-    uniform_data = load_and_prepare_data("../LBP_Abstract_Features/lbp_abstract_features_uniform.csv")
-    if uniform_data is not None:
-        print("Analyzing number of ones in uniform LBP data...")
-        analyze_ones_patterns(uniform_data, lbp_method="uniform")
+    # uniform_data = load_and_prepare_data("../LBP_Abstract_Features/lbp_abstract_features_uniform.csv")
+    # if uniform_data is not None:
+    #     print("Analyzing number of ones in uniform LBP data...")
+    #     analyze_ones_patterns(uniform_data, lbp_method="uniform")
 
     # Analyze default LBP data
     default_data = load_and_prepare_data("../LBP_Abstract_Features/lbp_abstract_features_default.csv")

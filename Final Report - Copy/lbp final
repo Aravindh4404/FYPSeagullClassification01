@@ -1,0 +1,171 @@
+\section{Local Binary Pattern Gemini}
+
+Local Binary Patterns (LBP) constitute a robust and computationally efficient texture analysis technique, originally proposed by Ojala et al. \Citep{1017623}. LBP characterizes local image texture by comparing each pixel's intensity with its surrounding neighbors, generating a binary code that summarizes the local structure. This descriptor is particularly advantageous for biological image analysis due to several key properties:
+
+\begin{itemize}
+    \item Robustness to monotonic grayscale variations, enhancing resilience to changing illumination conditions.
+    \item Rotation invariance when using specific LBP variants or derived features (1s and transition histograms)
+    \item Ability to capture fine-scale micro-patterns potentially imperceptible to human vision.
+\end{itemize}
+
+\section{Methodology}
+
+\subsection{Local Binary Pattern Analysis}
+
+The texture analysis methodology employs Local Binary Patterns (LBP) to quantify the textural characteristics of gull feather regions. LBP is a powerful texture descriptor that captures local spatial structure by comparing each pixel with its neighboring pixels.
+
+\subsubsection{LBP Computation}
+
+For a given pixel at position $(x_c, y_c)$ with intensity $g_c$, the LBP value is computed by comparing it with $P$ neighbors at radius $R$ using the following equation:
+
+\begin{equation}
+\text{LBP}_{P,R}(x_c, y_c) = \sum_{p=0}^{P-1} s(g_p - g_c) \cdot 2^p
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $g_p$ is the intensity of the neighbor pixel $p$
+    \item $s(x)$ is the step function defined as:
+\end{itemize}
+
+\begin{equation}
+s(x) = 
+\begin{cases}
+1, & \text{if } x \geq 0 \\
+0, & \text{if } x < 0
+\end{cases}
+\end{equation}
+
+We implemented uniform LBP patterns, which account for transitions between 0s and 1s in the binary representation, thereby capturing fundamental texture elements like edges and corners while reducing dimensionality.
+
+\subsubsection{Feature Extraction}
+
+From the LBP computation, three primary feature histograms were extracted:
+
+\begin{enumerate}
+    \item \textbf{LBP Histogram}: Distribution of LBP codes across the region of interest
+    
+    \item \textbf{Ones Histogram}: Distribution of the number of 1s in each LBP code, calculated as:
+    \begin{equation}
+    H_{\text{ones}}(i) = \sum_{j=0}^{N-1} [b(j) = i]
+    \end{equation}
+    where $b(j)$ represents the number of 1s in pattern $j$, and $[\cdot]$ is the Iverson bracket
+    
+    \item \textbf{Transitions Histogram}: Distribution of 0-to-1 or 1-to-0 transitions in each LBP code:
+    \begin{equation}
+    H_{\text{trans}}(i) = \sum_{j=0}^{N-1} [t(j) = i]
+    \end{equation}
+    where $t(j)$ counts the transitions in pattern $j$
+\end{enumerate}
+
+\subsection{Texture Feature Quantification}
+
+From these histograms, several texture properties were calculated to characterize the regions:
+
+\begin{enumerate}
+    \item \textbf{Entropy}: Measures randomness in texture patterns
+    \begin{equation}
+    E = -\sum_{i} h(i) \log_2 h(i)
+    \end{equation}
+    where $h(i)$ is the normalized histogram value at bin $i$
+    
+    \item \textbf{Energy}: Measures uniformity of texture
+    \begin{equation}
+    U = \sum_{i} h(i)^2
+    \end{equation}
+    
+    \item \textbf{Contrast}: Measures intensity variations
+    \begin{equation}
+    C = \sum_{i} (i - \mu)^2 h(i)
+    \end{equation}
+    where $\mu$ is the mean value of the histogram
+    
+    \item \textbf{Homogeneity}: Measures closeness of distribution
+    \begin{equation}
+    H = \sum_{i} \frac{h(i)}{1 + |i - \mu|}
+    \end{equation}
+\end{enumerate}
+
+\subsection{Distribution Comparison Metrics}
+
+To quantify differences between species, we employed the following statistical measures:
+
+\begin{enumerate}
+    \item \textbf{Jensen-Shannon Distance}: Measure of similarity between probability distributions
+    \begin{equation}
+    JSD(P||Q) = \sqrt{\frac{D_{KL}(P||M) + D_{KL}(Q||M)}{2}}
+    \end{equation}
+    where $M = \frac{P+Q}{2}$ and $D_{KL}$ is the Kullback-Leibler divergence
+    
+    \item \textbf{Earth Mover's Distance}: Measures the minimum "work" required to transform one distribution into another
+    \begin{equation}
+    EMD(P, Q) = \inf_{\gamma \in \Gamma(P, Q)} \int d(x, y) d\gamma(x, y)
+    \end{equation}
+    where $\Gamma(P, Q)$ is the set of all distributions with marginals $P$ and $Q$
+    
+    \item \textbf{Chi-Square Distance}: Measures the goodness of fit between distributions
+    \begin{equation}
+    \chi^2(P, Q) = \sum_{i} \frac{(P_i - Q_i)^2}{P_i + Q_i}
+    \end{equation}
+\end{enumerate}
+
+\subsection{Dimensionality Reduction}
+
+Principal Component Analysis (PCA) was applied to visualize the high-dimensional LBP feature space in two dimensions:
+
+\begin{equation}
+\mathbf{X_{PCA}} = \mathbf{X} \cdot \mathbf{W}
+\end{equation}
+
+where $\mathbf{W}$ is the matrix of eigenvectors of $\mathbf{X}^T\mathbf{X}$ corresponding to the two largest eigenvalues, and $\mathbf{X}$ is the standardized feature matrix.
+
+This methodology allowed us to comprehensively analyze the textural differences between Slaty-backed and Glaucous-winged Gull feather patterns, providing both quantitative metrics and visual representations of the distinguishing characteristics.
+
+The feature extraction process implements a rotation-invariant uniform LBP operator with optimized parameters:
+
+\begin{equation}
+LBP_{P,R}^{riu2} = \begin{cases}
+\sum_{p=0}^{P-1} s(g_p - g_c) & \text{if } U(LBP_{P,R}) \leq 2 \\
+P+1 & \text{otherwise}
+\end{cases}
+\end{equation}
+
+where $U(LBP_{P,R})$ counts the number of bitwise transitions, $g_c$ is the central pixel, and $g_p$ are neighboring pixels.
+
+\subsubsection{Implementation Parameters}
+
+\begin{itemize}
+    \item Circular neighborhood with radius $R=3$ pixels
+    \item $P=24$ sampling points ($8\times R$)
+    \item Dual-mode operation: Both default and uniform patterns
+    \item Normalized intensity values (0-255 range)
+    \item Mask-aware processing (only segmented regions)
+\end{itemize}
+
+The LBP operator generated an LBP code for each pixel within the masked region
+by:
+1. Examining a circular neighborhood (Radius R, P points) around the pixel.
+2. Comparing the intensity of each neighbor point to the center pixel’s intensity.
+3. Assigning ’1’ if the neighbor’s intensity was greater than or equal to the
+center, ’0’ otherwise.
+4. Forming a P-bit binary number from these comparisons.
+5. Converting this binary number to its decimal equivalent (the LBP code).
+
+
+\subsubsection{Abstract Feature Derivation}
+
+For each LBP pattern, we compute two rotation-invariant abstract features:
+
+\begin{enumerate}
+    \item \textbf{Bit Count} ($B$): Number of '1' bits in the pattern
+    \begin{equation}
+    B = \sum_{i=0}^{P-1} s(g_i - g_c)
+    \end{equation}
+    
+    \item \textbf{Transition Count} ($T$): Circular bit transitions
+    \begin{equation}
+    T = \sum_{i=0}^{P-1} |s(g_i - g_c) - s(g_{i+1 \mod P} - g_c)|
+    \end{equation}
+\end{enumerate}
+
+These features are aggregated into normalized histograms with $P+1$ bins each.

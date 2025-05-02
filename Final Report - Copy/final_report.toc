@@ -60,24 +60,25 @@
 \contentsline {subsection}{\numberline {4.8.2}Manual Segmentation}{25}{subsection.4.8.2}%
 \contentsline {subsection}{\numberline {4.8.3}Normalization}{25}{subsection.4.8.3}%
 \contentsline {subsection}{\numberline {4.8.4}Region Extraction}{25}{subsection.4.8.4}%
-\contentsline {section}{\numberline {4.9}Local Binary Pattern}{25}{section.4.9}%
-\contentsline {subsection}{\numberline {4.9.1}Implementation Methodology}{26}{subsection.4.9.1}%
-\contentsline {subsubsection}{LBP Calculation Process}{26}{subsection.4.9.1}%
-\contentsline {subsubsection}{Novel Abstract Pattern Analysis}{26}{Item.44}%
-\contentsline {subsection}{\numberline {4.9.2}Comparative Analysis Implementation}{27}{subsection.4.9.2}%
-\contentsline {subsection}{\numberline {4.9.3}Discriminative Power Analysis}{27}{subsection.4.9.3}%
-\contentsline {subsection}{\numberline {4.9.4}Implementation Workflow}{28}{subsection.4.9.4}%
-\contentsline {subsection}{\numberline {4.9.5}Validation Approach}{28}{subsection.4.9.5}%
+\contentsline {section}{\numberline {4.9}Methodology}{25}{section.4.9}%
+\contentsline {subsection}{\numberline {4.9.1}Local Binary Pattern Analysis}{25}{subsection.4.9.1}%
+\contentsline {subsubsection}{LBP Computation}{26}{subsection.4.9.1}%
+\contentsline {subsection}{\numberline {4.9.2}Feature Extraction}{26}{subsection.4.9.2}%
+\contentsline {subsection}{\numberline {4.9.3}Comparative Analysis Implementation}{27}{subsection.4.9.3}%
+\contentsline {subsection}{\numberline {4.9.4}Discriminative Power Analysis}{27}{subsection.4.9.4}%
+\contentsline {subsection}{\numberline {4.9.5}Dimensionality Reduction and Visualization}{28}{subsection.4.9.5}%
+\contentsline {subsection}{\numberline {4.9.6}Implementation Workflow}{28}{subsection.4.9.6}%
+\contentsline {subsection}{\numberline {4.9.7}Validation Approach}{28}{subsection.4.9.7}%
 \contentsline {section}{\numberline {4.10}Wing and Wingtip Intensity Analysis}{28}{section.4.10}%
-\contentsline {subsection}{\numberline {4.10.1}Feature Extraction Pipeline}{28}{subsection.4.10.1}%
+\contentsline {subsection}{\numberline {4.10.1}Feature Extraction Pipeline}{29}{subsection.4.10.1}%
 \contentsline {subsection}{\numberline {4.10.2}Statistical Comparison}{29}{subsection.4.10.2}%
 \contentsline {section}{\numberline {4.11}Verification by Clustering for Species Differentiation}{29}{section.4.11}%
 \contentsline {subsection}{\numberline {4.11.1}Overview of Clustering Approach}{29}{subsection.4.11.1}%
-\contentsline {subsection}{\numberline {4.11.2}Feature Extraction and Preprocessing}{29}{subsection.4.11.2}%
+\contentsline {subsection}{\numberline {4.11.2}Feature Extraction and Preprocessing}{30}{subsection.4.11.2}%
 \contentsline {subsection}{\numberline {4.11.3}Clustering Algorithms Implementation}{30}{subsection.4.11.3}%
 \contentsline {subsubsection}{K-means Clustering}{30}{subsection.4.11.3}%
 \contentsline {subsubsection}{Hierarchical Clustering}{30}{subsection.4.11.3}%
-\contentsline {subsubsection}{Gaussian Mixture Model}{30}{subsection.4.11.3}%
+\contentsline {subsubsection}{Gaussian Mixture Model}{31}{subsection.4.11.3}%
 \contentsline {subsection}{\numberline {4.11.4}Evaluation Metrics}{31}{subsection.4.11.4}%
 \contentsline {subsubsection}{Unsupervised Evaluation}{31}{subsection.4.11.4}%
 \contentsline {subsubsection}{Supervised Evaluation (Using Known Species Labels)}{31}{subsection.4.11.4}%
@@ -96,14 +97,11 @@
 \contentsline {subsection}{\numberline {5.3.6}Relationship Between Wing and Wingtip Intensities}{38}{subsection.5.3.6}%
 \contentsline {subsection}{\numberline {5.3.7}Wingtip Contrast and Darkness Feature Comparison}{38}{subsection.5.3.7}%
 \contentsline {subsection}{\numberline {5.3.8}Local Binary Pattern(LBP) Pattern Results}{39}{subsection.5.3.8}%
-\contentsline {subsection}{\numberline {5.3.9}Most Discriminative Features}{40}{subsection.5.3.9}%
-\contentsline {subsection}{\numberline {5.3.10}LBP Code Distributions}{40}{subsection.5.3.10}%
-\contentsline {subsection}{\numberline {5.3.11}Summary}{41}{subsection.5.3.11}%
-\contentsline {subsection}{\numberline {5.3.12}Clustering Analysis Results}{41}{subsection.5.3.12}%
-\contentsline {subsubsection}{K-means Clustering}{41}{subsection.5.3.12}%
-\contentsline {subsubsection}{Hierarchical Clustering}{42}{figure.caption.23}%
-\contentsline {subsubsection}{Gaussian Mixture Model}{43}{figure.caption.25}%
-\contentsline {subsection}{\numberline {5.3.13}Algorithm Comparison}{44}{subsection.5.3.13}%
-\contentsline {chapter}{\numberline {6}Discussion}{46}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Biological Significance}{46}{section.6.1}%
-\contentsline {chapter}{\numberline {7}Bibliography}{47}{chapter.7}%
+\contentsline {subsection}{\numberline {5.3.9}Clustering Analysis Results}{39}{subsection.5.3.9}%
+\contentsline {subsubsection}{K-means Clustering}{40}{subsection.5.3.9}%
+\contentsline {subsubsection}{Hierarchical Clustering}{40}{figure.caption.19}%
+\contentsline {subsubsection}{Gaussian Mixture Model}{41}{figure.caption.21}%
+\contentsline {subsection}{\numberline {5.3.10}Algorithm Comparison}{42}{subsection.5.3.10}%
+\contentsline {chapter}{\numberline {6}Discussion}{44}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Biological Significance}{44}{section.6.1}%
+\contentsline {chapter}{\numberline {7}Bibliography}{45}{chapter.7}%

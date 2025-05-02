@@ -178,10 +178,10 @@ def analyze_abstract_patterns(data, output_prefix=""):
 def main():
     """Main function to analyze both uniform and default LBP data"""
     # Analyze uniform LBP data
-    uniform_data = load_and_prepare_data("../LBP_Abstract_Features/lbp_abstract_features_uniform.csv")
-    if uniform_data is not None:
-        print("Analyzing uniform LBP data...")
-        analyze_abstract_patterns(uniform_data, output_prefix="uniform_")
+    # uniform_data = load_and_prepare_data("../LBP_Abstract_Features/lbp_abstract_features_uniform.csv")
+    # if uniform_data is not None:
+    #     print("Analyzing uniform LBP data...")
+    #     analyze_abstract_patterns(uniform_data, output_prefix="uniform_")
 
     # Analyze default LBP data
     default_data = load_and_prepare_data("../LBP_Abstract_Features/lbp_abstract_features_default.csv")

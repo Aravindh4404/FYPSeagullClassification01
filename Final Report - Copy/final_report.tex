@@ -1371,74 +1371,166 @@ This helped standardize intensity values and mitigate the effects of differing l
 
 Using OpenCV's \texttt{inRange} for color-based thresholding, pixels within $\pm$10 intensity values of each target color were extracted and used for further analysis.
 
-\section{Local Binary Pattern}
+% \section{Local Binary Pattern Gemini}
 
-Local Binary Patterns (LBP) represents a powerful and computationally efficient approach for texture analysis, first introduced by Ojala et al. \Citep{1017623}. The fundamental principle of LBP is that it characterizes the local spatial structure of an image's texture by comparing each pixel with its neighbors, generating a binary pattern that serves as a texture descriptor. This method offers several key advantages for biological image analysis:
+% \section{Methodology}
+
+% \subsection{Local Binary Pattern Analysis}
+
+% The texture analysis methodology employs Local Binary Patterns (LBP) to quantify the textural characteristics of gull feather regions. LBP is a powerful texture descriptor that captures local spatial structure by comparing each pixel with its neighboring pixels.
+
+
+
+% We implemented uniform LBP patterns, which account for transitions between 0s and 1s in the binary representation, thereby capturing fundamental texture elements like edges and corners while reducing dimensionality.
+
+% \subsubsection{Feature Extraction}
+
+% From the LBP computation, three primary feature histograms were extracted:
+
+% \begin{enumerate}
+%     \item \textbf{LBP Histogram}: Distribution of LBP codes across the region of interest
+    
+%     \item \textbf{Ones Histogram}: Distribution of the number of 1s in each LBP code, calculated as:
+%     \begin{equation}
+%     H_{\text{ones}}(i) = \sum_{j=0}^{N-1} [b(j) = i]
+%     \end{equation}
+%     where $b(j)$ represents the number of 1s in pattern $j$, and $[\cdot]$ is the Iverson bracket
+    
+%     \item \textbf{Transitions Histogram}: Distribution of 0-to-1 or 1-to-0 transitions in each LBP code:
+%     \begin{equation}
+%     H_{\text{trans}}(i) = \sum_{j=0}^{N-1} [t(j) = i]
+%     \end{equation}
+%     where $t(j)$ counts the transitions in pattern $j$
+% \end{enumerate}
+
+% \subsection{Texture Feature Quantification}
+
+% From these histograms, several texture properties were calculated to characterize the regions:
+
+% \begin{enumerate}
+%     \item \textbf{Entropy}: Measures randomness in texture patterns
+%     \begin{equation}
+%     E = -\sum_{i} h(i) \log_2 h(i)
+%     \end{equation}
+%     where $h(i)$ is the normalized histogram value at bin $i$
+    
+%     \item \textbf{Energy}: Measures uniformity of texture
+%     \begin{equation}
+%     U = \sum_{i} h(i)^2
+%     \end{equation}
+    
+%     \item \textbf{Contrast}: Measures intensity variations
+%     \begin{equation}
+%     C = \sum_{i} (i - \mu)^2 h(i)
+%     \end{equation}
+%     where $\mu$ is the mean value of the histogram
+    
+%     \item \textbf{Homogeneity}: Measures closeness of distribution
+%     \begin{equation}
+%     H = \sum_{i} \frac{h(i)}{1 + |i - \mu|}
+%     \end{equation}
+% \end{enumerate}
+
+Deepseek
+
+\section{Methodology}
+\label{sec:methodology}
+
+\subsection{Local Binary Pattern Analysis}
+
+Local Binary Patterns (LBP) constitute a robust and computationally efficient texture analysis technique, originally proposed by Ojala et al. \Citep{1017623}. LBP characterizes local image texture by comparing each pixel's intensity with its surrounding neighbors, generating a binary code that summarizes the local structure. This descriptor is particularly advantageous for biological image analysis due to several key properties:
 
 \begin{itemize}
-    \item Gray-scale invariance, making it robust to lighting variations
-    \item Computational simplicity while maintaining high discriminative power
-    \item \textbf{Rotation-invariant abstract features} derived from binary patterns (number of 1s and transitions) rather than raw LBP codes
-    \item Robustness to monotonic illumination changes
-    \item Ability to capture micro-patterns in texture that may be imperceptible to human observers
+    \item Robustness to monotonic grayscale variations, enhancing resilience to changing illumination conditions.
+    \item Rotation invariance when using specific LBP variants or derived features (1s and transition histograms)
+    \item Ability to capture fine-scale micro-patterns potentially imperceptible to human vision.
 \end{itemize}
 
-For our seagull species differentiation task, these properties are particularly valuable as they allow us to analyze subtle texture differences in plumage that may remain consistent across varying lighting conditions and viewing angles.
+To investigate subtle textural differences between Slaty-backed Gulls and Glaucous-winged Gulls, Local Binary Pattern (LBP) analysis was conducted on three anatomical regions: wing, wingtip, and head.
 
-\subsection{Implementation Methodology}
+\subsubsection{LBP Computation}
 
-\subsubsection{LBP Calculation Process}
+For a given pixel at position $(x_c, y_c)$ with intensity $g_c$, the LBP value is computed by comparing it with $P$ neighbors at radius $R$ using the following equation:
 
-The core LBP calculation involves several carefully calibrated parameters:
+\begin{equation}
+\text{LBP}_{P,R}(x_c, y_c) = \sum_{p=0}^{P-1} s(g_p - g_c) \cdot 2^p
+\end{equation}
 
+where:
 \begin{itemize}
-    \item \textbf{Radius (R)}: Set to 3 pixels, defining the distance from the center pixel to its neighbors
-    \item \textbf{Number of Points (P)}: Set to $8 \times R$ (24 points), determining the sampling resolution around the circle
-    \item \textbf{Method}: Default and Uniform methods were tested. "Default" method produces the full range of LBP codes, preserving all pattern details while the "Uniform" method Focuses on patterns with at most two bitwise transitions from 0 to 1 or vice versa, reducing feature dimensionality while retaining discriminative power.
+    \item $g_p$ is the intensity of the neighbor pixel $p$
+    \item $s(x)$ is the step function defined as:
 \end{itemize}
 
-For each region, only pixels within the segmentation mask are considered for LBP calculation. The LBP operation proceeds as follows:
+\begin{equation}
+s(x) = 
+\begin{cases}
+1, & \text{if } x \geq 0 \\
+0, & \text{if } x < 0
+\end{cases}
+\end{equation}
+
+\begin{equation}
+\text{LBP}_{P,R} = \sum_{p=0}^{P-1} s(g_p - g_c) \cdot 2^p,\quad s(x) = 
+\begin{cases}
+1, & x \geq 0 \\
+0, & x < 0
+\end{cases}
+\end{equation}
+
+Two variants were implemented:
+\begin{itemize}
+    \item \textbf{Default LBP}: Standard implementation without uniformity constraints
+    \item \textbf{Uniform LBP}: Considers patterns with $\leq 2$ bitwise transitions
+\end{itemize}
+
+Default variant for chosen for final analysis since calculating 1s and transitions from the default histogram makes more sense since it has all the codes present as it is.
+
+\subsection{Feature Extraction}
+\label{subsec:feature_extraction}
+
+Three feature histograms were derived from LBP codes:
 
 \begin{enumerate}
-    \item For each pixel in the selected region of the normalised image, a circular neighborhood of radius R with P sampling points is examined
-    \item Each sampling point is compared to the center pixel value
-    \item If the sampling point value is greater than or equal to the center pixel value, a '1' is assigned; otherwise, a '0'
-    \item The resulting binary pattern is converted to a decimal value, which becomes the LBP code for that pixel
-    \item The collection of LBP codes across the entire region is compiled into a normalized histogram to create comparable feature vectors.
+    \item \textbf{LBP Histogram}: Raw distribution of LBP codes
+    
+    \item \textbf{Ones Histogram}: Frequency of patterns with $n$ ones:
+    \begin{equation}
+    H_{\text{ones}}(i) = \sum_{j=0}^{N-1} [b(j) = i]
+    \end{equation}
+    
+    \item \textbf{Transitions Histogram}: Frequency of patterns with $m$ transitions:
+    \begin{equation}
+    H_{\text{trans}}(i) = \sum_{j=0}^{N-1} [t(j) = i]
+    \end{equation}
 \end{enumerate}
 
-\subsubsection{Novel Abstract Pattern Analysis}
-
-A key contribution of our methodology is the extraction of abstract pattern features from the binary LBP codes. This approach was done to prevent the angles of the regions in the image that varied across from causing rotation variance.
+Texture properties were calculated from these histograms:
 
 \begin{enumerate}
-    \item \textbf{Binary Pattern Generation}: Converting each LBP value to its N\_POINTS-bit binary representation
-    \item \textbf{Ones Count Analysis}: Counting the number of '1' bits in each pattern, representing the frequency of neighboring pixels brighter than the central pixel
-    \begin{itemize}
-        \item Higher values indicate more bright spots or edges within darker regions
-        \item Lower values suggest more uniform dark or bright regions
-    \end{itemize}
-    \item \textbf{Transitions Analysis}: Counting the number of 0-to-1 or 1-to-0 transitions in each pattern, capturing the complexity of the texture pattern
-    \begin{itemize}
-        \item Higher values indicate more complex textures with frequent brightness changes
-        \item Lower values suggest smoother textures with fewer brightness changes
-    \end{itemize}
-    \item \textbf{Histogram Creation}: Compiling the distributions of these abstract features into normalized histograms
+    \item \textbf{Entropy}: Measures randomness in texture patterns
+    \begin{equation}
+    E = -\sum_{i} h(i) \log_2 h(i)
+    \end{equation}
+    where $h(i)$ is the normalized histogram value at bin $i$
+    
+    \item \textbf{Energy}: Measures uniformity of texture
+    \begin{equation}
+    U = \sum_{i} h(i)^2
+    \end{equation}
+    
+    \item \textbf{Contrast}: Measures intensity variations
+    \begin{equation}
+    C = \sum_{i} (i - \mu)^2 h(i)
+    \end{equation}
+    where $\mu$ is the mean value of the histogram
+    
+    \item \textbf{Homogeneity}: Measures closeness of distribution
+    \begin{equation}
+    H = \sum_{i} \frac{h(i)}{1 + |i - \mu|}
+    \end{equation}
 \end{enumerate}
 
-From the LBP histograms, several statistical texture features were calculated:
-
-\begin{enumerate}
-    \item \textbf{Entropy}: Quantifies the randomness or unpredictability of the texture using Shannon entropy. Higher values indicate more complex textures with greater variability.
-
-    \item \textbf{Uniformity}: Measures the textural uniformity by calculating the sum of squared elements in the histogram. Lower values indicate more heterogeneous textures.
-
-    \item \textbf{Contrast}: Quantifies the intensity difference between a pixel and its neighborhood. Higher values indicate more distinct intensity variations. This calculates a weighted variance where the weights are the histogram probabilities.
-
-    \item \textbf{Homogeneity}: Measures the closeness of the distribution of elements in the histogram. Higher values indicate smoother textures.
-\end{enumerate}
-
-These statistical measures provide a comprehensive profile of texture characteristics that can be compared between species.
 
 \subsection{Comparative Analysis Implementation}
 
@@ -1469,18 +1561,18 @@ For each region and property combination, the implementation:
 
 This approach enables the identification of the most promising texture characteristics for species differentiation.
 
-% \subsection{Dimensionality Reduction and Visualization}
+\subsection{Dimensionality Reduction and Visualization}
 
-% The implementation uses Principal Component Analysis (PCA) to visualize the high-dimensional LBP feature space in two dimensions:
+The implementation uses Principal Component Analysis (PCA) to visualize the high-dimensional LBP feature space in two dimensions:
 
-% \begin{enumerate}
-%     \item Standardize the feature data
-%     \item Apply PCA with 2 components
-%     \item Create scatter plots colored by species
-%     \item Calculate and display variance explained
-% \end{enumerate}
+\begin{enumerate}
+    \item Standardize the feature data
+    \item Apply PCA with 2 components
+    \item Create scatter plots colored by species
+    \item Calculate and display variance explained
+\end{enumerate}
 
-% This dimensionality reduction approach provides intuitive visualization of class separability and validates the discriminative power of the extracted features.
+This dimensionality reduction approach provides intuitive visualization of class separability and validates the discriminative power of the extracted features.
 
 \subsection{Implementation Workflow}
 
@@ -1516,8 +1608,6 @@ The implementation includes a few validation mechanisms:
     \item \textbf{Multiple comparison metrics} to ensure robust similarity assessment
     \item \textbf{Quantitative comparison metrics} (KL divergence, percentage differences) to assess feature differences
 \end{enumerate}
-
-By combining these validation approaches, the implementation provides a comprehensive and reliable framework for identifying texture-based differences between the two seagull species.
 
 \section{Wing and Wingtip Intensity Analysis}
 % \href{https://doi.org/10.1111/j.1474-919X.2007.00703.x}{(Olsen and Larsson, 2007)}
@@ -1842,9 +1932,9 @@ A comprehensive analysis of pixel intensity distributions in both the wing and w
 
 Figure~\ref{fig:wing_intensity_distribution} displays the distribution of mean wing intensities for both species. Slaty-backed Gulls cluster at lower mean intensity values, indicating darker wings, while Glaucous-winged Gulls are concentrated at higher mean intensities, reflecting lighter wings. The distributions are largely non-overlapping, underscoring a strong differentiation in overall wing brightness between the two species.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.55\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/ditribution.png}
+    \includegraphics[width=0.55\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/distribution.png}
     \caption{Distribution of mean wing intensity for Slaty-backed Gulls (blue) and Glaucous-winged Gulls (orange). Each species forms a distinct cluster, reflecting their characteristic wing brightness.}
     \label{fig:wing_intensity_distribution}
 \end{figure}
@@ -1978,62 +2068,6 @@ Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summa
 
 \subsection{Local Binary Pattern(LBP) Pattern Results}
 
-To investigate subtle textural differences between Slaty-backed Gulls and Glaucous-winged Gulls, Local Binary Pattern (LBP) analysis was conducted on three anatomical regions: wing, wingtip, and head. Both standard LBP histograms and abstract pattern features (number of ones, transitions) were extracted. Key quantitative findings are summarized below.
-
-\subsection{Most Discriminative Features}
-
-The most effective features for distinguishing the two species were identified in the wingtip and wing regions (Table~\ref{tab:feature-diff}). Slaty-backed Gulls consistently showed greater texture variability and lower mean intensity, indicating darker and more complex patterns.
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.7\textwidth]{Features_Analysis//Results_LBP_Analysis_Uniform/top_discriminative_features.png}
-%     \caption{Top discriminative LBP features for species separation. The bar plot ranks LBP-derived features by percentage difference between species.}
-%     \label{fig:top-features}
-% \end{figure}
-
-\begin{table}[H]
-\centering
-\caption{Most discriminative features and their percentage differences.}
-\label{tab:feature-diff}
-\begin{tabular}{lcc}
-\hline
-\textbf{Feature} & \textbf{Region} & \textbf{Difference (\%)} \\
-\hline
-Standard Deviation of Intensity & Wingtip & 56.7 \\
-Mean Intensity & Wing & 50.1 \\
-Mean Intensity & Wingtip & 45.6 \\
-Energy \& Uniformity & Wingtip & 33.6 \\
-Number of Ones (Abstract LBP) & Wingtip & 3.1 \\
-\hline
-\end{tabular}
-\end{table}
-
-\subsection{LBP Code Distributions}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{images/Results_LBP_Analysis_Uniform/wingtip_lbp_histogram.png}
-    \caption{LBP code distribution in the wingtip region. The distinct histogram shapes highlight fundamental wingtip texture differences.}
-    \label{fig:lbp-wingtip}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{images/Results_LBP_Analysis_Uniform/wingtip_ones_histogram.png}
-    \caption{Distribution of the number of ones in LBP codes (wingtip region). Slaty-backed Gulls show more frequent bright spots or edges in darker feather regions.}
-    \label{fig:ones-wingtip}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{images/Results_LBP_Analysis_Uniform/discriminative_power_heatmap.png}
-    \caption{Heatmap of discriminative power for LBP features across regions and metrics. Darker colors indicate higher discriminatory ability, notably in wingtip and wing regions.}
-    \label{fig:heatmap}
-\end{figure}
-
-\subsection{Summary}
-
-LBP-based texture analysis, particularly in the wingtip region, yields highly discriminative features for distinguishing Slaty-backed from Glaucous-winged Gulls. Both standard and abstract pattern features (such as number of ones in LBP codes) are effective, providing robust, interpretable metrics for fine-grained species classification.
 
 
 \subsection{Clustering Analysis Results}

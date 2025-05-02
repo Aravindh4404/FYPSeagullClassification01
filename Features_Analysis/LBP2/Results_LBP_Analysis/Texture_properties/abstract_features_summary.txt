@@ -10,56 +10,56 @@ FEATURE DISTRIBUTIONS
 Region: wing
 
 Number of Ones Analysis:
-  Slaty-backed Gull mean: 2.48
-  Glaucous-winged Gull mean: 2.46
-  Absolute difference: 0.02
-  Percentage difference: 0.83%
-  Entropy difference: 0.41%
+  Slaty-backed Gull mean: 12.18
+  Glaucous-winged Gull mean: 11.34
+  Absolute difference: 0.84
+  Percentage difference: 6.93%
+  Entropy difference: 1.42%
   Interpretation: Slaty-backed Gulls have more neighbors brighter than central pixel
 
 Transitions Analysis:
-  Slaty-backed Gull mean: 3.28
-  Glaucous-winged Gull mean: 3.28
-  Absolute difference: 0.00
-  Percentage difference: 0.15%
-  Entropy difference: 0.52%
+  Slaty-backed Gull mean: 2.80
+  Glaucous-winged Gull mean: 3.10
+  Absolute difference: 0.29
+  Percentage difference: 9.43%
+  Entropy difference: 10.08%
   Interpretation: Glaucous-winged Gulls have more complex texture patterns
 
 Region: wingtip
 
 Number of Ones Analysis:
-  Slaty-backed Gull mean: 2.52
-  Glaucous-winged Gull mean: 2.44
-  Absolute difference: 0.08
-  Percentage difference: 3.13%
-  Entropy difference: 4.95%
+  Slaty-backed Gull mean: 12.35
+  Glaucous-winged Gull mean: 11.19
+  Absolute difference: 1.16
+  Percentage difference: 9.38%
+  Entropy difference: 4.25%
   Interpretation: Slaty-backed Gulls have more neighbors brighter than central pixel
 
 Transitions Analysis:
-  Slaty-backed Gull mean: 3.25
-  Glaucous-winged Gull mean: 3.22
-  Absolute difference: 0.03
-  Percentage difference: 0.88%
-  Entropy difference: 5.20%
-  Interpretation: Slaty-backed Gulls have more complex texture patterns
+  Slaty-backed Gull mean: 2.69
+  Glaucous-winged Gull mean: 2.93
+  Absolute difference: 0.24
+  Percentage difference: 8.03%
+  Entropy difference: 12.36%
+  Interpretation: Glaucous-winged Gulls have more complex texture patterns
 
 Region: head
 
 Number of Ones Analysis:
-  Slaty-backed Gull mean: 2.45
-  Glaucous-winged Gull mean: 2.39
-  Absolute difference: 0.05
-  Percentage difference: 2.18%
-  Entropy difference: 1.28%
+  Slaty-backed Gull mean: 11.78
+  Glaucous-winged Gull mean: 10.55
+  Absolute difference: 1.22
+  Percentage difference: 10.40%
+  Entropy difference: 0.22%
   Interpretation: Slaty-backed Gulls have more neighbors brighter than central pixel
 
 Transitions Analysis:
-  Slaty-backed Gull mean: 3.20
-  Glaucous-winged Gull mean: 3.15
-  Absolute difference: 0.05
-  Percentage difference: 1.60%
-  Entropy difference: 1.23%
-  Interpretation: Slaty-backed Gulls have more complex texture patterns
+  Slaty-backed Gull mean: 2.52
+  Glaucous-winged Gull mean: 2.65
+  Absolute difference: 0.13
+  Percentage difference: 4.95%
+  Entropy difference: 8.96%
+  Interpretation: Glaucous-winged Gulls have more complex texture patterns
 
 
 INTERPRETATION GUIDE
@@ -75,15 +75,15 @@ Transitions: Counts how many times the binary pattern switches between 0 and 1
 SIGNIFICANCE FOR SPECIES IDENTIFICATION
 --------------------------------------
 
-The most discriminative abstract feature is Number of Ones in the wingtip region with a difference of 3.13%.
-2. Number of Ones in head: 2.18% difference
-3. Transitions in head: 1.60% difference
-4. Transitions in wingtip: 0.88% difference
-5. Number of Ones in wing: 0.83% difference
+The most discriminative abstract feature is Number of Ones in the head region with a difference of 10.40%.
+2. Transitions in wing: 9.43% difference
+3. Number of Ones in wingtip: 9.38% difference
+4. Transitions in wingtip: 8.03% difference
+5. Number of Ones in wing: 6.93% difference
 
 CONCLUSION
 ----------
-Abstract pattern analysis reveals Number of Ones in the wingtip as the most distinctive texture feature between the two gull species.
+Abstract pattern analysis reveals Number of Ones in the head as the most distinctive texture feature between the two gull species.
 
 The Number of Ones feature captures the brightness relationship pattern between neighboring pixels.
 This suggests that the two gull species differ significantly in how brightness is distributed in their feathers,

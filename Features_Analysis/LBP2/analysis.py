@@ -37,7 +37,7 @@ def parse_array_string(array_str):
         return np.array([])
 
 
-def load_and_prepare_data(csv_path="LBP_Abstract_Features/lbp_abstract_features_uniform.csv"):
+def load_and_prepare_data(csv_path="LBP_Abstract_Features/lbp_abstract_features_default.csv"):
     """Load and prepare the LBP feature data for analysis"""
     print(f"Loading data from {csv_path}...")
     df = pd.read_csv(csv_path)
