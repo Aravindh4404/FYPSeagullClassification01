@@ -200,30 +200,20 @@ Birds are frequently utilized to assess environmental quality due to their sensi
 Among birds, gulls (\textit{Laridae}) present a particularly challenging case for identification due to their recent evolutionary divergence and subtle morphological differences. The wing and wingtip patterns—particularly the colour, intensity, and pattern of the primary feathers—are crucial diagnostic features for identification, yet they exhibit considerable variation within each species. 
 %TODO CHECK FEATURES
 
-The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent.
-Multiple confounding factors complicate identification \citep{adriaens2022}:
-\begin{itemize}
-    \item \textbf{Hybridization:} Species can interbreed in overlapping ranges, creating intermediate forms.
-    \item \textbf{Age-related variations:} Juvenile and immature gulls display less distinct patterns than adults.
-    \item \textbf{Environmental effects:} Feather bleaching from sun exposure, contamination, and wear can alter appearance.
-    \item \textbf{Seasonal moulting:} Gulls undergo plumage changes throughout the year, affecting diagnostic features.
-    \item \textbf{Viewing conditions:} Lighting, angle, and distance significantly impact observed coloration.
-\end{itemize} 
+The classification of gulls presents multiple challenges that make traditional identification methods problematic and inconsistent. Multiple confounding factors complicate identification \citep{adriaens2022}, including \textbf{hybridization} where species can interbreed in overlapping ranges, creating intermediate forms; \textbf{age-related variations} as juvenile and immature gulls display less distinct patterns than adults; \textbf{environmental effects} such as feather bleaching from sun exposure, contamination, and wear that can alter appearance; \textbf{seasonal moulting} where gulls undergo plumage changes throughout the year, affecting diagnostic features; and \textbf{viewing conditions} where lighting, angle, and distance significantly impact observed coloration.
 
-As noted by ornithologists:
-
+As noted by \citep{ayyash2024} in \textit{The Gull Guide}:
 \begin{quote}
-    ``Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same!'' \citep{ayyash2024}.
+    Gulls can be a challenging group of birds to identify. To the untrained eye, they all look alike, yet, at the same time, in the case of the large gulls, one could say that no two birds look the same.
 \end{quote}
 
-This project addresses the multifaceted challenge of fine-grained analysis between two closely related gull species: the Slaty-backed Gull and the Glaucous-winged Gull. These species, found primarily in eastern Russia and the Pacific Coast of the USA, display subtle and overlapping physical characteristics that make accurate identification highly complex.
+This project addresses the challenge of fine-grained analysis between two closely related gull species: the Slaty-backed Gull (\textit{Larus schistisagus}) and the Glaucous-winged Gull (\textit{Larus glaucescens}). These species, found primarily in eastern Russia and the Pacific Coast of North America, display subtle and overlapping physical characteristics that make accurate identification highly complex.
 
+\citep{adriaens2022gulls} highlight the particular challenges with Glaucous-winged Gulls:
 \begin{quote}
-    Glaucous-winged Gulls also exhibit variably pigmented wingtips... these differences are often chalked up to individual
-    variation, at least by this author, but they're inconveniently found in several hybrid zones, creating potential for much
-    confusion.
+    Glaucous-winged Gulls also exhibit variably pigmented wingtips \ldots these differences are often chalked up to individual variation, at least by this author, but they're inconveniently found in several hybrid zones, creating potential for much confusion.
     
-    The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood \citep{adriaens2022gulls}.
+    The amount of variation here is disturbing because it is unmatched by any other gull species, and more so because it is not completely understood.
 \end{quote}
 
 There are many methods that can be used for classification. Manual identification to classify species requires per specimen analysis by expert taxonomists which is time consuming. Automated taxon identification systems (ATIs) could both handle routine identifications and potentially assist in identifying new species. Traditional ATIs, however, have been limited by their reliance on hand-crafted features \citep{valan}, are time-consuming hindering large-scale surveys, making them difficult to generalize across different taxonomic groups. As mentioned by \citep{Lu2024}, "While using machine learning techniques to solve the problem of fine-grained classification, traditional feature extraction methods necessitate manually designed features, such as edge detection, color histograms, feature point matching, and visual word bags, which have limited expressive capabilities and require extensive annotation details like bounding boxes and key points. The drawback of these methods lies in the extensive manual intervention required for feature selection and extraction."
@@ -233,29 +223,11 @@ Fine-grained image classification (FGIC), which focuses on identifying subtle di
 Unlike traditional machine learning methods that rely on hand-engineered features, deep neural networks can detect complex patterns in high-dimensional data, making them well-suited for fine-grained visual classification tasks~\citep{valan}. Features extracted through convolution are learned automatically by multilayer convolutional neural networks, offering the model greater adaptability to various tasks and datasets, with features possessing enhanced expressive and abstract capabilities. The benefit of convolutional feature extraction is its ability to perform feature extraction and classification within the same network, with the quality and quantity of features adjustable through the network's structure and parameters \citep{source2} offering the model greater adaptability to various tasks and datasets \citep{Lu2024}. Getting good quality results in traditional machine Learning models is dependent on how good the data is labelled, whereas Deep Learning architectures don't necessarily require labelling, as Neural Networks are great at learning without guidelines~\cite{source5}.
 %TODO check references
 
+For species identification , convolutional neural networks (CNNs) such as ResNet, Inception, and VGG have demonstrated exceptional capabilities \cite{essay101313}, with studies such as \citep{transferln97} mentioned that "deep learning is more effective than traditional machine learning algorithms in image recognition as the number of bird species increases" achieving accuracy rates exceeding 97\% in bird species classification tasks. \citep{ALFATEMI2024558} compared deep learning and traditional machine learning algorithms and achieved an accuracy of 94\% tackle the challenge of classifying bird species with high visual similarity and subtle variations. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species.
 
+Yet the fine-grained bird classification task has greater challenges even when using deep learning as noted by \cite{source3} \citep{ani13020264}. Key issues include high intraclass variance, low inter-class variance, limited training data, intensity and pose variability, bird localization and background variability, occlusions, size variations, class imbalance, and limited samples. Additionally, deep learning requires extensive data and is prone to overfitting. 
 
-As demonstrated in comparative studies, 
-
-For species identification specifically, convolutional neural networks (CNNs) such as ResNet, Inception, and VGG have demonstrated exceptional capabilities \cite{essay101313}, with recent studies such as \citep{transferln97} who mentioned that "deep learning is more effective than traditional machine learning algorithms in image recognition as the number of bird species increases" achieving accuracy rates exceeding 97\% in bird species classification tasks. \citep{ALFATEMI2024558} compared deep learning and traditional machine learning algorithms achieved high accuracy of 94\% tackle the challenge of classifying bird species with high visual similarity and subtle variations. These architectures automatically learn hierarchical feature representations—from low-level edges and textures to high-level semantic concepts—that capture the subtle morphological differences between closely related species.
-
-Yet the fine-grained bird classification task has greater challenges even when using deep learning  \cite{source3} \citep{ani13020264}.
-\begin{enumerate}
-    \item High intraclass variance. Birds belonging to the same category usually present distinctly different postures and perspectives.
-    \item Low inter-class variance. Some of the different categories of birds may have only minor differences; for example, some of the differences are only in the color pattern on the head.
-    \item Limited training data. Some bird data are limited in number, especially endangered species, for whom it is difficult to collect sufficient image data. Meanwhile, the labeling of bird categories usually requires a great deal of time by experts in the corresponding fields. These problems greatly increase the difficulty of acquiring training data.
-    \item Large intensity variation in images as pictures are taken in different time of a day (like morning, noon, evening etc.).
-    \item Various poses of Bird (like flying, sitting with different orientation).
-    \item Bird localization in the image as there are some images in which there are more than one bird in that image.
-    \item Large Variation in Background of the images.
-    \item Various type of occlusions of birds in the images (leaf or branches of the tree).
-    \item Size or portion of the bird covered in the images.
-    \item Less no of sample images per class and also class imbalance \citep{10.1007/978-981-15-1387-9_3}.
-    \item Deep Learning requires an abundant amount of data in order to produce accurate results.
-    \item Overfitting is a prevalent problem in Deep Learning and can sometimes negatively affect the model performance in real-time scenarios.
-\end{enumerate}
-
-This project aims to develop and evaluat deep learning models for automated classification. Additionally, this research focuses on uncovering and analyzing the most influential features that distinguish these two gull species. Interpretability mechanisms such as Grad-CAM (Gradient-weighted Class Activation Mapping) is used to visualize and interpret the regions and morphological traits that deep neural networks prioritize during classification. Complementing this, statistical analysis and unsupervised clustering methods are employed to quantitatively assess which visual features most effectively separate the species, further validating the biological relevance of the model's learned features. By doing so, this project not only seeks to achieve high classification accuracy, but also aims to provide interpretable insights into the distinguishing characteristics of each gull species. This dual approach bridges ecology and computer science, increasing both the practical utility and scientific transparency of AI-powered biodiversity monitoring.
+This dissertation aims to develop and evaluate deep learning models for the automated classification of the Slaty-backed Gull and the Glaucous-winged Gull, to use them to identify the most influential regions that distinguish these two species and analyse them to extract statistical features from these regions and assess their significance and validity in classification.
 
 % Related Work
 \newpage
