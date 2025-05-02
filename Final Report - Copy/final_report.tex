@@ -305,9 +305,9 @@ Working with limited datasets often introduces challenges related to class imbal
 \section*{Interpretability Techniques for Deep Learning Models}
 While deep learning models achieve impressive accuracy in classification tasks, their "black box" nature limits their usefulness in scientific contexts where understanding the basis for classifications is crucial. Interpretability techniques address this limitation by providing insights into model decision-making processes, making them essential tools for applications where transparency is as important as accuracy.
 
-Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions of images that influence classification decisions. \citep{Selvaraju_2019} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to almost any CNN-based model. As described in recent literature, Grad-CAM "uses the gradients of each target that flows into the least convolutional layer to produce a bearish localization map, highlighting important regions in the image for concept prediction"\citep{Hasibuan2023Large}. This approach enables validating model decisions against expert knowledge and potentially discover new insights about morphological features with regards to this project.
+Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions of images that influence classification decisions. Selvaraju et al.\ \citep{Selvaraju_2019} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to almost any CNN-based model. As described in recent literature, Grad-CAM "uses the gradients of each target that flows into the least convolutional layer to produce a bearish localization map, highlighting important regions in the image for concept prediction" \citep{Hasibuan2023Large}. This approach enables validating model decisions against expert knowledge and potentially discover new insights about morphological features with regards to this project.
 
-Selvaraju et al.\ \cite{Selvaraju_2019} demonstrated that Guided Grad-CAM outperforms baseline approaches such as Guided Backpropagation and Deconvolution in generating class-discriminative visualizations. Their results show that Guided Grad-CAM not only produces high-resolution explanations but also clearly highlights the specific image regions that influence the model's classification decision---a property that is vital for our project, where understanding the distinguishing features between classes is essential. As illustrated in their paper, the visualizations allow us to see the exact areas that contributed to the class decision, thereby increasing transparency and trust in the classifier.
+Selvaraju et al.\ \citep{Selvaraju_2019} demonstrated that Guided Grad-CAM outperforms baseline approaches such as Guided Backpropagation and Deconvolution in generating class-discriminative visualizations. Their results show that Guided Grad-CAM not only produces high-resolution explanations but also clearly highlights the specific image regions that influence the model's classification decision---a property that is vital for our project, where understanding the distinguishing features between classes is essential. As illustrated in their paper, the visualizations allow us to see the exact areas that contributed to the class decision, thereby increasing transparency and trust in the classifier.
 
 % VERY USEFUL: some gradcam biased like mentioned in paper above. can use for vit and other accuracy models
 
@@ -368,33 +368,16 @@ The project was carried out in four phases:
 
 \section{Google Colab Platform}
 
-Google Colab was selected as the primary platform for developing and training deep learning models. Google Colab offers significant advantages for machine learning research through its cloud-based environment with integrated GPU acceleration enabling fast model training. The platform's pre-installed libraries and integration with Google Drive provided an efficient workflow for model development, experimentation, and storage of datasets and trained models. This approach aligns with modern best practices in deep learning research where computational efficiency is crucial for iterative model development and refinement.
+Google Colab was selected as the primary platform for developing and training deep learning models for its cloud-based GPU acceleration, integration with Google Drive, and pre-installed libraries, facilitating efficient model development \citep{geron2019}.
 
-Despite its advantages, Google Colab presented a few challenges. The platform frequently disconnected during training sessions, interrupting the model training process before completing all epochs. These disconnections likely stemmed from limited RAM allocation, runtime timeouts, or resource constraints of the shared free GPU environment. As noted by \citep{carneiro2018}, while Colab provides robust GPU resources that can match dedicated servers for certain tasks, these free resources ``are far from enough to solve demanding real-world problems and are not scalable.''
+% REMOVABLE
+Despite its advantages, Google Colab presented a few challenges. The platform frequently disconnected during training sessions, interrupting the model training process before completing all epochs. As noted by \citep{carneiro2018}, while Colab provides robust GPU resources that can match dedicated servers for certain tasks, these free resources ``are far from enough to solve demanding real-world problems and are not scalable.''
 
-To mitigate these issues, two strategies were implemented. First, the relatively small size of our dataset helped minimize resource demands. Second, checkpoint saving was implemented throughout the training process, allowing training to resume from the last saved state if disconnections were encountered. This approach ensured that progress wasn't lost when disconnections occurred, though it introduced some workflow inefficiencies.
-
+The relatively small size of our dataset helped minimize resource demands. Second, checkpoint saving was implemented throughout the training process, allowing training to resume from the last saved state if disconnections were encountered. This approach ensured that progress wasn't lost when disconnections occurred, though it introduced some workflow inefficiencies.
 
 \subsection{Python and PyTorch Framework}
 
-The implementation utilized Python and PyTorch, chosen for their extensive machine learning ecosystem and dynamic computational graph capabilities \citep{geron2019}. PyTorch's key advantages included:
-
-\begin{itemize}
-    \item \textbf{Dynamic Computational Graph:} PyTorch's define-by-run approach enabled 
-    intuitive debugging and rapid modification of pre-trained architectures.
-    
-    \item \textbf{Flexible Model Customization:} Object-oriented design facilitated efficient
-    fine-tuning while preserving valuable feature extraction capabilities.
-    
-    \item \textbf{Efficient Data Processing:} DataLoader and transformation pipelines supported
-    batch processing and on-the-fly augmentation for our limited dataset.
-    
-    \item \textbf{Gradient Computation and Visualization:} Native gradient support simplified
-    implementation of Grad-CAM, enhancing model interpretability.
-\end{itemize}
-
-Similar to approaches described by Raffel et al. \citet{raffel2023}, the implementation prioritized efficiency while working within limited computational resources.
-
+The implementation utilized Python and PyTorch, chosen for their extensive machine learning ecosystem. The implementation utilized Python with PyTorch, capitalizing on its dynamic computation graphs for streamlined debugging and flexible model customization. The framework's efficient DataLoader pipelines enabled effective batch processing, while its native gradient support facilitated the integration of Grad-CAM for improved model interpretability.
 
 % \subsection{Python and PyTorch Framework}
 
@@ -437,9 +420,9 @@ By focusing specifically on adult in-flight images where wingtip patterns are mo
 
 \subsection{Stage 3: High-Quality Dataset}
 
-To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. The Glaucous-winged Gull dataset was also carefully curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features.  Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed.
+To further enhance classification performance, 640 high-resolution images of in-flight Slaty-backed Gulls were obtained from Professor Gibbins. More Glaucous-winged Gull images were collected and curated with expert guidance, reducing it to 135 high-quality images that clearly displayed critical wingtip features.  Images showing birds in moulting stages, juveniles, or unclear wingtip patterns were systematically removed.
 
-For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested.
+For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested which resulted in around 60\% model accuracy.
 
 
 % \begin{lstlisting}[language=Python]
@@ -538,25 +521,17 @@ To systematically address the challenges encountered with initial poor results, 
         \item This approach eliminated training variability as a confounding factor when comparing architectural modifications
         \item Systematic adjustments to hyperparameters could be evaluated with confidence that performance differences were attributable to the specific changes rather than random initialization
     \end{itemize}
-    
-    \item \textbf{Progressive Model Complexity:}
-    \begin{itemize}
-        \item Development followed a deliberate progression from custom CNNs to pre-trained architectures
-        \item Each implementation incorporated lessons from previous models, particularly regarding feature extraction for the fine-grained visual discrimination task
-    \end{itemize}
 \end{itemize}
-
-The insights gained through this process directly informed the subsequent implementation of more sophisticated architectures and the creation of a highly refined dataset focusing specifically on adult in-flight images with clear wingtip patterns.
-
+    
 After establishing a robust development pipeline and refining the dataset, the transfer learning implementations described in the following sections achieved significantly improved results, with test accuracies exceeding 90\% for the best-performing models.
-
 
 \section{Transfer Learning Approach}
 
-Transfer learning was employed in the implementation to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains with limited data. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns \citep{krizhevsky2012imagenet}, which can then be fine-tuned for our specific classification task despite class imbalance challenges \href{https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}{Krizhevsky et al. (2012)}.
-
+Transfer learning was employed in the implementation to leverage the robust feature extraction capabilities of pre-trained models on ImageNet. This approach aligns with best practices in fine-grained classification tasks, where lower-level features learned from diverse datasets can be effectively repurposed for specialized domains with limited data. The pre-training on ImageNet's 1.2 million images across 1,000 classes provides the model with a strong foundation for recognizing a wide range of visual patterns \citep{krizhevsky2012imagenet}, which can then be fine-tuned for our specific classification task despite class imbalance challenges.
+% \href{https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}{Krizhevsky et al. (2012)}
 % \href{https://arxiv.org/abs/1409.1556}{Simonyan and Zisserman (2015)} 
 
+% USEFUL
 Several pre-trained architectures were evaluated for this task, with VGG-16 model (a CNN model proposed by K. Simonyan and A. Zisserman) demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
 
 \subsection{Common Implementation Strategy}
@@ -653,7 +628,7 @@ Our dataset exhibited significant class imbalance, which can degrade model perfo
     
     \item \textbf{Class-Specific Data Augmentation}
     \begin{itemize}
-        \item Aggressive minority class augmentation (Shorten \& Khoshgoftaar, 2019) \href{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0197-0}{[link]}
+        \item Aggressive minority class augmentation \citep{shorten2019survey}
         \item Minority class transformations include:
         \begin{itemize}
             \item 30° random rotations
@@ -667,7 +642,8 @@ Our dataset exhibited significant class imbalance, which can degrade model perfo
 
 \subsection{Dataset Management}
 
-To address the challenges of limited data availability, an 80:20 train-validation split was implemented using random split stratification to maintain class distribution across partitions. This approach ensured that the validation set remained representative of the overall dataset while maximizing the samples available for training. %TODO
+To address the challenges of limited data availability, an 80:20 train-validation split was implemented using random split stratification to maintain class distribution across partitions. This approach ensured that the validation set remained representative of the overall dataset while maximizing the samples available for training. 
+%TODO
 
 % To address the challenges of limited data availability, an 80:20 train-validation split was implemented using random split stratification to maintain class distribution across partitions. This approach ensured that the validation set remained representative of the overall dataset while maximizing the samples available for training \citep{kohavi1995study}.
 

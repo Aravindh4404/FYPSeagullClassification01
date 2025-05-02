@@ -10,27 +10,10 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'wiz_functions' (item size: 4) to 6000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: references.bib
-Repeated entry---line 1403 of file references.bib
- : @article{buda2018systematic
- :                            ,
+Repeated entry---line 1819 of file references.bib
+ : @article{shorten2019survey
+ :                           ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1489 of file references.bib
- : @inproceedings{selvaraju2017grad
- :                                 ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 1949 of file references.bib
- : @inproceedings{micikevicius2018mixed
- :                                     ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 2481 of file references.bib
- : @article{iman2022review
- :                        ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 2585 of file references.bib
- : @article{srivastava2014dropout
- :                               ,
-I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "Dosovitskiy2020"
 Warning--I didn't find a database entry for "chefer2021transformer"
 Warning--I didn't find a database entry for "nie2018theoretical"
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
@@ -38,45 +21,45 @@ Warning--I didn't find a database entry for "nie2018theoretical"
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-You've used 60 entries,
+You've used 58 entries,
             4087 wiz_defined-function locations,
-            1190 strings with 20675 characters,
-and the built_in function-call counts, 44467 in all, are:
-= -- 3607
-> -- 1134
-< -- 330
-+ -- 619
-- -- 214
-* -- 2157
-:= -- 6851
-add.period$ -- 124
-call.type$ -- 60
-change.case$ -- 63
-chr.to.int$ -- 774
-cite$ -- 60
-duplicate$ -- 3159
-empty$ -- 3514
-format.name$ -- 255
-if$ -- 10304
+            1189 strings with 20465 characters,
+and the built_in function-call counts, 41336 in all, are:
+= -- 3387
+> -- 1020
+< -- 287
++ -- 553
+- -- 196
+* -- 1999
+:= -- 6479
+add.period$ -- 120
+call.type$ -- 58
+change.case$ -- 61
+chr.to.int$ -- 657
+cite$ -- 58
+duplicate$ -- 2977
+empty$ -- 3280
+format.name$ -- 234
+if$ -- 9556
 int.to.chr$ -- 0
-int.to.str$ -- 60
-missing$ -- 567
-newline$ -- 271
-num.names$ -- 64
-pop$ -- 1371
+int.to.str$ -- 58
+missing$ -- 536
+newline$ -- 267
+num.names$ -- 62
+pop$ -- 1291
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 3424
+skip$ -- 3195
 stack$ -- 0
-substring$ -- 1897
-swap$ -- 2534
-text.length$ -- 72
+substring$ -- 1640
+swap$ -- 2354
+text.length$ -- 68
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 60
+type$ -- 58
 warning$ -- 0
-while$ -- 182
-width$ -- 62
-write$ -- 670
-(There were 5 error messages)
+while$ -- 164
+width$ -- 60
+write$ -- 653
+(There was 1 error message)

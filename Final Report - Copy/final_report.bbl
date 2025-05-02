@@ -106,15 +106,15 @@ A.~Alfatemi, S.~A. Jamal, N.~Paykari, M.~Rahouti, and A.~Chehri, ``Multi-label
   \url{https://www.sciencedirect.com/science/article/pii/S187705092402502X}
 \BIBentrySTDinterwordspacing
 
-\bibitem{source3}
-J.~S.~B. Pralhad~Gavali, ``Deep convolutional neural networks for bird species
-  classification,'' \emph{Ecological Informatics}, vol.~18, pp. 200--215, 2023.
-
 \bibitem{10.1007/978-981-15-1387-9_3}
 A.~Kumar and S.~D. Das, ``Bird species classification using transfer learning
   with multistage training,'' in \emph{Computer Vision Applications}, C.~Arora
   and K.~Mitra, Eds.\hskip 1em plus 0.5em minus 0.4em\relax Singapore: Springer
   Singapore, 2019, pp. 28--38.
+
+\bibitem{source3}
+J.~S.~B. Pralhad~Gavali, ``Deep convolutional neural networks for bird species
+  classification,'' \emph{Ecological Informatics}, vol.~18, pp. 200--215, 2023.
 
 \bibitem{iman2022review}
 \BIBentryALTinterwordspacing
@@ -170,19 +170,6 @@ A.~A. Biswas, M.~M. Rahman, A.~Rajbongshi, and A.~Majumder, ``Recognition of
   \emph{2021 International Conference on Computer Communication and Informatics
   (ICCCI)}, 2021, pp. 1--6.
 
-\bibitem{Iman_2023}
-\BIBentryALTinterwordspacing
-M.~Iman, H.~R. Arabnia, and K.~Rasheed, ``A review of deep transfer learning
-  and recent advancements,'' \emph{Technologies}, vol.~11, no.~2, p.~40, Mar.
-  2023. [Online]. Available:
-  \url{http://dx.doi.org/10.3390/technologies11020040}
-\BIBentrySTDinterwordspacing
-
-\bibitem{kornblith2019better}
-S.~Kornblith, J.~Shlens, and Q.~Le, ``Do better imagenet models transfer
-  better?'' in \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
-  and Pattern Recognition}, 2019, pp. 2661--2671.
-
 \bibitem{buda2018systematic}
 \BIBentryALTinterwordspacing
 M.~Buda, A.~Maki, and M.~A. Mazurowski, ``A systematic study of the class
@@ -203,6 +190,15 @@ Z.~Wu, ``Image data augmentation techniques based on deep learning: A survey,''
   \emph{Mathematical Biosciences and Engineering}, vol.~21, no.~6, pp.
   6190--6224, 2024.
 
+\bibitem{Selvaraju_2019}
+\BIBentryALTinterwordspacing
+R.~R. Selvaraju, M.~Cogswell, A.~Das, R.~Vedantam, D.~Parikh, and D.~Batra,
+  ``Grad-cam: Visual explanations from deep networks via gradient-based
+  localization,'' \emph{International Journal of Computer Vision}, vol. 128,
+  no.~2, p. 336–359, Oct. 2019. [Online]. Available:
+  \url{http://dx.doi.org/10.1007/s11263-019-01228-7}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Hasibuan2023Large}
 \BIBentryALTinterwordspacing
 M.~M.~H. Hasibuan, N.~Yudistira, and R.~C. Wihandika, ``Large scale bird
@@ -214,41 +210,16 @@ M.~M.~H. Hasibuan, N.~Yudistira, and R.~C. Wihandika, ``Large scale bird
   \url{https://www.atlantis-press.com/article/125986223.pdf}
 \BIBentrySTDinterwordspacing
 
-\bibitem{selvaraju2017grad}
-\BIBentryALTinterwordspacing
-R.~R. Selvaraju, M.~Cogswell, A.~Das, R.~Vedantam, D.~Parikh, and D.~Batra,
-  ``Grad-cam: Visual explanations from deep networks via gradient-based
-  localization,'' in \emph{IEEE International Conference on Computer Vision
-  (ICCV)}, 2017, pp. 618--626. [Online]. Available:
-  \url{https://arxiv.org/abs/1610.02391}
-\BIBentrySTDinterwordspacing
-
-\bibitem{lundberg2017unified}
-S.~Lundberg and S.~Lee, ``A unified approach to interpreting model
-  predictions,'' \emph{Advances in Neural Information Processing Systems},
-  vol.~30, pp. 4765--4774, 2017.
-
-\bibitem{chen2019looks}
-C.~Chen, O.~Li, D.~Tao, A.~Barnett, C.~Rudin, and J.~Su, ``This looks like
-  that: Deep learning for interpretable image recognition,'' in \emph{Advances
-  in Neural Information Processing Systems}, 2019, pp. 8928--8939.
+\bibitem{geron2019}
+A.~G{\'e}ron, \emph{Hands-on machine learning with {Scikit-Learn}, {Keras}, and
+  {TensorFlow}: Concepts, tools, and techniques to build intelligent systems},
+  2nd~ed.\hskip 1em plus 0.5em minus 0.4em\relax O'Reilly Media, 2019.
 
 \bibitem{carneiro2018}
 T.~Carneiro, R.~V.~M. Da~Nobrega, T.~Nepomuceno, G.-B. Bian, V.~H.~C.
   De~Albuquerque, and P.~P.~R. Filho, ``Performance analysis of {Google
   Colaboratory} as a tool for accelerating deep learning applications,''
   \emph{IEEE Access}, vol.~6, pp. 61\,677--61\,685, 2018.
-
-\bibitem{geron2019}
-A.~G{\'e}ron, \emph{Hands-on machine learning with {Scikit-Learn}, {Keras}, and
-  {TensorFlow}: Concepts, tools, and techniques to build intelligent systems},
-  2nd~ed.\hskip 1em plus 0.5em minus 0.4em\relax O'Reilly Media, 2019.
-
-\bibitem{raffel2023}
-C.~Raffel, N.~Shazeer, A.~Roberts, K.~Lee, S.~Narang, M.~Matena, Y.~Zhou,
-  W.~Li, and P.~J. Liu, ``Exploring the limits of transfer learning with a
-  unified text-to-text transformer,'' \emph{Journal of Machine Learning
-  Research}, vol.~24, no.~1, pp. 5675--5758, 2023.
 
 \bibitem{karpathy2019recipe}
 A.~Karpathy, ``A recipe for training neural networks,''
@@ -327,6 +298,13 @@ Y.~Cui, M.~Jia, T.-Y. Lin, and Y.~Song, ``Class-balanced loss based on
   \url{https://openaccess.thecvf.com/content_CVPR_2019/papers/Cui_Class-Balanced_Loss_Based_on_Effective_Number_of_Samples_CVPR_2019_paper.pdf}
 \BIBentrySTDinterwordspacing
 
+\bibitem{shorten2019survey}
+\BIBentryALTinterwordspacing
+C.~Shorten and T.~M. Khoshgoftaar, ``A survey on image data augmentation for
+  deep learning,'' \emph{Journal of Big Data}, vol.~6, no.~1, p.~60, 2019.
+  [Online]. Available: \url{https://doi.org/10.1186/s40537-019-0197-0}
+\BIBentrySTDinterwordspacing
+
 \bibitem{keskar2016largebatch}
 \BIBentryALTinterwordspacing
 N.~S. Keskar, D.~Mudigere, J.~Nocedal, M.~Smelyanskiy, and P.~Tang, ``On
@@ -368,10 +346,14 @@ A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai,
   \url{https://arxiv.org/abs/2010.11929}
 \BIBentrySTDinterwordspacing
 
+\bibitem{rwightman2021pytorch}
+R.~Wightman, ``{PyTorch Image Models},''
+  \url{https://github.com/rwightman/pytorch-image-models}, 2021.
+
 \bibitem{touvron2021trainingdataefficientimagetransformers}
 \BIBentryALTinterwordspacing
 H.~Touvron, M.~Cord, M.~Douze, F.~Massa, A.~Sablayrolles, and H.~Jégou,
-  ``Training data-efficient image transformers & distillation through
+  ``Training data-efficient image transformers \& distillation through
   attention,'' 2021. [Online]. Available:
   \url{https://arxiv.org/abs/2012.12877}
 \BIBentrySTDinterwordspacing
@@ -389,6 +371,14 @@ P.~Micikevicius, S.~Narang, J.~Alben, G.~Diamos, E.~Elsen, D.~Garcia,
   B.~Ginsburg, M.~Houston, O.~Kuchaiev, G.~Venkatesh \emph{et~al.}, ``Mixed
   precision training,'' \emph{arXiv preprint arXiv:1710.03740}, 2018. [Online].
   Available: \url{https://arxiv.org/abs/1710.03740}
+\BIBentrySTDinterwordspacing
+
+\bibitem{Hu_2018_CVPR}
+\BIBentryALTinterwordspacing
+J.~Hu, L.~Shen, and G.~Sun, ``Squeeze-and-excitation networks,'' in
+  \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, June 2018, pp. 7132--7141. [Online]. Available:
+  \url{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}
 \BIBentrySTDinterwordspacing
 
 \bibitem{zhou2015learningdeepfeaturesdiscriminative}
@@ -413,12 +403,11 @@ H.~Chefer, S.~Gur, and L.~Wolf, ``Generic attention-model explainability for
   \url{https://arxiv.org/abs/2012.09838}
 \BIBentrySTDinterwordspacing
 
-\bibitem{shi2018saliency}
+\bibitem{Adebayo2018}
 \BIBentryALTinterwordspacing
-X.~Shi, Y.~Li, D.~Yang, Y.~Fang, L.~Zhou, R.~Wang, and L.~Zhang,
-  ``Understanding the limitations of cnn-based absolute camera pose
-  regression,'' \emph{arXiv preprint arXiv:1810.03292}, 2018. [Online].
-  Available: \url{https://arxiv.org/pdf/1810.03292}
+J.~Adebayo, J.~Gilmer, M.~Muelly, I.~Goodfellow, M.~Hardt, and B.~Kim, ``Sanity
+  checks for saliency maps,'' \emph{arXiv preprint arXiv:1810.03292}, Oct 2018.
+  [Online]. Available: \url{https://arxiv.org/pdf/1810.03292.pdf}
 \BIBentrySTDinterwordspacing
 
 \bibitem{monzon_image_normalization}
