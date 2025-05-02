@@ -12,7 +12,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Create output directory for visualizations
-# Create output directory for visualizations
 OUTPUT_DIR = "Results_LBP_Analysis"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -70,9 +69,6 @@ def calculate_texture_features(avg_hist):
     # Energy (sum of squared probabilities)
     energy = np.sum(hist_norm ** 2)
 
-    # Uniformity is the same as energy in this context
-    uniformity = energy
-
     # Contrast (weighted variance)
     indices = np.arange(len(hist_norm))
     mean = np.sum(indices * hist_norm)
@@ -84,7 +80,6 @@ def calculate_texture_features(avg_hist):
     return {
         'entropy': entropy,
         'energy': energy,
-        'uniformity': uniformity,
         'contrast': contrast,
         'homogeneity': homogeneity
     }
@@ -314,11 +309,10 @@ def analyze_texture_properties(data):
     stats_df = pd.DataFrame(texture_stats)
 
     # Save to CSV
-    # Save to CSV
     stats_df.to_csv(os.path.join(OUTPUT_DIR, "Texture_properties", "texture_properties.csv"), index=False)
 
     # Create visualizations for each property
-    properties = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast', 'homogeneity']
+    properties = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'contrast', 'homogeneity']
 
     # Add abstract features if they exist
     if 'mean_ones' in stats_df.columns:
@@ -431,7 +425,6 @@ def create_discriminative_power_chart(stats_df):
                 linewidths=0.5, cbar_kws={'label': 'Difference (%)'})
 
     plt.title('Discriminative Power of Texture Properties', fontsize=15)
-    # Heatmap
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, "Texture_properties", "discriminative_power_heatmap.png"), dpi=300)
     plt.close()
@@ -456,7 +449,6 @@ def create_discriminative_power_chart(stats_df):
     plt.ylabel('Difference (%)', fontsize=12)
     plt.title('Top Discriminative Features (Region-Property Pairs)', fontsize=15)
 
-    # Bar chart
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, "Texture_properties", "top_discriminative_features.png"), dpi=300)
     plt.close()
@@ -679,7 +671,7 @@ def generate_summary_report(stats_df, diff_df):
                 glaucous_stats = region_stats[region_stats['species'] == 'Glaucous_Winged_Gull'].iloc[0]
 
                 # Compare each property
-                basic_props = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast']
+                basic_props = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'contrast']
                 for prop in basic_props:
                     if prop in slaty_stats and prop in glaucous_stats:
                         slaty_val = slaty_stats[prop]
@@ -807,7 +799,6 @@ def perform_pca_analysis(data):
                     ha='center', fontsize=10,
                     bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
-        # For LBP PCA
         plt.tight_layout(rect=[0, 0.05, 1, 0.95])
         plt.savefig(os.path.join(OUTPUT_DIR, "PCA_plots", f"{region}_pca_plot.png"), dpi=300)
         plt.close()

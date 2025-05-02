@@ -1484,7 +1484,7 @@ Two variants were implemented:
     \item \textbf{Uniform LBP}: Considers patterns with $\leq 2$ bitwise transitions
 \end{itemize}
 
-Default variant for chosen for final analysis since calculating 1s and transitions from the default histogram makes more sense since it has all the codes present as it is.
+For the final results, the default LBP variant was selected since default histogram retains all possible LBP codes, providing a comprehensive representation of local texture patterns. Consequently, it facilitates the direct calculation of derived features such as the number of ones and the number of transitions per pattern, as these statistics can be computed from the complete set of binary codes present in the default histogram. This approach ensures that no potentially discriminative texture information is excluded, thereby supporting a more detailed and flexible analysis of texture complexity and structure across the studied regions.
 
 \subsection{Feature Extraction}
 \label{subsec:feature_extraction}
@@ -2068,6 +2068,160 @@ Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summa
 
 \subsection{Local Binary Pattern(LBP) Pattern Results}
 
+\section{Results: Local Binary Pattern Texture Analysis}
+\label{sec:lbp_results}
+
+Our Local Binary Pattern (LBP) analysis revealed significant texture differences between Slaty-backed and Glaucous-winged Gulls across anatomical regions. The implementation focused on both uniform patterns and transition counts, with histogram-based feature extraction.
+
+\subsection{Discriminative Power Analysis}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{images/LBP/discriminative_power_heatmap.png}
+    \caption{Regional discriminative power of texture properties. Color intensity shows percentage difference between species, with wingtip std\_intensity (57.4\%) being most distinctive.}
+    \label{fig:heatmap}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{images/LBP/top_discriminative_features.png}
+    \caption{Top 5 discriminative features showing wingtip standard intensity as strongest differentiator (57.4\% difference).}
+    \label{fig:top_features}
+\end{figure}
+
+\subsection{Regional Texture Characteristics}
+
+\subsubsection*{Wing Region}
+Mean intensity showed 52.0\% difference (Slaty-backed: 73.98 vs Glaucous-winged: 154.10). Contrast differed by 28.1\% with higher values in Slaty-backed Gulls.
+
+\subsubsection*{Wingtip Region}
+Exhibited the strongest differentiation:
+\begin{itemize}
+    \item Standard intensity: 57.4\% difference (61.06 vs 26.01)
+    \item Mean intensity: 47.2\% difference (73.67 vs 139.43)
+    \item Homogeneity: 45.7\% lower in Slaty-backed Gulls
+\end{itemize}
+
+\subsubsection*{Head Region}
+Contrast showed 19.0\% difference (lower in Slaty-backed), with energy and uniformity both differing by 15.7\%.
+
+\subsection{Abstract Feature Distributions}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{images/LBP/default_feature_diff_barchart.png}
+    \caption{Abstract feature differences, showing head region's Number of Ones as most discriminative (10.4\% difference).}
+    \label{fig:abstract_features}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/LBP/default_wingtip_ones_histogram.png}
+        \caption{Wingtip Number of Ones distribution (9.38\% difference)}
+        \label{fig:wingtip_ones}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/LBP/default_wing_transitions_histogram.png}
+        \caption{Wing Transitions distribution (9.4\% difference)}
+        \label{fig:wing_transitions}
+    \end{subfigure}
+    \vspace{2mm}
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{images/LBP/default_wingtip_transitions_histogram.png}
+        \caption{Wingtip Transitions distribution (8.0\% difference)}
+        \label{fig:wingtip_transitions}
+    \end{subfigure}
+    \caption{Abstract feature histograms showing transition complexity and bright neighbor distributions.}
+    \label{fig:feature_histograms}
+\end{figure}
+
+\subsection{Key Findings Summary}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{clcc}
+        \hline
+        Rank & Feature & Difference (\%) & Higher In \\
+        \hline
+        1 & Wingtip std\_intensity & 57.40 & Slaty-backed \\
+        2 & Wing mean\_intensity & 51.99 & Glaucous-winged \\
+        3 & Wingtip mean\_intensity & 47.19 & Glaucous-winged \\
+        4 & Wingtip homogeneity & 45.74 & Glaucous-winged \\
+        5 & Wingtip contrast & 32.36 & Slaty-backed \\
+        \hline
+    \end{tabular}
+    \caption{Top discriminative features for species identification}
+    \label{tab:top_features}
+\end{table}
+
+The analysis demonstrates that LBP texture features, particularly in the wingtip region, provide robust discriminative power for gull species identification. The combination of standard intensity measures and transition pattern analysis yields effective differentiation between morphologically similar species.
+
+
+Clustering Deepseek
+
+\chapter{Results}
+\section{Clustering Analysis}
+
+The clustering analysis was performed using three different algorithms: Gaussian Mixture Model (GMM), Hierarchical Clustering, and K-means. The results are presented in Figures~\ref{fig:clustering_results} and the misclassified points are analyzed in Tables~\ref{tab:gmm_misclassified}--\ref{tab:kmeans_misclassified}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/gmm_clustering.png}
+        \caption{Gaussian Mixture Model clustering}
+        \label{fig:gmm_cluster}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/hierarchical_clustering.png}
+        \caption{Hierarchical clustering}
+        \label{fig:hierarchical_cluster}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/clustering/kmeans_clustering.png}
+        \caption{K-means clustering}
+        \label{fig:kmeans_cluster}
+    \end{subfigure}
+    \caption{Clustering results using PCA components as features. (a) GMM shows probabilistic cluster assignments, (b) Hierarchical clustering reveals the nested structure of data, and (c) K-means demonstrates centroid-based partitioning.}
+    \label{fig:clustering_results}
+\end{figure}
+
+% \subsection{Misclassified Points Analysis}
+
+% The misclassified points from each clustering algorithm provide insights into the limitations of each method. Tables~\ref{tab:gmm_misclassified}--\ref{tab:kmeans_misclassified} show representative samples of misclassified instances.
+
+% \begin{table}[htbp]
+% \centering
+% \caption{Misclassified points in Gaussian Mixture Model clustering}
+% \label{tab:gmm_misclassified}
+% \begin{adjustbox}{width=0.9\textwidth}
+% \csvautotabular{gmm_misclassified_points.csv}
+% \end{adjustbox}
+% \end{table}
+
+% \begin{table}[htbp]
+% \centering
+% \caption{Misclassified points in Hierarchical clustering}
+% \label{tab:hierarchical_misclassified}
+% \begin{adjustbox}{width=0.9\textwidth}
+% \csvautotabular{hierarchical_misclassified_points.csv}
+% \end{adjustbox}
+% \end{table}
+
+% \begin{table}[htbp]
+% \centering
+% \caption{Misclassified points in K-means clustering}
+% \label{tab:kmeans_misclassified}
+% \begin{adjustbox}{width=0.9\textwidth}
+% \csvautotabular{kmeans_misclassified_points.csv}
+% \end{adjustbox}
+% \end{table}
+
+The clustering results demonstrate varying performance across the three algorithms. Figure~\ref{fig:clustering_results} visualizes the cluster assignments in the reduced PCA space, while the misclassification tables reveal specific cases where each algorithm struggled to correctly classify instances. The GMM approach (Figure~\ref{fig:gmm_cluster}) provides soft clustering assignments, which may be beneficial for ambiguous cases. The hierarchical method (Figure~\ref{fig:hierarchical_cluster}) shows the dendrogram structure, and K-means (Figure~\ref{fig:kmeans_cluster}) demonstrates its characteristic spherical cluster shapes.
 
 
 \subsection{Clustering Analysis Results}
