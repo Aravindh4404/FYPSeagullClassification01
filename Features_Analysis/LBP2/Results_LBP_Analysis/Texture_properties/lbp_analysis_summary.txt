@@ -6,18 +6,16 @@ Regions analyzed: wing, wingtip, head
 
 MOST DISCRIMINATIVE FEATURES
 --------------------------
-1. wingtip's std_intensity: 57.40% difference
-2. wing's mean_intensity: 51.99% difference
-3. wingtip's mean_intensity: 47.19% difference
-4. wingtip's homogeneity: 45.74% difference
-5. wingtip's contrast: 32.36% difference
+1. wingtip's homogeneity: 45.74% difference
+2. wingtip's contrast: 32.36% difference
+3. wing's homogeneity: 30.83% difference
+4. wing's contrast: 28.09% difference
+5. wingtip's energy: 24.45% difference
 
 REGION BY REGION ANALYSIS
 ------------------------
 
 WING:
-  - Mean Intensity: Slaty-backed Gull has lower value (73.9808 vs 154.0953, 52.0% difference)
-  - Std Intensity: Slaty-backed Gull has higher value (22.7421 vs 19.9528, 12.3% difference)
   - Entropy: Slaty-backed Gull has higher value (3.3793 vs 3.1520, 6.7% difference)
   - Energy: Slaty-backed Gull has lower value (0.3262 vs 0.3645, 10.5% difference)
   - Contrast: Slaty-backed Gull has higher value (4915.5360 vs 3534.7633, 28.1% difference)
@@ -25,8 +23,6 @@ WING:
   - Mean Transitions: Slaty-backed Gull has lower value (2.8036 vs 3.0954, 9.4% difference)
 
 WINGTIP:
-  - Mean Intensity: Slaty-backed Gull has lower value (81.4413 vs 154.2137, 47.2% difference)
-  - Std Intensity: Slaty-backed Gull has higher value (61.0632 vs 26.0107, 57.4% difference)
   - Entropy: Slaty-backed Gull has higher value (3.5615 vs 3.0191, 15.2% difference)
   - Energy: Slaty-backed Gull has lower value (0.2977 vs 0.3940, 24.4% difference)
   - Contrast: Slaty-backed Gull has higher value (5640.3074 vs 3814.9763, 32.4% difference)
@@ -34,8 +30,6 @@ WINGTIP:
   - Mean Transitions: Slaty-backed Gull has lower value (2.6946 vs 2.9298, 8.0% difference)
 
 HEAD:
-  - Mean Intensity: Slaty-backed Gull has lower value (169.6340 vs 187.9659, 9.8% difference)
-  - Std Intensity: Slaty-backed Gull has lower value (34.9100 vs 37.6831, 7.4% difference)
   - Entropy: Slaty-backed Gull has lower value (3.4830 vs 3.7704, 7.6% difference)
   - Energy: Slaty-backed Gull has higher value (0.2939 vs 0.2477, 15.7% difference)
   - Contrast: Slaty-backed Gull has lower value (5254.3537 vs 6490.2882, 19.0% difference)
@@ -47,23 +41,23 @@ SPECIES TEXTURE CHARACTERISTICS
 ------------------------------
 
 Slaty_Backed_Gull distinctive characteristics:
-  wing: mean intensity (lower by 52.0%), std intensity (higher by 14.0%), energy (lower by 10.5%), contrast (higher by 39.1%), homogeneity (lower by 30.8%), transitions entropy (lower by 10.1%), transitions energy (higher by 19.6%)
-  wingtip: mean intensity (lower by 47.2%), std intensity (higher by 134.8%), entropy (higher by 18.0%), energy (lower by 24.4%), contrast (higher by 47.8%), homogeneity (lower by 45.7%), ones energy (higher by 30.6%), transitions entropy (lower by 12.4%), transitions energy (higher by 26.0%)
+  wing: energy (lower by 10.5%), contrast (higher by 39.1%), homogeneity (lower by 30.8%), transitions entropy (lower by 10.1%), transitions energy (higher by 19.6%)
+  wingtip: entropy (higher by 18.0%), energy (lower by 24.4%), contrast (higher by 47.8%), homogeneity (lower by 45.7%), ones energy (higher by 30.6%), transitions entropy (lower by 12.4%), transitions energy (higher by 26.0%)
   head: energy (higher by 18.6%), contrast (lower by 19.0%), homogeneity (higher by 18.5%), mean ones (higher by 11.6%)
 
 Glaucous_Winged_Gull distinctive characteristics:
-  wing: mean intensity (higher by 108.3%), std intensity (lower by 12.3%), energy (higher by 11.7%), contrast (lower by 28.1%), homogeneity (higher by 44.6%), transitions entropy (higher by 11.2%), transitions energy (lower by 16.4%)
-  wingtip: mean intensity (higher by 89.4%), std intensity (lower by 57.4%), entropy (lower by 15.2%), energy (higher by 32.4%), contrast (lower by 32.4%), homogeneity (higher by 84.3%), ones energy (lower by 23.5%), transitions entropy (higher by 14.1%), transitions energy (lower by 20.6%)
+  wing: energy (higher by 11.7%), contrast (lower by 28.1%), homogeneity (higher by 44.6%), transitions entropy (higher by 11.2%), transitions energy (lower by 16.4%)
+  wingtip: entropy (lower by 15.2%), energy (higher by 32.4%), contrast (lower by 32.4%), homogeneity (higher by 84.3%), ones energy (lower by 23.5%), transitions entropy (higher by 14.1%), transitions energy (lower by 20.6%)
   head: energy (lower by 15.7%), contrast (higher by 23.5%), homogeneity (lower by 15.6%), mean ones (lower by 10.4%)
 
 
 CONCLUSION
 ----------
-The most discriminative feature for species identification is the wingtip's std intensity, with a difference of 57.40%.
+The most discriminative feature for species identification is the wingtip's homogeneity, with a difference of 45.74%.
 
 For species identification using LBP texture analysis, the following features show the most promise:
-1. wingtip's std intensity (57.40% difference)
-2. wing's mean intensity (51.99% difference)
-3. wingtip's mean intensity (47.19% difference)
-4. wingtip's homogeneity (45.74% difference)
-5. wingtip's contrast (32.36% difference)
+1. wingtip's homogeneity (45.74% difference)
+2. wingtip's contrast (32.36% difference)
+3. wing's homogeneity (30.83% difference)
+4. wing's contrast (28.09% difference)
+5. wingtip's energy (24.45% difference)

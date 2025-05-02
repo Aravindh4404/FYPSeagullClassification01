@@ -2088,41 +2088,14 @@ Our Local Binary Pattern (LBP) analysis revealed significant texture differences
     \label{fig:top_features}
 \end{figure}
 
-\subsection{Regional Texture Characteristics}
-
-\subsubsection*{Wing Region}
-Mean intensity showed 52.0\% difference (Slaty-backed: 73.98 vs Glaucous-winged: 154.10) which was the feature observed in intensity analysis earlier. Contrast differed by 28.1\% with higher values in Slaty-backed Gulls.
-
-\subsubsection*{Wingtip Region}
-Exhibited the strongest differentiation:
+% LBP Top Discriminative Features
 \begin{itemize}
-    \item Standard intensity: 57.4\% difference (61.06 vs 26.01)
-    \item Mean intensity: 47.2\% difference (73.67 vs 139.43)
-    \item Homogeneity: 45.7\% lower in Slaty-backed Gulls
+    \item \textbf{Wingtip:} Homogeneity (\textit{45.74\% difference})
+    \item \textbf{Wingtip:} Contrast (\textit{32.36\% difference})
+    \item \textbf{Wing:} Homogeneity (\textit{30.83\% difference})
 \end{itemize}
 
-\subsubsection*{Head Region}
-Contrast showed 19.0\% difference (lower in Slaty-backed), with energy and uniformity both differing by 15.7\%.
-
-\subsection{Key Findings Summary}
-\begin{table}[htbp]
-    \centering
-    \begin{tabular}{clcc}
-        \hline
-        Rank & Feature & Difference (\%) & Higher In \\
-        \hline
-        1 & Wingtip std\_intensity & 57.40 & Slaty-backed \\
-        2 & Wing mean\_intensity & 51.99 & Glaucous-winged \\
-        3 & Wingtip mean\_intensity & 47.19 & Glaucous-winged \\
-        4 & Wingtip homogeneity & 45.74 & Glaucous-winged \\
-        5 & Wingtip contrast & 32.36 & Slaty-backed \\
-        \hline
-    \end{tabular}
-    \caption{Top discriminative features for species identification}
-    \label{tab:top_features}
-\end{table}
-
-\subsection{Limitations of Abstract Feature Analysis}
+\subsection{Limitations of standard LBP code analysis}
 \label{subsec:feature_limitations}
 
 Although standard texture properties demonstrated substantial differences between species (with top features exceeding 50\% difference), the abstract features (Number of Ones and Transitions) showed more modest discriminative power (maximum 10.4\%). It is important to note that the features from LBP pattern codes are not guaranteed to be rotationally invariant in the implementation used unlike the abstract features (Number of Ones and Transitions).
@@ -2168,21 +2141,22 @@ Figure~\ref{fig:feature_histograms} provides detailed histograms of specific fea
 \end{figure}
 
 
-
-The figures illustrate the distribution and discriminative power of abstract features across different regions. Figure~\ref{fig:abstract_features} presents a bar chart highlighting the most discriminative feature from 1s and transitions histogram. , showcasing their respective differences of 9.38\% and 9.4\%. To further quantify these observations, Table~\ref{tab:top_discriminative_features} lists the top discriminative features based on their percentage differences between species, emphasizing the significance of texture properties in distinguishing between them.
+The figures illustrate the results of abstract features across different regions. Figure~\ref{fig:abstract_features} presents a bar chart highlighting the most discriminative feature from 1s and transitions histogram. , showcasing their respective differences of 9.38\% and 9.4\%. To further quantify these observations, Table~\ref{tab:top_discriminative_features} lists the top discriminative features based on their percentage differences between species, emphasizing the significance of texture properties in distinguishing between them.
 
 \subsection{Top Discriminative Features from 1s and Transitions Histograms}
 \begin{table}[htbp]
     \centering
+    \caption{Top Discriminative Features by Percentage Difference}
     \begin{tabular}{clc}
         \hline
         Rank & Feature & Difference (\%) \\
         \hline
-        1 & Wingtip ones\_energy & 23.5 \\
-        2 & Wingtip transitions\_energy & 20.6 \\
-        3 & Wing transitions\_energy & 16.4 \\
+        1 & Wingtip-ones-energy & 23.5 \\
+        2 & Wingtip-transitions-energy & 20.6 \\
+        3 & Wing-transitions-energy & 16.4 \\
         \hline
     \end{tabular}
+    \label{tab:top_features}
     \caption{Top discriminative features ordered by their percentage difference between species. Features are region-property pairs, with texture properties showing the highest discriminative power.}
     \label{tab:top_discriminative_features}
 \end{table}
@@ -2405,23 +2379,66 @@ Figure \ref{fig:algorithm_comparison} shows a comparative analysis of all cluste
     \label{fig:algorithm_comparison}
 \end{figure}
 
-\chapter{Discussion}
+\cahpter{Discussion}
 
-\section{Biological Significance}
+\subsection{Interpretation of Model Performance and Biological Significance}
+The experimental results demonstrate that deep learning models, particularly VGG-16, achieved high classification accuracy (95.74\% test accuracy) in distinguishing Slaty-backed and Glaucous-winged Gulls, validating the efficacy of transfer learning for fine-grained avian classification. The performance disparity between architectures---with VGG-16 outperforming Vision Transformers (ViT) and ResNet-50---suggests that hierarchical convolutional feature extraction better captures the subtle wing and wingtip patterns critical for gull differentiation. This aligns with the biological reality that diagnostic traits in these species are localized to specific morphological regions rather than global image contexts. The ViT’s slightly lower accuracy (93.62\%) may stem from its reliance on self-attention mechanisms which, while powerful for modeling long-range dependencies, may dilute fine-grained local features in small datasets.
 
-These results demonstrate clear, quantifiable differences between the two gull species:
+The Grad-CAM visualizations confirmed that models consistently focused on wing and wingtip regions, mirroring ornithological expertise. For instance, in Slaty-backed Gulls, high activation coincided with dark primary feather patterns, while Glaucous-winged Gulls showed activations around lighter wingtips. This congruence between model attention and expert knowledge not only validates the models’ decision-making but also reinforces the biological relevance of wingtip morphology as a taxonomic marker.
 
+\subsection{Quantitative Validation of Morphological Differences}
+The intensity analysis revealed statistically significant differences ($p < 0.001$) in wing and wingtip brightness between species. Slaty-backed Gulls exhibited mean wing intensities 108.3\% darker than Glaucous-winged Gulls, with wingtip intensities 90.5\% darker. Crucially, the presence of very dark wingtip pixels (intensity $<30$) emerged as a key discriminative feature: Slaty-backed Gulls had 25–48\% of wingtip pixels below this threshold, compared to near-zero in Glaucous-winged Gulls. This stark contrast explains the models’ reliance on these regions and provides quantitative support for field identification guidelines.
+
+However, the overlapping distributions in wingtip intensity highlight limitations. While mean wing intensity is a robust classifier, individual variation in wingtip darkness---potentially due to hybridization or environmental factors---introduces ambiguity. This underscores the necessity of multi-feature analysis, as no single metric fully captures species differences.
+
+\subsection{Feature Analysis and Clustering Validation}
+Local Binary Pattern (LBP) analysis identified wingtip texture as the most discriminative feature, with Slaty-backed Gulls showing 57.4\% higher intensity variability. The combination of intensity and texture features enabled clustering algorithms like GMM to achieve 95.6\% accuracy, demonstrating that traditional machine learning can effectively leverage deep learning-derived features. Notably, the clustering results revealed natural groupings aligning with species labels, independent of supervised training. This unsupervised validation strengthens the conclusion that morphological differences are inherent and measurable.
+
+\subsection{Limitations and Practical Implications}
+The study’s reliance on high-quality, curated images (Stage 3 dataset) limits real-world applicability. While data augmentation mitigated overfitting, performance on noisy field images remains untested. Furthermore, the exclusion of juveniles and hybrids---a necessity for clear morphological analysis---creates a taxonomic ``blind spot" that must be addressed in future work.
+
+Practically, these models could be integrated into citizen science platforms like \textit{iNaturalist} to assist non-experts in gull identification. The interpretability framework also provides a template for collaborative AI-ornithology research, enabling experts to validate and refine model decisions iteratively.
+
+\chapter{Conclusion}
+
+This study successfully addressed its primary research aims:
+
+\begin{enumerate}
+    \item \textbf{Model Development}: High-accuracy classifiers (VGG-16: 95.74\%) were developed using transfer learning, demonstrating that pre-trained CNNs excel at fine-grained gull classification despite limited data. The iterative dataset refinement---from 937 to 775 expert-curated images---proved critical, reducing noise from age-related and environmental variability.
+    \item \textbf{Interpretability}: Grad-CAM visualizations bridged AI and biological expertise by highlighting wing/wingtip regions, validating that models prioritize known diagnostic traits. This transparency is essential for gaining trust in automated taxonomic tools.
+    \item \textbf{Morphological Analysis}: Statistical and clustering analyses confirmed significant, quantifiable differences in wing darkness ($p < 0.001$) and wingtip texture (57.4\% higher variability in Slaty-backed Gulls). These results empirically support field identification criteria while revealing nuances---such as interspecific overlap in wingtip patterns---that require expert contextualization.
+    \item \textbf{Feature Significance}: The dominance of wingtip features in both model attention and statistical analysis suggests that AI can not only replicate human expertise but also uncover underappreciated diagnostic traits, such as the prevalence of very dark pixels ($<$30 intensity) in Slaty-backed Gulls.
+\end{enumerate}
+
+\subsection*{Synthesis of Contributions}
+This work advances avian taxonomy by:
 \begin{itemize}
-    \item \textbf{Overall Wing Color:} Slaty-backed Gulls have significantly darker wings, with intensity values approximately half those of Glaucous-winged Gulls.
-    
-    \item \textbf{Wingtip Darkness Pattern:} Slaty-backed Gulls have a dramatically higher percentage of very dark pixels in their wingtips. Over 25\% of wingtip pixels have intensity below 30, compared to virtually none in Glaucous-winged Gulls.
-    
-    \item \textbf{Species Identification Feature:} The presence of very dark pixels (intensity $<$ 30) in the wingtip appears to be a reliable diagnostic feature for distinguishing between these species.
-    
-    \item \textbf{Contrast Pattern:} The higher percentage of dark pixels in Slaty-backed Gull wingtips creates a more pronounced visual contrast between wing and wingtip regions.
+    \item Providing a reproducible framework for AI-assisted morphological analysis.
+    \item Quantifying previously qualitative field characteristics (e.g., ``dark wingtips").
+    \item Demonstrating that unsupervised clustering can validate supervised model predictions.
 \end{itemize}
 
-These quantitative differences align with field observations that Slaty-backed Gulls have darker wings and more prominent dark wingtips compared to Glaucous-winged Gulls, providing a reliable basis for species identification in image analysis.
+Future research should expand to hybrid specimens and juvenile plumage while testing robustness across diverse imaging conditions. By integrating computational power with ecological knowledge, this approach offers a paradigm for addressing the taxonomic impediment in rapidly evolving species complexes.
+
+% \chapter{Discussion}
+
+
+
+% \section{Biological Significance}
+
+% These results demonstrate clear, quantifiable differences between the two gull species:
+
+% \begin{itemize}
+%     \item \textbf{Overall Wing Color:} Slaty-backed Gulls have significantly darker wings, with intensity values approximately half those of Glaucous-winged Gulls.
+    
+%     \item \textbf{Wingtip Darkness Pattern:} Slaty-backed Gulls have a dramatically higher percentage of very dark pixels in their wingtips. Over 25\% of wingtip pixels have intensity below 30, compared to virtually none in Glaucous-winged Gulls.
+    
+%     \item \textbf{Species Identification Feature:} The presence of very dark pixels (intensity $<$ 30) in the wingtip appears to be a reliable diagnostic feature for distinguishing between these species.
+    
+%     \item \textbf{Contrast Pattern:} The higher percentage of dark pixels in Slaty-backed Gull wingtips creates a more pronounced visual contrast between wing and wingtip regions.
+% \end{itemize}
+
+% These quantitative differences align with field observations that Slaty-backed Gulls have darker wings and more prominent dark wingtips compared to Glaucous-winged Gulls, providing a reliable basis for species identification in image analysis.
 
 
 \bibliographystyle{IEEEtran}

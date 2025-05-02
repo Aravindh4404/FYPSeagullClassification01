@@ -262,10 +262,6 @@ def analyze_texture_properties(data):
         for species in region_data['species'].unique():
             species_region_data = region_data[region_data['species'] == species]
 
-            # Calculate basic statistics
-            mean_intensity = species_region_data['mean_intensity'].mean()
-            std_intensity = species_region_data['std_intensity'].mean()
-
             # Extract more advanced texture features
             if 'lbp_histogram' in species_region_data.columns:
                 # Average LBP histogram for this species/region
@@ -299,8 +295,6 @@ def analyze_texture_properties(data):
                 texture_stats.append({
                     'region': region,
                     'species': species,
-                    'mean_intensity': mean_intensity,
-                    'std_intensity': std_intensity,
                     **texture_features,
                     **abstract_features
                 })
@@ -312,7 +306,7 @@ def analyze_texture_properties(data):
     stats_df.to_csv(os.path.join(OUTPUT_DIR, "Texture_properties", "texture_properties.csv"), index=False)
 
     # Create visualizations for each property
-    properties = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'contrast', 'homogeneity']
+    properties = ['entropy', 'energy', 'contrast', 'homogeneity']
 
     # Add abstract features if they exist
     if 'mean_ones' in stats_df.columns:
@@ -671,7 +665,7 @@ def generate_summary_report(stats_df, diff_df):
                 glaucous_stats = region_stats[region_stats['species'] == 'Glaucous_Winged_Gull'].iloc[0]
 
                 # Compare each property
-                basic_props = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'contrast']
+                basic_props = ['entropy', 'energy', 'contrast']
                 for prop in basic_props:
                     if prop in slaty_stats and prop in glaucous_stats:
                         slaty_val = slaty_stats[prop]
