@@ -1,5 +1,5 @@
-\documentclass[a4paper,11.5pt]{report}
-\usepackage[margin=0.4in]{geometry}
+\documentclass[a4paper,12pt]{report}
+\usepackage[margin=0.5in]{geometry}
 \usepackage{hyperref}
 \usepackage{setspace}
 \usepackage{lastpage}
@@ -1608,7 +1608,7 @@ The entire analysis pipeline was implemented in Python, utilizing libraries incl
 
 \subsection{Overview of Clustering Approach}
 
-To validate and complement the results achieved through the analysis of the region-specific features that were significantly different among the 2 species, a comprehensive clustering analysis framework was implemented that leverages traditional machine learning techniques to identify natural groupings in the morphological features of Slaty-backed and Glaucous-winged Gulls. This approach provides an alternative perspective on species differentiation and helps validate the discriminative features identified by the deep learning models that were quantified.
+To validate and complement the results achieved through the analysis of the region-specific features that were significantly different among the 2 species, a comprehensive clustering analysis framework was implemented that leverages traditional machine learning techniques to check whether the two species can be classified using the features. This approach helps validate the discriminative features identified by the deep learning models that were quantified.
 
 \subsection{Feature Extraction and Preprocessing}
 
@@ -1627,8 +1627,7 @@ Prior to clustering analysis, the following preprocessing steps were implemented
 \end{enumerate}
 
 \subsection{Clustering Algorithms Implementation}
-
-Four distinct clustering algorithms were implemented to provide a comprehensive evaluation of the feature space:
+Three distinct clustering algorithms were implemented to provide a comprehensive evaluation of the feature space:
 
 \subsubsection{K-means Clustering}
 K-means clustering was implemented with the following parameters:
@@ -1637,8 +1636,7 @@ K-means clustering was implemented with the following parameters:
     \item Random state: 42 (for reproducibility)
     \item Multiple initializations (\texttt{n\_init = 10}) to avoid local optima
 \end{itemize}
-
-K-means partitions the data by minimizing the within-cluster sum of squares, iteratively assigning points to the nearest cluster centroid and then recalculating centroids until convergence.
+K-means partitions the data by minimizing the within-cluster sum of squares. The algorithm iteratively assigns data points to the nearest cluster centroid and then recalculates the centroids based on the new cluster assignments until convergence is achieved.
 
 \subsubsection{Hierarchical Clustering}
 Hierarchical clustering was implemented with:
@@ -1646,16 +1644,7 @@ Hierarchical clustering was implemented with:
     \item Number of clusters: 2
     \item Linkage method: Ward's linkage
 \end{itemize}
-
-This approach builds a hierarchical structure of clusters by initially treating each observation as a singleton cluster and then successively merging the closest pairs of clusters. Ward's linkage was specifically chosen as it minimizes the increase in the sum of squares when two clusters are merged, making it suitable for creating compact, spherical clusters.
-
-\subsubsection{DBSCAN}
-\begin{itemize}
-    \item Epsilon ($\varepsilon$): 20 (the maximum distance between two samples for one to be considered as in the neighborhood of the other)
-    \item Minimum samples: 20 (the number of samples in a neighborhood for a point to be considered a core point)
-\end{itemize}
-
-Unlike the previous algorithms, DBSCAN does not require specifying the number of clusters beforehand. It identifies clusters based on areas of high density separated by areas of low density, with the additional advantage of being able to detect outliers.
+This approach builds a hierarchy of clusters. Initially, each data point is treated as a single cluster.  The algorithm then iteratively merges the closest pairs of clusters until only the specified number of clusters remains. Ward's linkage was chosen to minimize the variance within the newly formed clusters at each merge, promoting the creation of compact, spherical clusters.
 
 \subsubsection{Gaussian Mixture Model}
 GMM clustering was implemented with:
@@ -1663,60 +1652,48 @@ GMM clustering was implemented with:
     \item Number of components: 2
     \item Random state: 42 (for reproducibility)
 \end{itemize}
-
-GMM assumes that the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters. It assigns points to clusters probabilistically rather than deterministically, allowing for more flexible cluster shapes.
+GMM assumes that the data is generated from a mixture of a finite number of Gaussian distributions with unknown parameters.  The algorithm estimates the parameters of these distributions and assigns data points to clusters based on the probability that they belong to each distribution. This probabilistic approach allows for more flexibility in cluster shapes compared to K-means.
 
 \subsection{Evaluation Metrics}
-
 The effectiveness of each clustering algorithm was evaluated using multiple metrics:
 
 \subsubsection{Unsupervised Evaluation}
-
-\textbf{Silhouette Score}: Measures how similar an object is to its own cluster compared to other clusters. Values range from -1 to 1, with higher values indicating better-defined clusters.
+\textbf{Silhouette Score}: Measures how similar a data point is to its own cluster compared to other clusters. Values range from -1 to 1, with higher values indicating better-defined clusters.
 
 \subsubsection{Supervised Evaluation (Using Known Species Labels)}
-
 \textbf{Adjusted Rand Index (ARI)}: Measures the similarity between the true species assignments and the clustering results, adjusted for chance. Values range from -1 to 1, with higher values indicating greater similarity.
-
 \textbf{Confusion Matrix}: Visualizes the number of correctly and incorrectly clustered specimens after mapping cluster labels to species labels.
-
 \textbf{Clustering Accuracy}: Calculated as the percentage of specimens correctly classified after mapping clusters to the majority species within each cluster.
 
 \subsection{Cluster Mapping and Misclassification Analysis}
-
 To interpret the clustering results in terms of species classification:
-
 \begin{enumerate}
     \item \textbf{Cluster-to-Species Mapping}: For each cluster, the majority species was identified, creating a mapping from cluster labels to species labels.
     \item \textbf{Misclassification Analysis}: Using this mapping, specimens were identified as correctly or incorrectly clustered. Misclassified specimens were visualized in the PCA space and exported to CSV files for further analysis.
 \end{enumerate}
 
 \subsection{Visualization and Interpretation}
-
 Multiple visualizations were generated to aid interpretation:
 \begin{enumerate}
     \item \textbf{PCA Plots}: Showing the distribution of specimens in the reduced two-dimensional space with color-coding by cluster assignment.
-    \item \textbf{Cluster Centers}: For K-means and GMM, cluster centers were plotted in the PCA space.
-    \item \textbf{Misclassification Visualization}: Highlighting correctly and incorrectly clustered specimens in the PCA space.
-    \item \textbf{Feature Importance Plots}: Bar charts showing the relative importance of each feature based on cluster center differences.
-    \item \textbf{Algorithm Comparison}: Bar charts comparing the silhouette scores across all clustering algorithms.
+    \item \textbf{Cluster Centers}: For K-means and GMM, cluster centers were plotted in the PCA space to visualize the centroids of each cluster.
+    \item \textbf{Misclassification Visualization}: Highlighting correctly and incorrectly clustered specimens in the PCA space to identify areas of confusion.
+    \item \textbf{Feature Importance Plots}: Bar charts showing the relative importance of each feature based on cluster center differences (for K-means).
+    \item \textbf{Algorithm Comparison}: Bar charts comparing the silhouette scores across all clustering algorithms to assess their performance.
 \end{enumerate}
-
 This comprehensive clustering analysis provides valuable insights into the natural grouping of morphological features and helps validate the discriminative power of the features identified by the deep learning models.
-
-\section{Clustering Analysis}
 
 \subsection{Implementation Details}
 
 The entire analytical workflow was implemented in Python using the following libraries:
+
 \begin{itemize}
     \item \texttt{scikit-learn} for clustering algorithms, PCA, and evaluation metrics
     \item \texttt{pandas} for data management
     \item \texttt{NumPy} for numerical operations
     \item \texttt{Matplotlib} and \texttt{Seaborn} for visualization
 \end{itemize}
-
-A consistent random state (42) was used throughout the analysis to ensure reproducibility. Results were automatically saved to an output directory for documentation and further analysis.
+A consistent random state (42) was used throughout the analysis to ensure reproducibility. Results, including visualizations and misclassification data, were automatically saved to an output directory for documentation and further analysis.
 
 This comprehensive methodology allowed for a robust evaluation of whether the extracted statistical features could effectively distinguish between the two gull species through unsupervised clustering, providing valuable insights into feature significance for species classification.
 
@@ -1780,7 +1757,82 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
 \section{Intensity Analysis Results}
 % images/REPORT_IMAGES_INTENSITY/I2/intensitydistribution.png
 
-The intensity analysis revealed significant quantifiable differences in wing and wingtip patterns between Slaty-backed Gulls and Glaucous-winged Gulls, providing strong discriminative features for species identification.
+\subsection{Wing and Wingtip Intensity Analysis}
+
+The intensity analysis revealed significant quantifiable differences in wing and wingtip intensities between Slaty-backed Gulls and Glaucous-winged Gulls, providing strong discriminative features for species identification.
+
+Statistical analysis of both wing and wingtip intensity demonstrated clear and significant differences between the two gull species across multiple samples. Independent samples t-tests (Welch's t-tests, allowing for unequal variances) were performed for both wing and wingtip intensities, comparing the means of the two species. Both tests  confirmed that this difference is highly significant ($p < 0.001$), indicating that the observed differences in intensity for both wing and wingtip are extremely unlikely to have arisen by chance.
+
+\begin{table}[H]
+    \centering
+    \caption{Wing and Wingtip Intensity Statistical Summary}
+    \label{tab:intensity-stats-combined}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{l l c c c c}
+        \toprule
+        Feature & Species & Mean Intensity & Std.\ Dev. & \% Difference & Statistical Significance \\
+        \midrule
+        \multirow{2}{*}{Wing} 
+            & Slaty-backed Gull     & 73.98  & 21.90 & \multirow{2}{*}{108.3\%} & \multirow{2}{*}{$p\,<\,0.001$ (t-test)} \\
+            & Glaucous-winged Gull  & 154.10 & 30.82 & & \\
+        \midrule
+        \multirow{2}{*}{Wingtip} 
+            & Slaty-backed Gull     & 81.56  & 20.66 & \multirow{2}{*}{90.5\%} & \multirow{2}{*}{$p\,<\,0.001$ (t-test)} \\
+            & Glaucous-winged Gull  & 155.36 & 32.52 & & \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+
+Test statistic:
+\begin{equation}
+t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+\end{equation}
+
+Degrees of freedom (Welch--Satterthwaite approximation):
+\begin{equation}
+\nu \approx \frac{\left(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1} + \frac{(s_2^2/n_2)^2}{n_2-1}}
+\end{equation}
+
+The combined figure (\autoref{fig:intensity_combined}) summarizes the intensity analysis results. Subfigures~\ref{fig:wing_intensity} and~\ref{fig:wing_intensity_means} show that Glaucous-winged Gulls have consistently higher and less variable wing intensity than Slaty-backed Gulls. Subfigures~\ref{fig:wingtip_intensity_violin} and~\ref{fig:wingtip_intensity_distribution} illustrate that, while wingtip intensity also differs significantly between species, there is greater variability and overlap, as seen in the broader range and outliers in the distributions.
+While both wing and wingtip intensity are statistically significant distinguishing features, variations observed in the wingtip intensity distributions, potentially due to the presence of white spots and variations in darkness. For this reason the mean wing intensity may be considered a more consistently robust distinguishing feature between the two species.
+
+\begin{figure}[H]
+    \centering
+    % First row
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wing_intensity_analysis.png}
+        \caption{Comparison of wing intensity values between species.}
+        \label{fig:wing_intensity}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/WINGINTENSITY.png}
+        \caption{Mean wing intensity across samples.}
+        \label{fig:wing_intensity_means}
+    \end{subfigure}
+    % Vertical space between rows
+    \par\vspace{1.5ex}
+    % Second row
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_intensity_violin_plot.png}
+        \caption{Wingtip intensity violin plot.}
+        \label{fig:wingtip_intensity_violin}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_intensity_distribution.png}
+        \caption{Wingtip intensity distribution.}
+        \label{fig:wingtip_intensity_distribution}
+    \end{subfigure}
+    \caption{Wing and wingtip intensity metrics for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}
+    \label{fig:intensity_combined}
+\end{figure}
 
 \subsection{Wing Intensity Analysis}
 
@@ -1964,9 +2016,9 @@ Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summa
 
  ENDDDDDDDDDDDDDDD
 
-\subsection{LBP Pattern Results}
+\subsection{Local Binary Pattern(LBP) Pattern Results}
 
-To investigate subtle textural differences between Slaty-backed Gulls and Glaucous-winged Gulls, a comprehensive Local Binary Pattern (LBP) analysis was conducted on three anatomical regions: wing, wingtip, and head. Both standard LBP histograms and abstract pattern features (number of ones, transitions) were extracted. Key quantitative findings are summarized below.
+To investigate subtle textural differences between Slaty-backed Gulls and Glaucous-winged Gulls, Local Binary Pattern (LBP) analysis was conducted on three anatomical regions: wing, wingtip, and head. Both standard LBP histograms and abstract pattern features (number of ones, transitions) were extracted. Key quantitative findings are summarized below.
 
 \subsection{Most Discriminative Features}
 

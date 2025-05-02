@@ -8,7 +8,7 @@ import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score, adjusted_rand_score, confusion_matrix
-from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
+from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 import sys
 
@@ -82,7 +82,7 @@ def visualize_clusters(X_pca, clusters, centroids=None, title="Clustering Result
         plt.legend()
 
     plt.tight_layout()
-    
+
     if save_path:
         plt.savefig(save_path)
         plt.close()
@@ -151,7 +151,7 @@ def visualize_confusion_matrix_with_mapping(true_labels, clusters, majority_mapp
     plt.ylabel('True Species')
     plt.title('Confusion Matrix with Species Mapping')
     plt.tight_layout()
-    
+
     if save_path:
         plt.savefig(save_path)
         plt.close()
@@ -187,7 +187,7 @@ def visualize_misclassifications(X_pca, cluster_analysis, title="Misclassificati
     plt.title(title)
     plt.legend()
     plt.tight_layout()
-    
+
     if save_path:
         plt.savefig(save_path)
         plt.close()
@@ -229,7 +229,7 @@ def visualize_feature_importance(scaler, cluster_centers, feature_names, save_pa
                  f'{height:.2f}', ha='center', va='bottom')
 
     plt.tight_layout()
-    
+
     if save_path:
         plt.savefig(save_path)
         plt.close()
@@ -252,15 +252,7 @@ def apply_hierarchical(X_scaled, n_clusters=2, linkage='ward'):
     return clusters, None
 
 
-# 3. DBSCAN Clustering
-def apply_dbscan(X_scaled, eps=0.5, min_samples=5):
-    dbscan = DBSCAN(eps=eps, min_samples=min_samples)
-    clusters = dbscan.fit_predict(X_scaled)
-    # Note: DBSCAN doesn't provide cluster centers and may identify outliers (-1)
-    return clusters, None
-
-
-# 4. Gaussian Mixture Model
+# 3. Gaussian Mixture Model
 def apply_gmm(X_scaled, n_components=2):
     gmm = GaussianMixture(n_components=n_components, random_state=RANDOM_STATE)
     clusters = gmm.fit_predict(X_scaled)
@@ -272,7 +264,7 @@ def run_clustering_analysis(file_path, output_dir=None):
     # Create output directory if it doesn't exist
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
-    
+
     # Load and prepare data
     df, features, true_labels, species_names = load_data(file_path)
     feature_names = features.columns.tolist()
@@ -340,60 +332,24 @@ def run_clustering_analysis(file_path, output_dir=None):
 
         # Visualize confusion matrix with species mapping
         print("\n=== Hierarchical Clustering Species Mapping Analysis ===")
-        hierarchical_confusion_path = os.path.join(output_dir, "hierarchical_confusion_matrix.png") if output_dir else None
+        hierarchical_confusion_path = os.path.join(output_dir,
+                                                   "hierarchical_confusion_matrix.png") if output_dir else None
         hierarchical_confusion = visualize_confusion_matrix_with_mapping(true_labels, hierarchical_clusters,
-                                                                         hierarchical_mapping, species_names, hierarchical_confusion_path)
+                                                                         hierarchical_mapping, species_names,
+                                                                         hierarchical_confusion_path)
 
         # Visualize misclassified points
-        hierarchical_misclass_path = os.path.join(output_dir, "hierarchical_misclassifications.png") if output_dir else None
-        visualize_misclassifications(X_pca, hierarchical_analysis, "Hierarchical Clustering Misclassification Analysis", hierarchical_misclass_path)
+        hierarchical_misclass_path = os.path.join(output_dir,
+                                                  "hierarchical_misclassifications.png") if output_dir else None
+        visualize_misclassifications(X_pca, hierarchical_analysis, "Hierarchical Clustering Misclassification Analysis",
+                                     hierarchical_misclass_path)
 
         # Print majority mappings
         print("\nHierarchical Cluster to Species Mapping:")
         for cluster, species in hierarchical_mapping.items():
             print(f"Cluster {cluster} -> {species}")
 
-    # 3. DBSCAN Clustering
-    print("\n=== DBSCAN Clustering ===")
-    # Note: DBSCAN parameters (eps and min_samples) often need tuning
-    dbscan_clusters, _ = apply_dbscan(X_scaled, eps=20, min_samples=20)
-
-    # Check if DBSCAN found more than one cluster
-    unique_clusters = np.unique(dbscan_clusters)
-    if len(unique_clusters) < 2 or -1 in unique_clusters:
-        print("DBSCAN did not find meaningful clusters with current parameters.")
-        print(f"Unique clusters: {unique_clusters}")
-        print("Try adjusting eps and min_samples parameters.")
-    else:
-        dbscan_results = evaluate_clustering(X_scaled, dbscan_clusters, true_labels)
-        print(f"Silhouette Score: {dbscan_results['silhouette_score']:.3f}")
-        if 'adjusted_rand_index' in dbscan_results:
-            print(f"Adjusted Rand Index: {dbscan_results['adjusted_rand_index']:.3f}")
-
-        # Visualize DBSCAN results
-        dbscan_plot_path = os.path.join(output_dir, "dbscan_clustering.png") if output_dir else None
-        visualize_clusters(X_pca, dbscan_clusters, None, "DBSCAN Clustering Results", dbscan_plot_path)
-
-        if true_labels is not None and species_names is not None:
-            # Map clusters to species and identify misclassifications
-            dbscan_analysis, dbscan_mapping = map_clusters_to_species(df, dbscan_clusters, true_labels, species_names)
-
-            # Visualize confusion matrix with species mapping
-            print("\n=== DBSCAN Species Mapping Analysis ===")
-            dbscan_confusion_path = os.path.join(output_dir, "dbscan_confusion_matrix.png") if output_dir else None
-            dbscan_confusion = visualize_confusion_matrix_with_mapping(true_labels, dbscan_clusters, dbscan_mapping,
-                                                                       species_names, dbscan_confusion_path)
-
-            # Visualize misclassified points
-            dbscan_misclass_path = os.path.join(output_dir, "dbscan_misclassifications.png") if output_dir else None
-            visualize_misclassifications(X_pca, dbscan_analysis, "DBSCAN Misclassification Analysis", dbscan_misclass_path)
-
-            # Print majority mappings
-            print("\nDBSCAN Cluster to Species Mapping:")
-            for cluster, species in dbscan_mapping.items():
-                print(f"Cluster {cluster} -> {species}")
-
-    # 4. Gaussian Mixture Model
+    # 3. Gaussian Mixture Model
     print("\n=== Gaussian Mixture Model ===")
     gmm_clusters, gmm_centers = apply_gmm(X_scaled)
     gmm_results = evaluate_clustering(X_scaled, gmm_clusters, true_labels)
@@ -413,7 +369,8 @@ def run_clustering_analysis(file_path, output_dir=None):
         # Visualize confusion matrix with species mapping
         print("\n=== Gaussian Mixture Model Species Mapping Analysis ===")
         gmm_confusion_path = os.path.join(output_dir, "gmm_confusion_matrix.png") if output_dir else None
-        gmm_confusion = visualize_confusion_matrix_with_mapping(true_labels, gmm_clusters, gmm_mapping, species_names, gmm_confusion_path)
+        gmm_confusion = visualize_confusion_matrix_with_mapping(true_labels, gmm_clusters, gmm_mapping, species_names,
+                                                                gmm_confusion_path)
 
         # Visualize misclassified points
         gmm_misclass_path = os.path.join(output_dir, "gmm_misclassifications.png") if output_dir else None
@@ -427,10 +384,7 @@ def run_clustering_analysis(file_path, output_dir=None):
     return {
         'kmeans': (kmeans_clusters, kmeans_results, kmeans_analysis if true_labels is not None else None),
         'hierarchical': (
-        hierarchical_clusters, hierarchical_results, hierarchical_analysis if true_labels is not None else None),
-        'dbscan': (dbscan_clusters, {} if len(unique_clusters) < 2 or -1 in unique_clusters else dbscan_results,
-                   dbscan_analysis if true_labels is not None and len(
-                       unique_clusters) >= 2 and -1 not in unique_clusters else None),
+            hierarchical_clusters, hierarchical_results, hierarchical_analysis if true_labels is not None else None),
         'gmm': (gmm_clusters, gmm_results, gmm_analysis if true_labels is not None else None)
     }
 
@@ -461,11 +415,11 @@ def export_misclassified_points(analysis_df, algorithm_name, output_path=None):
 if __name__ == "__main__":
     # Replace with your actual file path
     file_path = os.path.join(os.path.dirname(__file__), "wingtip_intensity_distribution.csv")
-    
+
     # Create output directory for plots
     output_dir = os.path.join(os.path.dirname(__file__), "clustering_results")
     os.makedirs(output_dir, exist_ok=True)
-    
+
     results = run_clustering_analysis(file_path, output_dir)
 
     # Compare algorithms based on silhouette scores
@@ -491,7 +445,7 @@ if __name__ == "__main__":
                  f'{height:.3f}', ha='center', va='bottom')
 
     plt.tight_layout()
-    
+
     # Save the comparison plot
     comparison_plot_path = os.path.join(output_dir, "algorithm_comparison.png")
     plt.savefig(comparison_plot_path)

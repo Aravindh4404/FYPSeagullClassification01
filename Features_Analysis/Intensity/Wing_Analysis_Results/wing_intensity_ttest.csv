@@ -1,0 +1,2 @@
+Test,T_Statistic,P_Value,Significant,Percentage_Difference,Darker_Species,Brighter_Species
+T-Test: Slaty vs Glaucous,-21.281543437536538,3.0335600138585206e-50,True,108.29107462570673,Slaty_Backed_Gull,Glaucous_Winged_Gull
