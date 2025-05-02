@@ -12,8 +12,16 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Create output directory for visualizations
+# Create output directory for visualizations
 OUTPUT_DIR = "Results_LBP_Analysis"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Create subdirectories for different feature types
+os.makedirs(os.path.join(OUTPUT_DIR, "LBP_histograms"), exist_ok=True)
+os.makedirs(os.path.join(OUTPUT_DIR, "Ones_histograms"), exist_ok=True)
+os.makedirs(os.path.join(OUTPUT_DIR, "Transitions_histograms"), exist_ok=True)
+os.makedirs(os.path.join(OUTPUT_DIR, "PCA_plots"), exist_ok=True)
+os.makedirs(os.path.join(OUTPUT_DIR, "Texture_properties"), exist_ok=True)
 
 
 def parse_array_string(array_str):
@@ -164,8 +172,9 @@ def visualize_lbp_histograms(data):
                     ha='center', fontsize=10,
                     bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
+        # For LBP histograms
         plt.tight_layout(rect=[0, 0.05, 1, 0.95])
-        plt.savefig(os.path.join(OUTPUT_DIR, f"{region}_lbp_histogram.png"), dpi=300)
+        plt.savefig(os.path.join(OUTPUT_DIR, "LBP_histograms", f"{region}_lbp_histogram.png"), dpi=300)
         plt.close()
 
         # Abstract feature histograms
@@ -207,8 +216,9 @@ def visualize_lbp_histograms(data):
                         ha='center', fontsize=10,
                         bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
+            # For ones histograms
             plt.tight_layout(rect=[0, 0.05, 1, 0.95])
-            plt.savefig(os.path.join(OUTPUT_DIR, f"{region}_ones_histogram.png"), dpi=300)
+            plt.savefig(os.path.join(OUTPUT_DIR, "Ones_histograms", f"{region}_ones_histogram.png"), dpi=300)
             plt.close()
 
             # Plot transitions histograms
@@ -237,8 +247,10 @@ def visualize_lbp_histograms(data):
                         ha='center', fontsize=10,
                         bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
+            # For transitions histograms
             plt.tight_layout(rect=[0, 0.05, 1, 0.95])
-            plt.savefig(os.path.join(OUTPUT_DIR, f"{region}_transitions_histogram.png"), dpi=300)
+            plt.savefig(os.path.join(OUTPUT_DIR, "Transitions_histograms", f"{region}_transitions_histogram.png"),
+                        dpi=300)
             plt.close()
 
 
@@ -302,7 +314,8 @@ def analyze_texture_properties(data):
     stats_df = pd.DataFrame(texture_stats)
 
     # Save to CSV
-    stats_df.to_csv(os.path.join(OUTPUT_DIR, "texture_properties.csv"), index=False)
+    # Save to CSV
+    stats_df.to_csv(os.path.join(OUTPUT_DIR, "Texture_properties", "texture_properties.csv"), index=False)
 
     # Create visualizations for each property
     properties = ['mean_intensity', 'std_intensity', 'entropy', 'energy', 'uniformity', 'contrast', 'homogeneity']
@@ -372,7 +385,7 @@ def analyze_texture_properties(data):
 
         plt.legend(title='Species')
         plt.tight_layout()
-        plt.savefig(os.path.join(OUTPUT_DIR, f"{prop}_comparison.png"), dpi=300)
+        plt.savefig(os.path.join(OUTPUT_DIR, "Texture_properties", f"{prop}_comparison.png"), dpi=300)
         plt.close()
 
     return stats_df
@@ -418,8 +431,9 @@ def create_discriminative_power_chart(stats_df):
                 linewidths=0.5, cbar_kws={'label': 'Difference (%)'})
 
     plt.title('Discriminative Power of Texture Properties', fontsize=15)
+    # Heatmap
     plt.tight_layout()
-    plt.savefig(os.path.join(OUTPUT_DIR, "discriminative_power_heatmap.png"), dpi=300)
+    plt.savefig(os.path.join(OUTPUT_DIR, "Texture_properties", "discriminative_power_heatmap.png"), dpi=300)
     plt.close()
 
     # Create bar chart of top discriminative features
@@ -442,8 +456,9 @@ def create_discriminative_power_chart(stats_df):
     plt.ylabel('Difference (%)', fontsize=12)
     plt.title('Top Discriminative Features (Region-Property Pairs)', fontsize=15)
 
+    # Bar chart
     plt.tight_layout()
-    plt.savefig(os.path.join(OUTPUT_DIR, "top_discriminative_features.png"), dpi=300)
+    plt.savefig(os.path.join(OUTPUT_DIR, "Texture_properties", "top_discriminative_features.png"), dpi=300)
     plt.close()
 
     return diff_df
@@ -459,7 +474,8 @@ def generate_abstract_features_summary(stats_df):
     Returns:
     None (writes to file)
     """
-    with open(os.path.join(OUTPUT_DIR, "abstract_features_summary.txt"), 'w') as f:
+    with open(os.path.join(OUTPUT_DIR, "Texture_properties", "abstract_features_summary.txt"), 'w') as f:
+
         f.write("ABSTRACT FEATURES DETAILED ANALYSIS\n")
         f.write("==================================\n\n")
 
@@ -627,7 +643,8 @@ def generate_abstract_features_summary(stats_df):
 
 def generate_summary_report(stats_df, diff_df):
     """Generate a text summary report of the analysis"""
-    with open(os.path.join(OUTPUT_DIR, "lbp_analysis_summary.txt"), 'w') as f:
+
+    with open(os.path.join(OUTPUT_DIR, "Texture_properties", "lbp_analysis_summary.txt"), 'w') as f:
         f.write("LOCAL BINARY PATTERN (LBP) ANALYSIS SUMMARY\n")
         f.write("==========================================\n\n")
 
@@ -790,8 +807,9 @@ def perform_pca_analysis(data):
                     ha='center', fontsize=10,
                     bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
+        # For LBP PCA
         plt.tight_layout(rect=[0, 0.05, 1, 0.95])
-        plt.savefig(os.path.join(OUTPUT_DIR, f"{region}_pca_plot.png"), dpi=300)
+        plt.savefig(os.path.join(OUTPUT_DIR, "PCA_plots", f"{region}_pca_plot.png"), dpi=300)
         plt.close()
 
         # If abstract patterns are available, also perform PCA on them
@@ -837,7 +855,7 @@ def perform_pca_analysis(data):
                             bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5'))
 
                 plt.tight_layout(rect=[0, 0.05, 1, 0.95])
-                plt.savefig(os.path.join(OUTPUT_DIR, f"{region}_{pattern_name}_pca_plot.png"), dpi=300)
+                plt.savefig(os.path.join(OUTPUT_DIR, "PCA_plots", f"{region}_{pattern_name}_pca_plot.png"), dpi=300)
                 plt.close()
 
 

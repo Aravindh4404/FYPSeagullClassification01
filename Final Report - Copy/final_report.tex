@@ -5,6 +5,7 @@
 \usepackage{lastpage}
 \usepackage{tabularx}
 
+\usepackage[nottoc,numbib]{tocbibind}
 
   % Preamble packages:
 \usepackage{booktabs}
@@ -1784,8 +1785,7 @@ Statistical analysis of both wing and wingtip intensity demonstrated clear and s
     }
 \end{table}
 
-
-Test statistic:
+Test Statistic:
 \begin{equation}
 t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
 \end{equation}
@@ -1832,45 +1832,6 @@ While both wing and wingtip intensity are statistically significant distinguishi
     \end{subfigure}
     \caption{Wing and wingtip intensity metrics for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}
     \label{fig:intensity_combined}
-\end{figure}
-
-\subsection{Wing Intensity Analysis}
-
-Statistical analysis of wing intensity demonstrated clear differences between the two gull species, with consistent patterns across multiple samples. The mean wing intensity of Glaucous-winged Gulls were found to be 108.3\% higher than Slaty-backed Gulls.
-
-To formally test the significance of this difference, an independent samples t-test (Welch's t-test, allowing for unequal variances) was performed, comparing the mean wing intensities of the two species. The test yielded a highly significant result ($p < 0.001$), indicating that the observed difference in wing brightness is extremely unlikely to have arisen by chance. This provides strong statistical evidence that mean wing intensity is a robust distinguishing feature between Glaucous-winged and Slaty-backed Gulls.
-
-\begin{table}[H]
-    \centering
-    \caption{Wing Intensity Statistical Summary}
-    \label{tab:wingintensity-stats}
-    \begin{tabular}{lccc}
-        \toprule
-        Species & Mean Intensity & Std.\ Dev. & Statistical Significance \\
-        \midrule
-        Slaty-backed Gull & 73.98 & 21.90 & \multirow{2}{*}{$p\,<\,0.001$ (t-test)} \\
-        Glaucous-winged Gull & 154.10 & 30.82 & \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wing_intensity_analysis.png}
-        \caption{Comparison of wing intensity values between species.}
-        \label{fig:wing_intensity}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/WINGINTENSITY.png}
-        \caption{Mean wing intensity across samples.}
-        \label{fig:wing_intensity_means}
-    \end{subfigure}
-    \caption{Wing intensity metrics for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}
-    \label{fig:wing_intensity_combined}
 \end{figure}
 
 \subsection{Distributions of Wing and Wingtip Intensities}
@@ -1940,7 +1901,7 @@ Figure~\ref{fig:verydarkdist} further demonstrates that this difference is consi
     \label{fig:darkpixels}
 \end{figure}
 
-These results demonstrate that the presence and abundance of very dark pixels in the wingtip region are highly distinctive for Slaty-backed Gulls, providing a robust quantitative feature for differentiating them from Glaucous-winged Gulls.
+The quantitative difference in very dark pixels between species is substantial, as shown in Figure~\ref{fig:darkpixels}, with Slaty-backed Gulls having on average 73,592 very dark pixels compared to just 8 in Glaucous-winged Gulls. This represents a critical diagnostic feature for species identification. This pronounced disparity represents a critical diagnostic feature for species identification. However, it is important to note that the presence of very dark pixels is not consistent across all images, so this feature cannot be used as a distinguishing criterion in every case.
 
 \subsection{Relationship Between Wing and Wingtip Intensities}
 
@@ -1969,7 +1930,6 @@ Figure~\ref{fig:wing_vs_wingtip_intensity} visualizes the relationship between m
     \caption{Scatter plot of mean wing intensity vs. mean wingtip intensity for Slaty-backed Gulls (blue) and Glaucous-winged Gulls (orange). The dashed line indicates equal intensity between wing and wingtip.}
     \label{fig:wing_vs_wingtip_intensity}
 \end{figure}
-
 
 \subsection{Wingtip Contrast and Darkness Feature Comparison}
 
@@ -2141,80 +2101,7 @@ Figure \ref{fig:algorithm_comparison} shows a comparative analysis of all cluste
     \label{fig:algorithm_comparison}
 \end{figure}
 
-\section{Wing Intensity Comparison Between Gull Species}
-
-The wing intensity between Slaty-backed Gulls and Glaucous-winged Gulls was compared using an independent samples t-test. The test statistic was calculated as:
-
-\begin{equation}
-t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
-\end{equation}
-
-where $\bar{X}_1$ and $\bar{X}_2$ are the mean intensities, $s_1^2$ and $s_2^2$ are the sample variances, and $n_1$ and $n_2$ are the sample sizes for each species.
-
-\subsection{Wing Intensity Analysis}
-
-A significant difference was found in wing intensity between the two species ($t = -21.28$, $p < 0.001$). Slaty-backed Gulls exhibited much darker wings ($73.98 \pm 21.90$) compared to Glaucous-winged Gulls ($154.10 \pm 30.82$), representing a 108.3\% brightness difference.
-
-\begin{table}[H]
-\centering
-\caption{Comparison of Wing Characteristics Between Gull Species}
-\label{tab:wing_comparison}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Characteristic} & \textbf{Slaty-backed Gull} & \textbf{Glaucous-winged Gull} & \textbf{Difference} \\
-\midrule
-Wing Intensity & $73.98 \pm 21.90$ & $154.10 \pm 30.82$ & 108.3\% brighter \\
-Wingtip Darker than Wing & 56.69\% & 47.71\% & 8.98\% more contrast \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Dark Pixel Analysis}
-
-Slaty-backed Gulls show distinctly higher proportions of dark pixels in their wingtips compared to Glaucous-winged Gulls. This pattern appears consistent across multiple intensity thresholds.
-
-\begin{table}[H]
-\centering
-\caption{Percentage of Dark Pixels in Wingtips by Intensity Threshold}
-\label{tab:dark_pixels}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Species} & \textbf{$<$ 30 intensity} & \textbf{$<$ 40 intensity} & \textbf{$<$ 50 intensity} \\
-\midrule
-Slaty-backed Gull & 25.24\% & 33.40\% & 41.15\% \\
-Glaucous-winged Gull & 0.09\% & 0.27\% & 0.57\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Raw Pixel Count Analysis}
-
-The quantitative difference in very dark pixels between species is substantial, with Slaty-backed Gulls having on average 73,592 very dark pixels compared to just 8 in Glaucous-winged Gulls. This represents a critical diagnostic feature for species identification.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    width=12cm,
-    height=8cm,
-    ylabel={Percentage of Pixels},
-    xlabel={Pixel Intensity Threshold},
-    xtick={30,40,50},
-    xticklabels={$<$30,$<$40,$<$50},
-    legend pos=north west,
-    ybar,
-    bar width=15pt,
-    ymajorgrids=true,
-    grid style=dashed,
-]
-\addplot coordinates {(30,25.24) (40,33.40) (50,41.15)};
-\addplot coordinates {(30,0.0856) (40,0.272) (50,0.5683)};
-\legend{Slaty-backed Gull,Glaucous-winged Gull}
-\end{axis}
-\end{tikzpicture}
-\caption{Comparison of dark pixel distribution in wingtips between gull species across intensity thresholds.}
-\label{fig:pixel_distribution}
-\end{figure}
+\chapter{Discussion}
 
 \section{Biological Significance}
 
