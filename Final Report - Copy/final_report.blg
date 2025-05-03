@@ -10,52 +10,49 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'wiz_functions' (item size: 4) to 6000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: references.bib
-Warning--I didn't find a database entry for "chefer2021transformer"
-Warning--I didn't find a database entry for "nie2018theoretical"
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-You've used 59 entries,
+You've used 57 entries,
             4087 wiz_defined-function locations,
-            1195 strings with 20885 characters,
-and the built_in function-call counts, 42843 in all, are:
-= -- 3499
-> -- 1088
-< -- 301
-+ -- 587
-- -- 209
-* -- 2077
-:= -- 6654
-add.period$ -- 122
-call.type$ -- 59
-change.case$ -- 63
-chr.to.int$ -- 693
-cite$ -- 59
-duplicate$ -- 3080
-empty$ -- 3381
-format.name$ -- 250
-if$ -- 9913
+            1181 strings with 20418 characters,
+and the built_in function-call counts, 41638 in all, are:
+= -- 3410
+> -- 1052
+< -- 295
++ -- 571
+- -- 201
+* -- 2027
+:= -- 6482
+add.period$ -- 118
+call.type$ -- 57
+change.case$ -- 61
+chr.to.int$ -- 684
+cite$ -- 57
+duplicate$ -- 2979
+empty$ -- 3273
+format.name$ -- 241
+if$ -- 9625
 int.to.chr$ -- 0
-int.to.str$ -- 59
-missing$ -- 557
-newline$ -- 268
-num.names$ -- 63
-pop$ -- 1349
+int.to.str$ -- 57
+missing$ -- 536
+newline$ -- 262
+num.names$ -- 61
+pop$ -- 1289
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 3303
+skip$ -- 3208
 stack$ -- 0
-substring$ -- 1730
-swap$ -- 2448
-text.length$ -- 70
+substring$ -- 1711
+swap$ -- 2378
+text.length$ -- 67
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 59
+type$ -- 57
 warning$ -- 0
-while$ -- 172
-width$ -- 61
-write$ -- 661
-(There were 2 warnings)
+while$ -- 168
+width$ -- 59
+write$ -- 644

@@ -19,9 +19,8 @@
 \contentsline {subsection}{\numberline {4.4.4}Training Optimization Strategy}{9}{subsection.4.4.4}%
 \contentsline {subsection}{\numberline {4.4.5}Regularization Techniques}{10}{subsection.4.4.5}%
 \contentsline {subsection}{\numberline {4.4.6}Addressing Class Imbalance}{10}{subsection.4.4.6}%
-\contentsline {subsection}{\numberline {4.4.7}Dataset Management}{11}{subsection.4.4.7}%
-\contentsline {subsection}{\numberline {4.4.8}Evaluation Strategy}{11}{subsection.4.4.8}%
-\contentsline {subsection}{\numberline {4.4.9}Model Checkpointing and Evaluation}{12}{subsection.4.4.9}%
+\contentsline {subsection}{\numberline {4.4.7}Evaluation Strategy}{11}{subsection.4.4.7}%
+\contentsline {subsection}{\numberline {4.4.8}Model Checkpointing and Evaluation}{11}{subsection.4.4.8}%
 \contentsline {section}{\numberline {4.5}Model Architectures and Specific Implementations}{12}{section.4.5}%
 \contentsline {subsection}{\numberline {4.5.1}VGG-16 Architecture}{12}{subsection.4.5.1}%
 \contentsline {subsubsection}{Theoretical Foundation}{12}{figure.caption.2}%
@@ -34,82 +33,85 @@
 \contentsline {subsection}{\numberline {4.5.4}Inception v3 Architecture}{14}{subsection.4.5.4}%
 \contentsline {subsubsection}{Model-Specific Implementation Details}{15}{figure.caption.4}%
 \contentsline {subsection}{\numberline {4.5.5}Residual Network (ResNet-50) Architecture}{15}{subsection.4.5.5}%
-\contentsline {subsection}{\numberline {4.5.6}Custom CNN with Squeeze-and-Excitation Blocks}{16}{subsection.4.5.6}%
+\contentsline {subsection}{\numberline {4.5.6}Custom CNN with Squeeze-and-Excitation Blocks}{15}{subsection.4.5.6}%
 \contentsline {subsubsection}{Architectural Design}{16}{figure.caption.6}%
 \contentsline {subsubsection}{Custom CNN-Specific Training Approach}{16}{figure.caption.6}%
-\contentsline {section}{\numberline {4.6}Model Interpretability Methodologies}{17}{section.4.6}%
+\contentsline {section}{\numberline {4.6}Model Interpretability Methodologies}{16}{section.4.6}%
 \contentsline {subsection}{\numberline {4.6.1}Gradient-weighted Class Activation Mapping (Grad-CAM)}{17}{subsection.4.6.1}%
 \contentsline {subsubsection}{Theoretical Foundation}{17}{subsection.4.6.1}%
 \contentsline {subsubsection}{Methodology for CNN models}{17}{subsection.4.6.1}%
 \contentsline {subsection}{\numberline {4.6.2}Attention Rollout for Vision Transformers}{18}{subsection.4.6.2}%
 \contentsline {subsubsection}{Theoretical Foundation}{18}{subsection.4.6.2}%
 \contentsline {subsubsection}{Methodology for ViT}{18}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}Grad-CAM for Vision Transformers}{19}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.3}Grad-CAM for Vision Transformers}{18}{subsection.4.6.3}%
 \contentsline {subsection}{\numberline {4.6.4}Enhanced ViT Implementation}{19}{subsection.4.6.4}%
 \contentsline {subsection}{\numberline {4.6.5}Interpretable ViT with Feature Concatenation}{19}{subsection.4.6.5}%
-\contentsline {subsection}{\numberline {4.6.6}Comparison Framework}{20}{subsection.4.6.6}%
-\contentsline {section}{\numberline {4.7}Additional Interpretability Techniques}{21}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}DeepLIFT}{21}{subsection.4.7.1}%
+\contentsline {section}{\numberline {4.7}Additional Interpretability Techniques}{20}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}DeepLIFT}{20}{subsection.4.7.1}%
 \contentsline {subsection}{\numberline {4.7.2}Saliency Maps}{21}{subsection.4.7.2}%
 \contentsline {subsection}{\numberline {4.7.3}Integrated Gradients for Vision Transformers}{21}{subsection.4.7.3}%
-\contentsline {subsection}{\numberline {4.7.4}Guided Backpropagation for ViT}{22}{subsection.4.7.4}%
-\contentsline {subsection}{\numberline {4.7.5}Justification for Grad-CAM}{22}{subsection.4.7.5}%
-\contentsline {section}{\numberline {4.8}Feature Analysis for Fine-Grained Gull Classification}{22}{section.4.8}%
-\contentsline {subsection}{\numberline {4.8.1}Image Selection}{22}{subsection.4.8.1}%
-\contentsline {subsection}{\numberline {4.8.2}Manual Segmentation}{23}{subsection.4.8.2}%
-\contentsline {subsection}{\numberline {4.8.3}Normalization}{23}{subsection.4.8.3}%
-\contentsline {subsection}{\numberline {4.8.4}Region Extraction}{23}{subsection.4.8.4}%
-\contentsline {subsection}{\numberline {4.8.5}Local Binary Pattern Analysis}{23}{subsection.4.8.5}%
-\contentsline {subsubsection}{LBP Computation}{23}{subsection.4.8.5}%
-\contentsline {subsection}{\numberline {4.8.6}Feature Extraction}{24}{subsection.4.8.6}%
-\contentsline {subsection}{\numberline {4.8.7}Comparative Analysis Implementation}{25}{subsection.4.8.7}%
-\contentsline {subsection}{\numberline {4.8.8}Discriminative Power Analysis}{25}{subsection.4.8.8}%
-\contentsline {subsection}{\numberline {4.8.9}Dimensionality Reduction and Visualization}{25}{subsection.4.8.9}%
-\contentsline {subsection}{\numberline {4.8.10}Implementation Workflow}{25}{subsection.4.8.10}%
-\contentsline {subsection}{\numberline {4.8.11}Validation Approach}{26}{subsection.4.8.11}%
+\contentsline {subsection}{\numberline {4.7.4}Guided Backpropagation for ViT}{21}{subsection.4.7.4}%
+\contentsline {subsection}{\numberline {4.7.5}Justification for Grad-CAM}{21}{subsection.4.7.5}%
+\contentsline {section}{\numberline {4.8}Feature Analysis for Fine-Grained Gull Classification}{21}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Image Preprocessing and Region-Based Segmentation}{21}{subsection.4.8.1}%
+\contentsline {subsubsection}{Image Selection}{21}{subsection.4.8.1}%
+\contentsline {subsubsection}{Manual Segmentation}{22}{subsection.4.8.1}%
+\contentsline {subsubsection}{Normalization}{22}{subsection.4.8.1}%
+\contentsline {subsubsection}{Region Extraction}{22}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Local Binary Pattern Analysis}{22}{subsection.4.8.2}%
+\contentsline {subsubsection}{LBP Computation}{22}{subsection.4.8.2}%
+\contentsline {subsubsection}{Feature Extraction}{23}{equation.4.11}%
+\contentsline {subsubsection}{Comparative Analysis Implementation}{24}{equation.4.17}%
+\contentsline {subsubsection}{Discriminative Power Analysis}{24}{Item.34}%
+\contentsline {subsubsection}{Dimensionality Reduction and Visualization}{24}{Item.37}%
+\contentsline {subsubsection}{Implementation Workflow}{24}{Item.41}%
+\contentsline {subsubsection}{Discriminative Power Analysis}{25}{Item.43}%
+\contentsline {subsubsection}{Dimensionality Reduction and Visualization}{25}{Item.43}%
+\contentsline {subsubsection}{Implementation Workflow}{25}{Item.43}%
+\contentsline {subsubsection}{Validation Approach}{25}{Item.43}%
 \contentsline {section}{\numberline {4.9}Wing and Wingtip Intensity Analysis}{26}{section.4.9}%
 \contentsline {subsection}{\numberline {4.9.1}Feature Extraction Pipeline}{26}{subsection.4.9.1}%
-\contentsline {subsection}{\numberline {4.9.2}Statistical Comparison}{27}{subsection.4.9.2}%
+\contentsline {subsection}{\numberline {4.9.2}Statistical Comparison}{26}{subsection.4.9.2}%
 \contentsline {section}{\numberline {4.10}Verification by Clustering for Species Differentiation}{27}{section.4.10}%
 \contentsline {subsection}{\numberline {4.10.1}Feature Extraction and Preprocessing}{27}{subsection.4.10.1}%
-\contentsline {subsection}{\numberline {4.10.2}Clustering Algorithms Implementation}{28}{subsection.4.10.2}%
-\contentsline {subsubsection}{K-means Clustering}{28}{subsection.4.10.2}%
-\contentsline {subsubsection}{Hierarchical Clustering}{28}{subsection.4.10.2}%
+\contentsline {subsection}{\numberline {4.10.2}Clustering Algorithms Implementation}{27}{subsection.4.10.2}%
+\contentsline {subsubsection}{K-means Clustering}{27}{subsection.4.10.2}%
+\contentsline {subsubsection}{Hierarchical Clustering}{27}{subsection.4.10.2}%
 \contentsline {subsubsection}{Gaussian Mixture Model}{28}{subsection.4.10.2}%
 \contentsline {subsection}{\numberline {4.10.3}Evaluation Metrics}{28}{subsection.4.10.3}%
 \contentsline {subsubsection}{Unsupervised Evaluation}{28}{subsection.4.10.3}%
 \contentsline {subsubsection}{Supervised Evaluation (Using Known Species Labels)}{28}{subsection.4.10.3}%
-\contentsline {subsection}{\numberline {4.10.4}Cluster Mapping and Misclassification Analysis}{29}{subsection.4.10.4}%
-\contentsline {subsection}{\numberline {4.10.5}Visualization and Interpretation}{29}{subsection.4.10.5}%
+\contentsline {subsection}{\numberline {4.10.4}Cluster Mapping and Misclassification Analysis}{28}{subsection.4.10.4}%
+\contentsline {subsection}{\numberline {4.10.5}Visualization and Interpretation}{28}{subsection.4.10.5}%
 \contentsline {subsection}{\numberline {4.10.6}Implementation Details}{29}{subsection.4.10.6}%
-\contentsline {chapter}{\numberline {5}Results}{30}{chapter.5}%
+\contentsline {chapter}{\numberline {5}Results and Discussion}{30}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Model Performance of top-performing models trained on latest Stage 3 dataset}{30}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Grad-CAM outputs of best performing VGG-16 model}{31}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Intensity Analysis Results}{31}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Wing and Wingtip Intensity Analysis}{31}{subsection.5.3.1}%
+\contentsline {section}{\numberline {5.2}Interpretation of Model Performance and Biological Significance}{30}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Grad-CAM outputs of best performing VGG-16 model}{31}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Quantitative Validation of Morphological Differences}{31}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Intensity Analysis Results}{32}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Wing and Wingtip Intensity Analysis}{32}{subsection.5.5.1}%
 \contentsline {subsubsection}{Wing Intensity}{32}{equation.5.2}%
-\contentsline {subsubsection}{Wingtip Intensity}{32}{figure.caption.11}%
-\contentsline {subsection}{\numberline {5.3.2}Distributions of Wing and Wingtip Intensities}{33}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Wing Intensity Distributions}{33}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}Wingtip Pixel Intensity Distributions}{33}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Presence of Very Dark Pixels}{34}{subsection.5.3.5}%
-\contentsline {subsection}{\numberline {5.3.6}Relationship Between Wing and Wingtip Intensities}{35}{subsection.5.3.6}%
-\contentsline {subsection}{\numberline {5.3.7}Wingtip Contrast and Darkness Feature Comparison}{35}{subsection.5.3.7}%
-\contentsline {section}{\numberline {5.4}Results: Local Binary Pattern Texture Analysis}{37}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Discriminative Power Analysis}{37}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Limitations of standard LBP code analysis}{37}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Abstract Feature Distributions}{38}{subsection.5.4.3}%
-\contentsline {subsection}{\numberline {5.4.4}Top Discriminative Features from 1s and Transitions Histograms}{39}{subsection.5.4.4}%
-\contentsline {section}{\numberline {5.5}Clustering Results}{39}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Clustering Performance Metrics}{39}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}Feature Importance Analysis}{39}{subsection.5.5.2}%
-\contentsline {subsection}{\numberline {5.5.3}Integration with Visual Analysis}{40}{subsection.5.5.3}%
-\contentsline {subsection}{\numberline {5.5.4}Confusion Matrix Analysis}{40}{subsection.5.5.4}%
-\contentsline {subsection}{\numberline {5.5.5}Implications of Results}{41}{subsection.5.5.5}%
-\contentsline {chapter}{\numberline {6}Discussion}{42}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Interpretation of Model Performance and Biological Significance}{42}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Quantitative Validation of Morphological Differences}{42}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Feature Analysis and Clustering Validation}{42}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Limitations and Practical Implications}{43}{subsection.6.2.2}%
+\contentsline {subsubsection}{Wingtip Intensity}{33}{figure.caption.11}%
+\contentsline {subsection}{\numberline {5.5.2}Distributions of Wing and Wingtip Intensities}{33}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Wing Intensity Distributions}{33}{subsection.5.5.3}%
+\contentsline {subsection}{\numberline {5.5.4}Wingtip Pixel Intensity Distributions}{34}{subsection.5.5.4}%
+\contentsline {subsection}{\numberline {5.5.5}Presence of Very Dark Pixels}{34}{subsection.5.5.5}%
+\contentsline {subsection}{\numberline {5.5.6}Relationship Between Wing and Wingtip Intensities}{35}{subsection.5.5.6}%
+\contentsline {subsection}{\numberline {5.5.7}Wingtip Contrast and Darkness Feature Comparison}{36}{subsection.5.5.7}%
+\contentsline {section}{\numberline {5.6}Results: Local Binary Pattern Texture Analysis}{37}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Discriminative Power Analysis}{38}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Limitations of standard LBP code analysis}{38}{subsection.5.6.2}%
+\contentsline {subsection}{\numberline {5.6.3}Abstract Feature Distributions}{39}{subsection.5.6.3}%
+\contentsline {subsection}{\numberline {5.6.4}Top Discriminative Features from 1s and Transitions Histograms}{40}{subsection.5.6.4}%
+\contentsline {section}{\numberline {5.7}Clustering Results}{40}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Clustering Performance Metrics}{40}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}Feature Importance Analysis}{40}{subsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.7.3}Integration with Visual Analysis}{41}{subsection.5.7.3}%
+\contentsline {subsection}{\numberline {5.7.4}Confusion Matrix Analysis}{41}{subsection.5.7.4}%
+\contentsline {subsection}{\numberline {5.7.5}Implications of Results}{42}{subsection.5.7.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{43}{chapter.6}%
+\contentsline {subsection}{\numberline {6.0.1}Feature Analysis and Clustering Validation}{43}{subsection.6.0.1}%
+\contentsline {subsection}{\numberline {6.0.2}Limitations and Practical Implications}{43}{subsection.6.0.2}%
 \contentsline {chapter}{\numberline {7}Conclusion}{44}{chapter.7}%
 \contentsline {chapter}{\numberline {8}Bibliography}{45}{chapter.8}%

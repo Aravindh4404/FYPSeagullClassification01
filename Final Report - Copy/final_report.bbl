@@ -181,11 +181,6 @@ M.~M.~H. Hasibuan, N.~Yudistira, and R.~C. Wihandika, ``Large scale bird
   \url{https://www.atlantis-press.com/article/125986223.pdf}
 \BIBentrySTDinterwordspacing
 
-\bibitem{geron2019}
-A.~G{\'e}ron, \emph{Hands-on machine learning with {Scikit-Learn}, {Keras}, and
-  {TensorFlow}: Concepts, tools, and techniques to build intelligent systems},
-  2nd~ed.\hskip 1em plus 0.5em minus 0.4em\relax O'Reilly Media, 2019.
-
 \bibitem{carneiro2018}
 T.~Carneiro, R.~V.~M. Da~Nobrega, T.~Nepomuceno, G.-B. Bian, V.~H.~C.
   De~Albuquerque, and P.~P.~R. Filho, ``Performance analysis of {Google
@@ -295,18 +290,18 @@ Y.~Cui, M.~Jia, T.-Y. Lin, and Y.~Song, ``Class-balanced loss based on
   \url{https://openaccess.thecvf.com/content_CVPR_2019/papers/Cui_Class-Balanced_Loss_Based_on_Effective_Number_of_Samples_CVPR_2019_paper.pdf}
 \BIBentrySTDinterwordspacing
 
+\bibitem{chu2020fine}
+G.~Chu, B.~Potetz, W.~Wang, A.~Howard, Y.~Song, F.~Brucher, T.~Leung, and
+  H.~Adam, ``Fine-grained bird species recognition using high resolution
+  dcnns,'' in \emph{Proceedings of the IEEE Winter Conference on Applications
+  of Computer Vision}, 2020, pp. 281--290.
+
 \bibitem{shorten2019survey}
 \BIBentryALTinterwordspacing
 C.~Shorten and T.~M. Khoshgoftaar, ``A survey on image data augmentation for
   deep learning,'' \emph{Journal of Big Data}, vol.~6, no.~1, p.~60, 2019.
   [Online]. Available: \url{https://doi.org/10.1186/s40537-019-0197-0}
 \BIBentrySTDinterwordspacing
-
-\bibitem{chu2020fine}
-G.~Chu, B.~Potetz, W.~Wang, A.~Howard, Y.~Song, F.~Brucher, T.~Leung, and
-  H.~Adam, ``Fine-grained bird species recognition using high resolution
-  dcnns,'' in \emph{Proceedings of the IEEE Winter Conference on Applications
-  of Computer Vision}, 2020, pp. 281--290.
 
 \bibitem{tan2018survey}
 C.~Tan, F.~Sun, T.~Kong, W.~Zhang, C.~Yang, and C.~Liu, ``A survey on deep
@@ -322,11 +317,6 @@ A.~S. Pearline, V.~S. Kumar, S.~Harini, S.~M. Thampi, and E.-S.~M. El-Alfy, ``A
   study on plant recognition using conventional image processing and deep
   learning approaches,'' \emph{Journal of Intelligent \& Fuzzy Systems},
   vol.~36, no.~3, pp. 1997--2004, 2019.
-
-\bibitem{zhang2019bird}
-J.~Zhang, X.~Zhao, Z.~Chen, and Z.~Lu, ``Bird species classification from an
-  image using vgg-16 network,'' \emph{Concurrency and Computation: Practice and
-  Experience}, vol.~31, no.~23, p. e5166, 2019.
 
 \bibitem{10533638}
 K.~S. M.E., A.~D.~K. M.E., S.~P, and S.~Senthilvelan, ``Birds species
@@ -346,14 +336,6 @@ A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai,
 \bibitem{rwightman2021pytorch}
 R.~Wightman, ``{PyTorch Image Models},''
   \url{https://github.com/rwightman/pytorch-image-models}, 2021.
-
-\bibitem{touvron2021trainingdataefficientimagetransformers}
-\BIBentryALTinterwordspacing
-H.~Touvron, M.~Cord, M.~Douze, F.~Massa, A.~Sablayrolles, and H.~Jégou,
-  ``Training data-efficient image transformers \& distillation through
-  attention,'' 2021. [Online]. Available:
-  \url{https://arxiv.org/abs/2012.12877}
-\BIBentrySTDinterwordspacing
 
 \bibitem{szegedy2015rethinkinginceptionarchitecturecomputer}
 \BIBentryALTinterwordspacing
@@ -396,6 +378,14 @@ B.~Zhou, A.~Khosla, A.~Lapedriza, A.~Oliva, and A.~Torralba, ``Learning deep
 S.~Abnar and W.~Zuidema, ``Quantifying attention flow in transformers,''
   \emph{arXiv preprint arXiv:2005.00928}, 2020. [Online]. Available:
   \url{https://arxiv.org/abs/2005.00928}
+\BIBentrySTDinterwordspacing
+
+\bibitem{shrikumar2017learning}
+\BIBentryALTinterwordspacing
+A.~Shrikumar, P.~Greenside, and A.~Kundaje, ``Learning important features
+  through propagating activation differences,'' \emph{arXiv preprint
+  arXiv:1704.02685}, 2017. [Online]. Available:
+  \url{https://arxiv.org/abs/1704.02685}
 \BIBentrySTDinterwordspacing
 
 \bibitem{Adebayo2018}
