@@ -1597,7 +1597,7 @@ To validate and complement the results achieved through the analysis of the regi
 
 \subsection{Feature Extraction and Preprocessing}
 
-The clustering analysis utilizes three key morphological features extracted from the wingtip regions, specifically \textbf{Mean wing intensity}, \textbf{Mean wingtip intensity}, and \textbf{Percentage of pixels darker than intensity value 60}.
+The clustering analysis utilizes three key morphological features extracted from the wingtip regions, specifically \textbf{Mean wing intensity}, \textbf{Mean wingtip intensity}, and \textbf{Percentage of pixels darker than intensity value 60}. Although local Binary Pattern (LBP) analysis identified features such as contrast and energy although the difference were not as significant as intensity values. So they were not used in clustering.
 
 Prior to clustering analysis, the following preprocessing steps were implemented:
 \begin{enumerate}
@@ -2024,16 +2024,6 @@ The discriminative power of LBP texture features is visualized as a heatmap and 
 
 Although standard texture properties demonstrated substantial differences between species (with top feature close to 50\% difference), it is important to note that the features from LBP pattern codes are not guaranteed to be rotationally invariant. The abstract features (Number of Ones and Transitions) showed more modest discriminative power (maximum 10.4\%) but can be considered rotation variant since we are only dealing with the presence or count of ones or transitions in a region.
 
-Your paragraph is correct:  
-> Figure~\ref{fig:feature_histograms} provides detailed histograms of specific features, such as the wingtip's 'Number of Ones' and 'Transitions'.
-
-However, since you now want to split the four subplots into two separate figures-(a)+(c) together and (b)+(d) together-and reference them, here is the revised approach:
-
----
-
-**LaTeX Code for Two Figures:**
-
-```latex
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
@@ -2077,7 +2067,6 @@ The distributions of the 'Number of Ones' and 'Transitions' features for the win
     \caption{Abstract feature differences, showing head region's Number of Ones as most discriminative (10.4\% difference).}
     \label{fig:abstract_features}
 \end{figure}
-
 
 The figures illustrate the results of abstract features across different regions. Figure~\ref{fig:abstract_features} presents a bar chart highlighting the most discriminative feature from 1s and transitions histogram, showcasing their respective differences.
 
@@ -2198,35 +2187,17 @@ The confusion matrices in Figure~\ref{fig:confusion_matrices} provide detailed i
 
 Notably, all three algorithms achieved over 92\% accuracy, with hierarchical clustering performing best at nearly 97\%. The high clustering accuracy achieved demonstrates that the three extracted morphological features (mean wing intensity, mean wingtip intensity, and percentage of pixels darker than intensity value 60) provide strong discriminative power for distinguishing between Slaty-Backed Gulls and Glaucous-Winged Gulls. This confirms that the features identified through the CNN-based analysis and subsequent statistical extraction are biologically meaningful and can effectively capture species-specific characteristics. The fact that unsupervised clustering can effectively discriminate between these visually similar gull species based solely on extracted image features proves that the intensity features analysed are significant and can be used for classification thereby validating the statistical features.
 
-% \subsection{Algorithm Comparison}
+% \subsection{Feature Analysis and Clustering Validation}
+%  Regardless the intensity results allowed clustering methods like GMM to achieve 95.6\% accuracy (corresponding to majority class of the cluster), demonstrating that traditional machine learning can effectively use the features identified to be significantly differnet to classify the species with high accuracies. Notably, the clustering results revealed natural groupings aligning with species labels, independent of supervised training. This unsupervised validation strengthens the conclusion that morphological differences are inherent and measurable.
 
-% Figure~\ref{fig:algorithm_comparison} provides a direct comparison of the three clustering algorithms based on their silhouette scores, which measures how well-defined the clusters are. K-means achieved the highest silhouette score (0.548), followed closely by hierarchical clustering (0.532), with GMM showing the lowest score (0.425).
+% \subsection{Limitations and Practical Implications}
+% The study’s reliance on high-quality, curated images (Stage 3 dataset) limits real-world applicability. While data augmentation and other techniques mitigated overfitting, performance on noisy field images remains untested. Furthermore, the exclusion of juveniles, birds in moulting stages, bird of varied postures and hybrids---a necessity for clear morphological analysis---creates a taxonomic ``blind spot" that must be addressed in future work.
 
-% APPENDIX
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{images/clustering/algorithm_comparison.png}
-%     \caption{Comparison of clustering algorithms based on silhouette scores. Higher values indicate better-defined clusters.}
-%     \label{fig:algorithm_comparison}
-% \end{figure}
-
-\subsection{Implications of Results}
-
-
-\chapter{Discussion}
-
-
-\subsection{Feature Analysis and Clustering Validation}
-Local Binary Pattern (LBP) analysis identified key features such as contrast and energy although the difference were not as significant as intensity values. Regardless the intensity results allowed clustering methods like GMM to achieve 95.6\% accuracy (corresponding to majority class of the cluster), demonstrating that traditional machine learning can effectively use the features identified to be significantly differnet to classify the species with high accuracies. Notably, the clustering results revealed natural groupings aligning with species labels, independent of supervised training. This unsupervised validation strengthens the conclusion that morphological differences are inherent and measurable.
-
-\subsection{Limitations and Practical Implications}
-The study’s reliance on high-quality, curated images (Stage 3 dataset) limits real-world applicability. While data augmentation and other techniques mitigated overfitting, performance on noisy field images remains untested. Furthermore, the exclusion of juveniles, birds in moulting stages, bird of varied postures and hybrids---a necessity for clear morphological analysis---creates a taxonomic ``blind spot" that must be addressed in future work.
-
-Practically, these models could be integrated into citizen science platforms like \textit{iNaturalist} to assist non-experts in gull identification. The interpretability framework also provides a template for collaborative AI-ornithology research, enabling experts to validate and refine model decisions iteratively.
+% Practically, these models could be integrated into citizen science platforms like \textit{iNaturalist} to assist non-experts in gull identification. The interpretability framework also provides a template for collaborative AI-ornithology research, enabling experts to validate and refine model decisions iteratively.
 
 \chapter{Conclusion}
 
-This study successfully addressed its primary research aims. First, high-accuracy classifiers, particularly VGG-16 achieving a test accuracy of 95.74\%, were developed using transfer learning, demonstrating that pre-trained convolutional neural network architectures can excel in fine-grained gull classification even with limited data. Iterative dataset refinement from 937 to 775 expert-curated images was vital, minimizing noise from age-related and environmental variability. Second, interpretability was achieved through Grad-CAM visualizations, which effectively bridged artificial intelligence and biological expertise by highlighting the wing and wingtip regions---corroborating that the models prioritize known diagnostic traits. This transparency is essential for building trust in automated taxonomic tools. Third, statistical and clustering analyses confirmed significant and quantifiable differences in wing darkness (with $p < 0.001$) and wingtip texture (with 57.4\% higher variability in Slaty-backed Gulls), empirically supporting field identification criteria while also revealing nuances such as interspecific overlap in wingtip patterns that require expert contextualization. Finally, the dominance of wingtip features in both model attention maps and statistical analysis suggests that artificial intelligence can not only replicate human expertise but also uncover underappreciated diagnostic traits, such as the prevalence of very dark pixels (intensity $<$30) in Slaty-backed Gulls. Collectively, these achievements demonstrate the potential of integrating deep learning with interpretability and quantitative analysis to advance fine-grained species identification and provide new insights into avian taxonomy.
+The dissertation has successfully addressed its primary research aims. First, high-accuracy classifiers, particularly VGG-16 achieving a test accuracy of 95.74\%, were developed using transfer learning, demonstrating that pre-trained convolutional neural network architectures can excel in fine-grained gull classification even with limited data. Iterative dataset refinement from expert-curated images was vital, minimizing noise from age-related and environmental variability. Second, interpretability was achieved through Grad-CAM visualizations, which effectively bridged artificial intelligence and biological expertise by highlighting the wing and wingtip regions. This transparency is essential for building trust in automated taxonomic tools. Third, statistical and clustering analyses confirmed significant and quantifiable differences in wing and wingtip intensity metrics, empirically supporting field identification criteria while also revealing nuances such as interspecific overlap in wingtip intensity that require expert contextualization. Finally, the dominance of wingtip features in both model attention maps and statistical analysis suggests that artificial intelligence can not only replicate human expertise but also uncover underappreciated diagnostic traits, such as the prevalence of very dark pixels in Slaty-backed Gulls. Collectively, these achievements demonstrate the potential of integrating deep learning with interpretability and quantitative analysis to advance fine-grained species identification and provide new insights into avian taxonomy.
 
 
 
