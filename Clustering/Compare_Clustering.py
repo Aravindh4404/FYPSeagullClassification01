@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,6 +10,11 @@ from sklearn.metrics import silhouette_score, adjusted_rand_score, confusion_mat
 from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 import sys
+
+output_dir = os.path.join(os.path.dirname(__file__), "clustering_results")
+os.makedirs(output_dir, exist_ok=True)
+log_file = open(os.path.join(output_dir, "console_output.txt"), "w")
+sys.stdout = log_file
 
 # Add the root directory to Python path
 current_dir = Path(__file__).resolve().parent
@@ -455,3 +459,6 @@ if __name__ == "__main__":
     for algo, (_, _, analysis) in results.items():
         if analysis is not None:
             export_misclassified_points(analysis, algo, os.path.join(output_dir, f"{algo}_misclassified_points.csv"))
+
+    sys.stdout = sys.__stdout__
+    log_file.close()

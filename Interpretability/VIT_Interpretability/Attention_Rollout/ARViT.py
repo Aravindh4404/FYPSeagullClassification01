@@ -16,7 +16,10 @@ class ViTModified(nn.Module):
         super(ViTModified, self).__init__()
         self.vit = timm.create_model('vit_base_patch16_224', pretrained=True)
         num_ftrs = self.vit.head.in_features
-        self.vit.head = nn.Linear(num_ftrs, 2)  # Modify the classifier to output 2 classes
+        self.vit.head = nn.Sequential(
+            nn.Dropout(0.4),
+            nn.Linear(num_ftrs, 2)
+        )  # Modify the classifier to output 2 classes
 
     def forward(self, x):
         return self.vit(x)
@@ -515,9 +518,9 @@ def generate_attention_rollout_and_confusion_matrix(model_path, data_dir, output
 # Main Execution
 # ------------------------------------
 if __name__ == "__main__":
-    MODEL_PATH = r"D:\MODELS\VIT\VITModified_HQ3_20250430\final_model_vit_20250430.pth"
+    MODEL_PATH = r"D:\MODELS\VIT\VITModified_HQ3_20250503\final_model_vit_20250503.pth"
     DATA_DIR = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
-    OUTPUT_DIR = r"D:\FYP\GradALL\final_model_vit_20250430"
+    OUTPUT_DIR = r"D:\FYP\GradALL\final_model_vit_20250503AR"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     generate_attention_rollout_and_confusion_matrix(MODEL_PATH, DATA_DIR, OUTPUT_DIR)

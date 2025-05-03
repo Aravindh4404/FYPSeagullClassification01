@@ -137,9 +137,9 @@ if __name__ == "__main__":
     # ----- Configuration -----
     # Path to the trained model weights
     # model_weights_path = r"D:\MODELS\VIT\VITModified_HQ3_20250430\final_model_vit_20250430.pth"
-    model_weights_path = r"C:\Users\Aravindh P\Downloads\best_model_vit_20250503.pth"
+    model_weights_path = r"D:\MODELS\VIT\VITModified_HQ3_20250503\final_model_vit_20250503.pth"
     # Model name (used for naming the output folder)
-    model_name = "best_model_vit_20250503"
+    model_name = "final_model_vit_20250503AR2"
     # Dataset directory: each subfolder is assumed to be a class (e.g., "Glaucous_Winged_Gull", "Slaty_Backed_Gull")
     dataset_dir = r"D:\FYPSeagullClassification01\Test_Results\Test_Data"
     # Base directory to store outputs (correct predictions and confusion matrix)

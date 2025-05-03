@@ -311,6 +311,12 @@ C.~Shorten and T.~M. Khoshgoftaar, ``A survey on image data augmentation for
   [Online]. Available: \url{https://doi.org/10.1186/s40537-019-0197-0}
 \BIBentrySTDinterwordspacing
 
+\bibitem{chu2020fine}
+G.~Chu, B.~Potetz, W.~Wang, A.~Howard, Y.~Song, F.~Brucher, T.~Leung, and
+  H.~Adam, ``Fine-grained bird species recognition using high resolution
+  dcnns,'' in \emph{Proceedings of the IEEE Winter Conference on Applications
+  of Computer Vision}, 2020, pp. 281--290.
+
 \bibitem{tan2018survey}
 C.~Tan, F.~Sun, T.~Kong, W.~Zhang, C.~Yang, and C.~Liu, ``A survey on deep
   transfer learning,'' \emph{Artificial Neural Networks and Machine

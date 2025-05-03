@@ -1,0 +1,29 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Architecture of the VGG model}}{13}{figure.caption.4}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Architecture of the Vision Transformer (ViT) model}}{14}{figure.caption.5}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Architecture of the Inception v3 model}}{15}{figure.caption.6}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Architecture of the ResNet-50 model}}{16}{figure.caption.7}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Architecture of the Custom CNN with Squeeze-and-Excitation Blocks}}{17}{figure.caption.8}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Grad-CAM visualizations for a selection of test images highlighting wing and wingtip regions of the VGG-16 model}}{32}{figure.caption.11}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Wing and wingtip intensity metrics}}{33}{figure.caption.13}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Wing intensity metrics for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}}{34}{figure.caption.14}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Wingtip intensity metrics for Slaty-backed and Glaucous-winged Gulls, highlighting greater variability and overlap between species.}}{34}{figure.caption.15}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Distribution of mean wing intensity for Slaty-backed Gulls (blue) and Glaucous-winged Gulls (orange). Each species forms a distinct cluster, reflecting their characteristic wing brightness.}}{35}{figure.caption.16}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Distributions of wingtip pixel intensities for Slaty-backed Gulls (orange) and Glaucous-winged Gulls (blue) using (a) grouped and (b) fine-grained intensity bins.}}{35}{figure.caption.17}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Comparison of very dark pixel proportions in wingtip regions for Slaty-backed and Glaucous-winged Gulls.}}{36}{figure.caption.18}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Left: Percentage of very dark pixels ($<$30) by species. Right: Average count of very dark pixels ($<$30) per wingtip region, shown on a logarithmic scale.}}{36}{figure.caption.19}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Scatter plot of mean wing intensity vs. mean wingtip intensity for Slaty-backed Gulls (blue) and Glaucous-winged Gulls (orange). The dashed line indicates equal intensity between wing and wingtip.}}{37}{figure.caption.21}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Summary of wingtip darkness and contrast metrics distinguishing Slaty-backed and Glaucous-winged Gulls. (a) Heatmap of key features; (b) absolute difference by threshold; (c) difference curve; (d) ratio of proportions. These visualizations collectively highlight the strong and persistent contrast in wingtip darkness between the two species.}}{38}{figure.caption.22}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Regional discriminative power of texture properties. Color intensity shows percentage difference between species, with wingtip std\_intensity (57.4\%) being most distinctive.}}{39}{figure.caption.23}%
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Top discriminative features}}{39}{figure.caption.24}%
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Abstract feature histograms showing transition complexity and bright neighbor distributions across different wing regions.}}{40}{figure.caption.25}%
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Abstract feature differences, showing head region's Number of Ones as most discriminative (10.4\% difference).}}{40}{figure.caption.26}%
+\contentsline {figure}{\numberline {5.15}{\ignorespaces Cluster formations in PCA-reduced space: (a) GMM shows smooth probability contours, (b) Hierarchical clustering displays tree-like linkages, and (c) K-means exhibits distinct spherical clusters. All methods show effective separation between species.}}{41}{figure.caption.28}%
+\contentsline {figure}{\numberline {5.16}{\ignorespaces Comparative confusion matrices showing classification performance across clustering algorithms. GMM demonstrates the highest accuracy with minimal misclassifications, while all methods show strong species separation.}}{42}{figure.caption.29}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
