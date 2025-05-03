@@ -11,10 +11,6 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{caption}
-
-
-
-
 \usepackage{multicol}
 \usepackage{caption}
 
@@ -255,7 +251,7 @@ Deep learning, while powerful, comes with two major constraints: dependency on e
 Several studies have demonstrated the efficacy of transfer learning for bird species classification. A study on bird species identification using deep learning achieved accuracies of above 90\% by leveraging pretrained CNN networks with a base model to encode images\citep{Vo2023BirdDA}. Research on bird species identification by \citep{Mochurad2024ANE} using modified deep transfer learning achieved 98.86\% accuracy using the pretrained EfficientNetB5 model. The results with various pretrained models achieving high accuracy rates with few models exceeding 98\% demonstrate that transfer learning approaches can achieve high performance even with limited training data.
 %ref double check
 
-Various pretrained models have been evaluated for bird classification tasks, including VGG16, ResNet, DenseNet, and EfficientNet architectures. Comparative studies have shown that while all these models can perform effectively, some consistently outperform others. For example, research on drones-birds classification found that "the accuracy and F-Score of ResNet18 exceeds 98\% in all cases"\citep{Mohamed2023EfficientDC}, while another study on binary classification with the problem of small dataset reported that "DenseNet201 achieves the best classification accuracy of 98.89\%."\citep{Ren2023MonkeypoxDD}.
+Various pretrained models have been evaluated for bird classification tasks, including VGG16, ResNet, DenseNet, and EfficientNet architectures. Comparative studies have shown that while all these models can perform effectively, some consistently outperform others. For example, research on drones-birds classification found that "the accuracy and F-Score of ResNet18 exceeds 98\% in all cases"\citep{Mohamed2023EfficientDC}, while another study on binary classification with the problem of small dataset reported that "DenseNet201 achieves the best classification accuracy of 98.89\%"\citep{Ren2023MonkeypoxDD}.
 %ref ok
 
 In a noteworthy study on medical image analysis, researchers evaluated the comparative performance of MobileNetV2 and Inception-v3 classification models. The investigation employed four distinct methodologies: implementing Inception-v3 both with and without transfer learning, and similarly applying MobileNetV2 with and without transfer learning techniques. The experimental results demonstrated that the MobileNetV2 architecture leveraging transfer learning capabilities achieved superior performance, reaching approximately 91.00\% accuracy in classification tasks \citep{Rahman2020}. An experiment conducted by \citep{9402686} conducted a comprehensive evaluation of different CNN architectures for identifying local bird species. With only 100 images per class before data augmentation high accuracies of above 90\% were achieved.
@@ -671,7 +667,7 @@ Model performance was systematically evaluated using:
 
 Our implementation includes a robust evaluation framework with model checkpointing based on validation accuracy. This ensures that we preserve the best-performing model configuration throughout the training process. The model is trained for 20 epochs with early stopping implicitly implemented through best model saving. Performance is evaluated using accuracy on both validation and test sets, providing a comprehensive assessment of model generalization.
 
-This approach is well-aligned with established findings by \citep{tan2018survey}, who demonstrate that transfer learning with pre-trained models on bird classification tasks enables rapid convergence-often requiring as few as 2 to 10 epochs to achieve optimal accuracy. in stark contrast to the 40–50 epochs typically needed for training models from scratch. This efficiency not only accelerates the experimental workflow but also reduces computational demands, making it feasible to conduct extensive model comparisons and hyperparameter tuning. By leveraging pre-trained models and rigorous checkpointing, our methodology ensures that the selected models are both accurate and robust, reflecting best practices in modern deep learning for fine-grained image classification tasks such as bird species recognition.
+This approach is well-aligned with findings by \citep{tan2018survey}, who demonstrate that transfer learning with pre-trained models on bird classification tasks enables rapid convergence-often requiring as few as 2 to 10 epochs to achieve optimal accuracy. in stark contrast to the 40–50 epochs typically needed for training models from scratch. This efficiency not only accelerates the experimental workflow but also reduces computational demands, making it feasible to conduct extensive model comparisons and hyperparameter tuning. By leveraging pre-trained models and rigorous checkpointing, our methodology ensures that the selected models are both accurate and robust, reflecting best practices in modern deep learning for fine-grained image classification tasks such as bird species recognition.
 %TODO
 
 \section{Model Architectures and Specific Implementations}
@@ -2243,7 +2239,7 @@ Practically, these models could be integrated into citizen science platforms lik
 This study successfully addressed its primary research aims. First, high-accuracy classifiers, particularly VGG-16 achieving a test accuracy of 95.74\%, were developed using transfer learning, demonstrating that pre-trained convolutional neural network architectures can excel in fine-grained gull classification even with limited data. Iterative dataset refinement from 937 to 775 expert-curated images was vital, minimizing noise from age-related and environmental variability. Second, interpretability was achieved through Grad-CAM visualizations, which effectively bridged artificial intelligence and biological expertise by highlighting the wing and wingtip regions---corroborating that the models prioritize known diagnostic traits. This transparency is essential for building trust in automated taxonomic tools. Third, statistical and clustering analyses confirmed significant and quantifiable differences in wing darkness (with $p < 0.001$) and wingtip texture (with 57.4\% higher variability in Slaty-backed Gulls), empirically supporting field identification criteria while also revealing nuances such as interspecific overlap in wingtip patterns that require expert contextualization. Finally, the dominance of wingtip features in both model attention maps and statistical analysis suggests that artificial intelligence can not only replicate human expertise but also uncover underappreciated diagnostic traits, such as the prevalence of very dark pixels (intensity $<$30) in Slaty-backed Gulls. Collectively, these achievements demonstrate the potential of integrating deep learning with interpretability and quantitative analysis to advance fine-grained species identification and provide new insights into avian taxonomy.
 
 
-\chapter{Appendix}
+
 
 % \subsection*{Synthesis of Contributions}
 % This work advances avian taxonomy by:
@@ -2277,5 +2273,285 @@ This study successfully addressed its primary research aims. First, high-accurac
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
+
+\chapter{Appendix}
+\label{chap:appendix}
+
+\section{Model Training Performance}
+\label{sec:model_training}
+
+This section presents the training performance graphs and confusion matrices for all models evaluated in this study.
+
+\subsection{VGG-16}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vgg/vgg.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:vgg_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vgg/vggmodified_confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:vgg_confusion}
+    \end{subfigure}
+    \caption{VGG-16 model performance visualization}
+    \label{fig:vgg_performance}
+\end{figure}
+
+\subsection{Vision Transformer (ViT)}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vit/vit.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:vit_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vit/confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:vit_confusion}
+    \end{subfigure}
+    \caption{Vision Transformer model performance visualization}
+    \label{fig:vit_performance}
+\end{figure}
+
+\subsection{Inception v3}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/inception/inception.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:inception_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/inception/inception_v3_confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:inception_confusion}
+    \end{subfigure}
+    \caption{Inception v3 model performance visualization}
+    \label{fig:inception_performance}
+\end{figure}
+
+\subsection{Enhanced Vision Transformer}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/enhancedvit/enhancedvit.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:enhancedvit_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/enhancedvit/confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:enhancedvit_confusion}
+    \end{subfigure}
+    \caption{Enhanced Vision Transformer model performance visualization}
+    \label{fig:enhancedvit_performance}
+\end{figure}
+
+\subsection{Interpretable Vision Transformer}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/interpretablevit/interpretablevit.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:interpretablevit_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/interpretablevit/confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:interpretablevit_confusion}
+    \end{subfigure}
+    \caption{Interpretable Vision Transformer model performance visualization}
+    \label{fig:interpretablevit_performance}
+\end{figure}
+
+\subsection{ResNet50}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/resnet/resnet.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:resnet_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/resnet/resnet50_confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:resnet_confusion}
+    \end{subfigure}
+    \caption{ResNet50 model performance visualization}
+    \label{fig:resnet_performance}
+\end{figure}
+
+
+\section{Model Interpretability Analysis}
+\label{sec:interpretability}
+
+This section presents a comparative analysis of model interpretability techniques across all models. Each row displays the same image processed by different models, allowing direct comparison of how each model focuses on different bird features.
+
+\subsection{Glaucous Winged Gull Interpretability Results}
+\label{subsec:glaucous_interpretability}
+
+% First image - 20241203_010647.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} \\
+    \end{tabular}
+    \caption{Interpretability visualization for Glaucous Winged Gull image: 20241203\_010647.jpg}
+    \label{fig:interpretability_glaucous_1}
+\end{figure}
+
+% Second image - 20241204_140935.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} \\
+    \end{tabular}
+    \caption{Interpretability visualization for Glaucous Winged Gull image: 20241204\_140935.jpg}
+    \label{fig:interpretability_glaucous_2}
+\end{figure}
+
+% Continue with remaining Glaucous Winged Gull images
+% 20241204_170956.jpg, 20241204_171004.jpg, 20241204_171110.jpg, 3O4A8774 - Version 2.JPG
+% Follow the same pattern as above
+
+\clearpage
+\subsection{Slaty Backed Gull Interpretability Results}
+\label{subsec:slaty_interpretability}
+
+% First image - 011sm.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Slaty_Backed_Gull/011sm.jpg} \\
+    \end{tabular}
+    \caption{Interpretability visualization for Slaty Backed Gull image: 011sm.jpg}
+    \label{fig:interpretability_slaty_1}
+\end{figure}
+
+% Second image - 20241204_141506.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Slaty_Backed_Gull/20241204_141506.jpg} \\
+    \end{tabular}
+    \caption{Interpretability visualization for Slaty Backed Gull image: 20241204\_141506.jpg}
+    \label{fig:interpretability_slaty_2}
+\end{figure}
+
+% Continue with remaining Slaty Backed Gull images following the same pattern
+% 20241204_170322.jpg, 20241204_170332.jpg, 480 (1).jpeg, 480 (14).jpeg, 
+% 480 (19).jpeg, 480 (21).jpeg, 480 (3).jpeg, 480 (45).jpeg
+
+
+\section{Local Binary Pattern Analysis Results}
+\label{sec:lbp_analysis}
+
+This section displays the LBP analysis results for the wing, wingtip, and head regions of the gull images.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_head_ones_histogram.png}
+        \caption{Head region}
+        \label{fig:lbp_head}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wing_ones_histogram.png}
+        \caption{Wing region}
+        \label{fig:lbp_wing}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wingtip_ones_histogram.png}
+        \caption{Wingtip region}
+        \label{fig:lbp_wingtip}
+    \end{subfigure}
+    \caption{Local Binary Pattern analysis results showing histograms of pattern distributions across different bird regions}
+    \label{fig:lbp_results}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_head_transitions_vs_complexity.png}
+        \caption{Head region}
+        \label{fig:transitions_head_complex}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wing_transitions_vs_complexity.png}
+        \caption{Wing region}
+        \label{fig:transitions_wing_complex}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wingtip_transitions_vs_complexity.png}
+        \caption{Wingtip region}
+        \label{fig:transitions_wingtip_complex}
+    \end{subfigure}
+    \caption{Transitions vs. complexity analysis comparing pattern complexity distributions across different gull regions}
+    \label{fig:transitions_complexity}
+\end{figure}
+
 
 \end{document}

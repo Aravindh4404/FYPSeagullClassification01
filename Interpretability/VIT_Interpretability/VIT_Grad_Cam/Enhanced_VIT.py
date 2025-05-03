@@ -143,7 +143,7 @@ def process_folder(model, root_folder, class_names, save_folder, max_images=15):
                 overlay = cv2.addWeighted(original_image, 0.5, heatmap, 0.5, 0)
 
                 # Save the overlay image with a new filename
-                save_path = os.path.join(output_dir, os.path.splitext(image_file)[0] + '_gradcam.png')
+                save_path = os.path.join(output_dir, os.path.splitext(image_file)[0] + '.png')
                 Image.fromarray(overlay).save(save_path)
 
             images_processed += 1

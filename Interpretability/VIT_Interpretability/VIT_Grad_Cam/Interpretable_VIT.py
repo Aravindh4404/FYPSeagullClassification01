@@ -151,7 +151,7 @@ def process_folder(model, root_folder, class_names, output_folder, max_images=15
             plt.tight_layout()
 
             # Save the figure instead of displaying it
-            save_path = os.path.join(output_class_folder, f"gradcam_{os.path.splitext(image_file)[0]}.png")
+            save_path = os.path.join(output_class_folder, f"{os.path.splitext(image_file)[0]}.png")
             plt.savefig(save_path)
             plt.close()
 
