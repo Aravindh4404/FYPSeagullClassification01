@@ -117,7 +117,7 @@
 \contentsline {subsection}{\numberline {9.1.4}Enhanced Vision Transformer}{55}{subsection.9.1.4}%
 \contentsline {subsection}{\numberline {9.1.5}Interpretable Vision Transformer}{56}{subsection.9.1.5}%
 \contentsline {subsection}{\numberline {9.1.6}ResNet50}{56}{subsection.9.1.6}%
-\contentsline {section}{\numberline {9.2}Model Interpretability Analysis}{56}{section.9.2}%
+\contentsline {section}{\numberline {9.2}Model Interpretability Results for Test Set}{56}{section.9.2}%
 \contentsline {subsection}{\numberline {9.2.1}Glaucous Winged Gull Interpretability Results}{57}{subsection.9.2.1}%
-\contentsline {subsection}{\numberline {9.2.2}Slaty Backed Gull Interpretability Results}{58}{subsection.9.2.2}%
-\contentsline {section}{\numberline {9.3}Local Binary Pattern Analysis Results}{58}{section.9.3}%
+\contentsline {subsection}{\numberline {9.2.2}Slaty Backed Gull Interpretability Results}{59}{subsection.9.2.2}%
+\contentsline {section}{\numberline {9.3}Local Binary Pattern Analysis Results}{61}{section.9.3}%

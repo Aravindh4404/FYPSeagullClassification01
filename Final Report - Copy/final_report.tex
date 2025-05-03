@@ -2402,11 +2402,10 @@ This section presents the training performance graphs and confusion matrices for
     \label{fig:resnet_performance}
 \end{figure}
 
-
-\section{Model Interpretability Analysis}
+\section{Model Interpretability Results for Test Set}
 \label{sec:interpretability}
 
-This section presents a comparative analysis of model interpretability techniques across all models. Each row displays the same image processed by different models, allowing direct comparison of how each model focuses on different bird features.
+This section presents the results of Grad-CAM across different models. All the images here are correctly predicted by all the models. Each row displays the same image processed by different models, allowing direct comparison of how each model focuses on different bird features.
 
 \subsection{Glaucous Winged Gull Interpretability Results}
 \label{subsec:glaucous_interpretability}
@@ -2415,17 +2414,15 @@ This section presents a comparative analysis of model interpretability technique
 \begin{figure}[H]
     \centering
     \setlength{\tabcolsep}{1pt}
-    \begin{tabular}{cccccc}
-    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} \\
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241203_010647.jpg} \\
     \end{tabular}
-    \caption{Interpretability visualization for Glaucous Winged Gull image: 20241203\_010647.jpg}
+
     \label{fig:interpretability_glaucous_1}
 \end{figure}
 
@@ -2433,23 +2430,81 @@ This section presents a comparative analysis of model interpretability technique
 \begin{figure}[H]
     \centering
     \setlength{\tabcolsep}{1pt}
-    \begin{tabular}{cccccc}
-    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} \\
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_140935.jpg} \\
     \end{tabular}
-    \caption{Interpretability visualization for Glaucous Winged Gull image: 20241204\_140935.jpg}
+ 
     \label{fig:interpretability_glaucous_2}
 \end{figure}
 
-% Continue with remaining Glaucous Winged Gull images
-% 20241204_170956.jpg, 20241204_171004.jpg, 20241204_171110.jpg, 3O4A8774 - Version 2.JPG
-% Follow the same pattern as above
+% Third image - 20241204_170956.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_170956.jpg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_glaucous_3}
+\end{figure}
+
+% Fourth image - 20241204_171004.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_171004.jpg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_glaucous_4}
+\end{figure}
+
+% Fifth image - 20241204_171110.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_171110.jpg} \\
+    \end{tabular}
+ 
+    \label{fig:interpretability_glaucous_5}
+\end{figure}
+
+% Sixth image - 3O4A8774 - Version 2.JPG
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} \\
+    \end{tabular}
+
+    \label{fig:interpretability_glaucous_6}
+\end{figure}
 
 \clearpage
 \subsection{Slaty Backed Gull Interpretability Results}
@@ -2459,17 +2514,15 @@ This section presents a comparative analysis of model interpretability technique
 \begin{figure}[H]
     \centering
     \setlength{\tabcolsep}{1pt}
-    \begin{tabular}{cccccc}
-    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/011sm.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/011sm.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/011sm.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/011sm.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Slaty_Backed_Gull/011sm.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Slaty_Backed_Gull/011sm.jpg} \\
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/011sm.jpg} \\
     \end{tabular}
-    \caption{Interpretability visualization for Slaty Backed Gull image: 011sm.jpg}
+
     \label{fig:interpretability_slaty_1}
 \end{figure}
 
@@ -2477,19 +2530,146 @@ This section presents a comparative analysis of model interpretability technique
 \begin{figure}[H]
     \centering
     \setlength{\tabcolsep}{1pt}
-    \begin{tabular}{cccccc}
-    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} & \textbf{EnhancedViT} & \textbf{InterpretableViT} \\
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/enhancedvit/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-    \includegraphics[width=0.15\textwidth]{images/appendix/modelgraph/interpretablevit/correct/Slaty_Backed_Gull/20241204_141506.jpg} \\
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_141506.jpg} \\
     \end{tabular}
-    \caption{Interpretability visualization for Slaty Backed Gull image: 20241204\_141506.jpg}
+
     \label{fig:interpretability_slaty_2}
 \end{figure}
+
+% Third image - 20241204_170322.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_170322.jpg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_slaty_3}
+\end{figure}
+
+% Fourth image - 20241204_170332.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_170332.jpg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_slaty_4}
+\end{figure}
+
+% Fifth image - 480 (1).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (1).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (1).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (1).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (1).jpeg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_slaty_5}
+\end{figure}
+
+% Sixth image - 480 (14).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (14).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (14).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (14).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (14).jpeg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_slaty_6}
+\end{figure}
+
+% Seventh image - 480 (19).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (19).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (19).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (19).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (19).jpeg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_slaty_7}
+\end{figure}
+
+% Eighth image - 480 (21).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (21).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (21).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (21).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (21).jpeg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_slaty_8}
+\end{figure}
+
+% Ninth image - 480 (3).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (3).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (3).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (3).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (3).jpeg} \\
+    \end{tabular}
+ 
+    \label{fig:interpretability_slaty_9}
+\end{figure}
+
+% Tenth image - 480 (45).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+    
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (45).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (45).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (45).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (45).jpeg} \\
+    \end{tabular}
+
+    \label{fig:interpretability_slaty_10}
+\end{figure}
+
 
 % Continue with remaining Slaty Backed Gull images following the same pattern
 % 20241204_170322.jpg, 20241204_170332.jpg, 480 (1).jpeg, 480 (14).jpeg, 
