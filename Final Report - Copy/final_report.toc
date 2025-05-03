@@ -1,121 +1,115 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Literature Review}{3}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Aims and Objectives}{6}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Primary Aims}{6}{section.3.1}%
-\contentsline {chapter}{\numberline {4}Methodology}{7}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Google Colab Platform}{7}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Python and PyTorch Framework}{7}{subsection.4.1.1}%
-\contentsline {section}{\numberline {4.2}Dataset Preparation and Refinement}{7}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Stage 1: Initial Dataset Collection}{7}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Stage 2: Refined Dataset - Focus on Adult In-flight Images}{7}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Stage 3: High-Quality Dataset}{8}{subsection.4.2.3}%
-\contentsline {subsubsection}{Test Dataset}{8}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}Iterative Development Methodology and Debugging}{8}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Pipeline Validation and Early Debugging}{8}{subsection.4.3.1}%
-\contentsline {section}{\numberline {4.4}Transfer Learning Approach}{9}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Common Implementation Strategy}{9}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Data Preparation and Augmentation}{10}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Image Preprocessing}{10}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}Training Optimization Strategy}{10}{subsection.4.4.4}%
-\contentsline {subsection}{\numberline {4.4.5}Regularization Techniques}{11}{subsection.4.4.5}%
-\contentsline {subsection}{\numberline {4.4.6}Addressing Class Imbalance}{11}{subsection.4.4.6}%
-\contentsline {subsection}{\numberline {4.4.7}Dataset Management}{12}{subsection.4.4.7}%
-\contentsline {subsection}{\numberline {4.4.8}Evaluation Strategy}{12}{subsection.4.4.8}%
+\contentsline {chapter}{\numberline {3}Aims and Objectives}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Primary Aims}{5}{section.3.1}%
+\contentsline {chapter}{\numberline {4}Methodology}{6}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Google Colab Platform}{6}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Python and PyTorch Framework}{6}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Dataset Preparation and Refinement}{6}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Stage 1: Initial Dataset Collection}{6}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Stage 2: Refined Dataset - Focus on Adult In-flight Images}{6}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Stage 3: High-Quality Dataset}{7}{subsection.4.2.3}%
+\contentsline {subsubsection}{Test Dataset}{7}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Iterative Development Methodology and Debugging}{7}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Pipeline Validation and Early Debugging}{7}{subsection.4.3.1}%
+\contentsline {section}{\numberline {4.4}Transfer Learning Approach}{8}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Common Implementation Strategy}{8}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Data Preparation and Augmentation}{9}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Image Preprocessing}{9}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Training Optimization Strategy}{9}{subsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.4.5}Regularization Techniques}{10}{subsection.4.4.5}%
+\contentsline {subsection}{\numberline {4.4.6}Addressing Class Imbalance}{10}{subsection.4.4.6}%
+\contentsline {subsection}{\numberline {4.4.7}Dataset Management}{11}{subsection.4.4.7}%
+\contentsline {subsection}{\numberline {4.4.8}Evaluation Strategy}{11}{subsection.4.4.8}%
 \contentsline {subsection}{\numberline {4.4.9}Model Checkpointing and Evaluation}{12}{subsection.4.4.9}%
-\contentsline {section}{\numberline {4.5}Model Architectures and Specific Implementations}{13}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}VGG-16 Architecture}{13}{subsection.4.5.1}%
-\contentsline {subsubsection}{Theoretical Foundation}{13}{figure.caption.2}%
-\contentsline {subsubsection}{Model Adaptation for Fine-Grained Classification}{14}{figure.caption.2}%
-\contentsline {subsection}{\numberline {4.5.2}Vision Transformer (ViT) Architecture}{14}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}ViT for Fine-Grained Classification}{14}{subsection.4.5.3}%
-\contentsline {subsubsection}{Vision Transformer Implementation}{14}{subsection.4.5.3}%
-\contentsline {subsubsection}{Alternative ViT Implementations}{15}{subsection.4.5.3}%
-\contentsline {paragraph}{EnhancedViT}{15}{subsection.4.5.3}%
-\contentsline {subsection}{\numberline {4.5.4}Inception v3 Architecture}{15}{subsection.4.5.4}%
-\contentsline {subsubsection}{Model-Specific Implementation Details}{16}{figure.caption.4}%
-\contentsline {subsection}{\numberline {4.5.5}Residual Network (ResNet-50) Architecture}{16}{subsection.4.5.5}%
-\contentsline {subsection}{\numberline {4.5.6}Custom CNN with Squeeze-and-Excitation Blocks}{17}{subsection.4.5.6}%
-\contentsline {subsubsection}{Architectural Design}{17}{figure.caption.6}%
-\contentsline {subsubsection}{Custom CNN-Specific Training Approach}{17}{figure.caption.6}%
-\contentsline {section}{\numberline {4.6}Model Interpretability Methodologies}{18}{section.4.6}%
-\contentsline {subsection}{\numberline {4.6.1}Gradient-weighted Class Activation Mapping (Grad-CAM)}{18}{subsection.4.6.1}%
-\contentsline {subsubsection}{Theoretical Foundation}{18}{subsection.4.6.1}%
-\contentsline {subsubsection}{Methodology for CNN models}{18}{subsection.4.6.1}%
-\contentsline {subsection}{\numberline {4.6.2}Attention Rollout for Vision Transformers}{19}{subsection.4.6.2}%
-\contentsline {subsubsection}{Theoretical Foundation}{19}{subsection.4.6.2}%
-\contentsline {subsubsection}{Methodology for ViT}{19}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}Grad-CAM for Vision Transformers}{20}{subsection.4.6.3}%
-\contentsline {subsection}{\numberline {4.6.4}Enhanced ViT Implementation}{20}{subsection.4.6.4}%
-\contentsline {subsection}{\numberline {4.6.5}Interpretable ViT with Feature Concatenation}{20}{subsection.4.6.5}%
-\contentsline {subsection}{\numberline {4.6.6}Comparison Framework}{21}{subsection.4.6.6}%
-\contentsline {section}{\numberline {4.7}Additional Interpretability Techniques}{22}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}DeepLIFT}{22}{subsection.4.7.1}%
-\contentsline {subsection}{\numberline {4.7.2}Saliency Maps}{22}{subsection.4.7.2}%
-\contentsline {subsection}{\numberline {4.7.3}Integrated Gradients for Vision Transformers}{22}{subsection.4.7.3}%
-\contentsline {subsection}{\numberline {4.7.4}Guided Backpropagation for ViT}{23}{subsection.4.7.4}%
-\contentsline {subsection}{\numberline {4.7.5}Justification for Grad-CAM}{23}{subsection.4.7.5}%
-\contentsline {section}{\numberline {4.8}Feature Analysis for Fine-Grained Gull Classification}{23}{section.4.8}%
-\contentsline {subsection}{\numberline {4.8.1}Image Selection}{23}{subsection.4.8.1}%
-\contentsline {subsection}{\numberline {4.8.2}Manual Segmentation}{24}{subsection.4.8.2}%
-\contentsline {subsection}{\numberline {4.8.3}Normalization}{24}{subsection.4.8.3}%
-\contentsline {subsection}{\numberline {4.8.4}Region Extraction}{24}{subsection.4.8.4}%
-\contentsline {subsection}{\numberline {4.8.5}Local Binary Pattern Analysis}{24}{subsection.4.8.5}%
-\contentsline {subsubsection}{LBP Computation}{24}{subsection.4.8.5}%
-\contentsline {subsection}{\numberline {4.8.6}Feature Extraction}{25}{subsection.4.8.6}%
-\contentsline {subsection}{\numberline {4.8.7}Comparative Analysis Implementation}{26}{subsection.4.8.7}%
-\contentsline {subsection}{\numberline {4.8.8}Discriminative Power Analysis}{26}{subsection.4.8.8}%
-\contentsline {subsection}{\numberline {4.8.9}Dimensionality Reduction and Visualization}{26}{subsection.4.8.9}%
-\contentsline {subsection}{\numberline {4.8.10}Implementation Workflow}{26}{subsection.4.8.10}%
-\contentsline {subsection}{\numberline {4.8.11}Validation Approach}{27}{subsection.4.8.11}%
-\contentsline {section}{\numberline {4.9}Wing and Wingtip Intensity Analysis}{27}{section.4.9}%
-\contentsline {subsection}{\numberline {4.9.1}Feature Extraction Pipeline}{27}{subsection.4.9.1}%
-\contentsline {subsection}{\numberline {4.9.2}Statistical Comparison}{28}{subsection.4.9.2}%
-\contentsline {section}{\numberline {4.10}Verification by Clustering for Species Differentiation}{28}{section.4.10}%
-\contentsline {subsection}{\numberline {4.10.1}Feature Extraction and Preprocessing}{28}{subsection.4.10.1}%
-\contentsline {subsection}{\numberline {4.10.2}Clustering Algorithms Implementation}{29}{subsection.4.10.2}%
-\contentsline {subsubsection}{K-means Clustering}{29}{subsection.4.10.2}%
-\contentsline {subsubsection}{Hierarchical Clustering}{29}{subsection.4.10.2}%
-\contentsline {subsubsection}{Gaussian Mixture Model}{29}{subsection.4.10.2}%
-\contentsline {subsection}{\numberline {4.10.3}Evaluation Metrics}{29}{subsection.4.10.3}%
-\contentsline {subsubsection}{Unsupervised Evaluation}{29}{subsection.4.10.3}%
-\contentsline {subsubsection}{Supervised Evaluation (Using Known Species Labels)}{29}{subsection.4.10.3}%
-\contentsline {subsection}{\numberline {4.10.4}Cluster Mapping and Misclassification Analysis}{30}{subsection.4.10.4}%
-\contentsline {subsection}{\numberline {4.10.5}Visualization and Interpretation}{30}{subsection.4.10.5}%
-\contentsline {subsection}{\numberline {4.10.6}Implementation Details}{30}{subsection.4.10.6}%
-\contentsline {chapter}{\numberline {5}Results}{31}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Model Performance of top-performing models trained on latest Stage 3 dataset}{31}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Grad-CAM outputs of best performing VGG-16 model}{32}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Intensity Analysis Results}{32}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Wing and Wingtip Intensity Analysis}{32}{subsection.5.3.1}%
-\contentsline {subsubsection}{Wing Intensity}{34}{figure.caption.11}%
-\contentsline {subsubsection}{Wingtip Intensity}{34}{figure.caption.11}%
-\contentsline {subsection}{\numberline {5.3.2}Distributions of Wing and Wingtip Intensities}{35}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Wing Intensity Distributions}{35}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}Wingtip Pixel Intensity Distributions}{35}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Presence of Very Dark Pixels}{36}{subsection.5.3.5}%
-\contentsline {subsection}{\numberline {5.3.6}Relationship Between Wing and Wingtip Intensities}{37}{subsection.5.3.6}%
-\contentsline {subsection}{\numberline {5.3.7}Wingtip Contrast and Darkness Feature Comparison}{37}{subsection.5.3.7}%
-\contentsline {section}{\numberline {5.4}Results: Local Binary Pattern Texture Analysis}{38}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Discriminative Power Analysis}{39}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Limitations of standard LBP code analysis}{39}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Abstract Feature Distributions}{40}{subsection.5.4.3}%
-\contentsline {subsection}{\numberline {5.4.4}Top Discriminative Features from 1s and Transitions Histograms}{41}{subsection.5.4.4}%
-\contentsline {section}{\numberline {5.5}Clustering Results}{41}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Clustering Performance Metrics}{41}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}Algorithm-Specific Results}{41}{subsection.5.5.2}%
-\contentsline {subsubsection}{K-means Clustering}{41}{subsection.5.5.2}%
-\contentsline {subsubsection}{Hierarchical Clustering}{42}{subsection.5.5.2}%
-\contentsline {subsubsection}{Gaussian Mixture Model}{42}{subsection.5.5.2}%
-\contentsline {subsection}{\numberline {5.5.3}Misclassification Analysis}{42}{subsection.5.5.3}%
-\contentsline {subsection}{\numberline {5.5.4}Feature Importance Analysis}{43}{subsection.5.5.4}%
-\contentsline {subsection}{\numberline {5.5.5}Integration with Visual Analysis}{43}{subsection.5.5.5}%
-\contentsline {subsection}{\numberline {5.5.6}Confusion Matrix Analysis}{44}{subsection.5.5.6}%
-\contentsline {subsection}{\numberline {5.5.7}Algorithm Comparison}{44}{subsection.5.5.7}%
-\contentsline {subsection}{\numberline {5.5.8}Implications of Results}{45}{subsection.5.5.8}%
-\contentsline {chapter}{\numberline {6}Discussion}{46}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Interpretation of Model Performance and Biological Significance}{46}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Quantitative Validation of Morphological Differences}{46}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Feature Analysis and Clustering Validation}{46}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Limitations and Practical Implications}{47}{subsection.6.2.2}%
-\contentsline {chapter}{\numberline {7}Conclusion}{48}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Bibliography}{49}{chapter.8}%
+\contentsline {section}{\numberline {4.5}Model Architectures and Specific Implementations}{12}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}VGG-16 Architecture}{12}{subsection.4.5.1}%
+\contentsline {subsubsection}{Theoretical Foundation}{12}{figure.caption.2}%
+\contentsline {subsubsection}{Model Adaptation for Fine-Grained Classification}{13}{figure.caption.2}%
+\contentsline {subsection}{\numberline {4.5.2}Vision Transformer (ViT) Architecture}{13}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}ViT for Fine-Grained Classification}{13}{subsection.4.5.3}%
+\contentsline {subsubsection}{Vision Transformer Implementation}{13}{subsection.4.5.3}%
+\contentsline {subsubsection}{Alternative ViT Implementations}{14}{subsection.4.5.3}%
+\contentsline {paragraph}{EnhancedViT}{14}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Inception v3 Architecture}{14}{subsection.4.5.4}%
+\contentsline {subsubsection}{Model-Specific Implementation Details}{15}{figure.caption.4}%
+\contentsline {subsection}{\numberline {4.5.5}Residual Network (ResNet-50) Architecture}{15}{subsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.5.6}Custom CNN with Squeeze-and-Excitation Blocks}{16}{subsection.4.5.6}%
+\contentsline {subsubsection}{Architectural Design}{16}{figure.caption.6}%
+\contentsline {subsubsection}{Custom CNN-Specific Training Approach}{16}{figure.caption.6}%
+\contentsline {section}{\numberline {4.6}Model Interpretability Methodologies}{17}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Gradient-weighted Class Activation Mapping (Grad-CAM)}{17}{subsection.4.6.1}%
+\contentsline {subsubsection}{Theoretical Foundation}{17}{subsection.4.6.1}%
+\contentsline {subsubsection}{Methodology for CNN models}{17}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}Attention Rollout for Vision Transformers}{18}{subsection.4.6.2}%
+\contentsline {subsubsection}{Theoretical Foundation}{18}{subsection.4.6.2}%
+\contentsline {subsubsection}{Methodology for ViT}{18}{subsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.6.3}Grad-CAM for Vision Transformers}{19}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.4}Enhanced ViT Implementation}{19}{subsection.4.6.4}%
+\contentsline {subsection}{\numberline {4.6.5}Interpretable ViT with Feature Concatenation}{19}{subsection.4.6.5}%
+\contentsline {subsection}{\numberline {4.6.6}Comparison Framework}{20}{subsection.4.6.6}%
+\contentsline {section}{\numberline {4.7}Additional Interpretability Techniques}{21}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}DeepLIFT}{21}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.2}Saliency Maps}{21}{subsection.4.7.2}%
+\contentsline {subsection}{\numberline {4.7.3}Integrated Gradients for Vision Transformers}{21}{subsection.4.7.3}%
+\contentsline {subsection}{\numberline {4.7.4}Guided Backpropagation for ViT}{22}{subsection.4.7.4}%
+\contentsline {subsection}{\numberline {4.7.5}Justification for Grad-CAM}{22}{subsection.4.7.5}%
+\contentsline {section}{\numberline {4.8}Feature Analysis for Fine-Grained Gull Classification}{22}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Image Selection}{22}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Manual Segmentation}{23}{subsection.4.8.2}%
+\contentsline {subsection}{\numberline {4.8.3}Normalization}{23}{subsection.4.8.3}%
+\contentsline {subsection}{\numberline {4.8.4}Region Extraction}{23}{subsection.4.8.4}%
+\contentsline {subsection}{\numberline {4.8.5}Local Binary Pattern Analysis}{23}{subsection.4.8.5}%
+\contentsline {subsubsection}{LBP Computation}{23}{subsection.4.8.5}%
+\contentsline {subsection}{\numberline {4.8.6}Feature Extraction}{24}{subsection.4.8.6}%
+\contentsline {subsection}{\numberline {4.8.7}Comparative Analysis Implementation}{25}{subsection.4.8.7}%
+\contentsline {subsection}{\numberline {4.8.8}Discriminative Power Analysis}{25}{subsection.4.8.8}%
+\contentsline {subsection}{\numberline {4.8.9}Dimensionality Reduction and Visualization}{25}{subsection.4.8.9}%
+\contentsline {subsection}{\numberline {4.8.10}Implementation Workflow}{25}{subsection.4.8.10}%
+\contentsline {subsection}{\numberline {4.8.11}Validation Approach}{26}{subsection.4.8.11}%
+\contentsline {section}{\numberline {4.9}Wing and Wingtip Intensity Analysis}{26}{section.4.9}%
+\contentsline {subsection}{\numberline {4.9.1}Feature Extraction Pipeline}{26}{subsection.4.9.1}%
+\contentsline {subsection}{\numberline {4.9.2}Statistical Comparison}{27}{subsection.4.9.2}%
+\contentsline {section}{\numberline {4.10}Verification by Clustering for Species Differentiation}{27}{section.4.10}%
+\contentsline {subsection}{\numberline {4.10.1}Feature Extraction and Preprocessing}{27}{subsection.4.10.1}%
+\contentsline {subsection}{\numberline {4.10.2}Clustering Algorithms Implementation}{28}{subsection.4.10.2}%
+\contentsline {subsubsection}{K-means Clustering}{28}{subsection.4.10.2}%
+\contentsline {subsubsection}{Hierarchical Clustering}{28}{subsection.4.10.2}%
+\contentsline {subsubsection}{Gaussian Mixture Model}{28}{subsection.4.10.2}%
+\contentsline {subsection}{\numberline {4.10.3}Evaluation Metrics}{28}{subsection.4.10.3}%
+\contentsline {subsubsection}{Unsupervised Evaluation}{28}{subsection.4.10.3}%
+\contentsline {subsubsection}{Supervised Evaluation (Using Known Species Labels)}{28}{subsection.4.10.3}%
+\contentsline {subsection}{\numberline {4.10.4}Cluster Mapping and Misclassification Analysis}{29}{subsection.4.10.4}%
+\contentsline {subsection}{\numberline {4.10.5}Visualization and Interpretation}{29}{subsection.4.10.5}%
+\contentsline {subsection}{\numberline {4.10.6}Implementation Details}{29}{subsection.4.10.6}%
+\contentsline {chapter}{\numberline {5}Results}{30}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Model Performance of top-performing models trained on latest Stage 3 dataset}{30}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Grad-CAM outputs of best performing VGG-16 model}{31}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Intensity Analysis Results}{31}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Wing and Wingtip Intensity Analysis}{31}{subsection.5.3.1}%
+\contentsline {subsubsection}{Wing Intensity}{32}{equation.5.2}%
+\contentsline {subsubsection}{Wingtip Intensity}{32}{figure.caption.11}%
+\contentsline {subsection}{\numberline {5.3.2}Distributions of Wing and Wingtip Intensities}{33}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Wing Intensity Distributions}{33}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Wingtip Pixel Intensity Distributions}{33}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Presence of Very Dark Pixels}{34}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}Relationship Between Wing and Wingtip Intensities}{35}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.7}Wingtip Contrast and Darkness Feature Comparison}{35}{subsection.5.3.7}%
+\contentsline {section}{\numberline {5.4}Results: Local Binary Pattern Texture Analysis}{37}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Discriminative Power Analysis}{37}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Limitations of standard LBP code analysis}{37}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Abstract Feature Distributions}{38}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Top Discriminative Features from 1s and Transitions Histograms}{39}{subsection.5.4.4}%
+\contentsline {section}{\numberline {5.5}Clustering Results}{39}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Clustering Performance Metrics}{39}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Feature Importance Analysis}{39}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Integration with Visual Analysis}{40}{subsection.5.5.3}%
+\contentsline {subsection}{\numberline {5.5.4}Confusion Matrix Analysis}{40}{subsection.5.5.4}%
+\contentsline {subsection}{\numberline {5.5.5}Implications of Results}{41}{subsection.5.5.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{42}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Interpretation of Model Performance and Biological Significance}{42}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Quantitative Validation of Morphological Differences}{42}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Feature Analysis and Clustering Validation}{42}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Limitations and Practical Implications}{43}{subsection.6.2.2}%
+\contentsline {chapter}{\numberline {7}Conclusion}{44}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Bibliography}{45}{chapter.8}%

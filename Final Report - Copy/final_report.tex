@@ -210,7 +210,9 @@
 
 % Acknowledgement
 \newpage
-\section*{\centering \normalsize{Acknowledgement}}
+\begin{center}
+    \section*{Acknowledgement}
+\end{center}
 
 I would like to express my deepest gratitude to my Final Year Project supervisor, Dr Tomas Maul, for his exceptional guidance, and support throughout both semesters of my dissertation journey. His expertise in computer science and artificial intelligence was crucial to the successful completion of my research, providing invaluable direction and insight at every stage of the project. This project has been the most intellectually stimulating and fulfilling work I have undertaken during my degree. I am deeply thankful to Professor Chris Gibbins for sharing his ornithological expertise, providing his high-quality gull images without a second thought, and offering critical guidance throughout the project. His contribution was essential to ensuring the scientific validity and practical relevance of this work.
 
@@ -218,7 +220,10 @@ This project would not have been possible without the mentorship and encourageme
 
 % Abstract
 \newpage
-\section*{\centering \normalsize{Abstract}}
+\begin{center}
+    \section*{Abstract}
+\end{center}
+
 This research addresses the challenge of fine-grained bird classification by developing an interpretable deep learning framework for distinguishing between two morphologically similar gull species: Slaty-backed Gull (Larus schistisagus) and Glaucous-winged Gull (Larus glaucescens). The study implements and evaluates multiple transfer learning models, with VGG-16 achieving the highest test accuracy of 95.74\%. Grad-CAM interpretability techniques reveal the models' focus on wing and wingtip regions, aligning with ornithological knowledge. Quantitative analysis confirms statistically significant differences in wing intensity between species, with Slaty-backed Gulls exhibiting mean wing intensities significantly darker than Glaucous-winged Gulls. Feature extraction and unsupervised clustering validate these findings, achieving 95.6\% classification accuracy using intensity-based features. This work demonstrates how deep learning interpretability can bridge artificial intelligence and biological taxonomy, providing both an effective identification tool and quantitative insights into morphological distinctions between closely related species.
 
 % Table of Contents
@@ -338,7 +343,7 @@ Transfer learning addresses the primary challenges of deep learning: the need fo
 
 
 
-Working with limited datasets often introduces challenges related to class imbalance and overfitting. \citep{buda2018systematic} conducted a comprehensive analysis of class imbalance in convolutional neural networks and found that oversampling (duplicating samples from minority classes) generally outperforms undersampling for deep learning models. Standard data augmentation techniques such as resizing, random horizontal and vertical flipping, rotation, affine translation, and color jittering can improve model generalization and robustness \citep{yang2022augmentation,wu2024augmentation}.
+
 
 % VERY USEFUL say too much oversampling caused overfitting that is y it was removed.
 
@@ -356,7 +361,7 @@ While deep learning models achieve impressive accuracy in classification tasks, 
 
 Gradient-weighted Class Activation Mapping (Grad-CAM) has emerged as a particularly valuable technique for visualizing regions of images that influence classification decisions. Selvaraju et al.\ \citep{Selvaraju_2019} introduced this technique as a generalization of CAM that "uses the gradients of any target concept flowing into the final convolutional layer to produce a coarse localization map highlighting important regions in the image." Unlike earlier methods, Grad-CAM requires no architectural changes and can be applied to almost any CNN-based model. As described in recent literature, Grad-CAM "uses the gradients of each target that flows into the least convolutional layer to produce a bearish localization map, highlighting important regions in the image for concept prediction" \citep{Hasibuan2023Large}. This approach enables validating model decisions against expert knowledge and potentially discover new insights about morphological features with regards to this project.
 
-Selvaraju et al.\ \citep{Selvaraju_2019} demonstrated that Guided Grad-CAM outperforms baseline approaches such as Guided Backpropagation and Deconvolution in generating class-discriminative visualizations. Their results show that Guided Grad-CAM not only produces high-resolution explanations but also clearly highlights the specific image regions that influence the model's classification decision---a property that is vital for our project, where understanding the distinguishing features between classes is essential. As illustrated in their paper, the visualizations allow us to see the exact areas that contributed to the class decision, thereby increasing transparency and trust in the classifier.
+Selvaraju et al.\ \citep{Selvaraju_2019} demonstrated that Guided Grad-CAM outperforms baseline approaches such as Guided Backpropagation and Deconvolution in generating class-discriminative visualizations. Their results show that Guided Grad-CAM not only produces high-resolution explanations but also clearly highlights the specific image regions that influence the model's classification decision---a property that is vital for this project, where understanding the distinguishing features between classes is essential. The visualizations allows us to see the exact areas that contributed to the class decision, thereby increasing transparency and trust in the classifier.
 
 % VERY USEFUL: some gradcam biased like mentioned in paper above. can use for vit and other accuracy models
 
@@ -663,7 +668,7 @@ Multiple regularization strategies were employed to handle the limited data size
 
 \subsection{Addressing Class Imbalance}
 
-Our dataset exhibited significant class imbalance, which can degrade model performance by biasing predictions toward the majority class \citep{krawczyk2016learning}. To mitigate this challenge, multiple complementary strategies were implemented on the best performing models that included VGG16, and ViT:
+Our dataset exhibited significant class imbalance, which can degrade model performance by biasing predictions toward the majority class \citep{krawczyk2016learning}. Working with limited datasets often introduces challenges related to class imbalance and overfitting. \citep{buda2018systematic} conducted a comprehensive analysis of class imbalance in convolutional neural networks and found that oversampling (duplicating samples from minority classes) generally outperforms undersampling for deep learning models. Standard data augmentation techniques such as resizing, random horizontal and vertical flipping, rotation, affine translation, and color jittering can improve model generalization and robustness \citep{yang2022augmentation,wu2024augmentation}. Multiple complementary strategies were implemented on the best performing models that included VGG16, and ViT:
 
 % TODO check ref below
 
@@ -1269,7 +1274,7 @@ From the normalized dataset, 200 high-resolution images (100 per species) were s
 Using Adobe Photoshop, segmentation masks with color-coded regions were created with a specific color for each type of region: wing, wingtip, and head.
 
 \subsection{Normalization}
-Applied min-max normalization\citep{monzon_image_normalization} (0-255) to grayscale conversions using OpenCV's \texttt{NORM\_MINMAX}.
+Min-max normalization\citep{monzon_image_normalization} (0-255) was applied to grayscale conversions using OpenCV's \texttt{NORM\_MINMAX}.
 This helped standardize intensity values and mitigate the effects of differing lighting conditions ensuring that pixel intensity values were scaled consistently across the dataset, providing a reliable foundation for subsequent region-based analysis.
 
 \subsection{Region Extraction}
@@ -1736,51 +1741,48 @@ Degrees of freedom (Welch--Satterthwaite approximation):
 \end{equation}
 
 
-\begin{figure}[H]
-    \centering
-    % First row
-    \begin{subfigure}[b]{0.44\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wing_intensity_analysis.png}
-        \caption{Comparison of wing intensity values between species.}
-        \label{fig:wing_intensity}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.44\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/WINGINTENSITY.png}
-        \caption{Mean wing intensity across samples.}
-        \label{fig:wing_intensity_means}
-    \end{subfigure}
-    % Vertical space between rows
-    \par\vspace{1.5ex}
-    % Second row
-    \begin{subfigure}[b]{0.44\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_intensity_violin_plot.png}
-        \caption{Wingtip intensity violin plot.}
-        \label{fig:wingtip_intensity_violin}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.44\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_intensity_distribution.png}
-        \caption{Wingtip intensity distribution.}
-        \label{fig:wingtip_intensity_distribution}
-    \end{subfigure}
-    \caption{Wing and wingtip intensity metrics} %for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}
-    \label{fig:intensity_combined}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     % First row
+%     \begin{subfigure}[b]{0.44\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wing_intensity_analysis.png}
+%         \caption{Comparison of wing intensity values between species.}
+%         \label{fig:wing_intensity}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.44\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/WINGINTENSITY.png}
+%         \caption{Mean wing intensity across samples.}
+%         \label{fig:wing_intensity_means}
+%     \end{subfigure}
+%     % Vertical space between rows
+%     \par\vspace{1.5ex}
+%     % Second row
+%     \begin{subfigure}[b]{0.44\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_intensity_violin_plot.png}
+%         \caption{Wingtip intensity violin plot.}
+%         \label{fig:wingtip_intensity_violin}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.44\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/REPORT_IMAGES_INTENSITY/I2/wingtip_intensity_distribution.png}
+%         \caption{Wingtip intensity distribution.}
+%         \label{fig:wingtip_intensity_distribution}
+%     \end{subfigure}
+%     \caption{Wing and wingtip intensity metrics} %for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}
+%     \label{fig:intensity_combined}
+% \end{figure}
 
-The combined figure (\autoref{fig:intensity_combined}) summarizes the intensity analysis results. Subfigures~\ref{fig:wing_intensity} and~\ref{fig:wing_intensity_means} show that Glaucous-winged Gulls have consistently higher and less variable wing intensity than Slaty-backed Gulls. Subfigures~\ref{fig:wingtip_intensity_violin} and~\ref{fig:wingtip_intensity_distribution} illustrate that, while wingtip intensity also differs significantly between species, there is greater variability and overlap, as seen in the broader range and outliers in the distributions.
-While both wing and wingtip intensity are statistically significant distinguishing features, variations observed in the wingtip intensity distributions, potentially due to the presence of white spots and variations in darkness. For this reason the mean wing intensity may be considered a more consistently robust distinguishing feature between the two species.
+% The combined figure (\autoref{fig:intensity_combined}) summarizes the intensity analysis results. Subfigures~\ref{fig:wing_intensity} and~\ref{fig:wing_intensity_means} show that Glaucous-winged Gulls have consistently higher and less variable wing intensity than Slaty-backed Gulls. Subfigures~\ref{fig:wingtip_intensity_violin} and~\ref{fig:wingtip_intensity_distribution} illustrate that, while wingtip intensity also differs significantly between species, there is greater variability and overlap, as seen in the broader range and outliers in the distributions.
+% While both wing and wingtip intensity are statistically significant distinguishing features, variations observed in the wingtip intensity distributions, potentially due to the presence of white spots and variations in darkness. For this reason the mean wing intensity may be considered a more consistently robust distinguishing feature between the two species.
 
 
 \subsubsection{Wing Intensity}
 Figures \ref{fig:wing_intensity} and \ref{fig:wing_intensity_means} show that Glaucous-winged Gulls have consistently higher and less variable wing intensity compared to Slaty-backed Gulls. The distributions are largely non-overlapping, making mean wing intensity a robust distinguishing feature between the species.
-
-\subsubsection{Wingtip Intensity}
-Figures \ref{fig:wingtip_intensity_violin} and \ref{fig:wingtip_intensity_distribution} illustrate that, while wingtip intensity also differs significantly between species, there is greater variability and overlap, as indicated by the broader range and outliers. This variability is likely due to the presence of white spots and differences in darkness, making wingtip intensity less consistently robust than wing intensity for species differentiation.
 
 % Wing Intensity Figure
 \begin{figure}[H]
@@ -1801,6 +1803,9 @@ Figures \ref{fig:wingtip_intensity_violin} and \ref{fig:wingtip_intensity_distri
     \caption{Wing intensity metrics for Slaty-backed and Glaucous-winged Gulls, showing significant brightness differences.}
     \label{fig:wing_intensity_combined}
 \end{figure}
+
+\subsubsection{Wingtip Intensity}
+Figures \ref{fig:wingtip_intensity_violin} and \ref{fig:wingtip_intensity_distribution} illustrate that, while wingtip intensity also differs significantly between species, there is greater variability and overlap, as indicated by the broader range and outliers. This variability is likely due to the presence of white spots and differences in darkness, making wingtip intensity less consistently robust than wing intensity for species differentiation.
 
 % Wingtip Intensity Figure
 \begin{figure}[H]
@@ -1971,19 +1976,23 @@ Our Local Binary Pattern (LBP) analysis revealed significant texture differences
 \subsection{Discriminative Power Analysis}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{images/LBP/discriminative_power_heatmap.png}
-    \caption{Regional discriminative power of texture properties. Color intensity shows percentage difference between species, with wingtip std\_intensity (57.4\%) being most distinctive.}
-    \label{fig:heatmap}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/LBP/discriminative_power_heatmap.png}
+        \caption{Regional discriminative power of texture properties}
+        \label{fig:heatmap}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/LBP/top_discriminative_features.png}
+        \caption{Top discriminative features.}
+        \label{fig:top_features}
+    \end{subfigure}
+    \caption{Discriminative power analysis of LBP texture features: (a) heatmap of regional differences, (b) top discriminative features.}
+    \label{fig:lbp_discriminative_power}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{images/LBP/top_discriminative_features.png}
-    \caption{Top discriminative features}
-    \label{fig:top_features}
-\end{figure}
-
-% LBP Top Discriminative Features
 \begin{itemize}
     \item \textbf{Wingtip:} Homogeneity (\textit{45.74\% difference})
     \item \textbf{Wingtip:} Contrast (\textit{32.36\% difference})
@@ -2051,12 +2060,10 @@ The figures illustrate the results of abstract features across different regions
         3 & Wing-transitions-energy & 16.4 \\
         \hline
     \end{tabular}
-    \label{tab:top_features}
-    \caption{Top discriminative features ordered by their percentage difference between species. Features are region-property pairs, with texture properties showing the highest discriminative power.}
     \label{tab:top_discriminative_features}
 \end{table}
 
-The analysis demonstrates that LBP texture features, particularly in the wingtip region, provide robust discriminative power for gull species identification. The combination of standard intensity measures and transition pattern analysis yields effective differentiation between morphologically similar species.
+The analysis demonstrates that LBP texture features, particularly in the wingtip region, provide robust discriminative power for gull species identification. The transition pattern analysis yields effective differentiation between morphologically similar species.
 
 \section{Clustering Results}
 
@@ -2067,105 +2074,27 @@ The clustering analysis was performed using three different algorithms: K-means,
 The performance of each clustering algorithm was evaluated using both unsupervised and supervised metrics. Table~\ref{tab:clustering_metrics} presents a comprehensive comparison of the three clustering approaches.
 
 \begin{table}[H]
-\centering
-\caption{Performance comparison of clustering algorithms}
-\label{tab:clustering_metrics}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Algorithm} & \textbf{Silhouette Score} & \textbf{Adjusted Rand Index} & \textbf{Accuracy} \\
-\midrule
-K-means & 0.548 & 0.825 & 95.43\% \\
-Hierarchical & 0.532 & 0.843 & 95.94\% \\
-GMM & 0.425 & 0.601 & 88.83\% \\
-\bottomrule
-\end{tabular}
+    \centering
+    \caption{Performance and confusion matrix summary for clustering algorithms. TP = True Positives, FN = False Negatives, GWG = Glaucous-Winged Gull, SBG = Slaty-Backed Gull.}
+    \label{tab:clustering_metrics}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lcccccccc}
+    \toprule
+    \textbf{Algorithm} & \textbf{Silhouette} & \textbf{ARI} & \textbf{Accuracy} & \textbf{TP (GWG)} & \textbf{FN (GWG)} & \textbf{TP (SBG)} & \textbf{FN (SBG)} \\
+    \midrule
+    K-means        & 0.548 & 0.825 & 95.43\% & 78 & 15 & 97  & 7 \\
+    Hierarchical   & 0.532 & 0.843 & 95.94\% & 90 & 3  & 99  & 5 \\
+    GMM            & 0.425 & 0.601 & 88.83\% & 86 & 7  & 102 & 2 \\
+    \bottomrule
+    \end{tabular}
+    }
 \end{table}
 
-\subsection{Algorithm-Specific Results}
-
-\subsubsection{K-means Clustering}
-
-K-means demonstrated strong performance with a silhouette score of 0.548 and an adjusted rand index of 0.825. After mapping clusters to species based on majority representation:
-
-\begin{itemize}
-    \item Cluster 0 was mapped to Glaucous-Winged Gull
-    \item Cluster 1 was mapped to Slaty-Backed Gull
-    \item Classification accuracy reached 95.43\%
-    \item 9 specimens (4.57\%) were misclassified
-\end{itemize}
-
-Analyzing the confusion matrix (Figure~\ref{fig:kmeans_cm}), we can observe:
-\begin{itemize}
-    \item True positives for Glaucous-Winged Gull: 78 specimens
-    \item False negatives for Glaucous-Winged Gull: 15 specimens
-    \item True positives for Slaty-Backed Gull: 97 specimens
-    \item False negatives for Slaty-Backed Gull: 7 specimens
-\end{itemize}
-
-\subsubsection{Hierarchical Clustering}
-
-Hierarchical clustering with Ward's linkage achieved comparable results to K-means with slightly better classification accuracy:
-
-\begin{itemize}
-    \item Silhouette score of 0.532
-    \item Adjusted rand index of 0.843, slightly higher than K-means
-    \item Same cluster mapping as K-means (Cluster 0 → Glaucous-Winged Gull, Cluster 1 → Slaty-Backed Gull)
-    \item Only 8 specimens were misclassified, resulting in an accuracy of 95.94\%
-\end{itemize}
-
-The confusion matrix (Figure~\ref{fig:hierarchical_cm}) shows:
-\begin{itemize}
-    \item True positives for Glaucous-Winged Gull: 90 specimens
-    \item False negatives for Glaucous-Winged Gull: 3 specimens 
-    \item True positives for Slaty-Backed Gull: 99 specimens
-    \item False negatives for Slaty-Backed Gull: 5 specimens
-\end{itemize}
-
-\subsubsection{Gaussian Mixture Model}
-
-GMM showed lower performance compared to the other algorithms:
-
-\begin{itemize}
-    \item Lowest silhouette score (0.425) among the three algorithms
-    \item Substantially lower adjusted rand index (0.601)
-    \item Accuracy of 88.83\%, with 22 specimens (11.17\%) misclassified
-    \item Cluster mapping: Cluster 0 → Slaty-Backed Gull, Cluster 1 → Glaucous-Winged Gull
-\end{itemize}
-
-The GMM confusion matrix (Figure~\ref{fig:gmm_cm}) shows:
-\begin{itemize}
-    \item True positives for Glaucous-Winged Gull: 86 specimens
-    \item False negatives for Glaucous-Winged Gull: 7 specimens
-    \item True positives for Slaty-Backed Gull: 102 specimens
-    \item False negatives for Slaty-Backed Gull: 2 specimens
-\end{itemize}
-
-\subsection{Misclassification Analysis}
-
-The misclassified specimens from each algorithm were examined in detail. For K-means, the misclassified specimens included:
-
-\begin{itemize}
-    \item 7 Slaty-Backed Gulls incorrectly assigned to the Glaucous-Winged Gull cluster
-    \item 15 Glaucous-Winged Gulls incorrectly assigned to the Slaty-Backed Gull cluster
-\end{itemize}
-
-For hierarchical clustering, which achieved the highest accuracy:
-\begin{itemize}
-    \item 5 Slaty-Backed Gulls incorrectly assigned to the Glaucous-Winged Gull cluster
-    \item 3 Glaucous-Winged Gulls incorrectly assigned to the Slaty-Backed Gull cluster
-\end{itemize}
-
-For GMM, with the lowest accuracy:
-\begin{itemize}
-    \item 2 Slaty-Backed Gulls incorrectly assigned to the Glaucous-Winged Gull cluster
-    \item 7 Glaucous-Winged Gulls incorrectly assigned to the Slaty-Backed Gull cluster
-\end{itemize}
-
-A common pattern among misclassified specimens was their atypical morphological characteristics. For instance, examining the sample of misclassified points from K-means, certain Glaucous-Winged Gulls had unusually high percentages of dark pixels (e.g., specimens with 25.69\% and 21.44\% dark pixels), which might have caused them to be classified as Slaty-Backed Gulls. Similarly, some Slaty-Backed Gulls showed atypically low percentages of dark pixels, making them more similar to Glaucous-Winged Gulls.
-
+    Table~\ref{tab:clustering_metrics} summarizes the key performance metrics and confusion matrix results for all three clustering algorithms. Hierarchical clustering achieved the highest adjusted rand index and accuracy, with the fewest misclassifications for Glaucous-Winged Gull. K-means also performed strongly, while GMM showed lower overall accuracy and ARI, with more false negatives for Glaucous-Winged Gull.
+ 
 \subsection{Feature Importance Analysis}
 
-The feature importance analysis based on cluster separation (Figure~\ref{fig:feature_importance}) revealed that the darker pixel count was by far the most discriminative feature with an absolute difference of 143,709.23 between cluster centers. Mean wing intensity (85.00) and mean wingtip intensity (76.48) also contributed to cluster separation but to a much lesser extent. This suggests that the number of dark pixels in the wing region is the most important morphological characteristic for distinguishing between these two gull species.
+The feature importance analysis based on cluster separation revealed that the darker pixel count was by far the most discriminative feature with an absolute difference of 143,709.23 between cluster centers. Mean wing intensity (85.00) and mean wingtip intensity (76.48) also contributed to cluster separation but to a much lesser extent. This suggests that the number of dark pixels in the wing region is the most important morphological characteristic for distinguishing between these two gull species.
 
 \subsection{Integration with Visual Analysis}
 
@@ -2196,13 +2125,6 @@ The clustering performance is visualized through two complementary perspectives:
     \caption{Cluster formations in PCA-reduced space: (a) GMM shows smooth probability contours, (b) Hierarchical clustering displays tree-like linkages, and (c) K-means exhibits distinct spherical clusters. All methods show effective separation between species.}
     \label{fig:cluster_visualizations}
 \end{figure}
-
-Key observations from the PCA visualizations include:
-\begin{itemize}
-    \item \textbf{K-means} forms compact spherical clusters with clear separation between species
-    \item \textbf{Hierarchical clustering} reveals a dendrogram-like structure that effectively captures the hierarchical relationships
-    \item \textbf{GMM} shows smooth probability contours with some overlap between species, which explains its lower accuracy
-\end{itemize}
 
 \subsection{Confusion Matrix Analysis}
 
@@ -2239,16 +2161,17 @@ The confusion matrices clearly illustrate the performance differences between th
     \item GMM demonstrates reasonable performance for Slaty-Backed Gulls but struggles more with correctly classifying Glaucous-Winged Gulls
 \end{itemize}
 
-\subsection{Algorithm Comparison}
+% \subsection{Algorithm Comparison}
 
-Figure~\ref{fig:algorithm_comparison} provides a direct comparison of the three clustering algorithms based on their silhouette scores, which measures how well-defined the clusters are. K-means achieved the highest silhouette score (0.548), followed closely by hierarchical clustering (0.532), with GMM showing the lowest score (0.425).
+% Figure~\ref{fig:algorithm_comparison} provides a direct comparison of the three clustering algorithms based on their silhouette scores, which measures how well-defined the clusters are. K-means achieved the highest silhouette score (0.548), followed closely by hierarchical clustering (0.532), with GMM showing the lowest score (0.425).
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/algorithm_comparison.png}
-    \caption{Comparison of clustering algorithms based on silhouette scores. Higher values indicate better-defined clusters.}
-    \label{fig:algorithm_comparison}
-\end{figure}
+% APPENDIX
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{images/clustering/algorithm_comparison.png}
+%     \caption{Comparison of clustering algorithms based on silhouette scores. Higher values indicate better-defined clusters.}
+%     \label{fig:algorithm_comparison}
+% \end{figure}
 
 \subsection{Implications of Results}
 
@@ -2776,5 +2699,8 @@ This study successfully addressed its primary research aims. First, high-accurac
 %     \caption{Transitions vs. complexity analysis comparing pattern complexity distributions across different gull regions}
 %     \label{fig:transitions_complexity}
 % \end{figure}
+
+
+
 
 \end{document}

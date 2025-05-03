@@ -170,26 +170,6 @@ A.~A. Biswas, M.~M. Rahman, A.~Rajbongshi, and A.~Majumder, ``Recognition of
   \emph{2021 International Conference on Computer Communication and Informatics
   (ICCCI)}, 2021, pp. 1--6.
 
-\bibitem{buda2018systematic}
-\BIBentryALTinterwordspacing
-M.~Buda, A.~Maki, and M.~A. Mazurowski, ``A systematic study of the class
-  imbalance problem in convolutional neural networks,'' \emph{Neural Networks},
-  vol. 106, pp. 249--259, 2018. [Online]. Available:
-  \url{https://www.sciencedirect.com/science/article/pii/S0893608018302107}
-\BIBentrySTDinterwordspacing
-
-\bibitem{yang2022augmentation}
-\BIBentryALTinterwordspacing
-S.~Yang \emph{et~al.}, ``Image data augmentation for deep learning: A survey,''
-  \emph{arXiv preprint arXiv:2204.08610}, 2022. [Online]. Available:
-  \url{https://arxiv.org/abs/2204.08610}
-\BIBentrySTDinterwordspacing
-
-\bibitem{wu2024augmentation}
-Z.~Wu, ``Image data augmentation techniques based on deep learning: A survey,''
-  \emph{Mathematical Biosciences and Engineering}, vol.~21, no.~6, pp.
-  6190--6224, 2024.
-
 \bibitem{Selvaraju_2019}
 \BIBentryALTinterwordspacing
 R.~R. Selvaraju, M.~Cogswell, A.~Das, R.~Vedantam, D.~Parikh, and D.~Batra,
@@ -294,6 +274,26 @@ B.~Krawczyk, ``Learning from imbalanced data: open challenges and future
   221--232, 2016. [Online]. Available:
   \url{https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0192-5}
 \BIBentrySTDinterwordspacing
+
+\bibitem{buda2018systematic}
+\BIBentryALTinterwordspacing
+M.~Buda, A.~Maki, and M.~A. Mazurowski, ``A systematic study of the class
+  imbalance problem in convolutional neural networks,'' \emph{Neural Networks},
+  vol. 106, pp. 249--259, 2018. [Online]. Available:
+  \url{https://www.sciencedirect.com/science/article/pii/S0893608018302107}
+\BIBentrySTDinterwordspacing
+
+\bibitem{yang2022augmentation}
+\BIBentryALTinterwordspacing
+S.~Yang \emph{et~al.}, ``Image data augmentation for deep learning: A survey,''
+  \emph{arXiv preprint arXiv:2204.08610}, 2022. [Online]. Available:
+  \url{https://arxiv.org/abs/2204.08610}
+\BIBentrySTDinterwordspacing
+
+\bibitem{wu2024augmentation}
+Z.~Wu, ``Image data augmentation techniques based on deep learning: A survey,''
+  \emph{Mathematical Biosciences and Engineering}, vol.~21, no.~6, pp.
+  6190--6224, 2024.
 
 \bibitem{cui2019classbalanced}
 \BIBentryALTinterwordspacing
