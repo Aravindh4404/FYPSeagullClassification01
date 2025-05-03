@@ -1539,7 +1539,7 @@ The Python pipeline executed these steps for each image:
             (0,10), (10,20), ..., (240,255)  # 25 total bins
         ]
         \end{verbatim}
-        \item Quantified dark pixels using thresholds: <30, <40, <50, <60 intensity
+        \item Quantified dark pixels using thresholds: $<30$, $<40$, $<50$, $<60$ intensity
     \end{itemize}
     \item \textbf{Wing-Wingtip Difference}
     \begin{itemize}
@@ -1548,9 +1548,34 @@ The Python pipeline executed these steps for each image:
     \end{itemize}
 \end{enumerate}
 
-\subsection{Statistical Comparison}
-Statistical testing using SciPy was performed where t-test for unequal variances was implemented.
+\subsection{Statistical Testing Methodology}
+For quantitative comparison between the two gull species, we employed Welch's t-test (unequal variances t-test) to analyze the differences in wing and wingtip intensity values. This test was selected as it does not assume equal variances between groups, making it more robust for our dataset.
 
+The test statistic was calculated as:
+\begin{equation}
+t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item $\bar{X}_1$ = Mean intensity for Slaty-backed Gulls
+    \item $\bar{X}_2$ = Mean intensity for Glaucous-winged Gulls
+    \item $s_1^2$ = Sample variance for Slaty-backed Gulls
+    \item $s_2^2$ = Sample variance for Glaucous-winged Gulls
+    \item $n_1$ = Sample size for Slaty-backed Gulls
+    \item $n_2$ = Sample size for Glaucous-winged Gulls
+\end{itemize}
+
+The degrees of freedom were approximated using the Welch--Satterthwaite equation:
+\begin{equation}
+\nu \approx \frac{\left(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1} + \frac{(s_2^2/n_2)^2}{n_2-1}}
+\end{equation}
+
+Where $\nu$ represents the degrees of freedom used to determine the critical values for the t-distribution.
+
+All statistical tests were implemented using SciPy's \texttt{stats.ttest\_ind()} function with \texttt{equal\_var=False} parameter to specify Welch's t-test. These statistical analyses allowed us to find and objectively validate whether the differences found through the analysis in areas highlighted by Grad-CAM (wing and wingtip) between species are quantitatively significant.
+
+The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. Various visualization plots were created to represent the analysis results that include threshold-based differences, darkness metrics, pixel intensity distributions. per-image variability, and wing vs wingtip intensity relationships.
 
 % Limitations
 % \paragraph{Limitations and Future Work} While manual segmentation ensured biological accuracy, it introduced human variability. Future implementations could use U-Net models \cite{ronneberger2015unet} for automated segmentation. The 10-unit intensity bins provided granular analysis but may obscure broader patterns visible in 25-unit groupings used by field guides \cite{pyle2015identification}.
@@ -1565,10 +1590,6 @@ Statistical testing using SciPy was performed where t-test for unequal variances
 % \end{itemize}
 
 % \href{https://doi.org/10.1676/13-107.1}{(Howell and Dunn, 2014)}
-
-These statistical analyses allowed us to find and objectively validate whether the differences found through the analysis in areas highlighted by Grad-CAM (wing and wingtip) between species are quantitatively significant.
-
-The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. Various visualization plots were created to represent the analysis results that include threshold-based differences, darkness metrics, pixel intensity distributions. per-image variability, and wing vs wingtip intensity relationships.
 
 \section{Verification by Clustering for Species Differentiation}
 
@@ -1690,14 +1711,9 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
 
 Based on the results presented in Tables~\ref{tab:val_test_comparison} and~\ref{tab:combined_performance}, it is evident that several models achieved high validation and test accuracy although there were notable differences in their interpretability and localization capabilities. The results demonstrate that deep learning models, particularly VGG-16, achieved high classification accuracy in distinguishing Slaty-backed and Glaucous-winged Gulls, validating the efficacy of transfer learning for fine-grained avian classification.
 
-However, qualitative analysis of Grad-CAM and interpretability visualizations Section~\ref{sec:vg_grad} and Section~\ref{chap:appendix} revealed that most models, with the exception of VGG-16, failed to consistently highlight the biologically relevant regions-namely, the wings and wingtip areas-of the gull images. Therefore, VGG-16 was selected as the best-performing model.
+However, qualitative analysis of Grad-CAM and interpretability visualizations Section~\ref{chap:appendix} revealed that most models, with the exception of VGG-16, failed to consistently highlight the biologically relevant regions-namely, the wings and wingtip areas-of the gull images. Therefore, VGG-16 was selected as the best-performing model.
 
-\section{Interpretation of Model Performance and Biological Significance}
-
-The Grad-CAM visualizations of VGG-16 model confirmed that models consistently focused on wing and wingtip regions, mirroring ornithological expertise. For instance, in Slaty-backed Gulls, high activation coincided with dark primary feather patterns, while Glaucous-winged Gulls showed activations around lighter wingtips. This congruence between model attention and expert knowledge not only validates the models’ decision-making but also reinforces the biological relevance of wingtip morphology as a taxonomic marker aligning with the biological reality that diagnostic traits in these species are localized to specific morphological regions rather than global image contexts.
-
-
-\section{Grad-CAM outputs of best performing VGG-16 model}\label{sec:vg_grad}
+The Grad-CAM visualizations of VGG-16 model as shown in Figure~\ref{fig:vgg16_gradcam}, confirmed that models consistently focused on wing and wingtip regions, mirroring ornithological expertise. For instance, in Slaty-backed Gulls, high activation coincided with dark primary feather patterns, while Glaucous-winged Gulls showed activations around lighter wing and wingtips. This congruence between model attention and expert knowledge not only validates the models’ decision-making but also reinforces the biological relevance of wingtip and wing morphology as a taxonomic marker aligning with the biological reality that diagnostic traits in these species are localized to specific morphological regions rather than global image contexts.
 
 \begin{figure}[H]
     \centering
@@ -1706,12 +1722,6 @@ The Grad-CAM visualizations of VGG-16 model confirmed that models consistently f
     \label{fig:vgg16_gradcam}
 \end{figure}
 
-As shown in Figure~\ref{fig:vgg16_gradcam}, the Grad-CAM outputs from the VGG-16 model highlight the wing and wingtip regions of the birds
-\section{Quantitative Validation of Morphological Differences}
-The intensity analysis revealed statistically significant differences ($p < 0.001$) in wing and wingtip brightness between species. Slaty-backed Gulls exhibited mean wing intensities 108.3\% darker than Glaucous-winged Gulls, with wingtip intensities 90.5\% darker. Crucially, the presence of very dark wingtip pixels (intensity $<30$) emerged as a key discriminative feature: Slaty-backed Gulls had 25–48\% of wingtip pixels below this threshold, compared to near-zero in Glaucous-winged Gulls. This stark contrast could explain the potential models’ reliance on these regions and provides quantitative support for field identification guidelines.
-
-However, the overlapping distributions in wingtip intensity highlight limitations. While mean wing intensity is a robust classifier, individual variation in wingtip darkness---potentially due to high individual variation or environmental factors---introduces ambiguity. This underscores the necessity of multi-feature analysis, as no single metric fully captures species differences.
-
 \section{Intensity Analysis Results}
 % images/REPORT_IMAGES_INTENSITY/I2/intensitydistribution.png
 
@@ -1719,7 +1729,7 @@ However, the overlapping distributions in wingtip intensity highlight limitation
 
 The intensity analysis revealed significant quantifiable differences in wing and wingtip intensities between Slaty-backed Gulls and Glaucous-winged Gulls, providing strong discriminative features for species identification.
 
-Statistical analysis of both wing and wingtip intensity demonstrated clear and significant differences between the two gull species across multiple samples. Independent samples t-tests (Welch's t-tests, allowing for unequal variances) were performed for both wing and wingtip intensities, comparing the means of the two species. Both tests  confirmed that this difference is highly significant ($p < 0.001$), indicating that the observed differences in intensity for both wing and wingtip are extremely unlikely to have arisen by chance.
+Statistical analysis of both wing and wingtip intensity demonstrated clear and significant differences between the two gull species across multiple samples. Independent samples t-tests (Welch's t-tests, allowing for unequal variances) were performed for both wing and wingtip intensities, comparing the means of the two species. Both tests confirmed that this difference is highly significant ($p < 0.001$), indicating that the observed differences in intensity for both wing and wingtip are extremely unlikely to have arisen by chance.
 
 \begin{table}[H]
     \centering
@@ -1742,15 +1752,15 @@ Statistical analysis of both wing and wingtip intensity demonstrated clear and s
     }
 \end{table}
 
-Test Statistic:
-\begin{equation}
-t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
-\end{equation}
+% Test Statistic:
+% \begin{equation}
+% t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+% \end{equation}
 
-Degrees of freedom (Welch--Satterthwaite approximation):
-\begin{equation}
-\nu \approx \frac{\left(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1} + \frac{(s_2^2/n_2)^2}{n_2-1}}
-\end{equation}
+% Degrees of freedom (Welch--Satterthwaite approximation):
+% \begin{equation}
+% \nu \approx \frac{\left(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1} + \frac{(s_2^2/n_2)^2}{n_2-1}}
+% \end{equation}
 
 
 % \begin{figure}[H]
@@ -1856,7 +1866,7 @@ Figure~\ref{fig:wing_intensity_distribution} displays the distribution of mean w
 \end{figure}
 
 
-\subsection{Wingtip Pixel Intensity Distributions}
+\subsection{Wingtip Intensity Distributions}
 
 The distributions of wingtip pixel intensities for both species are shown in Figure~\ref{fig:wingtip_intensity_distributions}. Slaty-backed Gulls (orange) have a higher proportion of darker pixels (lower intensity values), while Glaucous-winged Gulls (blue) show a greater proportion of lighter pixels (higher intensity values). Both grouped and fine-grained binning approaches reveal unique, largely non-overlapping patterns for each species.
 
@@ -1907,11 +1917,11 @@ Figure~\ref{fig:verydarkdist} further demonstrates that this difference is consi
     \label{fig:darkpixels}
 \end{figure}
 
-The quantitative difference in very dark pixels between species is substantial, as shown in Figure~\ref{fig:darkpixels}, with Slaty-backed Gulls having on average 73,592 very dark pixels compared to just 8 in Glaucous-winged Gulls. This represents a critical diagnostic feature for species identification. This pronounced disparity represents a critical diagnostic feature for species identification. However, it is important to note that the presence of very dark pixels is not consistent across all images, so this feature cannot be used as a distinguishing criterion in every case.
+The quantitative difference in very dark pixels between species is substantial, as shown in Figure~\ref{fig:darkpixels}, with Slaty-backed Gulls having on average 73,592 very dark pixels compared to just 8 in Glaucous-winged Gulls. This represents a critical diagnostic feature for species identification. This pronounced disparity represents a critical diagnostic feature for species identification. However, it is important to note that the presence of very dark pixels is not consistent across all images, so this feature may not be used as a distinguishing criterion in every case.
 
 \subsection{Relationship Between Wing and Wingtip Intensities}
 
-To quantitatively assess the relative darkness of wingtip area compared to the rest of the wing which were the 2 critical areas highlighted by Grad-CAM, the proportion of wingtip pixels that are darker than the mean wing intensity for each species was calculated as suggested by industry expert.
+To quantitatively assess the relative darkness of wingtip area compared to the rest of the wing which were the 2 critical areas highlighted by Grad-CAM, the proportion of wingtip pixels that are darker than the mean wing intensity for each species was calculated as suggested by industry expert Professor Gibbins.
 
 
 \begin{table}[H]
@@ -1985,7 +1995,7 @@ Figure~\ref{fig:wingtip_darkness_summary} presents a set of visualizations summa
 
 % Our Local Binary Pattern (LBP) analysis revealed a few texture differences between Slaty-backed and Glaucous-winged Gulls across anatomical regions. The implementation focused on both ones and transition histograms, with histogram-based feature extraction.
 
-For the final results, the default LBP variant was selected since default histogram retains all LBP codes, providing a comprehensive representation of local texture patterns. Consequently, it facilitates the direct calculation of derived features such as the number of ones and the number of transitions per pattern, as these statistics can be computed from the complete set of binary codes present in the default histogram. This approach ensures that no potentially discriminative texture information is excluded, thereby supporting a more detailed and flexible analysis of texture complexity and structure across the studied regions.
+For the final results displayed below, the default LBP variant was selected since default histogram retains all LBP codes, providing a comprehensive representation of local texture patterns. Consequently, it facilitates the direct calculation of derived features such as the number of ones and the number of transitions per pattern, as these statistics can be computed from the complete set of binary codes present in the default histogram. This approach ensures that no potentially discriminative texture information is excluded, thereby supporting a more detailed and flexible analysis of texture complexity and structure across the studied regions.
 
 \subsection{Discriminative Power Analysis}
 \begin{figure}[H]
@@ -2014,6 +2024,16 @@ The discriminative power of LBP texture features is visualized as a heatmap and 
 
 Although standard texture properties demonstrated substantial differences between species (with top feature close to 50\% difference), it is important to note that the features from LBP pattern codes are not guaranteed to be rotationally invariant. The abstract features (Number of Ones and Transitions) showed more modest discriminative power (maximum 10.4\%) but can be considered rotation variant since we are only dealing with the presence or count of ones or transitions in a region.
 
+Your paragraph is correct:  
+> Figure~\ref{fig:feature_histograms} provides detailed histograms of specific features, such as the wingtip's 'Number of Ones' and 'Transitions'.
+
+However, since you now want to split the four subplots into two separate figures-(a)+(c) together and (b)+(d) together-and reference them, here is the revised approach:
+
+---
+
+**LaTeX Code for Two Figures:**
+
+```latex
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
@@ -2023,28 +2043,32 @@ Although standard texture properties demonstrated substantial differences betwee
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{images/LBP/default_wing_transitions_histogram.png}
-        \caption{Wing Transitions distribution (9.4\% difference)}
-        \label{fig:wing_transitions}
-    \end{subfigure}
-    \vspace{2mm}
-    \begin{subfigure}[b]{0.49\textwidth}
         \includegraphics[width=\textwidth]{images/LBP/default_wingtip_transitions_histogram.png}
         \caption{Wingtip Transitions distribution (8.0\% difference)}
         \label{fig:wingtip_transitions}
     \end{subfigure}
+    \caption{Histograms of LBP features for the wingtip region: (a) Number of Ones, (b) Transitions.}
+    \label{fig:wingtip_feature_histograms}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/LBP/default_wing_transitions_histogram.png}
+        \caption{Wing Transitions distribution (9.4\% difference)}
+        \label{fig:wing_transitions}
+    \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
         \includegraphics[width=\textwidth]{images/LBP/default_wing_ones_histogram.png}
-        \caption{Wing Number of Ones distribution (e.g., 7.5\% difference)}
+        \caption{Wing Number of Ones distribution (7.5\% difference)}
         \label{fig:wing_ones}
     \end{subfigure}
-    \caption{Abstract feature histograms showing transition complexity and bright neighbor distributions across different wing regions.}
-    \label{fig:feature_histograms}
+    \caption{Histograms of LBP features for the wing region: (a) Transitions, (b) Number of Ones.}
+    \label{fig:wing_feature_histograms}
 \end{figure}
 
-
-Figure~\ref{fig:feature_histograms} provides detailed histograms of specific features, such as the wingtip's 'Number of Ones' and 'Transitions'.
+The distributions of the 'Number of Ones' and 'Transitions' features for the wingtip and wing regions are shown as histograms in Figures~\ref{fig:wingtip_feature_histograms} and~\ref{fig:wing_feature_histograms}, respectively.
 
 \subsection{Abstract Feature Distributions}
 \begin{figure}[H]
