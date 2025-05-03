@@ -424,6 +424,10 @@ To further enhance classification performance, 640 high-resolution images of in-
 
 For comparative analysis, an unrefined dataset containing 632 adult in-flight Glaucous-winged Gulls and 640 high-quality Slaty-backed Gull images was also tested which resulted in around 60\% model accuracy.
 
+\subsubsection{Test Dataset}
+
+All well-performing models were subsequently evaluated using a test dataset comprising unseen images during training, sourced from books, online, and from industry expert Professor Gibbins in order to obtain a precise assessment of model accuracy. In the final evaluation, the test set consisted of 14 images of Glaucous-winged Gulls and 33 images of Slaty-backed Gulls. Although this test set was imbalanced, the results were not adversely affected, as the models did not exhibit bias toward either class. This is further supported by the individual class metrics presented in the Results section, which demonstrate consistent performance across both classes.
+
 
 % \begin{lstlisting}[language=Python]
 % optimizer = optim.AdamW(model.parameters(), lr=0.0001, weight_decay=0.001)
@@ -532,7 +536,7 @@ Transfer learning was employed in the implementation to leverage the robust feat
 % \href{https://arxiv.org/abs/1409.1556}{Simonyan and Zisserman (2015)} 
 
 % USEFUL
-Several pre-trained architectures were evaluated for this task, with VGG-16 model (a CNN model proposed by K. Simonyan and A. Zisserman) demonstrating superior performance in our specific classification context. The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
+The effectiveness of transfer learning was evident in the rapid convergence and high accuracy achieved even with our relatively limited dataset, demonstrating the potential of this approach for specialized classification tasks with significant class imbalance.
 
 \subsection{Common Implementation Strategy}
 
@@ -579,8 +583,8 @@ To optimize training with limited data, several techniques were employed consist
     
     \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using either ReduceLROnPlateau or CosineAnnealingLR was implemented across models, reducing learning rates when validation metrics plateaued.
     
-    \item \textbf{Early stopping:} Training was halted when validation accuracy stopped improving for a specified number of epochs (patience = 3-5) to prevent overfitting.\citep{Prechelt1998}
-    
+    \item \textbf{Early stopping:} The models were evaluated both with and without the application of early stopping. In experiments where early stopping was implemented, training was terminated if the validation accuracy did not improve for a predetermined number of epochs (patience = 3–5), or if the validation loss began to increase, thereby mitigating the risk of overfitting \citep{Prechelt1998}.
+
     \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updates. 
     
 %\citep{zhang2020gradientclippingacceleratestraining}
@@ -656,9 +660,9 @@ Model performance was systematically evaluated using:
 
 \begin{itemize}
     \item \textbf{Validation accuracy:} Used during training to select optimal model checkpoints and trigger early stopping or learning rate adjustments.
-    \item \textbf{Test accuracy:} Final evaluation metric on the unseen test set to measure generalization performance.
+    \item \textbf{Test accuracy:} The final evaluation metric was the accuracy on the unseen test set, which served to assess the generalization performance of the models. In addition to evaluating test accuracy, Grad-CAM visualizations were generated using the test set to further aid in the selection of the optimal model and make sure that the model learned relevant features.
     \item \textbf{Visualization:} Training loss and validation accuracy curves were plotted to analyze model convergence and potential overfitting.
-    \item \textbf{Checkpointing:} Best-performing models based on validation accuracy were saved for later evaluation and deployment.
+    \item \textbf{Checkpointing:} Best-performing models based on validation accuracy were saved for later evaluation on test dataset.
 \end{itemize}
 
 \subsection{Model Checkpointing and Evaluation}
@@ -670,103 +674,108 @@ Our implementation includes a robust evaluation framework with model checkpointi
 
 \subsection{VGG-16 Architecture}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/architecture/vgg.png}
+    \caption{Architecture of the VGG model}
+    \label{fig:vgg_architecture}
+\end{figure}
 
-\tikzset{every picture/.style={line width=0.75pt}}
-\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
 
-% Conv1-1 
-\draw  [fill=white  ,fill opacity=1 ] (44,95.69) -- (124.19,15.5) -- (136,15.5) -- (136,200.31) -- (55.81,280.5) -- (44,280.5) -- cycle ; \draw   (136,15.5) -- (55.81,95.69) -- (44,95.69) ; \draw   (55.81,95.69) -- (55.81,280.5) ;
-% Conv 1-2
-\draw  [fill=white  ,fill opacity=1 ] (64,96.19) -- (144.19,16) -- (156,16) -- (156,200.81) -- (75.81,281) -- (64,281) -- cycle ; \draw   (156,16) -- (75.81,96.19) -- (64,96.19) ; \draw   (75.81,96.19) -- (75.81,281) ;
-% Pooling 1
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (100,105.5) -- (154,51.5) -- (164,51.5) -- (164,174.5) -- (110,228.5) -- (100,228.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (164,51.5) -- (110,105.5) -- (100,105.5) ; \draw  [color=red  ,draw opacity=1 ] (110,105.5) -- (110,228.5) ;
-% Conv 2-1
-\draw  [fill=white  ,fill opacity=1 ] (115,106.5) -- (169,52.5) -- (179,52.5) -- (179,175.5) -- (125,229.5) -- (115,229.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (179,52.5) -- (125,106.5) -- (115,106.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (125,106.5) -- (125,229.5) ;
-% Conv 2-2
-\draw  [fill=white  ,fill opacity=1 ] (131,107.5) -- (185,53.5) -- (195,53.5) -- (195,176.5) -- (141,230.5) -- (131,230.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (195,53.5) -- (141,107.5) -- (131,107.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (141,107.5) -- (141,230.5) ;
-% Pooling 2
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (161,113.5) -- (195,79.5) -- (205,79.5) -- (205,152.5) -- (171,186.5) -- (161,186.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (205,79.5) -- (171,113.5) -- (161,113.5) ; \draw  [color=red  ,draw opacity=1 ] (171,113.5) -- (171,186.5) ;
-% Conv 3-1
-\draw  [fill=white  ,fill opacity=1 ] (179,113.5) -- (213,79.5) -- (223,79.5) -- (223,152.5) -- (189,186.5) -- (179,186.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (223,79.5) -- (189,113.5) -- (179,113.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (189,113.5) -- (189,186.5) ;
-% Conv 3-2
-\draw  [fill=white  ,fill opacity=1 ] (198,114.5) -- (232,80.5) -- (242,80.5) -- (242,153.5) -- (208,187.5) -- (198,187.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (242,80.5) -- (208,114.5) -- (198,114.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (208,114.5) -- (208,187.5) ;
-% Conv 3-3
-\draw  [fill=white  ,fill opacity=1 ] (217,115.5) -- (251,81.5) -- (261,81.5) -- (261,154.5) -- (227,188.5) -- (217,188.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (261,81.5) -- (227,115.5) -- (217,115.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (227,115.5) -- (227,188.5) ;
-% Pooling 3
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (248,127.5) -- (264,111.5) -- (280,111.5) -- (280,151.5) -- (264,167.5) -- (248,167.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (280,111.5) -- (264,127.5) -- (248,127.5) ; \draw  [color=red  ,draw opacity=1 ] (264,127.5) -- (264,167.5) ;
-% Conv 4-1
-\draw  [fill=white  ,fill opacity=1 ] (270,128.5) -- (286,112.5) -- (302,112.5) -- (302,152.5) -- (286,168.5) -- (270,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (302,112.5) -- (286,128.5) -- (270,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (286,128.5) -- (286,168.5) ;
-% Conv 4-2
-\draw  [fill=white  ,fill opacity=1 ] (292,128.5) -- (308,112.5) -- (324,112.5) -- (324,152.5) -- (308,168.5) -- (292,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (324,112.5) -- (308,128.5) -- (292,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (308,128.5) -- (308,168.5) ;
-% Conv 4-3
-\draw  [fill=white  ,fill opacity=1 ] (314,128.5) -- (330,112.5) -- (346,112.5) -- (346,152.5) -- (330,168.5) -- (314,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (346,112.5) -- (330,128.5) -- (314,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (330,128.5) -- (330,168.5) ;
-% pooling 4
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (343,134.5) -- (352,125.5) -- (365,125.5) -- (365,143.5) -- (356,152.5) -- (343,152.5) -- cycle ; \draw  [color={rgb, 255:red, 251; green, 0; blue, 0 }  ,draw opacity=1 ] (365,125.5) -- (356,134.5) -- (343,134.5) ; \draw  [color={rgb, 255:red, 251; green, 0; blue, 0 }  ,draw opacity=1 ] (356,134.5) -- (356,152.5) ;
-% Conv 5-1
-\draw  [fill=white  ,fill opacity=1 ] (359,134.5) -- (368,125.5) -- (381,125.5) -- (381,143.5) -- (372,152.5) -- (359,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (381,125.5) -- (372,134.5) -- (359,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (372,134.5) -- (372,152.5) ;
-% Conv 5-2
-\draw  [fill=white  ,fill opacity=1 ] (375,134.5) -- (384,125.5) -- (397,125.5) -- (397,143.5) -- (388,152.5) -- (375,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (397,125.5) -- (388,134.5) -- (375,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (388,134.5) -- (388,152.5) ;
-% COnv 5-3
-\draw  [fill=white  ,fill opacity=1 ] (391,134.5) -- (400,125.5) -- (413,125.5) -- (413,143.5) -- (404,152.5) -- (391,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (413,125.5) -- (404,134.5) -- (391,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (404,134.5) -- (404,152.5) ;
-% Pooling 5
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (412,133.5) -- (416,129.5) -- (434,129.5) -- (434,139.5) -- (430,143.5) -- (412,143.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (434,129.5) -- (430,133.5) -- (412,133.5) ; \draw  [color=red  ,draw opacity=1 ] (430,133.5) -- (430,143.5) ;
-% dense 1
-\draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (438,134.07) -- (440.57,131.5) -- (496,131.5) -- (496,137.93) -- (493.43,140.5) -- (438,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (496,131.5) -- (493.43,134.07) -- (438,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (493.43,134.07) -- (493.43,140.5) ;
-% dense 2
-\draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (497.43,134.07) -- (500,131.5) -- (555.43,131.5) -- (555.43,137.93) -- (552.86,140.5) -- (497.43,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (555.43,131.5) -- (552.86,134.07) -- (497.43,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (552.86,134.07) -- (552.86,140.5) ;
-% dense 3
-\draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (555.86,134.07) -- (558.43,131.5) -- (582,131.5) -- (582,137.93) -- (579.43,140.5) -- (555.86,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (582,131.5) -- (579.43,134.07) -- (555.86,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (579.43,134.07) -- (579.43,140.5) ;
-% softmax
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (582.43,134.07) -- (585,131.5) -- (608.57,131.5) -- (608.57,137.93) -- (606,140.5) -- (582.43,140.5) -- cycle ; \draw  [color=orange  ,draw opacity=1 ] (608.57,131.5) -- (606,134.07) -- (582.43,134.07) ; \draw  [color=orange  ,draw opacity=1 ] (606,134.07) -- (606,140.5) ;
-% input
-\draw   (6,140) -- (24,140) -- (24,130) -- (36,150) -- (24,170) -- (24,160) -- (6,160) -- cycle ;
-% arrow
-\draw    (426,88.25) -- (425.54,124.5) ;
-\draw [shift={(425.5,127.5)}, rotate = 270.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
-% conv
-\draw  [fill=white  ,fill opacity=1 ] (296.19,223.25) -- (301.69,217.75) -- (314.5,217.75) -- (314.5,226.81) -- (309,232.31) -- (296.19,232.31) -- cycle ; \draw   (314.5,217.75) -- (309,223.25) -- (296.19,223.25) ; \draw   (309,223.25) -- (309,232.31) ;
-% max pool
-\draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,242.31) -- (301.69,236.81) -- (314.5,236.81) -- (314.5,245.87) -- (309,251.37) -- (296.19,251.37) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (314.5,236.81) -- (309,242.31) -- (296.19,242.31) ; \draw  [color=red  ,draw opacity=1 ] (309,242.31) -- (309,251.37) ;
-% fully connected
-\draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,261.25) -- (301.69,255.75) -- (314.5,255.75) -- (314.5,264.81) -- (309,270.31) -- (296.19,270.31) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (314.5,255.75) -- (309,261.25) -- (296.19,261.25) ; \draw  [color=blue  ,draw opacity=1 ] (309,261.25) -- (309,270.31) ;
-% softmax
-\draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,280.31) -- (301.69,274.81) -- (314.5,274.81) -- (314.5,283.87) -- (309,289.37) -- (296.19,289.37) -- cycle ; \draw  [color=orange  ,draw opacity=1 ] (314.5,274.81) -- (309,280.31) -- (296.19,280.31) ; \draw  [color=orange  ,draw opacity=1 ] (309,280.31) -- (309,289.37) ;
+% \tikzset{every picture/.style={line width=0.75pt}}
+% \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+
+% % Conv1-1 
+% \draw  [fill=white  ,fill opacity=1 ] (44,95.69) -- (124.19,15.5) -- (136,15.5) -- (136,200.31) -- (55.81,280.5) -- (44,280.5) -- cycle ; \draw   (136,15.5) -- (55.81,95.69) -- (44,95.69) ; \draw   (55.81,95.69) -- (55.81,280.5) ;
+% % Conv 1-2
+% \draw  [fill=white  ,fill opacity=1 ] (64,96.19) -- (144.19,16) -- (156,16) -- (156,200.81) -- (75.81,281) -- (64,281) -- cycle ; \draw   (156,16) -- (75.81,96.19) -- (64,96.19) ; \draw   (75.81,96.19) -- (75.81,281) ;
+% % Pooling 1
+% \draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (100,105.5) -- (154,51.5) -- (164,51.5) -- (164,174.5) -- (110,228.5) -- (100,228.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (164,51.5) -- (110,105.5) -- (100,105.5) ; \draw  [color=red  ,draw opacity=1 ] (110,105.5) -- (110,228.5) ;
+% % Conv 2-1
+% \draw  [fill=white  ,fill opacity=1 ] (115,106.5) -- (169,52.5) -- (179,52.5) -- (179,175.5) -- (125,229.5) -- (115,229.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (179,52.5) -- (125,106.5) -- (115,106.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (125,106.5) -- (125,229.5) ;
+% % Conv 2-2
+% \draw  [fill=white  ,fill opacity=1 ] (131,107.5) -- (185,53.5) -- (195,53.5) -- (195,176.5) -- (141,230.5) -- (131,230.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (195,53.5) -- (141,107.5) -- (131,107.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (141,107.5) -- (141,230.5) ;
+% % Pooling 2
+% \draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (161,113.5) -- (195,79.5) -- (205,79.5) -- (205,152.5) -- (171,186.5) -- (161,186.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (205,79.5) -- (171,113.5) -- (161,113.5) ; \draw  [color=red  ,draw opacity=1 ] (171,113.5) -- (171,186.5) ;
+% % Conv 3-1
+% \draw  [fill=white  ,fill opacity=1 ] (179,113.5) -- (213,79.5) -- (223,79.5) -- (223,152.5) -- (189,186.5) -- (179,186.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (223,79.5) -- (189,113.5) -- (179,113.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (189,113.5) -- (189,186.5) ;
+% % Conv 3-2
+% \draw  [fill=white  ,fill opacity=1 ] (198,114.5) -- (232,80.5) -- (242,80.5) -- (242,153.5) -- (208,187.5) -- (198,187.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (242,80.5) -- (208,114.5) -- (198,114.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (208,114.5) -- (208,187.5) ;
+% % Conv 3-3
+% \draw  [fill=white  ,fill opacity=1 ] (217,115.5) -- (251,81.5) -- (261,81.5) -- (261,154.5) -- (227,188.5) -- (217,188.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (261,81.5) -- (227,115.5) -- (217,115.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (227,115.5) -- (227,188.5) ;
+% % Pooling 3
+% \draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (248,127.5) -- (264,111.5) -- (280,111.5) -- (280,151.5) -- (264,167.5) -- (248,167.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (280,111.5) -- (264,127.5) -- (248,127.5) ; \draw  [color=red  ,draw opacity=1 ] (264,127.5) -- (264,167.5) ;
+% % Conv 4-1
+% \draw  [fill=white  ,fill opacity=1 ] (270,128.5) -- (286,112.5) -- (302,112.5) -- (302,152.5) -- (286,168.5) -- (270,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (302,112.5) -- (286,128.5) -- (270,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (286,128.5) -- (286,168.5) ;
+% % Conv 4-2
+% \draw  [fill=white  ,fill opacity=1 ] (292,128.5) -- (308,112.5) -- (324,112.5) -- (324,152.5) -- (308,168.5) -- (292,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (324,112.5) -- (308,128.5) -- (292,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (308,128.5) -- (308,168.5) ;
+% % Conv 4-3
+% \draw  [fill=white  ,fill opacity=1 ] (314,128.5) -- (330,112.5) -- (346,112.5) -- (346,152.5) -- (330,168.5) -- (314,168.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (346,112.5) -- (330,128.5) -- (314,128.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (330,128.5) -- (330,168.5) ;
+% % pooling 4
+% \draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (343,134.5) -- (352,125.5) -- (365,125.5) -- (365,143.5) -- (356,152.5) -- (343,152.5) -- cycle ; \draw  [color={rgb, 255:red, 251; green, 0; blue, 0 }  ,draw opacity=1 ] (365,125.5) -- (356,134.5) -- (343,134.5) ; \draw  [color={rgb, 255:red, 251; green, 0; blue, 0 }  ,draw opacity=1 ] (356,134.5) -- (356,152.5) ;
+% % Conv 5-1
+% \draw  [fill=white  ,fill opacity=1 ] (359,134.5) -- (368,125.5) -- (381,125.5) -- (381,143.5) -- (372,152.5) -- (359,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (381,125.5) -- (372,134.5) -- (359,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (372,134.5) -- (372,152.5) ;
+% % Conv 5-2
+% \draw  [fill=white  ,fill opacity=1 ] (375,134.5) -- (384,125.5) -- (397,125.5) -- (397,143.5) -- (388,152.5) -- (375,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (397,125.5) -- (388,134.5) -- (375,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (388,134.5) -- (388,152.5) ;
+% % COnv 5-3
+% \draw  [fill=white  ,fill opacity=1 ] (391,134.5) -- (400,125.5) -- (413,125.5) -- (413,143.5) -- (404,152.5) -- (391,152.5) -- cycle ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (413,125.5) -- (404,134.5) -- (391,134.5) ; \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (404,134.5) -- (404,152.5) ;
+% % Pooling 5
+% \draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (412,133.5) -- (416,129.5) -- (434,129.5) -- (434,139.5) -- (430,143.5) -- (412,143.5) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (434,129.5) -- (430,133.5) -- (412,133.5) ; \draw  [color=red  ,draw opacity=1 ] (430,133.5) -- (430,143.5) ;
+% % dense 1
+% \draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (438,134.07) -- (440.57,131.5) -- (496,131.5) -- (496,137.93) -- (493.43,140.5) -- (438,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (496,131.5) -- (493.43,134.07) -- (438,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (493.43,134.07) -- (493.43,140.5) ;
+% % dense 2
+% \draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (497.43,134.07) -- (500,131.5) -- (555.43,131.5) -- (555.43,137.93) -- (552.86,140.5) -- (497.43,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (555.43,131.5) -- (552.86,134.07) -- (497.43,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (552.86,134.07) -- (552.86,140.5) ;
+% % dense 3
+% \draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (555.86,134.07) -- (558.43,131.5) -- (582,131.5) -- (582,137.93) -- (579.43,140.5) -- (555.86,140.5) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (582,131.5) -- (579.43,134.07) -- (555.86,134.07) ; \draw  [color=blue  ,draw opacity=1 ] (579.43,134.07) -- (579.43,140.5) ;
+% % softmax
+% \draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (582.43,134.07) -- (585,131.5) -- (608.57,131.5) -- (608.57,137.93) -- (606,140.5) -- (582.43,140.5) -- cycle ; \draw  [color=orange  ,draw opacity=1 ] (608.57,131.5) -- (606,134.07) -- (582.43,134.07) ; \draw  [color=orange  ,draw opacity=1 ] (606,134.07) -- (606,140.5) ;
+% % input
+% \draw   (6,140) -- (24,140) -- (24,130) -- (36,150) -- (24,170) -- (24,160) -- (6,160) -- cycle ;
+% % arrow
+% \draw    (426,88.25) -- (425.54,124.5) ;
+% \draw [shift={(425.5,127.5)}, rotate = 270.73] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+% % conv
+% \draw  [fill=white  ,fill opacity=1 ] (296.19,223.25) -- (301.69,217.75) -- (314.5,217.75) -- (314.5,226.81) -- (309,232.31) -- (296.19,232.31) -- cycle ; \draw   (314.5,217.75) -- (309,223.25) -- (296.19,223.25) ; \draw   (309,223.25) -- (309,232.31) ;
+% % max pool
+% \draw  [color=red  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,242.31) -- (301.69,236.81) -- (314.5,236.81) -- (314.5,245.87) -- (309,251.37) -- (296.19,251.37) -- cycle ; \draw  [color=red  ,draw opacity=1 ] (314.5,236.81) -- (309,242.31) -- (296.19,242.31) ; \draw  [color=red  ,draw opacity=1 ] (309,242.31) -- (309,251.37) ;
+% % fully connected
+% \draw  [color=blue  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,261.25) -- (301.69,255.75) -- (314.5,255.75) -- (314.5,264.81) -- (309,270.31) -- (296.19,270.31) -- cycle ; \draw  [color=blue  ,draw opacity=1 ] (314.5,255.75) -- (309,261.25) -- (296.19,261.25) ; \draw  [color=blue  ,draw opacity=1 ] (309,261.25) -- (309,270.31) ;
+% % softmax
+% \draw  [color=orange  ,draw opacity=1 ][fill=white  ,fill opacity=1 ] (296.19,280.31) -- (301.69,274.81) -- (314.5,274.81) -- (314.5,283.87) -- (309,289.37) -- (296.19,289.37) -- cycle ; \draw  [color=orange  ,draw opacity=1 ] (314.5,274.81) -- (309,280.31) -- (296.19,280.31) ; \draw  [color=orange  ,draw opacity=1 ] (309,280.31) -- (309,289.37) ;
 
  
-\draw (1,104) node [anchor=north west][inner sep=0.75pt]   [align=left] {Input};
+% \draw (1,104) node [anchor=north west][inner sep=0.75pt]   [align=left] {Input};
  
-\draw (100.5,-2.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$224\times 224\times 64$};
+% \draw (100.5,-2.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$224\times 224\times 64$};
  
-\draw (132.5,34.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$112\times 112\times 128$};
+% \draw (132.5,34.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$112\times 112\times 128$};
  
-\draw (261.5,94.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$28\times 28\times 512$};
+% \draw (261.5,94.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$28\times 28\times 512$};
  
-\draw (344.5,108.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$14\times 14\times 512$};
+% \draw (344.5,108.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$14\times 14\times 512$};
  
-\draw (193,62.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$56\times 56\times 256$};
+% \draw (193,62.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$56\times 56\times 256$};
 
-\draw (399,71) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$7\times 7\times 512$};
+% \draw (399,71) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$7\times 7\times 512$};
 
-\draw (465.5,114) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$1\times 1\times 4096$};
+% \draw (465.5,114) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$1\times 1\times 4096$};
 
-\draw (552.5,114) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$1\times 1\times 2$};
+% \draw (552.5,114) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {$1\times 1\times 2$};
 
 
-\draw (319,214.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Convolution + ReLU};
+% \draw (319,214.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Convolution + ReLU};
 
-\draw (319.5,235.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Max pooling};
+% \draw (319.5,235.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Max pooling};
 
-\draw (319.5,253.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Fully connected + ReLU};
+% \draw (319.5,253.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Fully connected + ReLU};
 
-\draw (320,271.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Softmax};
+% \draw (320,271.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Softmax};
 
-\draw (320,291.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {Softmax};
+% % Dropout label with arrow
+% \draw [->] (570,110) -- (570,118);
+% \draw (570,105) node [anchor=south] [font=\scriptsize] [align=center] {Dropout\\0.4};
 
-% Dropout label with arrow
-\draw [->] (570,110) -- (570,118);
-\draw (570,105) node [anchor=south] [font=\scriptsize] [align=center] {Dropout\\0.4};
-
-\end{tikzpicture}
+% \end{tikzpicture}
 
 
 % \begin{algorithm}
@@ -788,11 +797,12 @@ Our implementation includes a robust evaluation framework with model checkpointi
 
 \subsubsection{Theoretical Foundation}
 
-VGG-16 is a convolutional neural network architecture developed by Simonyan and Zisserman (2014) at the Visual Geometry Group (VGG) at Oxford, consisting of 16 weight layers including 13 convolutional layers followed by 3 fully connected layers. The architecture is characterized by its simplicity and depth, using small 3×3 convolutional filters stacked in increasing depth, followed by max pooling layers. With approximately 138 million parameters, VGG-16 provides a strong foundation for feature extraction in computer vision tasks.
-
-The primary advantage of employing VGG-16 for transfer learning in fine-grained classification tasks is its hierarchical feature representation capability, which enables the capture of both low-level features (edges, textures) and high-level semantic features. Pre-trained on the ImageNet dataset containing over 1.2 million images across 1,000 classes, VGG-16 offers robust initialization weights that facilitate effective knowledge transfer to domain-specific tasks with limited training data.
+VGG-16, developed by Simonyan and Zisserman (2014) \citep{simonyan2014vgg} at the Visual Geometry Group (VGG) at Oxford, is a 16 layer CNN with 13 convolutional layers followed by 3 fully connected layers known for its deep stack of 3×3 convolutional filters followed by max pooling layers. With approximately 138 million parameters, VGG-16 provides a strong foundation for feature extraction in computer vision tasks although it is computationally exprensive compared to other architectures. Pre-trained on the ImageNet dataset containing over 1.2 million images across 1,000 classes, VGG-16 offers robust initialization weights that facilitate effective knowledge transfer to domain-specific tasks with limited training data.
 
 VGG-16 has demonstrated superior performance in fine-grained classification tasks compared to conventional techniques. Recent studies show that VGG-16 with logistic regression achieved 97.14\% accuracy on specialized datasets like Leaf12, significantly outperforming traditional approaches that combined color channel statistics, texture features, and classic classifiers which only reached 82.38\% accuracy \citep{pearline2019study}. For our specific task of gull species classification, the hierarchical feature representation capabilities of VGG-16 proved particularly effective at capturing the subtle differences in wing patterns and morphological features that distinguish between the target species.
+
+\citep{zhang2019bird} demonstrated that VGG-16 achieves 94.3\% accuracy on CUB-200-2011 by fine-tuning only the final three layers, a strategy mirrored in my VGG implementation where the classifier head was replaced while preserving ImageNet-initialized convolutional weights.
+This approach aligns with successful methodologies in avian species classification using VGG-16 as demonstrated by Brown et al. (2018), where fine-tuning the architecture by modifying the final classification layer enabled the model to retain general feature recognition capabilities while adapting to species-specific visual characteristics \citep{10533638}.
 
 \subsubsection{Model Adaptation for Fine-Grained Classification}
 
@@ -803,16 +813,13 @@ For our specific fine-grained binary classification task with limited data and c
     \item The feature extraction layers (convolutional base) were preserved to maintain the rich hierarchical representations learned from ImageNet.
     \item The original 1000-class classifier was replaced with a custom binary classification head consisting of: 
     \begin{itemize}
-        \item A dropout layer with a rate of 0.4 to reduce overfitting.
+        \item A dropout layer with a rate of 0.4
         \item A fully-connected layer mapping from the original 4096 features to 2 output classes.
     \end{itemize}
 \end{itemize}
 
 
-% GOOD FOR ALL THE VALUES LIKE OPTIMISER ETC https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=&tag=1
-
-\citep{zhang2019bird} demonstrated that VGG-16 achieves 94.3\% accuracy on CUB-200-2011 by fine-tuning only the final three layers, a strategy mirrored in my VGG implementation where the classifier head was replaced while preserving ImageNet-initialized convolutional weights.
-This approach aligns with successful methodologies in avian species classification using VGG-16 as demonstrated by Brown et al. (2018), where fine-tuning the architecture by modifying the final classification layer enabled the model to retain general feature recognition capabilities while adapting to species-specific visual characteristics \citep{10533638}.
+% USEFUL GOOD FOR ALL THE VALUES LIKE OPTIMISER ETC https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10533638&tag=&tag=1
 
 \subsection{Vision Transformer (ViT) Architecture}
 
@@ -844,7 +851,7 @@ The model architecture preserves the core self-attention mechanism of ViT while 
 
 In addition to our primary implementation, we explored two attention-enhanced architectures:
 
-\paragraph{InterpretableViT}
+\textbf{InterpretableViT}
 We developed an InterpretableViT model that incorporates explicit attention mechanisms for improved focus on discriminative features:
 
 \begin{itemize}
@@ -854,7 +861,7 @@ We developed an InterpretableViT model that incorporates explicit attention mech
     \item Employs a multi-layer classifier with dropout regularization
 \end{itemize}
 
-A key advantage of this architecture is its compatibility with gradient-based visualization techniques. By separating the class token from patch tokens and implementing an explicit attention mechanism, the model facilitates more effective application of Grad-CAM \citep{Selvaraju_2019}, allowing for visualization of discriminative image regions contributing to classification decisions.
+A key advantage of this architecture is its compatibility with gradient-based visualization techniques. By separating the class token from patch tokens and implementing an explicit attention mechanism, the model facilitates more effective application of Grad-CAM, allowing for visualization of discriminative image regions contributing to classification decisions.
 
 % check above referencea and cite as Selvaraju_2019
 
@@ -867,9 +874,10 @@ We also implemented an EnhancedViT that applies attention-based weighting across
     \item Utilizes a specialized classification head with dropout for regularization
 \end{itemize}
 
-This implementation draws from research on token aggregation strategies in vision transformers (\href{https://arxiv.org/abs/2012.09688}{Wang et al., 2021}), which shows that attention-weighted token aggregation can improve performance in data-limited regimes.
+% This implementation draws from research on token aggregation strategies in vision transformers (\href{https://arxiv.org/abs/2012.09688}{Wang et al., 2021}), which shows that attention-weighted token aggregation can improve performance in data-limited regimes.
 
 % https://arxiv.org/pdf/2006.03677 TODO CHECK REF ABOVE
+
 \subsection{Inception v3 Architecture}
 
 \begin{figure}[h]
@@ -881,33 +889,28 @@ This implementation draws from research on token aggregation strategies in visio
 
 \subsection*{Theoretical Background}
 
-Inception v3, developed by Szegedy et al. (2016), represents a sophisticated CNN architecture designed to efficiently capture multi-scale features through parallel convolution pathways with varied kernel sizes. The key innovation in Inception architectures is the utilization of \textit{Inception modules} that process the same input tensor through multiple convolutional paths with different receptive fields, and then concatenate the results. This enables the network to capture both fine-grained local patterns and broader contextual information simultaneously \citep{szegedy2015rethinkinginceptionarchitecturecomputer}.
+Inception v3 \citep{szegedy2015rethinkinginceptionarchitecturecomputer} employs a modular design centered around \textit{Inception modules} that process input tensors through multiple parallel convolution pathways with varying receptive fields. This design efficiently captures multi-scale features simultaneously, making it particularly effective for fine-grained classification tasks requiring detection of subtle morphological differences.
 
-Inception v3 builds upon earlier versions with several important architectural improvements:
+The key architectural innovations in Inception v3 that informed our implementation include:
 \begin{itemize}
-    \item Factorized convolutions to reduce computational complexity
-    \item Spatial factorization into asymmetric convolutions (e.g., $1 \times n$ followed by $n \times 1$)
-    \item Auxiliary classifiers that inject additional gradient signals during training
-    \item Batch normalization for improved training stability and faster convergence
-    \item Label smoothing regularization to prevent overconfidence
+    \item Factorized convolutions that reduce computational complexity while maintaining representational power
+    \item Auxiliary classifiers that inject additional gradient signals to mitigate vanishing gradients
+    \item Batch normalization for training stability and faster convergence
 \end{itemize}
-
-These design elements collectively enable Inception v3 to achieve high accuracy while maintaining computational efficiency. Inception architectures are particularly effective for tasks requiring multi-scale feature extraction, such as discriminating between visually similar biological specimens.
 
 \subsubsection{Model-Specific Implementation Details}
 
-Our implementation adapted the pre-trained Inception v3 model for fine-grained gull species classification with the following specific elements:
+Our implementation adapted the pre-trained Inception v3 model for gull species classification with the following elements:
 
 \begin{itemize}
-    \item \textbf{Input Resolution:} Resize operations were performed to $299\times299$ pixels (the standard input size for Inception v3). The larger input resolution ($299\times299$ vs $224\times224$ used by VGG16) provides the Inception architecture with more detailed information, potentially beneficial for capturing the subtle wing pattern differences between gull species.
+    \item \textbf{Input Resolution:} Images were resized to $299\times299$ pixels (standard for Inception v3), providing sufficient detail for capturing subtle wing pattern differences between similar gull species.
     
-    \item \textbf{Auxiliary Outputs:} A distinctive aspect of our Inception v3 implementation was the utilization of auxiliary outputs during training. Inception v3's auxiliary classifier, which branches off from an intermediate layer, provides an additional gradient path during backpropagation. This helps combat the vanishing gradient problem and provides regularization with auxiliary loss weight of 0.3.
-    % (\href{https://arxiv.org/abs/1902.04103}{He et al., 2019})
-
-    \item \textbf{Mixed-Precision Training:} We employed PyTorch's Automatic Mixed Precision (AMP) to accelerate computation while maintaining numerical stability \citep{micikevicius2018mixed}. This technique allows the use of float16 precision where appropriate, which reduces memory usage and increases computational speed, especially beneficial when training on GPU-constrained environments like Google Colab.
+    \item \textbf{Auxiliary Outputs:} We utilized Inception v3's auxiliary classifier with a loss weight of 0.3, providing an additional gradient path during backpropagation.
+    
+    \item \textbf{Optimization Strategy:} We employed AdamW optimizer with carefully tuned hyperparameters (learning rate=$1.146 \times 10^{-4}$, weight decay=$9.720 \times 10^{-4}$) and a ReduceLROnPlateau scheduler to dynamically adjust learning rates based on validation performance.
 \end{itemize}
 
-\subsection{Residual Network (ResNet-50) Implementation}
+\subsection{Residual Network (ResNet-50) Architecture}
 
 \begin{figure}[h]
     \centering
@@ -916,12 +919,97 @@ Our implementation adapted the pre-trained Inception v3 model for fine-grained g
     \label{fig:resnet_architecture}
 \end{figure}
 
-\subsubsection{Architecture-Specific Enhancements}
+\subsection*{Theoretical Background}
 
-A distinctive aspect of our ResNet-50 implementation was the incorporation of image sharpening as a preprocessing technique. We applied a 3×3 Laplacian sharpening kernel to enhance edge definition and accentuate the subtle diagnostic features crucial for distinguishing between gull species. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks {\href{https://openaccess.thecvf.com/content_cvpr_2014/papers/Berg_Birdsnap_Large-scale_Fine-grained_2014_CVPR_paper.pdf}{Berg et al., 2014}}.
+ResNet-50 \citep{he2016deep} addresses the degradation problem in deep neural networks through the introduction of residual connections (skip connections). These connections enable the network to learn residual mappings rather than direct mappings, allowing for substantially deeper architectures without suffering from vanishing gradients. The residual block can be formulated as:
 
-The sharpening kernel was systematically applied to both training and evaluation pipelines using OpenCV's filter2D function, ensuring consistent feature enhancement across all dataset partitions. This preprocessing step proved particularly valuable for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species.
+\begin{equation}
+y = \mathcal{F}(x, \{W_i\}) + x
+\end{equation}
 
+where $\mathcal{F}$ represents the residual mapping to be learned and $x$ is the identity connection. This formulation makes optimization easier as the network only needs to learn the residual with respect to the identity mapping.
+
+\subsubsection{Model-Specific Implementation Details}
+
+Our ResNet-50 implementation was adapted for gull species classification with several key modifications:
+
+\begin{itemize}
+    \item \textbf{Classification Head:} We modified the final fully connected layer with added dropout regularization (rate=0.5) before the classification layer to prevent overfitting.
+    
+    \item \textbf{Optimization Strategy:} We employed Adam optimizer with learning rate=$10^{-3}$ and weight decay=$10^{-4}$, coupled with a ReduceLROnPlateau scheduler to prevent overfitting while ensuring convergence.
+    
+    \item \textbf{Image Enhancement:} A distinctive preprocessing technique involved applying a $3\times3$ Laplacian sharpening kernel to enhance edge definition, which proved particularly effective for highlighting subtle diagnostic features crucial for gull species discrimination. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks \citep{berg2014birdsnap}.
+    
+    \item \textbf{Input Processing:} Images were resized to $224\times224$ pixels (standard for ResNet architectures) and normalized using ImageNet statistics to leverage the pre-trained weights effectively.
+\end{itemize}
+
+The combination of residual connections and edge enhancement preprocessing proved particularly effective for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species.
+\subsection{Inception v3 Architecture}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/architecture/inception.png}
+    \caption{Architecture of the Inception v3 model}
+    \label{fig:inception_architecture}
+\end{figure}
+
+\subsection*{Theoretical Background}
+
+Inception v3 \citep{szegedy2015rethinkinginceptionarchitecturecomputer} employs a modular design centered around \textit{Inception modules} that process input tensors through multiple parallel convolution pathways with varying receptive fields. This design efficiently captures multi-scale features simultaneously, making it particularly effective for fine-grained classification tasks requiring detection of subtle morphological differences.
+
+The key architectural innovations in Inception v3 that informed our implementation include:
+\begin{itemize}
+    \item Factorized convolutions that reduce computational complexity while maintaining representational power
+    \item Auxiliary classifiers that inject additional gradient signals to mitigate vanishing gradients
+    \item Batch normalization for training stability and faster convergence
+\end{itemize}
+
+\subsubsection{Model-Specific Implementation Details}
+
+Our implementation adapted the pre-trained Inception v3 model for gull species classification with the following elements:
+
+\begin{itemize}
+    \item \textbf{Input Resolution:} Images were resized to $299\times299$ pixels (standard for Inception v3), providing sufficient detail for capturing subtle wing pattern differences between similar gull species.
+    
+    \item \textbf{Auxiliary Outputs:} We utilized Inception v3's auxiliary classifier with a loss weight of 0.3, providing an additional gradient path during backpropagation.
+    
+    \item \textbf{Optimization Strategy:} We employed AdamW optimizer with carefully tuned hyperparameters (learning rate=$1.146 \times 10^{-4}$, weight decay=$9.720 \times 10^{-4}$) and a ReduceLROnPlateau scheduler to dynamically adjust learning rates based on validation performance.
+\end{itemize}
+
+\subsection{Residual Network (ResNet-50) Architecture}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/architecture/resnet.png}
+    \caption{Architecture of the ResNet-50 model}
+    \label{fig:resnet_architecture}
+\end{figure}
+
+\subsection*{Theoretical Background}
+
+ResNet-50 \citep{he2016deep} addresses the degradation problem in deep neural networks through the introduction of residual connections (skip connections). These connections enable the network to learn residual mappings rather than direct mappings, allowing for substantially deeper architectures without suffering from vanishing gradients. The residual block can be formulated as:
+
+\begin{equation}
+y = \mathcal{F}(x, \{W_i\}) + x
+\end{equation}
+
+where $\mathcal{F}$ represents the residual mapping to be learned and $x$ is the identity connection. This formulation makes optimization easier as the network only needs to learn the residual with respect to the identity mapping.
+
+\subsubsection{Model-Specific Implementation Details}
+
+Our ResNet-50 implementation was adapted for gull species classification with several key modifications:
+
+\begin{itemize}
+    \item \textbf{Classification Head:} We modified the final fully connected layer with added dropout regularization (rate=0.5) before the classification layer to prevent overfitting.
+    
+    \item \textbf{Optimization Strategy:} We employed Adam optimizer with learning rate=$10^{-3}$ and weight decay=$10^{-4}$, coupled with a ReduceLROnPlateau scheduler to prevent overfitting while ensuring convergence.
+    
+    \item \textbf{Image Enhancement:} A distinctive preprocessing technique involved applying a $3\times3$ Laplacian sharpening kernel to enhance edge definition, which proved particularly effective for highlighting subtle diagnostic features crucial for gull species discrimination. This approach was inspired by research showing that edge enhancement can improve the detection of fine-grained morphological features in avian classification tasks \citep{berg2014birdsnap}.
+    
+    \item \textbf{Input Processing:} Images were resized to $224\times224$ pixels (standard for ResNet architectures) and normalized using ImageNet statistics to leverage the pre-trained weights effectively.
+\end{itemize}
+
+The combination of residual connections and edge enhancement preprocessing proved particularly effective for highlighting distinctive wingtip patterns and subtle plumage characteristics that serve as key discriminative features between the target species.
 \subsection{Custom CNN with Squeeze-and-Excitation Blocks}
 
 \begin{figure}[h]

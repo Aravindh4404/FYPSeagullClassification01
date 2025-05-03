@@ -320,6 +320,10 @@ D.~Masters and C.~Luschi, ``Revisiting small batch training for deep neural
   Available: \url{https://arxiv.org/abs/1804.07612}
 \BIBentrySTDinterwordspacing
 
+\bibitem{simonyan2014vgg}
+K.~Simonyan and A.~Zisserman, ``Very deep convolutional networks for
+  large-scale image recognition,'' \emph{arXiv preprint arXiv:1409.1556}, 2014.
+
 \bibitem{pearline2019study}
 A.~S. Pearline, V.~S. Kumar, S.~Harini, S.~M. Thampi, and E.-S.~M. El-Alfy, ``A
   study on plant recognition using conventional image processing and deep
@@ -365,13 +369,10 @@ C.~Szegedy, V.~Vanhoucke, S.~Ioffe, J.~Shlens, and Z.~Wojna, ``Rethinking the
   \url{https://arxiv.org/abs/1512.00567}
 \BIBentrySTDinterwordspacing
 
-\bibitem{micikevicius2018mixed}
-\BIBentryALTinterwordspacing
-P.~Micikevicius, S.~Narang, J.~Alben, G.~Diamos, E.~Elsen, D.~Garcia,
-  B.~Ginsburg, M.~Houston, O.~Kuchaiev, G.~Venkatesh \emph{et~al.}, ``Mixed
-  precision training,'' \emph{arXiv preprint arXiv:1710.03740}, 2018. [Online].
-  Available: \url{https://arxiv.org/abs/1710.03740}
-\BIBentrySTDinterwordspacing
+\bibitem{he2016deep}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image
+  recognition,'' \emph{Proceedings of the IEEE conference on computer vision
+  and pattern recognition}, pp. 770--778, 2016.
 
 \bibitem{Hu_2018_CVPR}
 \BIBentryALTinterwordspacing

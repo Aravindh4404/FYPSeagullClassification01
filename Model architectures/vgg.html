@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .diagram {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            max-width: 1000px;
+        }
+        .box {
+            border: 2px solid;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 60px;
+        }
+        .large-box {
+            width: 350px;
+            background-color: #f0f0f0;
+            border-color: #4682B4;
+        }
+        .small-box {
+            width: 150px;
+            background-color: #f0f0f0;
+            border-color: #4682B4;
+        }
+        .modified-box {
+            width: 250px;
+            background-color: #ffe6e6;
+            border-color: #FF6347;
+        }
+        .output-box {
+            width: 100px;
+            background-color: #f0f0f0;
+            border-color: #4682B4;
+        }
+        .arrow {
+            font-size: 24px;
+            color: #666;
+            margin: 0 5px;
+        }
+        .feature-blocks {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+        .feature-block {
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 2px 0;
+            font-size: 12px;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border: 1px solid black;
+            border-radius: 3px;
+        }
+        .pretrained {
+            background-color: #f0f0f0;
+            border-color: #4682B4;
+        }
+        .modified {
+            background-color: #ffe6e6;
+            border-color: #FF6347;
+        }
+        .internal {
+            background-color: #e0e0e0;
+            border: 1px solid #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagram">
+        <div class="box small-box">
+            <div>
+                <h3>Input</h3>
+                <span>Image</span>
+            </div>
+        </div>
+        
+        <div class="arrow">→</div>
+        
+        <div class="box large-box">
+            <h3>VGG16 Base (Pre-trained)</h3>
+            <div class="feature-blocks">
+                <div class="feature-block">Conv Block 1 (2×[3×3 Conv+ReLU] + MaxPool)</div>
+                <div class="feature-block">Conv Block 2 (2×[3×3 Conv+ReLU] + MaxPool)</div>
+                <div class="feature-block">Conv Block 3 (3×[3×3 Conv+ReLU] + MaxPool)</div>
+                <div class="feature-block">Conv Block 4 (3×[3×3 Conv+ReLU] + MaxPool)</div>
+                <div class="feature-block">Conv Block 5 (3×[3×3 Conv+ReLU] + MaxPool)</div>
+                <div class="feature-block">FC1 (4096) + ReLU + Dropout</div>
+                <div class="feature-block">FC2 (4096) + ReLU + Dropout</div>
+            </div>
+        </div>
+        
+        <div class="arrow">→</div>
+        
+        <div class="box modified-box">
+            <h3>Modified FC Layer</h3>
+            <div class="feature-blocks">
+                <div class="feature-block">Dropout (p=0.4)</div>
+                <div class="feature-block">Linear (4096 → 2)</div>
+            </div>
+        </div>
+        
+        <div class="arrow">→</div>
+        
+        <div class="box output-box">
+            <h3>Output</h3>
+            <span>(2 classes)</span>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-box pretrained"></div>
+            <span>Pre-trained Components</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-box modified"></div>
+            <span>Modified Components</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-box internal"></div>
+            <span>Internal Layers</span>
+        </div>
+    </div>
+</body>
+</html>
