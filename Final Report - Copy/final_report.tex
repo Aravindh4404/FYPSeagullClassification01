@@ -1597,7 +1597,7 @@ To validate and complement the results achieved through the analysis of the regi
 
 \subsection{Feature Extraction and Preprocessing}
 
-The clustering analysis utilizes three key morphological features extracted from the wingtip regions, specifically \textbf{Mean wing intensity}, \textbf{Mean wingtip intensity}, and \textbf{Count of darker pixels in wingtip regions}.
+The clustering analysis utilizes three key morphological features extracted from the wingtip regions, specifically \textbf{Mean wing intensity}, \textbf{Mean wingtip intensity}, and \textbf{Percentage of pixels darker than intensity value 60}.
 
 Prior to clustering analysis, the following preprocessing steps were implemented:
 \begin{enumerate}
@@ -2102,8 +2102,6 @@ To further quantify these observations and analyse the texture features calculat
 
 \section{Clustering Results}
 
-The clustering analysis was performed using three different algorithms: K-means, Hierarchical Clustering, and Gaussian Mixture Model (GMM). Principal Component Analysis (PCA) was applied for dimensionality reduction prior to clustering, with the first two components explaining 97\% of the variance (80.1\% and 16.9\% respectively).
-
 \subsection{Clustering Performance Metrics}
 
 The performance of each clustering algorithm was evaluated using both unsupervised and supervised metrics. Table~\ref{tab:clustering_metrics} presents a comprehensive comparison of the three clustering approaches.
@@ -2117,23 +2115,28 @@ The performance of each clustering algorithm was evaluated using both unsupervis
     \toprule
     \textbf{Algorithm} & \textbf{Silhouette} & \textbf{ARI} & \textbf{Accuracy} & \textbf{TP (GWG)} & \textbf{FN (GWG)} & \textbf{TP (SBG)} & \textbf{FN (SBG)} \\
     \midrule
-    K-means        & 0.548 & 0.825 & 95.43\% & 78 & 15 & 97  & 7 \\
-    Hierarchical   & 0.532 & 0.843 & 95.94\% & 90 & 3  & 99  & 5 \\
-    GMM            & 0.425 & 0.601 & 88.83\% & 86 & 7  & 102 & 2 \\
+    K-means      & 0.605 & 0.843 & 95.94\% & 88 & 5 & 101 & 3 \\
+    Hierarchical & 0.594 & 0.881 & 96.95\% & 92 & 1 & 99 & 5 \\
+    GMM          & 0.548 & 0.717 & 92.39\% & 78 & 15 & 104 & 0 \\
     \bottomrule
     \end{tabular}
     }
 \end{table}
 
-    Table~\ref{tab:clustering_metrics} summarizes the key performance metrics and confusion matrix results for all three clustering algorithms. Hierarchical clustering achieved the highest adjusted rand index and accuracy, with the fewest misclassifications for Glaucous-Winged Gull. K-means also performed strongly, while GMM showed lower overall accuracy and ARI, with more false negatives for Glaucous-Winged Gull.
- 
-\subsection{Feature Importance Analysis}
+Table~\ref{tab:clustering_metrics} summarizes the key performance metrics and confusion matrix results for all three clustering algorithms. The silhouette score (ranging from -1 to 1) measures how well-separated the clusters are, with higher values indicating better-defined clusters. The Adjusted Rand Index (ARI) measures the similarity between the clustering results and the ground truth labels, with values closer to 1 indicating better alignment with the actual species classification.
 
-The feature importance analysis based on cluster separation revealed that the darker pixel count was by far the most discriminative feature with an absolute difference of 143,709.23 between cluster centers. Mean wing intensity (85.00) and mean wingtip intensity (76.48) also contributed to cluster separation but to a much lesser extent. This suggests that the number of dark pixels in the wing region is the most important morphological characteristic for distinguishing between these two gull species.
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{images/clustering/feature_importance.png}
+%     \caption{Feature importance based on absolute differences between cluster centers, highlighting the most discriminative features for species classification.}
+%     \label{fig:feature_importance}
+% \end{figure}
+
+The prominence of wing intensity features aligns with ornithological knowledge that Slaty-Backed Gulls typically exhibit darker wing patterns compared to Glaucous-Winged Gulls, providing a data-driven validation of these distinguishing characteristics.
 
 \subsection{Integration with Visual Analysis}
 
-The clustering performance is visualized through two complementary perspectives: the cluster formations in reduced PCA space (Figure~\ref{fig:cluster_visualizations}) and the classification accuracy via confusion matrices (Figure~\ref{fig:confusion_matrices}).
+The clustering performance is visualized through two complementary perspectives: the cluster formations in reduced PCA space (Figure~\ref{fig:cluster_visualizations}) and the classification accuracy via confusion matrices considering majorily class to be the true class of the cluster(Figure~\ref{fig:confusion_matrices}).
 
 \begin{figure}[H]
     \centering
@@ -2157,9 +2160,11 @@ The clustering performance is visualized through two complementary perspectives:
         \caption{K-means}
         \label{fig:kmeans_cluster}
     \end{subfigure}
-    \caption{Cluster formations in PCA-reduced space: (a) GMM shows smooth probability contours, (b) Hierarchical clustering displays tree-like linkages, and (c) K-means exhibits distinct spherical clusters. All methods show effective separation between species.}
+    \caption{Cluster formations in PCA-reduced space showing the distribution of data points with centroids marked for K-means and GMM. All three algorithms show clear separation between the two species along PCA Component 1.}
     \label{fig:cluster_visualizations}
 \end{figure}
+
+Figure~\ref{fig:cluster_visualizations} demonstrates how each clustering algorithm partitions the data in the PCA-reduced feature space. The K-means visualization (Figure~\ref{fig:kmeans_cluster}) clearly shows two well-defined clusters with distinct centroids, while hierarchical clustering (Figure~\ref{fig:hierarchical_cluster}) exhibits similar separation but with slightly different cluster boundaries. The GMM results (Figure~\ref{fig:gmm_cluster}) show more density-based partitioning that accommodates the natural distribution of the data points.
 
 \subsection{Confusion Matrix Analysis}
 
@@ -2168,33 +2173,30 @@ The clustering performance is visualized through two complementary perspectives:
     \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/clustering/kmeans_confusion_matrix.png}
-        \caption{K-means (Accuracy: 95.43\%)}
+        \caption{K-means (Accuracy: 95.94\%)}
         \label{fig:kmeans_cm}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/clustering/hierarchical_confusion_matrix.png}
-        \caption{Hierarchical (Accuracy: 95.94\%)}
+        \caption{Hierarchical (Accuracy: 96.95\%)}
         \label{fig:hierarchical_cm}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/clustering/gmm_confusion_matrix.png}
-        \caption{GMM (Accuracy: 88.83\%)}
+        \caption{GMM (Accuracy: 92.39\%)}
         \label{fig:gmm_cm}
     \end{subfigure}
-    \caption{Comparative confusion matrices showing classification performance across clustering algorithms. Hierarchical clustering demonstrates the highest accuracy with minimal misclassifications, followed closely by K-means, while GMM shows notably lower performance.}
+    \caption{Comparative confusion matrices showing classification performance across clustering algorithms, with hierarchical clustering achieving the highest overall accuracy.}
     \label{fig:confusion_matrices}
 \end{figure}
 
-The confusion matrices clearly illustrate the performance differences between the algorithms:
-\begin{itemize}
-    \item Hierarchical clustering achieves the best balance between true positives and false negatives for both species
-    \item K-means shows strong performance but with slightly more misclassifications of Glaucous-Winged Gulls
-    \item GMM demonstrates reasonable performance for Slaty-Backed Gulls but struggles more with correctly classifying Glaucous-Winged Gulls
-\end{itemize}
+The confusion matrices in Figure~\ref{fig:confusion_matrices} provide detailed insights into each algorithm's classification performance. The hierarchical clustering matrix (Figure~\ref{fig:hierarchical_cm}) shows excellent classification of Glaucous-Winged Gulls with only 1 false negative, while K-means (Figure~\ref{fig:kmeans_cm}) shows balanced performance across both species. The GMM confusion matrix (Figure~\ref{fig:gmm_cm}) reveals perfect recall for Slaty-Backed Gulls but struggles more with correctly classifying Glaucous-Winged Gulls.
+
+Notably, all three algorithms achieved over 92\% accuracy, with hierarchical clustering performing best at nearly 97\%. The high clustering accuracy achieved demonstrates that the three extracted morphological features (mean wing intensity, mean wingtip intensity, and percentage of pixels darker than intensity value 60) provide strong discriminative power for distinguishing between Slaty-Backed Gulls and Glaucous-Winged Gulls. This confirms that the features identified through the CNN-based analysis and subsequent statistical extraction are biologically meaningful and can effectively capture species-specific characteristics. The fact that unsupervised clustering can effectively discriminate between these visually similar gull species based solely on extracted image features proves that the intensity features analysed are significant and can be used for classification thereby validating the statistical features.
 
 % \subsection{Algorithm Comparison}
 
@@ -2210,13 +2212,6 @@ The confusion matrices clearly illustrate the performance differences between th
 
 \subsection{Implications of Results}
 
-The high clustering accuracy achieved, particularly by the hierarchical clustering algorithm (95.94\%) and K-means (95.43\%), demonstrates that the three extracted morphological features (mean wing intensity, mean wingtip intensity, and darker pixel count) provide strong discriminative power for distinguishing between Slaty-Backed Gulls and Glaucous-Winged Gulls. This confirms that the features identified through the CNN-based analysis and subsequent statistical extraction are biologically meaningful and can effectively capture species-specific characteristics.
-
-The feature importance analysis clearly shows that the darker pixel count is the most significant distinguishing characteristic between the two species, which aligns with ornithological knowledge that Slaty-Backed Gulls typically have darker wingtips compared to Glaucous-Winged Gulls.
-
-The superior performance of hierarchical clustering suggests that the natural structure of the data may align well with the hierarchical organization typically found in biological taxonomy. The slightly lower performance of GMM might indicate that the underlying distribution of morphological features does not strictly follow Gaussian assumptions.
-
-This proved that the features found to be of significant difference between the two classes are useful for classification.
 
 \chapter{Discussion}
 

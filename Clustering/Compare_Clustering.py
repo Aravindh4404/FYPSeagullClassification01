@@ -28,8 +28,8 @@ RANDOM_STATE = 42
 # Function to load and prepare data
 def load_data(file_path):
     df = pd.read_csv(file_path)
-    # You might need to adjust these column names based on your actual CSV file
-    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'darker_pixel_count']]
+
+    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'pct_dark_lt_60']]
 
     # Create mapping if it doesn't exist already
     if 'species' in df.columns:

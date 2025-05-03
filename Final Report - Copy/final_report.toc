@@ -103,10 +103,9 @@
 \contentsline {subsection}{\numberline {5.3.4}Top Discriminative Features from 1s and Transitions Histograms}{39}{subsection.5.3.4}%
 \contentsline {section}{\numberline {5.4}Clustering Results}{39}{section.5.4}%
 \contentsline {subsection}{\numberline {5.4.1}Clustering Performance Metrics}{39}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Feature Importance Analysis}{40}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Integration with Visual Analysis}{40}{subsection.5.4.3}%
-\contentsline {subsection}{\numberline {5.4.4}Confusion Matrix Analysis}{40}{subsection.5.4.4}%
-\contentsline {subsection}{\numberline {5.4.5}Implications of Results}{41}{subsection.5.4.5}%
+\contentsline {subsection}{\numberline {5.4.2}Integration with Visual Analysis}{40}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Confusion Matrix Analysis}{40}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Implications of Results}{41}{subsection.5.4.4}%
 \contentsline {chapter}{\numberline {6}Discussion}{42}{chapter.6}%
 \contentsline {subsection}{\numberline {6.0.1}Feature Analysis and Clustering Validation}{42}{subsection.6.0.1}%
 \contentsline {subsection}{\numberline {6.0.2}Limitations and Practical Implications}{42}{subsection.6.0.2}%
