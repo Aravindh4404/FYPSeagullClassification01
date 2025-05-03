@@ -248,6 +248,21 @@ Y.~Wu and K.~He, ``Group normalization,'' 2018. [Online]. Available:
   \url{https://arxiv.org/abs/1803.08494}
 \BIBentrySTDinterwordspacing
 
+\bibitem{keskar2016largebatch}
+\BIBentryALTinterwordspacing
+N.~S. Keskar, D.~Mudigere, J.~Nocedal, M.~Smelyanskiy, and P.~Tang, ``On
+  large-batch training for deep learning: Generalization gap and sharp
+  minima,'' \emph{arXiv preprint arXiv:1609.04836}, 2016. [Online]. Available:
+  \url{https://arxiv.org/abs/1609.04836}
+\BIBentrySTDinterwordspacing
+
+\bibitem{masters2018revisiting}
+\BIBentryALTinterwordspacing
+D.~Masters and C.~Luschi, ``Revisiting small batch training for deep neural
+  networks,'' \emph{arXiv preprint arXiv:1804.07612}, 2018. [Online].
+  Available: \url{https://arxiv.org/abs/1804.07612}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Prechelt1998}
 \BIBentryALTinterwordspacing
 L.~Prechelt, \emph{Early Stopping - But When?}\hskip 1em plus 0.5em minus
@@ -272,15 +287,6 @@ A.~Krogh and J.~A. Hertz, ``A simple weight decay can improve generalization,''
   \url{https://papers.nips.cc/paper/1991/file/8eefcfdf5990e441f0fb6f3fad709e21-Paper.pdf}
 \BIBentrySTDinterwordspacing
 
-\bibitem{ioffe2015batch}
-\BIBentryALTinterwordspacing
-S.~Ioffe and C.~Szegedy, ``Batch normalization: Accelerating deep network
-  training by reducing internal covariate shift,'' in \emph{International
-  Conference on Machine Learning}.\hskip 1em plus 0.5em minus 0.4em\relax PMLR,
-  2015, pp. 448--456. [Online]. Available:
-  \url{https://arxiv.org/abs/1502.03167}
-\BIBentrySTDinterwordspacing
-
 \bibitem{krawczyk2016learning}
 \BIBentryALTinterwordspacing
 B.~Krawczyk, ``Learning from imbalanced data: open challenges and future
@@ -303,21 +309,6 @@ Y.~Cui, M.~Jia, T.-Y. Lin, and Y.~Song, ``Class-balanced loss based on
 C.~Shorten and T.~M. Khoshgoftaar, ``A survey on image data augmentation for
   deep learning,'' \emph{Journal of Big Data}, vol.~6, no.~1, p.~60, 2019.
   [Online]. Available: \url{https://doi.org/10.1186/s40537-019-0197-0}
-\BIBentrySTDinterwordspacing
-
-\bibitem{keskar2016largebatch}
-\BIBentryALTinterwordspacing
-N.~S. Keskar, D.~Mudigere, J.~Nocedal, M.~Smelyanskiy, and P.~Tang, ``On
-  large-batch training for deep learning: Generalization gap and sharp
-  minima,'' \emph{arXiv preprint arXiv:1609.04836}, 2016. [Online]. Available:
-  \url{https://arxiv.org/abs/1609.04836}
-\BIBentrySTDinterwordspacing
-
-\bibitem{masters2018revisiting}
-\BIBentryALTinterwordspacing
-D.~Masters and C.~Luschi, ``Revisiting small batch training for deep neural
-  networks,'' \emph{arXiv preprint arXiv:1804.07612}, 2018. [Online].
-  Available: \url{https://arxiv.org/abs/1804.07612}
 \BIBentrySTDinterwordspacing
 
 \bibitem{simonyan2014vgg}
@@ -380,6 +371,15 @@ J.~Hu, L.~Shen, and G.~Sun, ``Squeeze-and-excitation networks,'' in
   \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern
   Recognition (CVPR)}, June 2018, pp. 7132--7141. [Online]. Available:
   \url{https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf}
+\BIBentrySTDinterwordspacing
+
+\bibitem{ioffe2015batch}
+\BIBentryALTinterwordspacing
+S.~Ioffe and C.~Szegedy, ``Batch normalization: Accelerating deep network
+  training by reducing internal covariate shift,'' in \emph{International
+  Conference on Machine Learning}.\hskip 1em plus 0.5em minus 0.4em\relax PMLR,
+  2015, pp. 448--456. [Online]. Available:
+  \url{https://arxiv.org/abs/1502.03167}
 \BIBentrySTDinterwordspacing
 
 \bibitem{zhou2015learningdeepfeaturesdiscriminative}

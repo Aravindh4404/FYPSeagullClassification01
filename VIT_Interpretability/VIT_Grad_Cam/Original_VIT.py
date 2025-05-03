@@ -19,7 +19,10 @@ class ViTModified(nn.Module):
         super(ViTModified, self).__init__()
         self.vit = timm.create_model('vit_base_patch16_224', pretrained=True)
         num_ftrs = self.vit.head.in_features
-        self.vit.head = nn.Linear(num_ftrs, 2)  # 2-class output
+        self.vit.head = nn.Sequential(
+            nn.Dropout(0.4),
+            nn.Linear(num_ftrs, 2)
+        )
 
     def forward(self, x):
         return self.vit(x)
