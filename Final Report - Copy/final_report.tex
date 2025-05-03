@@ -2079,25 +2079,26 @@ The distributions of the 'Number of Ones' and 'Transitions' features for the win
 \end{figure}
 
 
-The figures illustrate the results of abstract features across different regions. Figure~\ref{fig:abstract_features} presents a bar chart highlighting the most discriminative feature from 1s and transitions histogram. , showcasing their respective differences of 9.38\% and 9.4\%. To further quantify these observations, Table~\ref{tab:top_discriminative_features} lists the top discriminative features based on their percentage differences between species, emphasizing the significance of texture properties in distinguishing between them.
+The figures illustrate the results of abstract features across different regions. Figure~\ref{fig:abstract_features} presents a bar chart highlighting the most discriminative feature from 1s and transitions histogram, showcasing their respective differences.
 
 \subsection{Top Discriminative Features from 1s and Transitions Histograms}
 \begin{table}[H]
     \centering
-    \caption{Top Discriminative Features by Percentage Difference}
-    \begin{tabular}{clc}
-        \hline
-        Rank & Feature & Difference (\%) \\
-        \hline
-        1 & Wingtip-ones-energy & 23.5 \\
-        2 & Wingtip-transitions-energy & 20.6 \\
-        3 & Wing-transitions-energy & 16.4 \\
-        \hline
-    \end{tabular}
+    \caption{Top discriminative region-histogram features ranked by percentage difference.}
+    \label{tab:region_histogram_features}
+    \begin{tabular}{c c c c c}
+        \toprule
+        \textbf{Rank} & \textbf{Region} & \textbf{Histogram Feature} & \textbf{Statistic} & \textbf{Difference (\%)} \\
+        \midrule
+        1 & Wingtip & Ones & Energy & 23.5 \\
+        2 & Wingtip & Transitions & Energy & 20.6 \\
+        3 & Wing & Transitions & Energy & 16.4 \\
+        \bottomrule
+    \end{tabular}   
     \label{tab:top_discriminative_features}
 \end{table}
 
-The analysis demonstrates that LBP texture features, particularly in the wingtip region, provide robust discriminative power for gull species identification. The transition pattern analysis yields effective differentiation between morphologically similar species.
+To further quantify these observations and analyse the texture features calculated from the histograms, Table~\ref{tab:top_discriminative_features} lists the top discriminative features based on their percentage differences between species. The analysis demonstrates that LBP texture features, particularly in the wingtip and wing region, can provide robust discriminative power for gull species identification although the difference is very small.
 
 \section{Clustering Results}
 
