@@ -311,6 +311,11 @@ C.~Shorten and T.~M. Khoshgoftaar, ``A survey on image data augmentation for
   [Online]. Available: \url{https://doi.org/10.1186/s40537-019-0197-0}
 \BIBentrySTDinterwordspacing
 
+\bibitem{tan2018survey}
+C.~Tan, F.~Sun, T.~Kong, W.~Zhang, C.~Yang, and C.~Liu, ``A survey on deep
+  transfer learning,'' \emph{Artificial Neural Networks and Machine
+  Learning--ICANN 2018}, pp. 270--279, 2018.
+
 \bibitem{simonyan2014vgg}
 K.~Simonyan and A.~Zisserman, ``Very deep convolutional networks for
   large-scale image recognition,'' \emph{arXiv preprint arXiv:1409.1556}, 2014.
@@ -396,19 +401,19 @@ S.~Abnar and W.~Zuidema, ``Quantifying attention flow in transformers,''
   \url{https://arxiv.org/abs/2005.00928}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Adebayo2018}
+\BIBentryALTinterwordspacing
+J.~Adebayo, J.~Gilmer, M.~Muelly, I.~Goodfellow, M.~Hardt, and B.~Kim, ``Sanity
+  checks for saliency maps,'' \emph{arXiv preprint arXiv:1810.03292}, Oct 2018.
+  [Online]. Available: \url{https://arxiv.org/pdf/1810.03292.pdf}
+\BIBentrySTDinterwordspacing
+
 \bibitem{chefer2021generic}
 \BIBentryALTinterwordspacing
 H.~Chefer, S.~Gur, and L.~Wolf, ``Generic attention-model explainability for
   interpreting bi-modal and encoder-decoder transformers,'' \emph{arXiv
   preprint arXiv:2012.09838}, 2021. [Online]. Available:
   \url{https://arxiv.org/abs/2012.09838}
-\BIBentrySTDinterwordspacing
-
-\bibitem{Adebayo2018}
-\BIBentryALTinterwordspacing
-J.~Adebayo, J.~Gilmer, M.~Muelly, I.~Goodfellow, M.~Hardt, and B.~Kim, ``Sanity
-  checks for saliency maps,'' \emph{arXiv preprint arXiv:1810.03292}, Oct 2018.
-  [Online]. Available: \url{https://arxiv.org/pdf/1810.03292.pdf}
 \BIBentrySTDinterwordspacing
 
 \bibitem{monzon_image_normalization}

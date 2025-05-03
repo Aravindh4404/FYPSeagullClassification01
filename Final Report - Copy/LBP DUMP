@@ -1,4 +1,39 @@
 
+% This methodological approach bridges traditional ornithological identification techniques with quantitative computer vision analysis, providing a foundation for explaining the features that drive our fine-grained classification model.
+
+
+% \subsection{Conclusion}
+
+% The inclusion of abstract pattern features (ones count and transitions) provides additional discriminative power beyond traditional texture metrics. This approach is particularly valuable for challenging identification scenarios where similar species show subtle differences in plumage texture patterns rather than obvious color or shape distinctions.
+
+% The full implementation enables systematic exploration of texture-based differences between Slaty-backed and Glaucous-winged Gulls, potentially providing insights into distinguishing features that might not be immediately apparent through visual inspection alone.
+
+% \subsection{References}
+
+% \begin{enumerate}
+%     \item Selvaraju, R. R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization. \href{https://arxiv.org/abs/1610.02391}{arXiv:1610.02391}.
+    
+%     \item Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., \& Torralba, A. (2016). Learning Deep Features for Discriminative Localization. \href{https://arxiv.org/abs/1512.04150}{arXiv:1512.04150}.
+    
+%     \item Chattopadhay, A., Sarkar, A., Howlader, P., \& Balasubramanian, V. N. (2018). Grad-CAM++: Generalized Gradient-Based Visual Explanations for Deep Convolutional Networks. \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{IEEE Transactions on Neural Networks and Learning Systems}.
+    
+%     \item Abnar, S., \& Zuidema, W. (2020). Quantifying Attention Flow in Transformers. \href{https://arxiv.org/abs/2005.00928}{arXiv:2005.00928}.
+    
+%     \item Chefer, H., Gur, S., \& Wolf, L. (2021). Transformer Interpretability Beyond Attention Visualization. \href{https://arxiv.org/abs/2012.09838}{arXiv:2012.09838}.
+    
+%     \item Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., ... \& Houlsby, N. (2020). An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale. \href{https://arxiv.org/abs/2010.11929}{arXiv:2010.11929}.
+    
+%     \item Omeiza, D., Speakman, S., Cintas, C., \& Weldermariam, K. (2019). Smooth Grad-CAM++: An Enhanced Inference Level Visualization Technique for Deep Convolutional Neural Network Models. \href{https://arxiv.org/abs/1908.01224}{arXiv:1908.01224}.
+    
+%     \item Caron, M., Touvron, H., Misra, I., Jégou, H., Mairal, J., Bojanowski, P., \& Joulin, A. (2021). Emerging Properties in Self-Supervised Vision Transformers. \href{https://arxiv.org/abs/2104.14294}{arXiv:2104.14294}.
+    
+%     \item Jacob, G., Zhong, J., Bengío, Y., & Pal, C. (2021). Do Vision Transformers See Like Convolutional Neural Networks? \href{https://arxiv.org/abs/2112.00114}{arXiv:2112.00114}.
+    
+%     \item Wang, H., Ge, S., Lipton, Z., & Xing, E. P. (2019). Learning Robust Global Representations by Penalizing Local Predictive Power. \href{https://arxiv.org/abs/1905.13549}{arXiv:1905.13549}.
+% \end{enumerate}
+
+
+
 \section{Local Binary Pattern Analysis Methodology}
 
 The Local Binary Pattern (LBP) framework provides a robust approach for texture analysis in biological image classification. Our implementation extends the conventional LBP methodology with novel abstract pattern analysis and comprehensive comparative metrics, specifically optimized for differentiating \textit{Slaty-backed Gull} and \textit{Glaucous-winged Gull} plumage patterns.

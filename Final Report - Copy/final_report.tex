@@ -670,6 +670,8 @@ Model performance was systematically evaluated using:
 \subsection{Model Checkpointing and Evaluation}
 
 Our implementation includes a robust evaluation framework with model checkpointing based on validation accuracy. This ensures that we preserve the best-performing model configuration throughout the training process. The model is trained for 20 epochs with early stopping implicitly implemented through best model saving. Performance is evaluated using accuracy on both validation and test sets, providing a comprehensive assessment of model generalization.
+
+This approach is well-aligned with established findings by \citep{tan2018survey}, who demonstrate that transfer learning with pre-trained models on bird classification tasks enables rapid convergence-often requiring as few as 2 to 10 epochs to achieve optimal accuracy. in stark contrast to the 40–50 epochs typically needed for training models from scratch. This efficiency not only accelerates the experimental workflow but also reduces computational demands, making it feasible to conduct extensive model comparisons and hyperparameter tuning. By leveraging pre-trained models and rigorous checkpointing, our methodology ensures that the selected models are both accurate and robust, reflecting best practices in modern deep learning for fine-grained image classification tasks such as bird species recognition.
 %TODO
 
 \section{Model Architectures and Specific Implementations}
@@ -1007,7 +1009,7 @@ Vision Transformers process images differently from CNNs, using self-attention m
 
 \subsubsection{Theoretical Foundation}
 
-The Attention Rollout method is designed to visualize how information flows through the layers of a Transformer model. In Vision Transformers, the input image is divided into fixed-size patches, and each patch is linearly embedded along with position embeddings. A special classification token ([CLS]) is added, and the sequence of embedded patches is processed through multiple layers of self-attention.
+The Attention Rollout method visualizes information flow through the layers of a Transformer model. In Vision Transformers, the input image is divided into fixed-size patches, and each patch is linearly embedded along with position embeddings. A special classification token ([CLS]) is added, and the sequence of embedded patches is processed through multiple layers of self-attention.
 
 Attention Rollout computes a measure of how the [CLS] token attends to each image patch by propagating attention through all layers of the network. This provides insight into which parts of the image the model considers most relevant for classification.
 
@@ -1022,8 +1024,6 @@ The implementation of Attention Rollout for the ViT model follows these steps:
     
     \item \textbf{Head Averaging}: Attention weights from all heads in each layer are averaged to get a single attention map per transformer block.
     
-    \item \textbf{Discard Ratio Application}: Optionally, a threshold is applied to filter out low-attention connections, focusing only on the most significant attention patterns.
-    
     \item \textbf{Attention Rollout Computation}: Starting with an identity matrix, attention maps from each layer are sequentially multiplied to account for how attention propagates through the entire network.
     
     \item \textbf{CLS Token Attention Extraction}: The attention weights from the classification ([CLS]) token to each image patch are extracted, which indicates the importance of each patch for the final classification.
@@ -1031,36 +1031,68 @@ The implementation of Attention Rollout for the ViT model follows these steps:
     \item \textbf{Reshaping and Visualization}: These weights are reshaped to match the spatial dimensions of the input image (typically 14×14 for ViT-Base with patch size 16) and then upsampled to create a heatmap that can be overlaid on the original image.
 \end{enumerate}
 
-This method provides insights into how the ViT model attends to different parts of an image when making a prediction \citep{chefer2021generic}.
+While the implementation includes a mechanism for filtering low-attention connections through a discard ratio parameter, this feature was not utilized in the final analysis (set to 0.0), focusing instead on the complete attention distribution across all patches.
 
 \subsection{Grad-CAM for Vision Transformers}
 
-In addition to Attention Rollout, this study also implements Grad-CAM for Vision Transformers to provide a more direct comparison with the CNN-based visualizations. Two variants of Grad-CAM for ViT were implemented in this study: Enhanced ViT and Interpretable ViT, each with specific architectural modifications to facilitate interpretation.
+In addition to Attention Rollout, this study also implements Grad-CAM for Vision Transformers to provide a more direct comparison with the CNN-based visualizations. Two variants of Grad-CAM for ViT were implemented: Enhanced ViT and Interpretable ViT, each with specific architectural modifications to facilitate interpretation.
 
 \subsection{Enhanced ViT Implementation}
 
 The Enhanced ViT approach modifies the standard ViT architecture to facilitate Grad-CAM visualization:
 
 \begin{itemize}
-\item \textbf{Model Architecture:} The Enhanced ViT model extends the base ViT by replacing the original head with an identity layer, adding an attention layer to compute scalar importance scores for each token, and implementing a classifier that operates on attention-weighted features.
-\item \textbf{Token Feature Registration:} The model registers hooks to capture token features during the forward pass and their gradients during backpropagation.
-\item \textbf{Gradient Computation:} When computing Grad-CAM, the class token is excluded, and only the patch tokens are considered.
-\item \textbf{Spatial Reshaping:} The tokens and gradients are reshaped to recover the 2D spatial structure ($h \times w$ grid) from the sequence of tokens.
-\item \textbf{Grad-CAM Generation:} Similar to traditional Grad-CAM, channel-wise weights are computed from gradients and applied to token features to create the activation map.
+\item \textbf{Model Architecture:} The Enhanced ViT model utilizes the base ViT by replacing the original classification head with an identity layer, preserving the full token representation from the transformer blocks.
+
+\item \textbf{Attention Mechanism:} An attention layer computes scalar importance scores for all tokens (including both [CLS] and patch tokens), which are then normalized through a softmax operation to produce attention weights.
+
+\item \textbf{Feature Integration:} These attention weights are applied to the token features through a weighted sum operation, creating a single feature vector that represents the entire image with emphasis on the most important regions.
+
+\item \textbf{Gradient Recording:} The model registers hooks to capture token features during the forward pass and their gradients during backpropagation, essential for the Grad-CAM calculation.
+
+\item \textbf{Grad-CAM Computation:} For visualization, the class token is excluded, and only patch tokens (corresponding to image regions) are considered. The tokens and gradients are reshaped from the sequence format back to a 2D spatial grid to recover the image structure.
+
+\item \textbf{Activation Map Generation:} Following standard Grad-CAM procedure, channel-wise weights are computed from gradients and applied to token features to create the final activation map highlighting discriminative regions.
 \end{itemize}
 
-\subsection{Interpretable ViT Implementation}
+\subsection{Interpretable ViT with Feature Concatenation}
 
-The Interpretable ViT variant uses a different approach to extract and utilize token information:
+The Interpretable ViT variant employs a feature concatenation approach that enhances interpretability:
 
 \begin{itemize}
-\item \textbf{Dual-Stream Architecture:} This implementation processes the class token and patch tokens separately.
-\item \textbf{Attention Weights Calculation:} An explicit attention layer computes importance weights for patch tokens, determining how much each patch contributes to the final representation.
-\item \textbf{Feature Combination:} The class token and weighted patch features are concatenated before classification, providing the classifier with both global context (class token) and attention-weighted local features.
-\item \textbf{Grad-CAM Calculation:} During Grad-CAM computation, gradients flow through this combined representation, providing a more nuanced view of how different parts of the image contribute to the classification.
+\item \textbf{Feature Extraction:} The implementation first extracts features from the base ViT model, producing a sequence of token embeddings.
+
+\item \textbf{Token Separation:} After feature extraction, the [CLS] token and patch tokens are explicitly separated for differential processing:
+\begin{align}
+\text{cls\_token} &= \text{tokens}[:, 0, :] \\
+\text{patch\_tokens} &= \text{tokens}[:, 1:, :]
+\end{align}
+
+\item \textbf{Attention Weighting:} An attention layer computes importance weights specifically for the patch tokens, determining each patch's contribution to the final representation:
+\begin{align}
+\text{attn\_scores} &= \text{attention\_layer}(\text{patch\_tokens}) \\
+\text{attn\_weights} &= \text{softmax}(\text{attn\_scores}, \text{dim}=1)
+\end{align}
+
+\item \textbf{Weighted Representation:} The patch tokens are combined using these attention weights to form a single weighted feature vector:
+\begin{align}
+\text{weighted\_patch} = \sum_{i} \text{attn\_weights}_i \cdot \text{patch\_tokens}_i
+\end{align}
+
+\item \textbf{Feature Concatenation:} The [CLS] token (providing global context) and the weighted patch features (providing localized information) are concatenated to form a comprehensive representation:
+\begin{align}
+\text{combined} = [\text{cls\_token}; \text{weighted\_patch}]
+\end{align}
+
+\item \textbf{Classifier Architecture:} To accommodate this concatenated representation, the classifier's first layer accepts double the embedding dimension as input:
+\begin{align}
+\text{classifier} = \text{LayerNorm}(\text{embed\_dim} \times 2) \rightarrow \text{Dropout} \rightarrow \text{Linear} \rightarrow \ldots
+\end{align}
+
+\item \textbf{Grad-CAM Visualization:} During Grad-CAM computation, gradients flow back through this architecture, capturing how both global context and local features influence the classification decision.
 \end{itemize}
 
-Both approaches enable visualization of the ViT's decision-making process using gradient information, but with different mechanisms for integrating token features and attention weights.
+Both approaches enable visualization of the ViT's decision-making process using gradient information, but with different mechanisms for integrating token features and attention weights. The Enhanced ViT applies attention across all tokens before classification, while the Interpretable ViT explicitly separates and recombines different types of features to provide a more structured view of the classification process.
 
 \subsection{Comparison Framework}
 
@@ -1518,7 +1550,7 @@ The complete analysis pipeline consists of two main modules:
         \item Saves features to CSV files for further analysis
     \end{itemize}
 
-    \item \textbf{Analysis Module}:
+    \item \textbf{Analysis Modules}:
     \begin{itemize}
         \item Loads extracted features
         \item Calculates advanced texture statistics
@@ -1589,42 +1621,9 @@ Statistical testing using SciPy was performed where t-test for unequal variances
 
 % \href{https://doi.org/10.1676/13-107.1}{(Howell and Dunn, 2014)}
 
-These statistical analyses allowed us to find and objectively validate whether the differences in areas highlighted by Grad-CAM between species are quantitatively significant.
+These statistical analyses allowed us to find and objectively validate whether the differences found through the analysis in areas highlighted by Grad-CAM (wing and wingtip) between species are quantitatively significant.
 
-The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. 
-
-% This methodological approach bridges traditional ornithological identification techniques with quantitative computer vision analysis, providing a foundation for explaining the features that drive our fine-grained classification model.
-
-
-% \subsection{Conclusion}
-
-% The inclusion of abstract pattern features (ones count and transitions) provides additional discriminative power beyond traditional texture metrics. This approach is particularly valuable for challenging identification scenarios where similar species show subtle differences in plumage texture patterns rather than obvious color or shape distinctions.
-
-% The full implementation enables systematic exploration of texture-based differences between Slaty-backed and Glaucous-winged Gulls, potentially providing insights into distinguishing features that might not be immediately apparent through visual inspection alone.
-
-% \subsection{References}
-
-% \begin{enumerate}
-%     \item Selvaraju, R. R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., \& Batra, D. (2017). Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization. \href{https://arxiv.org/abs/1610.02391}{arXiv:1610.02391}.
-    
-%     \item Zhou, B., Khosla, A., Lapedriza, A., Oliva, A., \& Torralba, A. (2016). Learning Deep Features for Discriminative Localization. \href{https://arxiv.org/abs/1512.04150}{arXiv:1512.04150}.
-    
-%     \item Chattopadhay, A., Sarkar, A., Howlader, P., \& Balasubramanian, V. N. (2018). Grad-CAM++: Generalized Gradient-Based Visual Explanations for Deep Convolutional Networks. \href{https://www.sciencedirect.com/science/article/pii/S0893608018302107}{IEEE Transactions on Neural Networks and Learning Systems}.
-    
-%     \item Abnar, S., \& Zuidema, W. (2020). Quantifying Attention Flow in Transformers. \href{https://arxiv.org/abs/2005.00928}{arXiv:2005.00928}.
-    
-%     \item Chefer, H., Gur, S., \& Wolf, L. (2021). Transformer Interpretability Beyond Attention Visualization. \href{https://arxiv.org/abs/2012.09838}{arXiv:2012.09838}.
-    
-%     \item Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., ... \& Houlsby, N. (2020). An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale. \href{https://arxiv.org/abs/2010.11929}{arXiv:2010.11929}.
-    
-%     \item Omeiza, D., Speakman, S., Cintas, C., \& Weldermariam, K. (2019). Smooth Grad-CAM++: An Enhanced Inference Level Visualization Technique for Deep Convolutional Neural Network Models. \href{https://arxiv.org/abs/1908.01224}{arXiv:1908.01224}.
-    
-%     \item Caron, M., Touvron, H., Misra, I., Jégou, H., Mairal, J., Bojanowski, P., \& Joulin, A. (2021). Emerging Properties in Self-Supervised Vision Transformers. \href{https://arxiv.org/abs/2104.14294}{arXiv:2104.14294}.
-    
-%     \item Jacob, G., Zhong, J., Bengío, Y., & Pal, C. (2021). Do Vision Transformers See Like Convolutional Neural Networks? \href{https://arxiv.org/abs/2112.00114}{arXiv:2112.00114}.
-    
-%     \item Wang, H., Ge, S., Lipton, Z., & Xing, E. P. (2019). Learning Robust Global Representations by Penalizing Local Predictive Power. \href{https://arxiv.org/abs/1905.13549}{arXiv:1905.13549}.
-% \end{enumerate}
+The entire analysis pipeline was implemented in Python, utilizing libraries including OpenCV for image processing, NumPy and Pandas for data manipulation, and SciPy for statistical testing. Various visualization plots were created to represent the analysis results that include threshold-based differences, darkness metrics, pixel intensity distributions. per-image variability, and wing vs wingtip intensity relationships.
 
 \section{Verification by Clustering for Species Differentiation}
 
@@ -1634,47 +1633,29 @@ To validate and complement the results achieved through the analysis of the regi
 
 \subsection{Feature Extraction and Preprocessing}
 
-The clustering analysis utilizes three key morphological features extracted from the wingtip regions:
-\begin{itemize}
-    \item Mean wing intensity
-    \item Mean wingtip intensity
-    \item Count of darker pixels in wingtip regions
-\end{itemize}
+The clustering analysis utilizes three key morphological features extracted from the wingtip regions, specifically \textbf{Mean wing intensity}, \textbf{Mean wingtip intensity}, and \textbf{Count of darker pixels in wingtip regions}.
 
 Prior to clustering analysis, the following preprocessing steps were implemented:
 \begin{enumerate}
-    \item \textbf{Data Loading}: The dataset was loaded from the CSV file, with features and species labels separated for analysis.
+    \item \textbf{Data Loading}: The dataset was loaded from the CSV file (produced by intensity analysis script), with features and species labels separated for analysis.
     \item \textbf{Feature Standardization}: All features were standardized using \texttt{StandardScaler} to ensure each feature contributed equally to the clustering algorithms, preventing features with larger magnitudes from dominating the analysis.
     \item \textbf{Dimensionality Reduction}: Principal Component Analysis (PCA) was applied to reduce the three-dimensional feature space to two dimensions for visualization purposes. The explained variance ratio was calculated to assess how much information was preserved in the lower-dimensional representation.
 \end{enumerate}
 
 \subsection{Clustering Algorithms Implementation}
-Three distinct clustering algorithms were implemented to provide a comprehensive evaluation of the feature space:
+Three distinct clustering algorithms were implemented to provide a comprehensive evaluation of the feature space with Number of clusters/components set to 2 (corresponding to the two gull species).
 
 \subsubsection{K-means Clustering}
-K-means clustering was implemented with the following parameters:
-\begin{itemize}
-    \item Number of clusters: 2 (corresponding to the two gull species)
-    \item Random state: 42 (for reproducibility)
-    \item Multiple initializations (\texttt{n\_init = 10}) to avoid local optima
-\end{itemize}
+K-means clustering was implemented with multiple initializations (\texttt{n\_init = 10}) to avoid local optima.
 K-means partitions the data by minimizing the within-cluster sum of squares. The algorithm iteratively assigns data points to the nearest cluster centroid and then recalculates the centroids based on the new cluster assignments until convergence is achieved.
 
 \subsubsection{Hierarchical Clustering}
-Hierarchical clustering was implemented with:
-\begin{itemize}
-    \item Number of clusters: 2
-    \item Linkage method: Ward's linkage
-\end{itemize}
-This approach builds a hierarchy of clusters. Initially, each data point is treated as a single cluster.  The algorithm then iteratively merges the closest pairs of clusters until only the specified number of clusters remains. Ward's linkage was chosen to minimize the variance within the newly formed clusters at each merge, promoting the creation of compact, spherical clusters.
+
+Hierarchical clustering was implemented with Ward's linkage. This approach builds a hierarchy of clusters. Initially, each data point is treated as a single cluster.  The algorithm then iteratively merges the closest pairs of clusters until only the specified number of clusters remains. Ward's linkage was chosen to minimize the variance within the newly formed clusters at each merge, promoting the creation of compact, spherical clusters.
 
 \subsubsection{Gaussian Mixture Model}
-GMM clustering was implemented with:
-\begin{itemize}
-    \item Number of components: 2
-    \item Random state: 42 (for reproducibility)
-\end{itemize}
-GMM assumes that the data is generated from a mixture of a finite number of Gaussian distributions with unknown parameters.  The algorithm estimates the parameters of these distributions and assigns data points to clusters based on the probability that they belong to each distribution. This probabilistic approach allows for more flexibility in cluster shapes compared to K-means.
+
+GMM assumes that the data is generated from a mixture of a finite number of Gaussian distributions with unknown parameters. The algorithm estimates the parameters of these distributions and assigns data points to clusters based on the probability that they belong to each distribution. This probabilistic approach allows for more flexibility in cluster shapes compared to K-means.
 
 \subsection{Evaluation Metrics}
 The effectiveness of each clustering algorithm was evaluated using multiple metrics:
@@ -1684,8 +1665,8 @@ The effectiveness of each clustering algorithm was evaluated using multiple metr
 
 \subsubsection{Supervised Evaluation (Using Known Species Labels)}
 \textbf{Adjusted Rand Index (ARI)}: Measures the similarity between the true species assignments and the clustering results, adjusted for chance. Values range from -1 to 1, with higher values indicating greater similarity.
-\textbf{Confusion Matrix}: Visualizes the number of correctly and incorrectly clustered specimens after mapping cluster labels to species labels.
 \textbf{Clustering Accuracy}: Calculated as the percentage of specimens correctly classified after mapping clusters to the majority species within each cluster.
+\textbf{Confusion Matrix}: Visualizes the number of correctly and incorrectly clustered specimens after mapping cluster labels to species labels.
 
 \subsection{Cluster Mapping and Misclassification Analysis}
 To interpret the clustering results in terms of species classification:
@@ -1703,7 +1684,7 @@ Multiple visualizations were generated to aid interpretation:
     \item \textbf{Feature Importance Plots}: Bar charts showing the relative importance of each feature based on cluster center differences (for K-means).
     \item \textbf{Algorithm Comparison}: Bar charts comparing the silhouette scores across all clustering algorithms to assess their performance.
 \end{enumerate}
-This comprehensive clustering analysis provides valuable insights into the natural grouping of morphological features and helps validate the discriminative power of the features identified by the deep learning models.
+This comprehensive clustering analysis provides valuable insights into the natural grouping of morphological features and helps validate the discriminative power of the significantly different features found from the analysis performed on regions of the birds highlighted by Grad-CAM. 
 
 \subsection{Implementation Details}
 
@@ -1721,7 +1702,7 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
 
 \chapter{Results}
 
-\section{Model Performance on latest Stage 3 dataset}
+\section{Model Performance of top-performing models trained on latest Stage 3 dataset}
 
 % Table 4: Validation and Test Accuracy Comparison
 \begin{table}[htbp]
@@ -1765,6 +1746,7 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
     }
 \end{table}
 
+Based on the results presented in Tables~\ref{tab:val_test_comparison} and~\ref{tab:combined_performance}, it is evident that several models achieved high validation and test accuracy although there were notable differences in their interpretability and localization capabilities. Specifically, qualitative analysis of Grad-CAM and interpretability visualizations (see Appendix~\ref{appendix:interpretability}) revealed that most models, with the exception of VGG-16, failed to consistently highlight the biologically relevant regions-namely, the wings and wingtip areas-of the gull images. Therefore, VGG-16 was selected as the best-performing model.
 
 \section{Grad-CAM outputs of best performing VGG-16 model}
 
@@ -1774,6 +1756,8 @@ This comprehensive methodology allowed for a robust evaluation of whether the ex
     \caption{Grad-CAM visualizations for a selection of test images highlighting wing and wingtip regions of the VGG-16 model}
     \label{fig:vgg16_gradcam}
 \end{figure}
+
+As shown in Figure~\ref{fig:vgg16_gradcam}, the Grad-CAM outputs from the VGG-16 model highlight the wing and wingtip regions of the birds
 
 
 \section{Intensity Analysis Results}
@@ -2095,7 +2079,7 @@ The figures illustrate the results of abstract features across different regions
 The analysis demonstrates that LBP texture features, particularly in the wingtip region, provide robust discriminative power for gull species identification. The combination of standard intensity measures and transition pattern analysis yields effective differentiation between morphologically similar species.
 
 \section{Clustering}
-The clustering performance is visualized through two complementary perspectives: the cluster formations in reduced PCA space (Figure~\ref{fig:cluster_visualizations}) and the classification accuracy via confusion matrices (Figure~\ref{fig:confusion_matrices}).
+The clustering performance is visualized through two complementary perspectives: the cluster formations in reduced PCA space (Figure~\ref{fig:cluster_visualizations}) and the classification accuracy via confusion matrices which were generated considering majority species label within each cluster to be the true label(Figure~\ref{fig:confusion_matrices}).
 
 \begin{figure}[htbp]
     \centering
@@ -2201,13 +2185,6 @@ Hierarchical & 92.8\% & 93.2\% & 92.4\% & 92.8\% \\
 \end{tabular}
 \end{table}
 
-The confusion matrices reveal consistent patterns across algorithms:
-\begin{itemize}
-    \item GMM achieved the highest performance (95.6\% accuracy) with balanced misclassification rates
-    \item K-means showed slightly more false positives for Slaty-backed Gulls (94.2\% accuracy)
-    \item Hierarchical clustering had marginally higher misclassification rates (92.8\% accuracy)
-\end{itemize}
-
 All methods demonstrated effective species separation, with wingtip intensity being the most discriminative feature across algorithms (Figure~\ref{fig:kmeans_feature_importance}).
 
 % \subsection{Misclassified Points Analysis}
@@ -2241,74 +2218,7 @@ All methods demonstrated effective species separation, with wingtip intensity be
 % \end{adjustbox}
 % \end{table}
 
-The clustering results demonstrate varying performance across the three algorithms. Figure~\ref{fig:clustering_results} visualizes the cluster assignments in the reduced PCA space, while the misclassification tables reveal specific cases where each algorithm struggled to correctly classify instances. The GMM approach (Figure~\ref{fig:gmm_cluster}) provides soft clustering assignments, which may be beneficial for ambiguous cases. The hierarchical method (Figure~\ref{fig:hierarchical_cluster}) shows the dendrogram structure, and K-means (Figure~\ref{fig:kmeans_cluster}) demonstrates its characteristic spherical cluster shapes.
-
-Originalllllllllllllllllll
-
-\subsection{Clustering Analysis Results Original}
-
-The clustering analysis provided strong validation of the species differentiation, with multiple algorithms demonstrating clear separation between the two species.
-
-\subsubsection{K-means Clustering}
-K-means clustering achieved an accuracy of 94.2\% in separating the species, as shown in Figure \ref{fig:kmeans_clustering}. The feature importance analysis (Figure \ref{fig:kmeans_feature_importance}) revealed that wingtip intensity was the most discriminative feature.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_clustering.png}
-    \caption{K-means clustering results showing clear separation between species}
-    \label{fig:kmeans_clustering}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_feature_importance.png}
-    \caption{Feature importance analysis from K-means clustering}
-    \label{fig:kmeans_feature_importance}
-\end{figure}
-
-\subsubsection{Hierarchical Clustering}
-Hierarchical clustering demonstrated similar effectiveness, with a dendrogram showing clear separation between species (Figure \ref{fig:hierarchical_clustering}). The confusion matrix (Figure \ref{fig:hierarchical_confusion_matrix}) shows an accuracy of 92.8\%.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/hierarchical_clustering.png}
-    \caption{Hierarchical clustering dendrogram showing species separation}
-    \label{fig:hierarchical_clustering}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/hierarchical_confusion_matrix.png}
-    \caption{Confusion matrix for hierarchical clustering results}
-    \label{fig:hierarchical_confusion_matrix}
-\end{figure}
-
-\subsubsection{Gaussian Mixture Model}
-The GMM approach provided the highest accuracy at 95.6\%, with clear separation between species clusters (Figure \ref{fig:gmm_clustering}). The confusion matrix (Figure \ref{fig:gmm_confusion_matrix}) shows minimal misclassification.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/gmm_clustering.png}
-    \caption{Gaussian Mixture Model clustering results}
-    \label{fig:gmm_clustering}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/gmm_confusion_matrix.png}
-    \caption{Confusion matrix for GMM clustering results}
-    \label{fig:gmm_confusion_matrix}
-\end{figure}
-
-\subsection{Algorithm Comparison}
-Figure \ref{fig:algorithm_comparison} shows a comparative analysis of all clustering algorithms, demonstrating that GMM provided the most robust separation between species, followed closely by K-means and hierarchical clustering.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/algorithm_comparison.png}
-    \caption{Comparative analysis of clustering algorithms}
-    \label{fig:algorithm_comparison}
-\end{figure}
+The clustering results demonstrate varying performance across the three algorithms. Figure~\ref{fig:clustering_results} visualizes the cluster assignments in the reduced PCA space, while the misclassification tables reveal specific cases where each algorithm struggled to correctly classify instances. The GMM approach (Figure~\ref{fig:gmm_cluster}) provides soft clustering assignments, which may be beneficial for ambiguous cases. The hierarchical method (Figure~\ref{fig:hierarchical_cluster}) shows the dendrogram structure, and K-means (Figure~\ref{fig:kmeans_cluster}) demonstrates its characteristic spherical cluster shapes. Regardless this proved that the features found to be of significant difference between the two classes are useful for classification.
 
 \chapter{Discussion}
 
@@ -2332,15 +2242,18 @@ Practically, these models could be integrated into citizen science platforms lik
 
 This study successfully addressed its primary research aims. First, high-accuracy classifiers, particularly VGG-16 achieving a test accuracy of 95.74\%, were developed using transfer learning, demonstrating that pre-trained convolutional neural network architectures can excel in fine-grained gull classification even with limited data. Iterative dataset refinement from 937 to 775 expert-curated images was vital, minimizing noise from age-related and environmental variability. Second, interpretability was achieved through Grad-CAM visualizations, which effectively bridged artificial intelligence and biological expertise by highlighting the wing and wingtip regions---corroborating that the models prioritize known diagnostic traits. This transparency is essential for building trust in automated taxonomic tools. Third, statistical and clustering analyses confirmed significant and quantifiable differences in wing darkness (with $p < 0.001$) and wingtip texture (with 57.4\% higher variability in Slaty-backed Gulls), empirically supporting field identification criteria while also revealing nuances such as interspecific overlap in wingtip patterns that require expert contextualization. Finally, the dominance of wingtip features in both model attention maps and statistical analysis suggests that artificial intelligence can not only replicate human expertise but also uncover underappreciated diagnostic traits, such as the prevalence of very dark pixels (intensity $<$30) in Slaty-backed Gulls. Collectively, these achievements demonstrate the potential of integrating deep learning with interpretability and quantitative analysis to advance fine-grained species identification and provide new insights into avian taxonomy.
 
-\subsection*{Synthesis of Contributions}
-This work advances avian taxonomy by:
-\begin{itemize}
-    \item Providing a reproducible framework for AI-assisted morphological analysis.
-    \item Quantifying previously qualitative field characteristics (e.g., ``dark wingtips").
-    \item Demonstrating that unsupervised clustering can validate supervised model predictions.
-\end{itemize}
 
-Future research should expand to hybrid specimens and juvenile plumage while testing robustness across diverse imaging conditions. By integrating computational power with ecological knowledge, this approach offers a paradigm for addressing the taxonomic impediment in rapidly evolving species complexes.
+\chapter{Appendix}
+
+% \subsection*{Synthesis of Contributions}
+% This work advances avian taxonomy by:
+% \begin{itemize}
+%     \item Providing a reproducible framework for AI-assisted morphological analysis.
+%     \item Quantifying previously qualitative field characteristics (e.g., ``dark wingtips").
+%     \item Demonstrating that unsupervised clustering can validate supervised model predictions.
+% \end{itemize}
+
+% Future research should expand to hybrid specimens and juvenile plumage while testing robustness across diverse imaging conditions. By integrating computational power with ecological knowledge, this approach offers a paradigm for addressing the taxonomic impediment in rapidly evolving species complexes.
 % \chapter{Discussion}
 
 
