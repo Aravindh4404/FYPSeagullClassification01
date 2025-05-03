@@ -53,11 +53,6 @@ P.~Adriaens, M.~Muusse, P.~J. Dubois, and F.~Jiguet, \emph{Gulls of Europe,
 A.~Ayyash, \emph{The Gull Guide}.\hskip 1em plus 0.5em minus 0.4em\relax
   Princeton University Press, 2024.
 
-\bibitem{adriaens2022gulls}
-P.~Adriaens, M.~Muusse, P.~J. Dubois, and F.~Jiguet, \emph{Gulls of Europe,
-  North Africa, and the Middle East}.\hskip 1em plus 0.5em minus 0.4em\relax
-  Princeton University Press, 2022.
-
 \bibitem{valan}
 M.~Valan, ``Automated image-based taxon identification using deep learning,''
   \emph{Journal of Taxonomy Research}, vol.~45, pp. 123--135, 2023.
@@ -72,15 +67,11 @@ R.~C.~W. M.~Muazin Hilal~Hasibuan, Novanto~Yudistira, ``Large-scale bird
   species classification using cnns,'' \emph{Nature Machine Intelligence},
   vol.~5, pp. 89--101, 2022.
 
-\bibitem{source2}
-W.~L. Lei~Yang, Ying~Yang, ``Fine-grained image classification with hybrid
-  attention modules,'' \emph{Computer Vision Advances}, vol.~10, pp. 56--78,
-  2022.
-
-\bibitem{source5}
-A.~Name, ``Advantages and challenges of deep learning for image
-  classification,'' \emph{Artificial Intelligence Review}, vol.~30, pp.
-  300--320, 2023.
+\bibitem{Alzubaidi2021Review}
+L.~Alzubaidi, J.~Zhang, A.~J. Humaidi, A.~Al-Dujaili, Y.~Duan, O.~Al-Shamma,
+  J.~Santamaría, M.~A. Fadhel, M.~Al-Amidie, and L.~Farhan, ``Review of deep
+  learning: concepts, cnn architectures, challenges, applications, future
+  directions,'' \emph{Journal of Big Data}, vol.~8, no.~1, p.~53, 2021.
 
 \bibitem{essay101313}
 \BIBentryALTinterwordspacing

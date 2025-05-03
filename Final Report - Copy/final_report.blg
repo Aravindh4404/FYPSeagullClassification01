@@ -17,45 +17,45 @@ Warning--I didn't find a database entry for "nie2018theoretical"
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-You've used 61 entries,
+You've used 59 entries,
             4087 wiz_defined-function locations,
-            1203 strings with 20952 characters,
-and the built_in function-call counts, 43906 in all, are:
-= -- 3591
-> -- 1084
-< -- 314
-+ -- 589
-- -- 205
-* -- 2114
-:= -- 6825
-add.period$ -- 126
-call.type$ -- 61
-change.case$ -- 64
-chr.to.int$ -- 729
-cite$ -- 61
-duplicate$ -- 3154
-empty$ -- 3485
-format.name$ -- 246
-if$ -- 10169
+            1195 strings with 20885 characters,
+and the built_in function-call counts, 42843 in all, are:
+= -- 3499
+> -- 1088
+< -- 301
++ -- 587
+- -- 209
+* -- 2077
+:= -- 6654
+add.period$ -- 122
+call.type$ -- 59
+change.case$ -- 63
+chr.to.int$ -- 693
+cite$ -- 59
+duplicate$ -- 3080
+empty$ -- 3381
+format.name$ -- 250
+if$ -- 9913
 int.to.chr$ -- 0
-int.to.str$ -- 61
-missing$ -- 562
-newline$ -- 274
-num.names$ -- 65
-pop$ -- 1359
+int.to.str$ -- 59
+missing$ -- 557
+newline$ -- 268
+num.names$ -- 63
+pop$ -- 1349
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 3394
+skip$ -- 3303
 stack$ -- 0
-substring$ -- 1811
-swap$ -- 2504
-text.length$ -- 71
+substring$ -- 1730
+swap$ -- 2448
+text.length$ -- 70
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 61
+type$ -- 59
 warning$ -- 0
-while$ -- 179
-width$ -- 63
-write$ -- 677
+while$ -- 172
+width$ -- 61
+write$ -- 661
 (There were 2 warnings)
