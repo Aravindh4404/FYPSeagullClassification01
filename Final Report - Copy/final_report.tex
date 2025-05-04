@@ -635,7 +635,7 @@ Images were resized to match the architecture's expected input dimensions (224×
 Parameter choices were based on literature, as early-stage hyperparameter tuning with Optuna did not significantly improve validation accuracy, and models were already achieving high accuracies without hyperparameter optimization. This approach prioritized established configurations over exhaustive tuning given the satisfactory baseline performance.
 
 \begin{itemize}
-    \item \textbf{Optimizer:} AdamW optimizer with learning rates between 0.0001-0.001 and weight decay of 0.0005-0.001 as observed from \Citep{loshchilov2019decoupledweightdecayregularization} was used across implementations to provide adaptive learning with regularization. Learning rates were set to be less than, or upto the default pytorch value of 0.001 due to our small dataset in order to tackle potential underfitting.
+    \item \textbf{Optimizer:} AdamW optimizer with learning rates between 0.0001-0.001 and weight decay of 0.0005-0.001 as observed from \Citep{loshchilov2019decoupledweightdecayregularization} was used across implementations to provide adaptive learning with regularization. Learning rates less than, or upto the default pytorch value of 0.001 were set due to our small dataset in order to tackle potential underfitting.
     
     \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using ReduceLROnPlateau was implemented across models, reducing learning rates by a factor of 0.1 (factor=0.1) when validation metrics plateaued for 3-5 consecutive epochs (patience=3-5). ReduceLROnPlateau with mode='max' was used to track validation accuracy improvements rather than minimizing loss.
     
@@ -1634,13 +1634,12 @@ GMM assumes that the data is generated from a mixture of a finite number of Gaus
 \subsection{Evaluation Metrics}
 The effectiveness of each clustering algorithm was evaluated using multiple metrics:
 
-\subsubsection{Unsupervised Evaluation}
-\textbf{Silhouette Score}: Measures how similar a data point is to its own cluster compared to other clusters. Values range from -1 to 1, with higher values indicating better-defined clusters.
-
-\subsubsection{Supervised Evaluation (Using Known Species Labels)}
-\textbf{Adjusted Rand Index (ARI)}: Measures the similarity between the true species assignments and the clustering results, adjusted for chance. Values range from -1 to 1, with higher values indicating greater similarity.
-\textbf{Clustering Accuracy}: Calculated as the percentage of specimens correctly classified after mapping clusters to the majority species within each cluster.
-\textbf{Confusion Matrix}: Visualizes the number of correctly and incorrectly clustered specimens after mapping cluster labels to species labels.
+\begin{itemize}
+    \item \textbf{Silhouette Score}: Measures how similar a data point is to its own cluster compared to other clusters. Values range from -1 to 1, with higher values indicating better-defined clusters \citep{ROUSSEEUW198753}.
+    \item \textbf{Adjusted Rand Index (ARI)}: Measures the similarity between two data clusterings, adjusting for chance. Values range from -1 to 1, with higher values indicating greater similarity.
+    \item \textbf{Clustering Accuracy}: Calculated as the percentage of specimens correctly classified after mapping clusters to the majority species within each cluster.
+    \item \textbf{Confusion Matrix}: Visualizes the number of correctly and incorrectly clustered specimens after mapping cluster labels to species labels.
+\end{itemize}
 
 \subsection{Cluster Mapping and Misclassification Analysis}
 To interpret the clustering results in terms of species classification:
@@ -1931,7 +1930,7 @@ The quantitative difference in very dark pixels between species is substantial, 
 
 \subsection{Relationship Between Wing and Wingtip Intensities}
 
-To quantitatively assess the relative darkness of wingtip area compared to the rest of the wing which were the 2 critical areas highlighted by Grad-CAM, the proportion of wingtip pixels that are darker than the mean wing intensity for each species was calculated as suggested by industry expert Professor Gibbins.
+To quantitatively assess the relative darkness of wingtip area compared to the rest of the wing which were the 2 critical areas highlighted by Grad-CAM, the proportion of wingtip pixels that are darker than the mean wing intensity for each species was calculated as suggested by industry expert Professor Gibbins.  The results are presented in Table~\ref{tab:darknessproportion}. 
 
 
 \begin{table}[H]
@@ -2135,7 +2134,9 @@ The prominence of wing intensity features aligns with ornithological knowledge t
 
 \subsection{Integration with Visual Analysis}
 
-The clustering performance is visualized through two complementary perspectives: the cluster formations in reduced PCA space (Figure~\ref{fig:cluster_visualizations}) and the classification accuracy via confusion matrices considering majorily class to be the true class of the cluster(Figure~\ref{fig:confusion_matrices}).
+The clustering performance is visualized through two complementary perspectives: the cluster formations in reduced PCA space and the classification accuracy via confusion matrices considering majorily class to be the true class of the cluster.
+Figure~\ref{fig:cluster_visualizations} demonstrates how each clustering algorithm partitions the data in the PCA-reduced feature space. The K-means visualization (Figure~\ref{fig:kmeans_cluster}) clearly shows two well-defined clusters with distinct centroids, while hierarchical clustering (Figure~\ref{fig:hierarchical_cluster}) exhibits similar separation but with slightly different cluster boundaries. The GMM results (Figure~\ref{fig:gmm_cluster}) show more density-based partitioning that accommodates the natural distribution of the data points.
+
 
 \begin{figure}[H]
     \centering
@@ -2162,8 +2163,6 @@ The clustering performance is visualized through two complementary perspectives:
     \caption{Cluster formations in PCA-reduced space showing the distribution of data points with centroids marked for K-means and GMM. All three algorithms show clear separation between the two species along PCA Component 1.}
     \label{fig:cluster_visualizations}
 \end{figure}
-
-Figure~\ref{fig:cluster_visualizations} demonstrates how each clustering algorithm partitions the data in the PCA-reduced feature space. The K-means visualization (Figure~\ref{fig:kmeans_cluster}) clearly shows two well-defined clusters with distinct centroids, while hierarchical clustering (Figure~\ref{fig:hierarchical_cluster}) exhibits similar separation but with slightly different cluster boundaries. The GMM results (Figure~\ref{fig:gmm_cluster}) show more density-based partitioning that accommodates the natural distribution of the data points.
 
 \subsection{Confusion Matrix Analysis}
 
@@ -2745,163 +2744,155 @@ This section presents the results of Grad-CAM across different models except for
 % 20241204_170322.jpg, 20241204_170332.jpg, 480 (1).jpeg, 480 (14).jpeg, 
 % 480 (19).jpeg, 480 (21).jpeg, 480 (3).jpeg, 480 (45).jpeg
 
+
+% ... (rest of your preamble)
+
 \section{Local Binary Pattern Analysis Results}
 \label{sec:lbp_analysis}
 
 This section displays the LBP analysis results for the wing, wingtip, and head regions of the gull images.
 
 \begin{figure}[H]
+    \caption{Histograms for number of ones}
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
-        \centering
         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_head_ones_histogram.png}
         \caption{Head region}
         \label{fig:lbp_head}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.32\textwidth}
-        \centering
         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wing_ones_histogram.png}
         \caption{Wing region}
         \label{fig:lbp_wing}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.32\textwidth}
-        \centering
         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wingtip_ones_histogram.png}
         \caption{Wingtip region}
         \label{fig:lbp_wingtip}
     \end{subfigure}
-    \caption{Local Binary Pattern analysis results showing histograms of pattern distributions across different bird regions}
+    \caption{Local Binary Pattern analysis results showing histograms of pattern distributions across different bird regions.}
     \label{fig:lbp_results}
 \end{figure}
+
+\begin{figure}[H]
+    \caption{Histograms for number of transitions}
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_head_transitions_histogram.png}
+        \caption{Head region}
+        \label{fig:lbp_head}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wing_transitions_histogram.png}
+        \caption{Wing region}
+        \label{fig:lbp_wing}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wingtip_transitions_histogram.png}
+        \caption{Wingtip region}
+        \label{fig:lbp_wingtip}
+    \end{subfigure}
+    \caption{Local Binary Pattern analysis results showing histograms of pattern distributions across different bird regions.}
+    \label{fig:lbp_results}
+\end{figure}
+
 
 \subsection{Calculated Texture-based Feature Comparisons on 1s and Transitions Histogram (Rotation Invariant)}
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/ones_energy_comparison.png}
         \caption{Ones energy comparison}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/ones_entropy_comparison.png}
         \caption{Ones entropy comparison}
     \end{subfigure}
-    
     \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/mean_ones_comparison.png}
         \caption{Mean ones comparison}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/mean_transitions_comparison.png}
         \caption{Mean transitions comparison}
     \end{subfigure}
-    
     \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/transitions_energy_comparison.png}
         \caption{Transitions energy comparison}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/transitions_entropy_comparison.png}
         \caption{Transitions entropy comparison}
     \end{subfigure}
-    
     \caption{Selected feature comparison results related to "ones" and "transitions" from the original dataset.}
 \end{figure}
 
 \section{PCA Plots of 1s and Transitions Histogram}
-
-\subsection{Selected PCA Plots for "Ones" and "Transitions" Histograms}
-
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/pca/head_ones_pca_plot.png}
         \caption{Head ones PCA plot}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/pca/head_transitions_pca_plot.png}
         \caption{Head transitions PCA plot}
     \end{subfigure}
-    
     \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wing_ones_pca_plot.png}
         \caption{Wing ones PCA plot}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wing_transitions_pca_plot.png}
         \caption{Wing transitions PCA plot}
     \end{subfigure}
-    
     \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wingtip_ones_pca_plot.png}
         \caption{Wingtip ones PCA plot}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wingtip_transitions_pca_plot.png}
         \caption{Wingtip transitions PCA plot}
     \end{subfigure}
-    
     \caption{PCA plots for "ones" and "transitions" features across head, wing, and wingtip regions.}
 \end{figure}
 
-
-
 \subsection{Calculated Texture-based Feature Comparisons on LBP Histogram (May be Rotation Variant)}
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/energy_comparison.png}
         \caption{Energy comparison}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/entropy_comparison.png}
         \caption{Entropy comparison}
     \end{subfigure}
-    
     \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/homogeneity_comparison.png}
         \caption{Homogeneity comparison}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{images/appendix/Original/transitions_entropy_comparison.png}
         \caption{Transitions entropy comparison}
     \end{subfigure}
-    
     \caption{Selected feature comparison results from the original dataset.}
 \end{figure}
 
@@ -2911,20 +2902,211 @@ This section presents the misclassified points identified by different clusterin
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/gmm_misclassifications.png}
-    \caption{Misclassified points using the GMM clustering algorithm.}
+    \begin{subfigure}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{images/clustering/gmm_misclassifications.png}
+        \caption{Misclassified points using the GMM clustering algorithm.}
+    \end{subfigure}
+    \vspace{0.5cm}
+    \begin{subfigure}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{images/clustering/hierarchical_misclassifications.png}
+        \caption{Misclassified points using the Hierarchical clustering algorithm.}
+    \end{subfigure}
+    \vspace{0.5cm}
+    \begin{subfigure}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{images/clustering/kmeans_misclassifications.png}
+        \caption{Misclassified points using the K-Means clustering algorithm.}
+    \end{subfigure}
+    \caption{Misclassified points by different clustering algorithms.}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/hierarchical_misclassifications.png}
-    \caption{Misclassified points using the Hierarchical clustering algorithm.}
-\end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_misclassifications.png}
-    \caption{Misclassified points using the K-Means clustering algorithm.}
-\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+% \section{Local Binary Pattern Analysis Results}
+% \label{sec:lbp_analysis}
+
+% This section displays the LBP analysis results for the wing, wingtip, and head regions of the gull images.
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[b]{0.32\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_head_ones_histogram.png}
+%         \caption{Head region}
+%         \label{fig:lbp_head}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.32\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wing_ones_histogram.png}
+%         \caption{Wing region}
+%         \label{fig:lbp_wing}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.32\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wingtip_ones_histogram.png}
+%         \caption{Wingtip region}
+%         \label{fig:lbp_wingtip}
+%     \end{subfigure}
+%     \caption{Local Binary Pattern analysis results showing histograms of pattern distributions across different bird regions}
+%     \label{fig:lbp_results}
+% \end{figure}
+
+% \subsection{Calculated Texture-based Feature Comparisons on 1s and Transitions Histogram (Rotation Invariant)}
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/ones_energy_comparison.png}
+%         \caption{Ones energy comparison}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/ones_entropy_comparison.png}
+%         \caption{Ones entropy comparison}
+%     \end{subfigure}
+    
+%     \hfill
+    
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/mean_ones_comparison.png}
+%         \caption{Mean ones comparison}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/mean_transitions_comparison.png}
+%         \caption{Mean transitions comparison}
+%     \end{subfigure}
+    
+%     \vspace{0.5cm}
+    
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/transitions_energy_comparison.png}
+%         \caption{Transitions energy comparison}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/transitions_entropy_comparison.png}
+%         \caption{Transitions entropy comparison}
+%     \end{subfigure}
+    
+%     \caption{Selected feature comparison results related to "ones" and "transitions" from the original dataset.}
+% \end{figure}
+
+% \section{PCA Plots of 1s and Transitions Histogram}
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/pca/head_ones_pca_plot.png}
+%         \caption{Head ones PCA plot}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/pca/head_transitions_pca_plot.png}
+%         \caption{Head transitions PCA plot}
+%     \end{subfigure}
+    
+%     \vspace{0.5cm}
+    
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wing_ones_pca_plot.png}
+%         \caption{Wing ones PCA plot}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wing_transitions_pca_plot.png}
+%         \caption{Wing transitions PCA plot}
+%     \end{subfigure}
+    
+%     \vspace{0.5cm}
+    
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wingtip_ones_pca_plot.png}
+%         \caption{Wingtip ones PCA plot}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/pca/wingtip_transitions_pca_plot.png}
+%         \caption{Wingtip transitions PCA plot}
+%     \end{subfigure}
+    
+%     \caption{PCA plots for "ones" and "transitions" features across head, wing, and wingtip regions.}
+% \end{figure}
+
+% \subsection{Calculated Texture-based Feature Comparisons on LBP Histogram (May be Rotation Variant)}
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/energy_comparison.png}
+%         \caption{Energy comparison}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/entropy_comparison.png}
+%         \caption{Entropy comparison}
+%     \end{subfigure}
+    
+%     \vspace{0.5cm}
+    
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/homogeneity_comparison.png}
+%         \caption{Homogeneity comparison}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/appendix/Original/transitions_entropy_comparison.png}
+%         \caption{Transitions entropy comparison}
+%     \end{subfigure}
+    
+%     \caption{Selected feature comparison results from the original dataset.}
+% \end{figure}
+
+% \section{Misclassified Points in Clustering Analysis}
+
+% This section presents the misclassified points identified by different clustering algorithms. Each plot highlights the data points that were not correctly grouped according to the ground truth.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{images/clustering/gmm_misclassifications.png}
+%     \caption{Misclassified points using the GMM clustering algorithm.}
+% \end{figure}
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{images/clustering/hierarchical_misclassifications.png}
+%     \caption{Misclassified points using the Hierarchical clustering algorithm.}
+% \end{figure}
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_misclassifications.png}
+%     \caption{Misclassified points using the K-Means clustering algorithm.}
+% \end{figure}
 
 \end{document}
