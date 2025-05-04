@@ -420,4 +420,12 @@ T.~Ojala, M.~Pietikainen, and T.~Maenpaa, ``Multiresolution gray-scale and
   \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence},
   vol.~24, no.~7, pp. 971--987, 2002.
 
+\bibitem{ROUSSEEUW198753}
+\BIBentryALTinterwordspacing
+P.~J. Rousseeuw, ``Silhouettes: A graphical aid to the interpretation and
+  validation of cluster analysis,'' \emph{Journal of Computational and Applied
+  Mathematics}, vol.~20, pp. 53--65, 1987. [Online]. Available:
+  \url{https://www.sciencedirect.com/science/article/pii/0377042787901257}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}

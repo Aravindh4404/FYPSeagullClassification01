@@ -3,13 +3,12 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Validation and Test Accuracy Comparison}}{31}{table.caption.9}%
-\contentsline {table}{\numberline {5.2}{\ignorespaces Comprehensive Model Performance Metrics on Test Dataset}}{31}{table.caption.10}%
-\contentsline {table}{\numberline {5.3}{\ignorespaces Wing and Wingtip Intensity Statistical Summary}}{33}{table.caption.12}%
-\contentsline {table}{\numberline {5.4}{\ignorespaces Proportion of Wingtip Pixels Darker than Mean Wing Intensity}}{37}{table.caption.20}%
-\contentsline {table}{\numberline {5.5}{\ignorespaces Top Discriminative Features by Percentage Difference}}{41}{table.caption.27}%
-\contentsline {table}{\numberline {5.6}{\ignorespaces Top discriminative features ordered by their percentage difference between species. Features are region-property pairs, with texture properties showing the highest discriminative power.}}{41}{table.caption.27}%
-\contentsline {table}{\numberline {5.7}{\ignorespaces Performance comparison of clustering algorithms}}{42}{table.caption.30}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces Validation and Test Accuracy Comparison}}{29}{table.caption.9}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Comprehensive Model Performance Metrics on Test Dataset}}{29}{table.caption.10}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces Wing and Wingtip Intensity Statistical Summary}}{30}{table.caption.12}%
+\contentsline {table}{\numberline {5.4}{\ignorespaces Proportion of Wingtip Pixels Darker than Mean Wing Intensity}}{34}{table.caption.19}%
+\contentsline {table}{\numberline {5.5}{\ignorespaces Top discriminative region-histogram features ranked by percentage difference.}}{37}{table.caption.26}%
+\contentsline {table}{\numberline {5.6}{\ignorespaces Performance and confusion matrix summary for clustering algorithms. TP = True Positives, FN = False Negatives, GWG = Glaucous-Winged Gull, SBG = Slaty-Backed Gull.}}{38}{table.caption.27}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
