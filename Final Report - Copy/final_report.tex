@@ -2209,7 +2209,7 @@ Notably, all three algorithms achieved over 92\% accuracy, with hierarchical clu
 
 The dissertation has successfully addressed its primary research aims. First, high-accuracy classifiers, particularly VGG-16 achieving a test accuracy of 95.74\%, were developed using transfer learning, demonstrating that pre-trained convolutional neural network architectures can excel in fine-grained gull classification even with limited data. Iterative dataset refinement from expert-curated images was vital, minimizing noise from age-related and environmental variability. Second, interpretability was achieved through Grad-CAM visualizations, which effectively bridged artificial intelligence and biological expertise by highlighting the wing and wingtip regions. This transparency is essential for building trust in automated taxonomic tools. Third, statistical and clustering analyses confirmed significant and quantifiable differences in wing and wingtip intensity metrics, empirically supporting field identification criteria while also revealing nuances such as interspecific overlap in wingtip intensity that require expert contextualization. Finally, the dominance of wingtip features in both model attention maps and statistical analysis suggests that artificial intelligence can not only replicate human expertise but also uncover underappreciated diagnostic traits, such as the prevalence of very dark pixels in Slaty-backed Gulls. Collectively, these achievements demonstrate the potential of integrating deep learning with interpretability and quantitative analysis to advance fine-grained species identification and provide new insights into avian taxonomy.
 
-Future research can expand to hybrid specimens and juvenile plumage while testing robustness across diverse imaging conditions. By integrating computational power with ecological knowledge, this approach offers a paradigm for addressing the taxonomic impediment in rapidly evolving species complexes.
+Future research can expand to hybrid specimens and juvenile plumage while testing robustness across diverse imaging conditions or performing other analyses to find more significantly different features. By integrating computational power with ecological knowledge, this approach offers a paradigm for addressing the taxonomic impediment in rapidly evolving species complexes.
 
 
 % \subsection*{Synthesis of Contributions}
@@ -2935,6 +2935,28 @@ This section displays the LBP analysis results for the wing, wingtip, and head r
     \end{subfigure}
     
     \caption{Selected feature comparison results from the original dataset.}
+\end{figure}
+
+\section{Misclassified Points in Clustering Analysis}
+
+This section presents the misclassified points identified by different clustering algorithms. Each plot highlights the data points that were not correctly grouped according to the ground truth.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/clustering/gmm_misclassifications.png}
+    \caption{Misclassified points using the GMM clustering algorithm.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/clustering/hierarchical_misclassifications.png}
+    \caption{Misclassified points using the Hierarchical clustering algorithm.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_misclassifications.png}
+    \caption{Misclassified points using the K-Means clustering algorithm.}
 \end{figure}
 
 
