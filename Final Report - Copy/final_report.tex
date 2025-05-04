@@ -2379,7 +2379,7 @@ This section presents the training performance graphs and confusion matrices for
 \subsection{Model Comparison with Grad-CAM results on unseen Test Set}
 This section presents the results of Grad-CAM across different models except for ViT which displays the attention rollout results. All the images here were correctly predicted by all the well-performing models below. Each row displays the same image processed by the models that achieved high test and validation accuracy, allowing direct comparison of how each model focuses on different bird features.
 
-\subsection{Glaucous Winged Gull Interpretability Results}
+\subsubsection{Glaucous Winged Gull Interpretability Results}
 \label{subsec:glaucous_interpretability}
 
 % First image - 20241203_010647.jpg
@@ -2479,7 +2479,7 @@ This section presents the results of Grad-CAM across different models except for
 \end{figure}
 
 \clearpage
-\subsection{Slaty Backed Gull Interpretability Results}
+\subsubsection{Slaty Backed Gull Interpretability Results}
 \label{subsec:slaty_interpretability}
 
 % First image - 011sm.jpg
@@ -2776,73 +2776,19 @@ This section displays the LBP analysis results for the wing, wingtip, and head r
     \label{fig:lbp_results}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_head_transitions_vs_complexity.png}
-        \caption{Head region}
-        \label{fig:transitions_head_complex}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wing_transitions_vs_complexity.png}
-        \label{fig:transitions_wing_complex}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wingtip_transitions_vs_complexity.png}
-        \caption{Wingtip region}
-        \label{fig:transitions_wingtip_complex}
-    \end{subfigure}
-    \caption{Transitions vs. complexity analysis comparing pattern complexity distributions across different gull regions}
-    \label{fig:transitions_complexity}
-\end{figure}
-
 \subsection{Calculated Texture-based Feature Comparisons on 1s and Transitions Histogram (Rotation Invariant)}
-
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/contrast_comparison.png}
-        \caption{Contrast comparison}
+        \includegraphics[width=\textwidth]{images/appendix/Original/ones_energy_comparison.png}
+        \caption{Ones energy comparison}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/discriminative_power_heatmap.png}
-        \caption{Discriminative power heatmap}
-    \end{subfigure}
-    
-    \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/energy_comparison.png}
-        \caption{Energy comparison}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/entropy_comparison.png}
-        \caption{Entropy comparison}
-    \end{subfigure}
-    
-    \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/homogeneity_comparison.png}
-        \caption{Homogeneity comparison}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/mean_intensity_comparison.png}
-        \caption{Mean intensity comparison}
+        \includegraphics[width=\textwidth]{images/appendix/Original/ones_entropy_comparison.png}
+        \caption{Ones entropy comparison}
     \end{subfigure}
     
     \vspace{0.5cm}
@@ -2863,22 +2809,8 @@ This section displays the LBP analysis results for the wing, wingtip, and head r
     
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/ones_entropy_comparison.png}
-        \caption{Ones entropy comparison}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/std_intensity_comparison.png}
-        \caption{Standard deviation of intensity comparison}
-    \end{subfigure}
-    
-    \vspace{0.5cm}
-    
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/top_discriminative_features.png}
-        \caption{Top discriminative features}
+        \includegraphics[width=\textwidth]{images/appendix/Original/transitions_energy_comparison.png}
+        \caption{Transitions energy comparison}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.48\textwidth}
@@ -2887,25 +2819,61 @@ This section displays the LBP analysis results for the wing, wingtip, and head r
         \caption{Transitions entropy comparison}
     \end{subfigure}
     
-    \vspace{0.5cm}
-    
+    \caption{Selected feature comparison results related to "ones" and "transitions" from the original dataset.}
+\end{figure}
+
+\section{PCA Plots of 1s and Transitions Histogram}
+
+\subsection{Selected PCA Plots for "Ones" and "Transitions" Histograms}
+
+\begin{figure}[H]
+    \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/transitions_energy_comparison.png}
-        \caption{Transitions energy comparison}
+        \includegraphics[width=\textwidth]{images/appendix/Original/pca/head_ones_pca_plot.png}
+        \caption{Head ones PCA plot}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/appendix/Original/uniformity_comparison.png}
-        \caption{Uniformity comparison}
+        \includegraphics[width=\textwidth]{images/appendix/Original/pca/head_transitions_pca_plot.png}
+        \caption{Head transitions PCA plot}
     \end{subfigure}
     
-    \caption{Selected interpretability and feature comparison results from the original dataset.}
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/pca/wing_ones_pca_plot.png}
+        \caption{Wing ones PCA plot}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/pca/wing_transitions_pca_plot.png}
+        \caption{Wing transitions PCA plot}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/pca/wingtip_ones_pca_plot.png}
+        \caption{Wingtip ones PCA plot}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/pca/wingtip_transitions_pca_plot.png}
+        \caption{Wingtip transitions PCA plot}
+    \end{subfigure}
+    
+    \caption{PCA plots for "ones" and "transitions" features across head, wing, and wingtip regions.}
 \end{figure}
 
 
-\subsection{Calculated Texture-based Feature Comparisons on LBP Histogram (Can be Rotation Variant)}
+
+\subsection{Calculated Texture-based Feature Comparisons on LBP Histogram (May be Rotation Variant)}
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
@@ -2958,7 +2926,5 @@ This section presents the misclassified points identified by different clusterin
     \includegraphics[width=0.8\textwidth]{images/clustering/kmeans_misclassifications.png}
     \caption{Misclassified points using the K-Means clustering algorithm.}
 \end{figure}
-
-
 
 \end{document}
