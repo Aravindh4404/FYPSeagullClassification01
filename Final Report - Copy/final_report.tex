@@ -110,13 +110,19 @@
 %   {\normalfont\small\bfseries}
 %   {\thesection}{1em}{}
 
-\usepackage{titlesec}
+% \titleformat{\chapter}[display]
+%   {\normalfont\LARGE\bfseries}
+%   {\thechapter}{1em}{} % <- this line sets the number before the title
+% \titlespacing*{\chapter}{0pt}{-2em}{1em}
 
-% Chapter: Very large and bold (already set)
-\titleformat{\chapter}[display]
+% \usepackage{titlesec}
+
+\titleformat{\chapter}[block] % or [hang]
   {\normalfont\LARGE\bfseries}
-  {}{0pt}{\vspace{-2em}}
+  {\thechapter}{1em}{}
+
 \titlespacing*{\chapter}{0pt}{-2em}{1em}
+
 
 % Section: Large and bold
 \titleformat{\section}
@@ -384,7 +390,7 @@ Selvaraju et al.\ \citep{Selvaraju_2019} demonstrated that Guided Grad-CAM outpe
 
 This dissertation aims to develop and evaluate deep learning models for the automated classification of the Slaty-backed Gull and the Glaucous-winged Gull, to use them to identify the most influential regions that distinguish these two species and analyse them to extract statistical features from these regions and assess their significance and validity in classification.
 
-\section{Primary Aims}
+\section{Aims}
 \begin{enumerate}
     \item To develop high-performance deep learning models capable of distinguishing between Slaty-backed and Glaucous-winged Gulls based on their morphological characteristics.
     \item To implement robust interpretability techniques that reveal which features influence model decisions, allowing validation against ornithological expertise.
@@ -394,7 +400,7 @@ This dissertation aims to develop and evaluate deep learning models for the auto
     \item To test whether the features can be used to identify the species of a gull with high confidence.
 \end{enumerate}
 
-\subsection*{Specific Objectives}
+\subsection{Objectives}
 The project was carried out in three phases:
 \begin{enumerate}
     \item Model Development and Evaluation
@@ -626,17 +632,16 @@ Images were resized to match the architecture's expected input dimensions (224×
 % \href{https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf}{here}
 
 \subsection{Training Optimization Strategy}
-
-To optimize training with limited data, several techniques were employed consistently:
+Parameter choices were based on literature, as early-stage hyperparameter tuning with Optuna did not significantly improve validation accuracy, and models were already achieving high accuracies without hyperparameter optimization. This approach prioritized established configurations over exhaustive tuning given the satisfactory baseline performance.
 
 \begin{itemize}
-    \item \textbf{Optimizer:} AdamW optimizer with learning rates between 0.0001-0.001 and weight decay of 0.0005-0.001 was used across implementations to provide adaptive learning with regularization.
+    \item \textbf{Optimizer:} AdamW optimizer with learning rates between 0.0001-0.001 and weight decay of 0.0005-0.001 as observed from \Citep{loshchilov2019decoupledweightdecayregularization} was used across implementations to provide adaptive learning with regularization. Learning rates were set to be less than, or upto the default pytorch value of 0.001 due to our small dataset in order to tackle potential underfitting.
     
     \item \textbf{Learning rate scheduling:} Adaptive learning rate scheduling using ReduceLROnPlateau was implemented across models, reducing learning rates by a factor of 0.1 (factor=0.1) when validation metrics plateaued for 3-5 consecutive epochs (patience=3-5). ReduceLROnPlateau with mode='max' was used to track validation accuracy improvements rather than minimizing loss.
     
     \item \textbf{Batch size:} The batch size was set to 16 for most of the models, striking a balance between computational efficiency and optimization stability. For a few trials batch size of 32 was also tested. Smaller batch sizes can increase gradient noise, which has been shown to act as an implicit regularizer that can improve generalization, particularly beneficial when working with limited training data \citep{keskar2016largebatch, masters2018revisiting}.
     
-    \item \textbf{Early stopping:} The models were evaluated both with and without the application of early stopping. In experiments where early stopping was implemented, training was terminated if the validation accuracy did not improve for a predetermined number of epochs (patience = 3–5), or if the validation loss began to increase, thereby mitigating the risk of overfitting \citep{Prechelt1998}.
+    \item \textbf{Early stopping:} The models were evaluated both with and without the application of early stopping. In experiments where early stopping was implemented, training was terminated if the validation accuracy did not improve for a predetermined number of epochs (patience = 3–5), or if the validation loss began to increase, thereby mitigating the risk of overfitting \citep{Prechelt1998}. Yet the best performing model, which shows anti-overfitting evidence, was trained without early stopping.
 
     \item \textbf{Gradient clipping:} Applied in some implementations to prevent gradient explosions and stabilize training. Due to the small and imbalanced dataset, gradient clipping was implemented to prevent limited images from causing large weight updates. 
     
@@ -644,7 +649,7 @@ To optimize training with limited data, several techniques were employed consist
 
     \item \textbf{Loss function:} Cross-entropy loss was used consistently as the optimization objective for the binary classification task.
     
-    \item \textbf{Data splitting:} Train/validation split of 80\%/20\% was consistently used to provide reliable validation metrics while maximizing training data with random split.
+    \item \textbf{Data splitting:} Train/validation split of 80\%/20\% was consistently used to provide reliable validation metrics while maximizing training data with random split due to our small dataset. Models with other trin/validation were also tested to note performance.
     
     \item \textbf{Random seeds:} Fixed random seeds (42) were set for PyTorch, NumPy, and Python's random module to ensure reproducibility. Controlling randomness is essential for reliable hyper-parameter tuning, performance assessment, and research reproducibility.
 
@@ -657,9 +662,8 @@ The combination of these techniques enabled effective learning despite the chall
 Multiple regularization strategies were employed to handle the limited data size and class imbalance:
 
 \begin{itemize}
-    \item \textbf{Dropout:} Layers with rates between 0.3-0.4 were consistently added before final classification layers to reduce overfitting due to our small dataset size \citep{srivastava2014dropout}.
+    \item \textbf{Dropout:} Layers with rates between 0.3-0.4 were consistently added before final classification layers to tackle overfitting due to our small dataset size \citep{srivastava2014dropout}.
     \item \textbf{Weight decay:} L2 regularization with weight decay values between 1e-4 and 1e-3 was applied across all models to prevent overfitting \citep{krogh1992simple}.
-    
 
 \end{itemize}
 
@@ -720,7 +724,7 @@ Model performance was systematically evaluated using:
 
 \subsection{Model Checkpointing and Evaluation}
 
-Our implementation includes a robust evaluation framework with model checkpointing based on validation accuracy. This ensures that we preserve the best-performing model configuration throughout the training process. The model is trained for 20 epochs with early stopping implicitly implemented through best model saving in a few trials. Performance is evaluated using accuracy on both validation and test sets, providing a comprehensive assessment of model generalization.
+Our implementation includes a robust evaluation framework with model checkpointing based on validation accuracy. This ensures that we preserve the best-performing model configuration throughout the training process. Models were in most cases trained for 20 epochs with early stopping implicitly implemented through best model saving in a few trials. Performance is evaluated using accuracy on both validation and test sets, providing a comprehensive assessment of model generalization.
 
 This approach is well-aligned with findings by \citep{tan2018survey}, who demonstrate that transfer learning with pre-trained models on bird classification tasks enables rapid convergence-often requiring as few as 2 to 10 epochs to achieve optimal accuracy in stark contrast to the 40–50 epochs typically needed for training models from scratch. This efficiency not only accelerates the experimental workflow but also reduces computational demands, making it feasible to conduct extensive model comparisons and hyperparameter tuning.
 
@@ -1454,54 +1458,54 @@ To quantify the differences between species, the implementation calculates sever
 
 Each metric captures different aspects of distribution similarity, providing a robust framework for comparing texture patterns between species.
 
-\subsubsection{Discriminative Power Analysis}
+% \subsubsection{Discriminative Power Analysis}
 
-A systematic assessment of discriminative power for different texture features and regions is performed by calculating percentage differences between species for each texture property and region. This analysis identifies which features and regions exhibit the most significant differences between species.
+% A systematic assessment of discriminative power for different texture features and regions is performed by calculating percentage differences between species for each texture property and region. This analysis identifies which features and regions exhibit the most significant differences between species.
 
-For each region and property combination, the implementation:
-\begin{enumerate}
-    \item Extracts the property value for each species
-    \item Calculates the percentage difference
-    \item Ranks the region-property pairs by their discriminative power
-\end{enumerate}
+% For each region and property combination, the implementation:
+% \begin{enumerate}
+%     \item Extracts the property value for each species
+%     \item Calculates the percentage difference
+%     \item Ranks the region-property pairs by their discriminative power
+% \end{enumerate}
 
-This approach enables the identification of the most promising texture characteristics for species differentiation.
+% This approach enables the identification of the most promising texture characteristics for species differentiation.
 
-\subsubsection{Dimensionality Reduction and Visualization}
+% \subsubsection{Dimensionality Reduction and Visualization}
 
-The implementation uses Principal Component Analysis (PCA) to visualize the high-dimensional LBP feature space in two dimensions:
+% The implementation uses Principal Component Analysis (PCA) to visualize the high-dimensional LBP feature space in two dimensions:
 
-\begin{enumerate}
-    \item Standardize the feature data
-    \item Apply PCA with 2 components
-    \item Create scatter plots colored by species
-    \item Calculate and display variance explained
-\end{enumerate}
+% \begin{enumerate}
+%     \item Standardize the feature data
+%     \item Apply PCA with 2 components
+%     \item Create scatter plots colored by species
+%     \item Calculate and display variance explained
+% \end{enumerate}
 
-This dimensionality reduction approach provides intuitive visualization of class separability and validates the discriminative power of the extracted features.
+% This dimensionality reduction approach provides intuitive visualization of class separability and validates the discriminative power of the extracted features.
 
-\subsubsection{Implementation Workflow}
+% \subsubsection{Implementation Workflow}
 
-The complete analysis pipeline consists of two main modules:
+% The complete analysis pipeline consists of two main modules:
 
-\begin{enumerate}
-    \item \textbf{Feature Extraction Module}:
-    \begin{itemize}
-        \item Loads original and segmentation images
-        \item Extracts and processes each anatomical region
-        \item Computes LBP features and abstract pattern features
-        \item Saves features to CSV files for further analysis
-    \end{itemize}
+% \begin{enumerate}
+%     \item \textbf{Feature Extraction Module}:
+%     \begin{itemize}
+%         \item Loads original and segmentation images
+%         \item Extracts and processes each anatomical region
+%         \item Computes LBP features and abstract pattern features
+%         \item Saves features to CSV files for further analysis
+%     \end{itemize}
 
-    \item \textbf{Analysis Modules}:
-    \begin{itemize}
-        \item Loads extracted features
-        \item Calculates advanced texture statistics
-        \item Performs comparative analysis between species
-        \item Generates visualizations and statistical reports
-        \item Identifies the most discriminative features
-    \end{itemize}
-\end{enumerate}
+%     \item \textbf{Analysis Modules}:
+%     \begin{itemize}
+%         \item Loads extracted features
+%         \item Calculates advanced texture statistics
+%         \item Performs comparative analysis between species
+%         \item Generates visualizations and statistical reports
+%         \item Identifies the most discriminative features
+%     \end{itemize}
+% \end{enumerate}
 
 This modular approach facilitates efficient processing of large image datasets and enables iterative refinement of the analysis parameters.
 
@@ -1551,20 +1555,26 @@ The Python pipeline executed these steps for each image:
 \subsection{Statistical Testing Methodology}
 For quantitative comparison between the two gull species, we employed Welch's t-test (unequal variances t-test) to analyze the differences in wing and wingtip intensity values. This test was selected as it does not assume equal variances between groups, making it more robust for our dataset.
 
-The test statistic was calculated as:
-\begin{equation}
-t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
-\end{equation}
+The test statistic was calculated as:  
+\begin{equation}  
+t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}  
+\end{equation}  
+where $\bar{X}_i$, $s_i^2$, and $n_i$ are the means, sample variances, and sizes for Slaty-backed and Glaucous-winged Gulls, respectively. Degrees of freedom ($\nu$) were approximated using the Welch–Satterthwaite equation.  
 
-Where:
-\begin{itemize}
-    \item $\bar{X}_1$ = Mean intensity for Slaty-backed Gulls
-    \item $\bar{X}_2$ = Mean intensity for Glaucous-winged Gulls
-    \item $s_1^2$ = Sample variance for Slaty-backed Gulls
-    \item $s_2^2$ = Sample variance for Glaucous-winged Gulls
-    \item $n_1$ = Sample size for Slaty-backed Gulls
-    \item $n_2$ = Sample size for Glaucous-winged Gulls
-\end{itemize}
+% The test statistic was calculated as:
+% \begin{equation}
+% t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+% \end{equation}
+
+% Where:
+% \begin{itemize}
+%     \item $\bar{X}_1$ = Mean intensity for Slaty-backed Gulls
+%     \item $\bar{X}_2$ = Mean intensity for Glaucous-winged Gulls
+%     \item $s_1^2$ = Sample variance for Slaty-backed Gulls
+%     \item $s_2^2$ = Sample variance for Glaucous-winged Gulls
+%     \item $n_1$ = Sample size for Slaty-backed Gulls
+%     \item $n_2$ = Sample size for Glaucous-winged Gulls
+% \end{itemize}
 
 The degrees of freedom were approximated using the Welch--Satterthwaite equation:
 \begin{equation}
@@ -2199,7 +2209,7 @@ Notably, all three algorithms achieved over 92\% accuracy, with hierarchical clu
 
 The dissertation has successfully addressed its primary research aims. First, high-accuracy classifiers, particularly VGG-16 achieving a test accuracy of 95.74\%, were developed using transfer learning, demonstrating that pre-trained convolutional neural network architectures can excel in fine-grained gull classification even with limited data. Iterative dataset refinement from expert-curated images was vital, minimizing noise from age-related and environmental variability. Second, interpretability was achieved through Grad-CAM visualizations, which effectively bridged artificial intelligence and biological expertise by highlighting the wing and wingtip regions. This transparency is essential for building trust in automated taxonomic tools. Third, statistical and clustering analyses confirmed significant and quantifiable differences in wing and wingtip intensity metrics, empirically supporting field identification criteria while also revealing nuances such as interspecific overlap in wingtip intensity that require expert contextualization. Finally, the dominance of wingtip features in both model attention maps and statistical analysis suggests that artificial intelligence can not only replicate human expertise but also uncover underappreciated diagnostic traits, such as the prevalence of very dark pixels in Slaty-backed Gulls. Collectively, these achievements demonstrate the potential of integrating deep learning with interpretability and quantitative analysis to advance fine-grained species identification and provide new insights into avian taxonomy.
 
-
+Future research can expand to hybrid specimens and juvenile plumage while testing robustness across diverse imaging conditions. By integrating computational power with ecological knowledge, this approach offers a paradigm for addressing the taxonomic impediment in rapidly evolving species complexes.
 
 
 % \subsection*{Synthesis of Contributions}
@@ -2210,7 +2220,7 @@ The dissertation has successfully addressed its primary research aims. First, hi
 %     \item Demonstrating that unsupervised clustering can validate supervised model predictions.
 % \end{itemize}
 
-% Future research should expand to hybrid specimens and juvenile plumage while testing robustness across diverse imaging conditions. By integrating computational power with ecological knowledge, this approach offers a paradigm for addressing the taxonomic impediment in rapidly evolving species complexes.
+% 
 % \chapter{Discussion}
 
 
@@ -2235,466 +2245,560 @@ The dissertation has successfully addressed its primary research aims. First, hi
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
-% \chapter{Appendix}
-% \label{chap:appendix}
+\chapter{Appendix}
+\label{chap:appendix}
 
-% \section{Model Training Performance}
-% \label{sec:model_training}
+\section{Model Training Performance}
+\label{sec:model_training}
 
-% This section presents the training performance graphs and confusion matrices for all models evaluated in this study.
+This section presents the training performance graphs and confusion matrices for all models evaluated in this study.
 
-% \subsection{VGG-16}
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/vgg/vgg.png}
-%         \caption{Training and validation loss across epochs}
-%         \label{fig:vgg_training}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/vgg/vggmodified_confusion_matrix.png}
-%         \caption{Confusion matrix on test set}
-%         \label{fig:vgg_confusion}
-%     \end{subfigure}
-%     \caption{VGG-16 model performance visualization}
-%     \label{fig:vgg_performance}
-% \end{figure}
+\subsection{VGG-16}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vgg/vgg.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:vgg_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vgg/vggmodified_confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:vgg_confusion}
+    \end{subfigure}
+    \caption{VGG-16 model performance visualization}
+    \label{fig:vgg_performance}
+\end{figure}
 
-% \subsection{Vision Transformer (ViT)}
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/vit/vit.png}
-%         \caption{Training and validation loss across epochs}
-%         \label{fig:vit_training}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/vit/confusion_matrix.png}
-%         \caption{Confusion matrix on test set}
-%         \label{fig:vit_confusion}
-%     \end{subfigure}
-%     \caption{Vision Transformer model performance visualization}
-%     \label{fig:vit_performance}
-% \end{figure}
+\subsection{Vision Transformer (ViT)}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vit/vit.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:vit_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/vit/confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:vit_confusion}
+    \end{subfigure}
+    \caption{Vision Transformer model performance visualization}
+    \label{fig:vit_performance}
+\end{figure}
 
-% \subsection{Inception v3}
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/inception/inception.png}
-%         \caption{Training and validation loss across epochs}
-%         \label{fig:inception_training}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/inception/inception_v3_confusion_matrix.png}
-%         \caption{Confusion matrix on test set}
-%         \label{fig:inception_confusion}
-%     \end{subfigure}
-%     \caption{Inception v3 model performance visualization}
-%     \label{fig:inception_performance}
-% \end{figure}
+\subsection{Inception v3}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/inception/inception.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:inception_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/inception/inception_v3_confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:inception_confusion}
+    \end{subfigure}
+    \caption{Inception v3 model performance visualization}
+    \label{fig:inception_performance}
+\end{figure}
 
-% \subsection{Enhanced Vision Transformer}
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/enhancedvit/enhancedvit.png}
-%         \caption{Training and validation loss across epochs}
-%         \label{fig:enhancedvit_training}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/enhancedvit/confusion_matrix.png}
-%         \caption{Confusion matrix on test set}
-%         \label{fig:enhancedvit_confusion}
-%     \end{subfigure}
-%     \caption{Enhanced Vision Transformer model performance visualization}
-%     \label{fig:enhancedvit_performance}
-% \end{figure}
+\subsection{Enhanced Vision Transformer}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/enhancedvit/enhancedvit.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:enhancedvit_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/enhancedvit/confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:enhancedvit_confusion}
+    \end{subfigure}
+    \caption{Enhanced Vision Transformer model performance visualization}
+    \label{fig:enhancedvit_performance}
+\end{figure}
 
-% \subsection{Interpretable Vision Transformer}
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/interpretablevit/interpretablevit.png}
-%         \caption{Training and validation loss across epochs}
-%         \label{fig:interpretablevit_training}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/interpretablevit/confusion_matrix.png}
-%         \caption{Confusion matrix on test set}
-%         \label{fig:interpretablevit_confusion}
-%     \end{subfigure}
-%     \caption{Interpretable Vision Transformer model performance visualization}
-%     \label{fig:interpretablevit_performance}
-% \end{figure}
+\subsection{Interpretable Vision Transformer}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/interpretablevit/interpretablevit.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:interpretablevit_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/interpretablevit/confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:interpretablevit_confusion}
+    \end{subfigure}
+    \caption{Interpretable Vision Transformer model performance visualization}
+    \label{fig:interpretablevit_performance}
+\end{figure}
 
-% \subsection{ResNet50}
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/resnet/resnet.png}
-%         \caption{Training and validation loss across epochs}
-%         \label{fig:resnet_training}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.48\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/modelgraph/resnet/resnet50_confusion_matrix.png}
-%         \caption{Confusion matrix on test set}
-%         \label{fig:resnet_confusion}
-%     \end{subfigure}
-%     \caption{ResNet50 model performance visualization}
-%     \label{fig:resnet_performance}
-% \end{figure}
+\subsection{ResNet50}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/resnet/resnet.png}
+        \caption{Training and validation loss across epochs}
+        \label{fig:resnet_training}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/modelgraph/resnet/resnet50_confusion_matrix.png}
+        \caption{Confusion matrix on test set}
+        \label{fig:resnet_confusion}
+    \end{subfigure}
+    \caption{ResNet50 model performance visualization}
+    \label{fig:resnet_performance}
+\end{figure}
 
-% \section{Model Interpretability Results for Test Set}
-% \label{sec:interpretability}
+\section{Model Interpretability Results}
+\label{sec:interpretability}
 
-% This section presents the results of Grad-CAM across different models except for ViT which displays the attention rollout results. All the images here were correctly predicted by all the well-performing models below. Each row displays the same image processed by the well-performing models in terms of test and validation accuracy, allowing direct comparison of how each model focuses on different bird features.
+\subsection{Model Comparison with Grad-CAM results on unseen Test Set}
+This section presents the results of Grad-CAM across different models except for ViT which displays the attention rollout results. All the images here were correctly predicted by all the well-performing models below. Each row displays the same image processed by the models that achieved high test and validation accuracy, allowing direct comparison of how each model focuses on different bird features.
 
-% \subsection{Glaucous Winged Gull Interpretability Results}
-% \label{subsec:glaucous_interpretability}
+\subsection{Glaucous Winged Gull Interpretability Results}
+\label{subsec:glaucous_interpretability}
 
-% % First image - 20241203_010647.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% First image - 20241203_010647.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241203_010647.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241203_010647.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241203_010647.jpg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_glaucous_1}
-% \end{figure}
+    \label{fig:interpretability_glaucous_1}
+\end{figure}
 
-% % Second image - 20241204_140935.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Second image - 20241204_140935.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_140935.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_140935.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_140935.jpg} \\
+    \end{tabular}
  
-%     \label{fig:interpretability_glaucous_2}
-% \end{figure}
+    \label{fig:interpretability_glaucous_2}
+\end{figure}
 
-% % Third image - 20241204_170956.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Third image - 20241204_170956.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_170956.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_170956.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_170956.jpg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_glaucous_3}
-% \end{figure}
+    \label{fig:interpretability_glaucous_3}
+\end{figure}
 
-% % Fourth image - 20241204_171004.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Fourth image - 20241204_171004.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_171004.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_171004.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_171004.jpg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_glaucous_4}
-% \end{figure}
+    \label{fig:interpretability_glaucous_4}
+\end{figure}
 
-% % Fifth image - 20241204_171110.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Fifth image - 20241204_171110.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_171110.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/20241204_171110.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/20241204_171110.jpg} \\
+    \end{tabular}
  
-%     \label{fig:interpretability_glaucous_5}
-% \end{figure}
+    \label{fig:interpretability_glaucous_5}
+\end{figure}
 
-% % Sixth image - 3O4A8774 - Version 2.JPG
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Sixth image - 3O4A8774 - Version 2.JPG
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Glaucous_Winged_Gull/3O4A8774 - Version 2.JPG} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_glaucous_6}
-% \end{figure}
+    \label{fig:interpretability_glaucous_6}
+\end{figure}
 
-% \clearpage
-% \subsection{Slaty Backed Gull Interpretability Results}
-% \label{subsec:slaty_interpretability}
+\clearpage
+\subsection{Slaty Backed Gull Interpretability Results}
+\label{subsec:slaty_interpretability}
 
-% % First image - 011sm.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% First image - 011sm.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/011sm.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/011sm.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/011sm.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/011sm.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/011sm.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/011sm.jpg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_1}
-% \end{figure}
+    \label{fig:interpretability_slaty_1}
+\end{figure}
 
-% % Second image - 20241204_141506.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Second image - 20241204_141506.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_141506.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_141506.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_141506.jpg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_2}
-% \end{figure}
+    \label{fig:interpretability_slaty_2}
+\end{figure}
 
-% % Third image - 20241204_170322.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Third image - 20241204_170322.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_170322.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_170322.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_170322.jpg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_3}
-% \end{figure}
+    \label{fig:interpretability_slaty_3}
+\end{figure}
 
-% % Fourth image - 20241204_170332.jpg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Fourth image - 20241204_170332.jpg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_170332.jpg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/20241204_170332.jpg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/20241204_170332.jpg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_4}
-% \end{figure}
+    \label{fig:interpretability_slaty_4}
+\end{figure}
 
-% % Fifth image - 480 (1).jpeg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Fifth image - 480 (1).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (1).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (1).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (1).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (1).jpeg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (1).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (1).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (1).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (1).jpeg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_5}
-% \end{figure}
+    \label{fig:interpretability_slaty_5}
+\end{figure}
 
-% % Sixth image - 480 (14).jpeg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Sixth image - 480 (14).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (14).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (14).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (14).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (14).jpeg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (14).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (14).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (14).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (14).jpeg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_6}
-% \end{figure}
+    \label{fig:interpretability_slaty_6}
+\end{figure}
 
-% % Seventh image - 480 (19).jpeg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Seventh image - 480 (19).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (19).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (19).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (19).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (19).jpeg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (19).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (19).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (19).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (19).jpeg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_7}
-% \end{figure}
+    \label{fig:interpretability_slaty_7}
+\end{figure}
 
-% % Eighth image - 480 (21).jpeg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Eighth image - 480 (21).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (21).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (21).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (21).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (21).jpeg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (21).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (21).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (21).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (21).jpeg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_8}
-% \end{figure}
+    \label{fig:interpretability_slaty_8}
+\end{figure}
 
-% % Ninth image - 480 (3).jpeg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Ninth image - 480 (3).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (3).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (3).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (3).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (3).jpeg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (3).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (3).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (3).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (3).jpeg} \\
+    \end{tabular}
  
-%     \label{fig:interpretability_slaty_9}
-% \end{figure}
+    \label{fig:interpretability_slaty_9}
+\end{figure}
 
-% % Tenth image - 480 (45).jpeg
-% \begin{figure}[H]
-%     \centering
-%     \setlength{\tabcolsep}{1pt}
-%     \begin{tabular}{cccc}
-%     \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
+% Tenth image - 480 (45).jpeg
+\begin{figure}[H]
+    \centering
+    \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{cccc}
+    \textbf{VGG-16} & \textbf{ViT} & \textbf{Inception v3} & \textbf{ResNet50} \\
     
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (45).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (45).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (45).jpeg} &
-%     \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (45).jpeg} \\
-%     \end{tabular}
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vgg/correct/Slaty_Backed_Gull/480 (45).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/vit/correct/Slaty_Backed_Gull/480 (45).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/inception/correct/Slaty_Backed_Gull/480 (45).jpeg} &
+    \includegraphics[width=0.22\textwidth]{images/appendix/modelgraph/resnet/correct/Slaty_Backed_Gull/480 (45).jpeg} \\
+    \end{tabular}
 
-%     \label{fig:interpretability_slaty_10}
-% \end{figure}
-
-
-% % Continue with remaining Slaty Backed Gull images following the same pattern
-% % 20241204_170322.jpg, 20241204_170332.jpg, 480 (1).jpeg, 480 (14).jpeg, 
-% % 480 (19).jpeg, 480 (21).jpeg, 480 (3).jpeg, 480 (45).jpeg
+    \label{fig:interpretability_slaty_10}
+\end{figure}
 
 
-% \section{Local Binary Pattern Analysis Results}
-% \label{sec:lbp_analysis}
+\subsection{InterpretableViT Interpretability Results}
 
-% This section displays the LBP analysis results for the wing, wingtip, and head regions of the gull images.
+% vitinterpretablegrad images: 2 columns, no captions
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/vitinterpretablegrad/gradcam_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/vitinterpretablegrad/gradcam_012.png}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/vitinterpretablegrad/gradcam_098.png}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/vitinterpretablegrad/gradcam_100.png}
+    \end{subfigure}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.32\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_head_ones_histogram.png}
-%         \caption{Head region}
-%         \label{fig:lbp_head}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.32\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wing_ones_histogram.png}
-%         \caption{Wing region}
-%         \label{fig:lbp_wing}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.32\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wingtip_ones_histogram.png}
-%         \caption{Wingtip region}
-%         \label{fig:lbp_wingtip}
-%     \end{subfigure}
-%     \caption{Local Binary Pattern analysis results showing histograms of pattern distributions across different bird regions}
-%     \label{fig:lbp_results}
-% \end{figure}
+\subsection{EnhancedViT Interpretability Results}
+% vitenhancedcombined images: 1 per row, no captions
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/appendix/vitenhancedcombined/003_combined.png}\\[1ex]
+    \includegraphics[width=0.7\textwidth]{images/appendix/vitenhancedcombined/004_combined.png}\\[1ex]
+    \includegraphics[width=0.7\textwidth]{images/appendix/vitenhancedcombined/005_combined.png}\\[1ex]
+    \includegraphics[width=0.7\textwidth]{images/appendix/vitenhancedcombined/016_combined.png}\\[1ex]
+    \includegraphics[width=0.7\textwidth]{images/appendix/vitenhancedcombined/017_combined.png}\\[1ex]
+    \includegraphics[width=0.7\textwidth]{images/appendix/vitenhancedcombined/070_combined.png}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \begin{subfigure}[b]{0.32\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_head_transitions_vs_complexity.png}
-%         \caption{Head region}
-%         \label{fig:transitions_head_complex}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.32\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wing_transitions_vs_complexity.png}
-%         \caption{Wing region}
-%         \label{fig:transitions_wing_complex}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[b]{0.32\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wingtip_transitions_vs_complexity.png}
-%         \caption{Wingtip region}
-%         \label{fig:transitions_wingtip_complex}
-%     \end{subfigure}
-%     \caption{Transitions vs. complexity analysis comparing pattern complexity distributions across different gull regions}
-%     \label{fig:transitions_complexity}
-% \end{figure}
+\subsection{Saliency Map Results of ViT model}
+% vitsaliency images: 2 columns, no captions
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/vitsaliency/saliency_007.jpg}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/vitsaliency/saliency_480 (29).jpeg}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/vitsaliency/saliency_480 (33).jpeg}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Feature Ablation Result of ViT model}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/appendix/ablationvit.png}
+    \caption{Ablation study for ViT}
+    \label{fig:ablationvit}
+\end{figure}
+
+\section{Results of different Interpretability techniques of VGG Model}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download.png}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download (1).png}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download (2).png}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download (11).png}
+\end{figure}
 
 
+\subsection{Saliency Map Results of VGG model}
+% deepliftvgg images: 2 columns, no captions
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/deepliftvgg/download (1).png}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/deepliftvgg/download (2).png}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/deepliftvgg/download (3).png}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{images/appendix/deepliftvgg/download.png}
+    \end{subfigure}
+\end{figure}
 
+% Continue with remaining Slaty Backed Gull images following the same pattern
+% 20241204_170322.jpg, 20241204_170332.jpg, 480 (1).jpeg, 480 (14).jpeg, 
+% 480 (19).jpeg, 480 (21).jpeg, 480 (3).jpeg, 480 (45).jpeg
+
+\section{Local Binary Pattern Analysis Results}
+\label{sec:lbp_analysis}
+
+This section displays the LBP analysis results for the wing, wingtip, and head regions of the gull images.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_head_ones_histogram.png}
+        \caption{Head region}
+        \label{fig:lbp_head}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wing_ones_histogram.png}
+        \caption{Wing region}
+        \label{fig:lbp_wing}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Number_of_Ones_Analysis/default_wingtip_ones_histogram.png}
+        \caption{Wingtip region}
+        \label{fig:lbp_wingtip}
+    \end{subfigure}
+    \caption{Local Binary Pattern analysis results showing histograms of pattern distributions across different bird regions}
+    \label{fig:lbp_results}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_head_transitions_vs_complexity.png}
+        \caption{Head region}
+        \label{fig:transitions_head_complex}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wing_transitions_vs_complexity.png}
+        \label{fig:transitions_wing_complex}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Transitions_Analysis/default_wingtip_transitions_vs_complexity.png}
+        \caption{Wingtip region}
+        \label{fig:transitions_wingtip_complex}
+    \end{subfigure}
+    \caption{Transitions vs. complexity analysis comparing pattern complexity distributions across different gull regions}
+    \label{fig:transitions_complexity}
+\end{figure}
 
 \end{document}
