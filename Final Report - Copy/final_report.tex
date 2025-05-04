@@ -2692,7 +2692,7 @@ This section presents the results of Grad-CAM across different models except for
 \end{figure}
 
 \subsection{Feature Ablation Result of ViT model}
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/appendix/ablationvit.png}
     \caption{Ablation study for ViT}
@@ -2701,22 +2701,22 @@ This section presents the results of Grad-CAM across different models except for
 
 \section{Results of different Interpretability techniques of VGG Model}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download.png}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download (1).png}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download (2).png}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/appendix/vggcombined/download (11).png}
 \end{figure}
@@ -2800,5 +2800,143 @@ This section displays the LBP analysis results for the wing, wingtip, and head r
     \caption{Transitions vs. complexity analysis comparing pattern complexity distributions across different gull regions}
     \label{fig:transitions_complexity}
 \end{figure}
+
+\subsection{Calculated Texture-based Feature Comparisons on 1s and Transitions Histogram (Rotation Invariant)}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/contrast_comparison.png}
+        \caption{Contrast comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/discriminative_power_heatmap.png}
+        \caption{Discriminative power heatmap}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/energy_comparison.png}
+        \caption{Energy comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/entropy_comparison.png}
+        \caption{Entropy comparison}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/homogeneity_comparison.png}
+        \caption{Homogeneity comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/mean_intensity_comparison.png}
+        \caption{Mean intensity comparison}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/mean_ones_comparison.png}
+        \caption{Mean ones comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/mean_transitions_comparison.png}
+        \caption{Mean transitions comparison}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/ones_entropy_comparison.png}
+        \caption{Ones entropy comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/std_intensity_comparison.png}
+        \caption{Standard deviation of intensity comparison}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/top_discriminative_features.png}
+        \caption{Top discriminative features}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/transitions_entropy_comparison.png}
+        \caption{Transitions entropy comparison}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/transitions_energy_comparison.png}
+        \caption{Transitions energy comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/uniformity_comparison.png}
+        \caption{Uniformity comparison}
+    \end{subfigure}
+    
+    \caption{Selected interpretability and feature comparison results from the original dataset.}
+\end{figure}
+
+
+\subsection{Calculated Texture-based Feature Comparisons on LBP Histogram (Can be Rotation Variant)}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/energy_comparison.png}
+        \caption{Energy comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/entropy_comparison.png}
+        \caption{Entropy comparison}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/homogeneity_comparison.png}
+        \caption{Homogeneity comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/appendix/Original/transitions_entropy_comparison.png}
+        \caption{Transitions entropy comparison}
+    \end{subfigure}
+    
+    \caption{Selected feature comparison results from the original dataset.}
+\end{figure}
+
+
 
 \end{document}
