@@ -1,20 +1,20 @@
-PCA explained variance: 0.910, 0.062
+PCA explained variance: 0.905, 0.065
 
 === K-means Clustering ===
-Silhouette Score: 0.605
-Adjusted Rand Index: 0.843
+Silhouette Score: 0.598
+Adjusted Rand Index: 0.809
 
 === K-means Species Mapping Analysis ===
-Clustering accuracy after mapping: 95.94%
-Number of misclassified points: 8 (4.06%)
+Clustering accuracy after mapping: 95.00%
+Number of misclassified points: 10 (5.00%)
 
 Sample of misclassified points:
      True_Label     Predicted_Species  ...  dark_lt_60  pct_dark_lt_60
 1             0  Glaucous_Winged_Gull  ...          86        3.491677
-20            0  Glaucous_Winged_Gull  ...       50294       13.849221
-42            0  Glaucous_Winged_Gull  ...       74611       15.376166
-107           1     Slaty_Backed_Gull  ...           0        0.000000
-115           1     Slaty_Backed_Gull  ...         303        9.439252
+19            0  Glaucous_Winged_Gull  ...       50294       13.849221
+44            0  Glaucous_Winged_Gull  ...       74611       15.376166
+103           1     Slaty_Backed_Gull  ...           0        0.000000
+112           1     Slaty_Backed_Gull  ...         303        9.439252
 
 [5 rows x 6 columns]
 
@@ -23,42 +23,42 @@ Cluster 0 -> Slaty_Backed_Gull
 Cluster 1 -> Glaucous_Winged_Gull
 
 === Hierarchical Clustering ===
-Silhouette Score: 0.594
-Adjusted Rand Index: 0.881
+Silhouette Score: 0.511
+Adjusted Rand Index: 0.357
 
 === Hierarchical Clustering Species Mapping Analysis ===
-Clustering accuracy after mapping: 96.95%
-Number of misclassified points: 6 (3.05%)
+Clustering accuracy after mapping: 80.00%
+Number of misclassified points: 40 (20.00%)
 
 Sample of misclassified points:
-    True_Label     Predicted_Species  ...  dark_lt_60  pct_dark_lt_60
-1            0  Glaucous_Winged_Gull  ...          86        3.491677
-13           0  Glaucous_Winged_Gull  ...      115992       26.647491
-20           0  Glaucous_Winged_Gull  ...       50294       13.849221
-26           0  Glaucous_Winged_Gull  ...       50223       21.488349
-42           0  Glaucous_Winged_Gull  ...       74611       15.376166
+     True_Label     Predicted_Species  ...  dark_lt_60  pct_dark_lt_60
+1             0  Glaucous_Winged_Gull  ...          86        3.491677
+101           1     Slaty_Backed_Gull  ...        2696       15.404834
+103           1     Slaty_Backed_Gull  ...           0        0.000000
+105           1     Slaty_Backed_Gull  ...        2325       13.181767
+107           1     Slaty_Backed_Gull  ...         206        2.198741
 
 [5 rows x 6 columns]
 
 Hierarchical Cluster to Species Mapping:
-Cluster 0 -> Glaucous_Winged_Gull
-Cluster 1 -> Slaty_Backed_Gull
+Cluster 0 -> Slaty_Backed_Gull
+Cluster 1 -> Glaucous_Winged_Gull
 
 === Gaussian Mixture Model ===
-Silhouette Score: 0.548
-Adjusted Rand Index: 0.717
+Silhouette Score: 0.540
+Adjusted Rand Index: 0.671
 
 === Gaussian Mixture Model Species Mapping Analysis ===
-Clustering accuracy after mapping: 92.39%
-Number of misclassified points: 15 (7.61%)
+Clustering accuracy after mapping: 91.00%
+Number of misclassified points: 18 (9.00%)
 
 Sample of misclassified points:
      True_Label  Predicted_Species  ...  dark_lt_60  pct_dark_lt_60
-105           1  Slaty_Backed_Gull  ...        2696       15.404834
-109           1  Slaty_Backed_Gull  ...        2325       13.181767
-111           1  Slaty_Backed_Gull  ...         206        2.198741
-115           1  Slaty_Backed_Gull  ...         303        9.439252
-116           1  Slaty_Backed_Gull  ...         345       10.369702
+101           1  Slaty_Backed_Gull  ...        2696       15.404834
+105           1  Slaty_Backed_Gull  ...        2325       13.181767
+107           1  Slaty_Backed_Gull  ...         206        2.198741
+112           1  Slaty_Backed_Gull  ...         303        9.439252
+113           1  Slaty_Backed_Gull  ...         345       10.369702
 
 [5 rows x 6 columns]
 
@@ -67,6 +67,6 @@ Cluster 0 -> Slaty_Backed_Gull
 Cluster 1 -> Glaucous_Winged_Gull
 
 === Algorithm Comparison ===
-Exported 8 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\kmeans_misclassified_points.csv
-Exported 6 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\hierarchical_misclassified_points.csv
-Exported 15 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\gmm_misclassified_points.csv
+Exported 10 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\kmeans_misclassified_points.csv
+Exported 40 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\hierarchical_misclassified_points.csv
+Exported 18 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\gmm_misclassified_points.csv
