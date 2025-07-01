@@ -6,6 +6,16 @@ from scipy import stats
 import os
 from matplotlib.gridspec import GridSpec
 
+# Define consistent color scheme for species
+SPECIES_COLORS = {
+    'Glaucous_Winged_Gull': '#3274A1',
+    'Slaty_Backed_Gull': '#E1812C'
+}
+
+# Define consistent bin configuration
+INTENSITY_BINS = list(range(0, 256, 10))  # [0, 10, 20, ..., 250]
+BIN_LABELS = [f'{i}-{i+9}' if i < 250 else f'{i}-255' for i in INTENSITY_BINS[:-1]]
+
 # Set plotting style for professional-looking visualizations
 plt.style.use('seaborn-v0_8-whitegrid')
 plt.rcParams['figure.figsize'] = (12, 8)
@@ -59,7 +69,8 @@ def wing_intensity_analysis(wing_data):
 
     # 1. Box plot of wing intensity
     ax1 = fig.add_subplot(gs[0, 0])
-    sns.boxplot(x='species', y='mean_intensity', data=wing_data, ax=ax1)
+    sns.boxplot(x='species', y='mean_intensity', data=wing_data, ax=ax1,
+                palette=SPECIES_COLORS)
     ax1.set_title('Wing Intensity by Species')
     ax1.set_ylabel('Mean Intensity (0-255)')
     ax1.set_xlabel('')
@@ -75,7 +86,8 @@ def wing_intensity_analysis(wing_data):
     # 2. Histogram of wing intensity
     ax2 = fig.add_subplot(gs[0, 1])
     sns.histplot(data=wing_data, x='mean_intensity', hue='species', kde=True,
-                 bins=25, alpha=0.6, ax=ax2)
+                 bins=INTENSITY_BINS, alpha=0.6, ax=ax2,
+                 palette=SPECIES_COLORS)
     ax2.set_title('Distribution of Wing Intensity')
     ax2.set_xlabel('Mean Intensity (0-255)')
     ax2.set_ylabel('Count')
@@ -93,7 +105,8 @@ def wing_intensity_analysis(wing_data):
     means = wing_data.groupby('species')['mean_intensity'].mean()
     errors = wing_data.groupby('species')['mean_intensity'].std()
 
-    bars = ax4.bar(means.index, means.values, yerr=errors.values, capsize=10)
+    colors = [SPECIES_COLORS[species] for species in means.index]
+    bars = ax4.bar(means.index, means.values, yerr=errors.values, capsize=10, color=colors)
     ax4.set_title('Mean Wing Intensity with Standard Deviation')
     ax4.set_ylabel('Mean Intensity (0-255)')
     ax4.set_xlabel('')
@@ -161,7 +174,7 @@ def wingtip_darkness_analysis(wingtip_avg_data, wingtip_distribution):
 
     darkness_df = pd.DataFrame(darkness_data)
 
-    sns.barplot(x='threshold', y='percentage', hue='species', data=darkness_df, ax=ax2)
+    sns.barplot(x='threshold', y='percentage', hue='species', data=darkness_df, ax=ax2, palette=SPECIES_COLORS)
     ax2.set_title('Percentage of Pixels Below Intensity Threshold')
     ax2.set_ylabel('Percentage (%)')
     ax2.set_xlabel('Intensity Threshold')
@@ -203,7 +216,8 @@ def wingtip_darkness_analysis(wingtip_avg_data, wingtip_distribution):
     }).reset_index()
 
     # Create scatter plot
-    for species, color in zip(['Slaty_Backed_Gull', 'Glaucous_Winged_Gull'], ['blue', 'orange']):
+    for species in ['Slaty_Backed_Gull', 'Glaucous_Winged_Gull']:
+        color = SPECIES_COLORS[species]
         subset = scatter_data[scatter_data['species'] == species]
         ax4.scatter(subset['mean_wing_intensity'], subset['mean_wingtip_intensity'],
                     alpha=0.7, label=species.replace('_', ' '), c=color)
@@ -248,18 +262,20 @@ def pixel_intensity_distribution(wingtip_avg_data):
 
     # Extract intensity distribution data
     intensity_bins = []
-    for i in range(0, 240, 10):
-        if i == 240:
-            col_name = f'pct_240_255'
+    for i in INTENSITY_BINS[:-1]:  # Exclude the last bin edge (256)
+        if i >= 250:
+            col_name = f'pct_250_255'
+            bin_label = '250-255'
         else:
             col_name = f'pct_{i}_{i + 10}'
+            bin_label = f'{i}-{i + 9}'
 
         for species in wingtip_avg_data['species']:
             if col_name in wingtip_avg_data.columns:
                 row = wingtip_avg_data[wingtip_avg_data['species'] == species].iloc[0]
                 intensity_bins.append({
                     'species': species,
-                    'intensity_range': f'{i}-{i + 10 if i < 240 else 255}',
+                    'intensity_range': bin_label,
                     'percentage': row[col_name],
                     'bin_start': i
                 })
@@ -271,7 +287,7 @@ def pixel_intensity_distribution(wingtip_avg_data):
 
     # Plot intensity distribution
     sns.barplot(x='intensity_range', y='percentage', hue='species',
-                data=intensity_df, ax=ax1)
+                data=intensity_df, ax=ax1, palette=SPECIES_COLORS)
     ax1.set_title('Pixel Intensity Distribution in Wingtips')
     ax1.set_ylabel('Percentage of Pixels (%)')
     ax1.set_xlabel('Intensity Range')
@@ -284,7 +300,7 @@ def pixel_intensity_distribution(wingtip_avg_data):
     dark_ranges = intensity_df[intensity_df['bin_start'] < 60]
 
     sns.barplot(x='intensity_range', y='percentage', hue='species',
-                data=dark_ranges, ax=ax2)
+                data=dark_ranges, ax=ax2, palette=SPECIES_COLORS)
     ax2.set_title('Very Dark Pixel Distribution (0-60)')
     ax2.set_ylabel('Percentage of Pixels (%)')
     ax2.set_xlabel('Intensity Range')
@@ -308,7 +324,8 @@ def pixel_intensity_distribution(wingtip_avg_data):
     cumulative_df = pd.DataFrame(cumulative_data)
 
     # Plot cumulative distribution
-    for species, color in zip(['Slaty_Backed_Gull', 'Glaucous_Winged_Gull'], ['blue', 'orange']):
+    for species in ['Slaty_Backed_Gull', 'Glaucous_Winged_Gull']:
+        color = SPECIES_COLORS[species]
         subset = cumulative_df[cumulative_df['species'] == species]
         ax3.plot(subset['intensity_threshold'], subset['cumulative_percentage'],
                  marker='o', label=species.replace('_', ' '), alpha=0.7, color=color)
@@ -323,7 +340,8 @@ def pixel_intensity_distribution(wingtip_avg_data):
         ax3.axvline(x=threshold, color='gray', linestyle='--', alpha=0.3)
 
     # Annotate significant points
-    for species, color in zip(['Slaty_Backed_Gull', 'Glaucous_Winged_Gull'], ['blue', 'orange']):
+    for species in ['Slaty_Backed_Gull', 'Glaucous_Winged_Gull']:
+        color = SPECIES_COLORS[species]
         for threshold in [30, 50, 100, 150]:
             subset = cumulative_df[(cumulative_df['species'] == species) &
                                    (cumulative_df['intensity_threshold'] == threshold)]
@@ -359,7 +377,8 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
         wing_summary.loc['Glaucous_Winged_Gull', 'mean']
     ]
 
-    bars = ax1.bar(species_names, intensity_values, color=['#3274A1', '#E1812C'])
+    colors = [SPECIES_COLORS['Slaty_Backed_Gull'], SPECIES_COLORS['Glaucous_Winged_Gull']]
+    bars = ax1.bar(species_names, intensity_values, color=colors)
     ax1.set_title('Mean Wing Intensity')
     ax1.set_ylabel('Intensity (0-255)')
     ax1.set_ylim(0, max(intensity_values) * 1.2)
@@ -387,7 +406,8 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
         wingtip_avg_data[wingtip_avg_data['species'] == 'Glaucous_Winged_Gull']['pct_darker_pixels'].values[0]
     ]
 
-    bars = ax2.bar(species_names, darker_percentages, color=['#3274A1', '#E1812C'])
+    colors = [SPECIES_COLORS['Slaty_Backed_Gull'], SPECIES_COLORS['Glaucous_Winged_Gull']]
+    bars = ax2.bar(species_names, darker_percentages, color=colors)
     ax2.set_title('Percentage of Wingtip Darker than Wing')
     ax2.set_ylabel('Percentage (%)')
     ax2.set_ylim(0, max(darker_percentages) * 1.2)
@@ -407,7 +427,8 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
         wingtip_avg_data[wingtip_avg_data['species'] == 'Glaucous_Winged_Gull']['pct_dark_lt_30'].values[0]
     ]
 
-    bars = ax3.bar(species_names, dark_pixel_percentages, color=['#3274A1', '#E1812C'])
+    colors = [SPECIES_COLORS['Slaty_Backed_Gull'], SPECIES_COLORS['Glaucous_Winged_Gull']]
+    bars = ax3.bar(species_names, dark_pixel_percentages, color=colors)
     ax3.set_title('Percentage of Very Dark Pixels (< 30)')
     ax3.set_ylabel('Percentage (%)')
 
@@ -429,7 +450,8 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
         wingtip_avg_data[wingtip_avg_data['species'] == 'Glaucous_Winged_Gull']['dark_lt_30'].values[0]
     ]
 
-    bars = ax4.bar(species_names, dark_pixel_counts, color=['#3274A1', '#E1812C'])
+    colors = [SPECIES_COLORS['Slaty_Backed_Gull'], SPECIES_COLORS['Glaucous_Winged_Gull']]
+    bars = ax4.bar(species_names, dark_pixel_counts, color=colors)
     ax4.set_title('Count of Very Dark Pixels (< 30)')
     ax4.set_ylabel('Number of Pixels')
     ax4.set_yscale('log')  # Use log scale due to large difference
@@ -445,7 +467,7 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
 
     # Prepare data for grouped distribution
     bin_ranges = [(0, 30), (30, 60), (60, 90), (90, 120),
-                  (120, 150), (150, 180), (180, 210), (210, 255)]
+                  (120, 150), (150, 180), (180, 210), (210, 240), (240, 255)]
 
     grouped_data = []
     for species in wingtip_avg_data['species']:
@@ -455,8 +477,10 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
             # Sum all percentages in this range
             total_pct = 0
             for i in range(start, end, 10):
-                if i >= 240:
-                    col = f'pct_240_255'
+                if i >= 250:
+                    col = f'pct_250_255'
+                elif i >= 240:
+                    col = f'pct_240_250'
                 else:
                     col = f'pct_{i}_{i + 10}'
 
@@ -475,7 +499,7 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
     grouped_df = grouped_df.sort_values('start')
 
     # Plot grouped distribution
-    sns.barplot(x='range', y='percentage', hue='species', data=grouped_df, ax=ax5)
+    sns.barplot(x='range', y='percentage', hue='species', data=grouped_df, ax=ax5, palette=SPECIES_COLORS)
     ax5.set_title('Wingtip Pixel Intensity Distribution (Grouped)')
     ax5.set_xlabel('Intensity Range')
     ax5.set_ylabel('Percentage of Pixels (%)')
