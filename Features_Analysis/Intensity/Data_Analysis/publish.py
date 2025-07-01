@@ -66,7 +66,6 @@ def create_intensity_distribution_comparison(wing_data, wingtip_distribution):
         **hist_params
     )
 
-
     # Customize KDE line appearance
     for line in ax1.lines:
         line.set_linewidth(2.5)
@@ -120,10 +119,9 @@ def create_intensity_distribution_comparison(wing_data, wingtip_distribution):
     x_max = max(wing_data['mean_intensity'].max(), wingtip_distribution['mean_wingtip_intensity'].max())
 
     # Add some padding
-    # Increase padding significantly to accommodate KDE tails
     x_range = x_max - x_min
-    x_min -= x_range * 0.15  # Increased from 0.05 to 0.15
-    x_max += x_range * 0.15  # Increased from 0.05 to 0.15
+    x_min -= x_range * 0.05
+    x_max += x_range * 0.05
 
     ax1.set_xlim(x_min, x_max)
     ax2.set_xlim(x_min, x_max)
