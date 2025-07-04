@@ -1,0 +1,168 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{lastpage}
+\usepackage{tabularx}
+
+\usepackage[nottoc,numbib]{tocbibind}
+  % Preamble packages:
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{multicol}
+\usepackage{caption}
+
+
+
+% for apa with apa
+% \usepackage{natbib}
+% for ieee with IEEEtran
+\usepackage[numbers]{natbib}
+\usepackage{float}
+\usepackage{grffile}  % Add to preamble
+\usepackage{titlesec} % Add this line for chapter formatting
+
+\usepackage{graphicx}
+
+\usepackage{float} % If you use [H] placement
+
+
+% Required in preamble
+\usepackage{pgfplots}      % Core plotting package
+\pgfplotsset{compat=1.18} % Set compatibility mode (use newest version available) % For general graphics handling (usually auto-loaded)
+
+% Required packages in preamble
+\usepackage{algorithm}      % For algorithm float environment
+\usepackage{algpseudocode}  % For algorithmic structure (functions, loops, etc.)
+\usepackage{xspace}         % For smart spacing after macros (optional but recommended)
+
+\usepackage{csquotes}
+
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\renewcommand{\contentsname}{Table of Contents}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+
+\usepackage{booktabs} % For professional quality tables
+\usepackage{caption}  % For captions of figures and tables
+\usepackage{subcaption} % For subfigures within a figure environment
+% \usepackage[backend=biber, style=apa]{biblatex} % Example for bibliography (if needed, adapt style)
+% \addbibresource{references.bib} % Link to your bibliography file
+% \usepackage{hyperref} % Optional: for clickable links and references
+% \usepackage[capitalise]{cleveref} % Optional: for smart cross-referencing (e.g., Figure 1, Table 2)
+
+\newenvironment{smallquote}
+  {\begin{quote}\footnotesize\vspace{0em}}
+  {\vspace{0em}\end{quote}}
+
+
+\usepackage{pgffor}
+% MAKE Smaller
+% make lists small
+\usepackage{enumitem}
+\setlist{nosep} % Removes extra space in itemize/enumerate
+
+\titlespacing*{\section}{0pt}{0.5em}{0.5em}
+\titlespacing*{\subsection}{0pt}{0.5em}{0.5em}
+
+% % \titleformat{\section}
+% %   {\normalfont\normalsize\bfseries}
+% %   {\thesection}{1em}{}
+
+% \titleformat{\subsection}
+%   {\normalfont\small\bfseries}
+%   {\thesubsection}{1em}{}
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0.5em} % Adjust spacing between paragraphs
+
+% Customise hyperlink appearance (Optional)
+\hypersetup{
+    colorlinks=true,        % Enable colored links
+    linkcolor=black,        % Color for internal links (TOC, sections, etc.)
+    citecolor=black,        % Color for citation links
+    filecolor=black,        % Color for file links
+    urlcolor=blue          % Color for external URLs
+}
+
+% \titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{0.5em}{}
+% \titleformat{\chapter}[display]
+%   {\normalfont\Large\bfseries}
+%   {}
+%   {0pt}
+%   {\vspace{-2em}}
+% \titlespacing*{\chapter}{0pt}{-2em}{1em}
+
+% % Chapter title (smaller than default)
+% \titleformat{\chapter}[display]
+%   {\normalfont\Large\bfseries}
+%   {} % No label
+%   {0pt}
+%   {\vspace{-2em}}
+
+% % Section title (even smaller)
+% \titleformat{\section}
+%   {\normalfont\small\bfseries}
+%   {\thesection}{1em}{}
+
+% \titleformat{\chapter}[display]
+%   {\normalfont\LARGE\bfseries}
+%   {\thechapter}{1em}{} % <- this line sets the number before the title
+% \titlespacing*{\chapter}{0pt}{-2em}{1em}
+
+% \usepackage{titlesec}
+
+\titleformat{\chapter}[block] % or [hang]
+  {\normalfont\LARGE\bfseries}
+  {\thechapter}{1em}{}
+
+\titlespacing*{\chapter}{0pt}{-2em}{1em}
+
+
+% Section: Large and bold
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{0.5em}{0.5em}
+
+% Subsection: Slightly smaller than section, bold
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{0.4em}{0.4em}
+
+% Subsubsection: Normal size, bold (smaller than subsection)
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{0.3em}{0.3em}
+
+\begin{document}
+
+\begin{table}[H]
+    \centering
+    \caption{Performance and confusion matrix summary for clustering algorithms. TP = True Positives, FN = False Negatives, GWG = Glaucous-Winged Gull, SBG = Slaty-Backed Gull.}
+    \label{tab:clustering_metrics}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lcccccccc}
+    \toprule
+    \textbf{Algorithm} & \textbf{Silhouette} & \textbf{ARI} & \textbf{Accuracy} & \textbf{TP (GWG)} & \textbf{FN (GWG)} & \textbf{TP (SBG)} & \textbf{FN (SBG)} \\
+    \midrule
+    K-means      & 0.574 & 0.809 & 95.00\% & 95 & 5 & 95 & 5 \\
+    Hierarchical & 0.570 & 0.671 & 91.00\% & 91 & 9 & 91 & 9 \\
+    GMM          & 0.540 & 0.827 & 95.50\% & 95 & 5 & 96 & 4 \\
+    \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+
+\end{document}

@@ -29,7 +29,7 @@ RANDOM_STATE = 42
 def load_data(file_path):
     df = pd.read_csv(file_path)
 
-    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'pct_dark_lt_60']]
+    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'pct_dark_lt_40']]
 
     # Create mapping if it doesn't exist already
     if 'species' in df.columns:

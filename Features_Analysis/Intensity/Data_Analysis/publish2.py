@@ -36,18 +36,24 @@ def create_histogram_interpolation(data, bins, color, alpha=0.6):
     # Calculate bin centers for interpolation points
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
 
-    # Add points at the start and end to ensure curve covers full range
-    extended_x = np.concatenate([[data.min()], bin_centers, [data.max()]])
-    extended_y = np.concatenate([[0], counts, [0]])
+    # Filter out bins with zero counts to avoid interpolation issues
+    non_zero_mask = counts > 0
+    if np.sum(non_zero_mask) < 2:
+        # If we have fewer than 2 non-zero bins, use all bins
+        x_points = bin_centers
+        y_points = counts
+    else:
+        x_points = bin_centers[non_zero_mask]
+        y_points = counts[non_zero_mask]
 
-    # Create interpolation function (cubic spline)
-    interp_func = interpolate.interp1d(extended_x, extended_y,
-                                       kind='cubic',
+    # Use linear interpolation to avoid overshooting
+    interp_func = interpolate.interp1d(x_points, y_points,
+                                       kind='linear',
                                        bounds_error=False,
                                        fill_value=0)
 
-    # Generate smooth curve points
-    x_smooth = np.linspace(data.min(), data.max(), 200)
+    # Generate smooth curve points within data range
+    x_smooth = np.linspace(x_points.min(), x_points.max(), 200)
     y_smooth = interp_func(x_smooth)
 
     # Ensure no negative values
@@ -63,7 +69,7 @@ def create_intensity_distribution_comparison_fixed(wing_data, wingtip_distributi
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 
     # 1. Wing Intensity Distribution
-    ax1.set_title('Wing Intensity Distribution', fontsize=14, fontweight='bold')
+    ax1.set_title('Wing Intensity Distribution', fontsize=16, fontweight='bold', pad=20)
     ax1.set_xlabel('Mean Intensity (0-255)')
     ax1.set_ylabel('Density')
 
@@ -71,10 +77,10 @@ def create_intensity_distribution_comparison_fixed(wing_data, wingtip_distributi
         species_data = wing_data[wing_data['species'] == species]['mean_intensity']
         color = SPECIES_COLORS[species]
 
-        # Create histogram bars
+        # Create histogram bars with black edges
         ax1.hist(species_data, bins=INTENSITY_BINS, alpha=0.6,
-                 color=color, density=True,
-                 label=f'{species.replace("_", "-")} (histogram)')
+                 color=color, density=True, edgecolor='black', linewidth=0.8,
+                 label=f'{species.replace("_", "-")}')
 
         # Create proper interpolation curve
         bin_centers, counts, x_smooth, y_smooth = create_histogram_interpolation(
@@ -82,19 +88,24 @@ def create_intensity_distribution_comparison_fixed(wing_data, wingtip_distributi
 
         # Plot interpolation curve
         ax1.plot(x_smooth, y_smooth, color=color, linewidth=2.5,
-                 alpha=0.9, linestyle='-',
-                 label=f'{species.replace("_", "-")} (interpolation)')
+                 alpha=0.9, linestyle='-')
 
-        # Add mean line
+    # Add mean lines after plotting histograms to get proper y-limits
+    for species in wing_data['species'].unique():
+        species_data = wing_data[wing_data['species'] == species]['mean_intensity']
+        color = SPECIES_COLORS[species]
         mean_val = species_data.mean()
         ax1.axvline(mean_val, color=color, linestyle='--', alpha=0.8, linewidth=2)
-        ax1.text(mean_val + 5, ax1.get_ylim()[1] * 0.9, f'Mean: {mean_val:.1f}',
-                 rotation=90, color=color, fontweight='bold', ha='left', va='top')
+        # Position mean labels with larger gap below title, horizontally aligned with the mean line
+        ax1.text(mean_val, 0.98, f'Mean: {mean_val:.1f}',
+                 transform=ax1.get_xaxis_transform(), color=color, fontweight='bold',
+                 ha='center', va='top', fontsize=11)
 
-    ax1.legend()
+    # Position legend further to the right
+    ax1.legend(loc='upper right', bbox_to_anchor=(1.02, 0.98))
 
     # 2. Wingtip Intensity Distribution
-    ax2.set_title('Wingtip Intensity Distribution', fontsize=14, fontweight='bold')
+    ax2.set_title('Wingtip Intensity Distribution', fontsize=16, fontweight='bold', pad=20)
     ax2.set_xlabel('Mean Intensity (0-255)')
     ax2.set_ylabel('Density')
 
@@ -102,10 +113,10 @@ def create_intensity_distribution_comparison_fixed(wing_data, wingtip_distributi
         species_data = wingtip_distribution[wingtip_distribution['species'] == species]['mean_wingtip_intensity']
         color = SPECIES_COLORS[species]
 
-        # Create histogram bars
+        # Create histogram bars with black edges
         ax2.hist(species_data, bins=INTENSITY_BINS, alpha=0.6,
-                 color=color, density=True,
-                 label=f'{species.replace("_", "-")} (histogram)')
+                 color=color, density=True, edgecolor='black', linewidth=0.8,
+                 label=f'{species.replace("_", "-")}')
 
         # Create proper interpolation curve
         bin_centers, counts, x_smooth, y_smooth = create_histogram_interpolation(
@@ -113,16 +124,21 @@ def create_intensity_distribution_comparison_fixed(wing_data, wingtip_distributi
 
         # Plot interpolation curve
         ax2.plot(x_smooth, y_smooth, color=color, linewidth=2.5,
-                 alpha=0.9, linestyle='-',
-                 label=f'{species.replace("_", "-")} (interpolation)')
+                 alpha=0.9, linestyle='-')
 
-        # Add mean line
+    # Add mean lines after plotting histograms to get proper y-limits
+    for species in wingtip_distribution['species'].unique():
+        species_data = wingtip_distribution[wingtip_distribution['species'] == species]['mean_wingtip_intensity']
+        color = SPECIES_COLORS[species]
         mean_val = species_data.mean()
         ax2.axvline(mean_val, color=color, linestyle='--', alpha=0.8, linewidth=2)
-        ax2.text(mean_val + 5, ax2.get_ylim()[1] * 0.9, f'Mean: {mean_val:.1f}',
-                 rotation=90, color=color, fontweight='bold', ha='left', va='top')
+        # Position mean labels with larger gap below title, horizontally aligned with the mean line
+        ax2.text(mean_val, 0.98, f'Mean: {mean_val:.1f}',
+                 transform=ax2.get_xaxis_transform(), color=color, fontweight='bold',
+                 ha='center', va='top', fontsize=11)
 
-    ax2.legend()
+    # Position legend further to the right
+    ax2.legend(loc='upper right', bbox_to_anchor=(1.02, 0.98))
 
     # Ensure both plots have the same x-axis range for better comparison
     x_min = min(wing_data['mean_intensity'].min(), wingtip_distribution['mean_wingtip_intensity'].min())
@@ -184,7 +200,8 @@ def create_overlaid_comparison_fixed(wing_data, wingtip_distribution):
     ax1.set_title('Slaty-backed Gull: Wing vs Wingtip Intensity', fontsize=14, fontweight='bold')
     ax1.set_xlabel('Mean Intensity (0-255)')
     ax1.set_ylabel('Density')
-    ax1.legend()
+    # Move legend to upper right
+    ax1.legend(loc='upper right')
 
     # Species 2: Glaucous-winged Gull
     glaucous_wing = wing_data[wing_data['species'] == 'Glaucous_Winged_Gull']['mean_intensity']
@@ -210,7 +227,8 @@ def create_overlaid_comparison_fixed(wing_data, wingtip_distribution):
     ax2.set_title('Glaucous-winged Gull: Wing vs Wingtip Intensity', fontsize=14, fontweight='bold')
     ax2.set_xlabel('Mean Intensity (0-255)')
     ax2.set_ylabel('Density')
-    ax2.legend()
+    # Move legend to upper right
+    ax2.legend(loc='upper right')
 
     # Ensure consistent x-axis ranges
     all_values = np.concatenate([slaty_wing, slaty_wingtip, glaucous_wing, glaucous_wingtip])
@@ -261,7 +279,8 @@ def create_controlled_kde_comparison(wing_data, wingtip_distribution):
     ax1.set_title('Wing Intensity Distribution (Controlled KDE)', fontsize=14, fontweight='bold')
     ax1.set_xlabel('Mean Intensity (0-255)')
     ax1.set_ylabel('Density')
-    ax1.legend()
+    # Move legend to upper right
+    ax1.legend(loc='upper right')
 
     # 2. Wingtip Intensity Distribution
     for species in wingtip_distribution['species'].unique():
@@ -283,7 +302,8 @@ def create_controlled_kde_comparison(wing_data, wingtip_distribution):
     ax2.set_title('Wingtip Intensity Distribution (Controlled KDE)', fontsize=14, fontweight='bold')
     ax2.set_xlabel('Mean Intensity (0-255)')
     ax2.set_ylabel('Density')
-    ax2.legend()
+    # Move legend to upper right
+    ax2.legend(loc='upper right')
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'controlled_kde_comparison.png'),
@@ -316,12 +336,6 @@ def main():
 
     print("Creating wing vs wingtip intensity distribution comparison with proper interpolation...")
     wing_stats, wingtip_stats = create_intensity_distribution_comparison_fixed(wing_data, wingtip_distribution)
-
-    print("Creating within-species comparison with proper interpolation...")
-    create_overlaid_comparison_fixed(wing_data, wingtip_distribution)
-
-    print("Creating controlled KDE comparison...")
-    create_controlled_kde_comparison(wing_data, wingtip_distribution)
 
     print(f"Analysis complete! Charts saved to {output_dir}/")
 

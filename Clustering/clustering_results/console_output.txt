@@ -1,7 +1,7 @@
-PCA explained variance: 0.905, 0.065
+PCA explained variance: 0.882, 0.088
 
 === K-means Clustering ===
-Silhouette Score: 0.598
+Silhouette Score: 0.574
 Adjusted Rand Index: 0.809
 
 === K-means Species Mapping Analysis ===
@@ -23,20 +23,20 @@ Cluster 0 -> Slaty_Backed_Gull
 Cluster 1 -> Glaucous_Winged_Gull
 
 === Hierarchical Clustering ===
-Silhouette Score: 0.511
-Adjusted Rand Index: 0.357
+Silhouette Score: 0.570
+Adjusted Rand Index: 0.671
 
 === Hierarchical Clustering Species Mapping Analysis ===
-Clustering accuracy after mapping: 80.00%
-Number of misclassified points: 40 (20.00%)
+Clustering accuracy after mapping: 91.00%
+Number of misclassified points: 18 (9.00%)
 
 Sample of misclassified points:
      True_Label     Predicted_Species  ...  dark_lt_60  pct_dark_lt_60
 1             0  Glaucous_Winged_Gull  ...          86        3.491677
-101           1     Slaty_Backed_Gull  ...        2696       15.404834
 103           1     Slaty_Backed_Gull  ...           0        0.000000
-105           1     Slaty_Backed_Gull  ...        2325       13.181767
 107           1     Slaty_Backed_Gull  ...         206        2.198741
+112           1     Slaty_Backed_Gull  ...         303        9.439252
+113           1     Slaty_Backed_Gull  ...         345       10.369702
 
 [5 rows x 6 columns]
 
@@ -46,11 +46,11 @@ Cluster 1 -> Glaucous_Winged_Gull
 
 === Gaussian Mixture Model ===
 Silhouette Score: 0.540
-Adjusted Rand Index: 0.671
+Adjusted Rand Index: 0.827
 
 === Gaussian Mixture Model Species Mapping Analysis ===
-Clustering accuracy after mapping: 91.00%
-Number of misclassified points: 18 (9.00%)
+Clustering accuracy after mapping: 95.50%
+Number of misclassified points: 9 (4.50%)
 
 Sample of misclassified points:
      True_Label  Predicted_Species  ...  dark_lt_60  pct_dark_lt_60
@@ -68,5 +68,5 @@ Cluster 1 -> Glaucous_Winged_Gull
 
 === Algorithm Comparison ===
 Exported 10 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\kmeans_misclassified_points.csv
-Exported 40 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\hierarchical_misclassified_points.csv
-Exported 18 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\gmm_misclassified_points.csv
+Exported 18 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\hierarchical_misclassified_points.csv
+Exported 9 misclassified points to D:\FYPSeagullClassification01\Clustering\clustering_results\gmm_misclassified_points.csv
