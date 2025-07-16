@@ -450,6 +450,23 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
         wingtip_avg_data[wingtip_avg_data['species'] == 'Glaucous_Winged_Gull']['dark_lt_30'].values[0]
     ]
 
+    # ADD THIS: Extract total pixel counts
+    total_pixel_counts = []
+    for species in ['Slaty_Backed_Gull', 'Glaucous_Winged_Gull']:
+        row = wingtip_avg_data[wingtip_avg_data['species'] == species].iloc[0]
+        if 'total_pixels' in row:
+            total_pixel_counts.append(row['total_pixels'])
+        elif 'total_wingtip_pixels' in row:
+            total_pixel_counts.append(row['total_wingtip_pixels'])
+        else:
+            # Calculate from percentage if total not available
+            dark_pct = wingtip_avg_data[wingtip_avg_data['species'] == species]['pct_dark_lt_30'].values[0]
+            dark_count = wingtip_avg_data[wingtip_avg_data['species'] == species]['dark_lt_30'].values[0]
+            if dark_pct > 0:
+                total_pixel_counts.append(int(dark_count / (dark_pct / 100)))
+            else:
+                total_pixel_counts.append(0)
+
     colors = [SPECIES_COLORS['Slaty_Backed_Gull'], SPECIES_COLORS['Glaucous_Winged_Gull']]
     bars = ax4.bar(species_names, dark_pixel_counts, color=colors)
     ax4.set_title('Count of Very Dark Pixels (< 30)')
@@ -521,6 +538,16 @@ def create_summary_visualization(wing_summary, wingtip_avg_data):
     plt.savefig(os.path.join(output_dir, 'species_comparison_summary.png'), dpi=300, bbox_inches='tight')
     plt.close()
 
+    total_info_text = []
+    for i, species in enumerate(['Slaty-backed Gull', 'Glaucous-winged Gull']):
+        if i < len(total_pixel_counts):
+            total_info_text.append(f"{species}: {total_pixel_counts[i]:,} total pixels")
+
+    if total_info_text:
+        ax4.text(0.02, 0.98, '\n'.join(total_info_text),
+                 transform=ax4.transAxes, va='top', ha='left',
+                 bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
+
 
 def generate_summary_report(wing_summary, wingtip_avg_data):
     """Generate a comprehensive summary report of the findings"""
@@ -580,6 +607,49 @@ These quantitative differences align with field observations that Slaty-backed G
     print(f"Summary report saved to {output_dir}/species_comparison_report.md")
 
 
+def validate_pixel_calculations(wingtip_avg_data):
+    """Validate pixel calculations and show total pixel counts"""
+
+    print("\n=== PIXEL CALCULATION VALIDATION ===")
+
+    for species in wingtip_avg_data['species']:
+        row = wingtip_avg_data[wingtip_avg_data['species'] == species].iloc[0]
+
+        print(f"\n{species.replace('_', ' ')}:")
+
+        # Check for total pixel columns
+        total_pixels = None
+        for col in ['total_pixels', 'total_wingtip_pixels', 'pixel_count']:
+            if col in row and pd.notna(row[col]):
+                total_pixels = int(row[col])
+                print(f"  Total pixels: {total_pixels:,}")
+                break
+
+        # If no total found, calculate from percentage
+        if total_pixels is None:
+            dark_pct = row['pct_dark_lt_30']
+            dark_count = row['dark_lt_30']
+            if dark_pct > 0:
+                total_pixels = int(dark_count / (dark_pct / 100))
+                print(f"  Total pixels (calculated): {total_pixels:,}")
+            else:
+                print(f"  Total pixels: Cannot calculate (no dark pixels)")
+
+        # Show dark pixel statistics
+        print(f"  Dark pixels (< 30): {row['dark_lt_30']:,}")
+        print(f"  Percentage dark: {row['pct_dark_lt_30']:.4f}%")
+
+        # Validate calculation
+        if total_pixels and total_pixels > 0:
+            expected_pct = (row['dark_lt_30'] / total_pixels) * 100
+            actual_pct = row['pct_dark_lt_30']
+            print(f"  Expected %: {expected_pct:.4f}%")
+            print(f"  Actual %: {actual_pct:.4f}%")
+            if abs(expected_pct - actual_pct) > 0.001:
+                print(f"  ⚠️  WARNING: Percentage mismatch!")
+            else:
+                print(f"  ✅ Percentage calculation verified")
+
 def main():
     """Main function to run all analyses"""
     # Load data
@@ -588,6 +658,8 @@ def main():
     if wing_data is None or wingtip_avg_data is None or wingtip_distribution is None:
         print("Error: Could not load required data files.")
         return
+
+    validate_pixel_calculations(wingtip_avg_data)
 
     # Run analyses
     print("Generating wing intensity analysis...")
