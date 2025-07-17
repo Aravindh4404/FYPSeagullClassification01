@@ -8,7 +8,7 @@ import os
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Rectangle
 
-# Define consistent color scheme for species (back to original)
+# Define consistent color scheme for species
 SPECIES_COLORS = {
     'Glaucous_Winged_Gull': '#3274A1',  # Blue
     'Slaty_Backed_Gull': '#E1812C'  # Orange
@@ -19,8 +19,8 @@ INTENSITY_BINS = list(range(0, 256, 15))  # [0, 15, 30, 45, ..., 240, 255]
 BIN_WIDTH = 15
 
 # Set plotting style for professional-looking visualizations
-plt.style.use('seaborn-v0_8-whitegrid')
-plt.rcParams['figure.figsize'] = (12, 7)  # Slightly taller to accommodate intensity reference
+plt.style.use('default')  # Changed from seaborn-v0_8-whitegrid to default
+plt.rcParams['figure.figsize'] = (12, 7)
 plt.rcParams['font.size'] = 10
 plt.rcParams['axes.titlesize'] = 12
 plt.rcParams['axes.labelsize'] = 10
@@ -49,17 +49,22 @@ def create_histogram_interpolation(data, bins, color, alpha=0.6):
         y_points = counts[non_zero_mask]
 
     # Use linear interpolation to avoid overshooting
-    interp_func = interpolate.interp1d(x_points, y_points,
-                                       kind='linear',
-                                       bounds_error=False,
-                                       fill_value=0)
+    if len(x_points) >= 2:
+        interp_func = interpolate.interp1d(x_points, y_points,
+                                           kind='linear',
+                                           bounds_error=False,
+                                           fill_value=0)
 
-    # Generate smooth curve points within data range
-    x_smooth = np.linspace(x_points.min(), x_points.max(), 200)
-    y_smooth = interp_func(x_smooth)
+        # Generate smooth curve points within data range
+        x_smooth = np.linspace(x_points.min(), x_points.max(), 200)
+        y_smooth = interp_func(x_smooth)
 
-    # Ensure no negative values
-    y_smooth = np.maximum(y_smooth, 0)
+        # Ensure no negative values
+        y_smooth = np.maximum(y_smooth, 0)
+    else:
+        # If we have insufficient data points, return original data
+        x_smooth = x_points
+        y_smooth = y_points
 
     return bin_centers, counts, x_smooth, y_smooth
 
@@ -96,8 +101,6 @@ def add_intensity_reference(ax, bins):
     # Extend y-axis to accommodate the intensity reference
     ax.set_ylim(box_y_position - box_height * 1.5, ylim[1])
 
-    # Remove intensity reference label to avoid overlap
-
 
 def create_intensity_distribution_comparison_with_reference(wing_data, wingtip_distribution):
     """Create side-by-side comparison with intensity reference bars"""
@@ -112,7 +115,7 @@ def create_intensity_distribution_comparison_with_reference(wing_data, wingtip_d
 
     for species in wing_data['species'].unique():
         species_data = wing_data[wing_data['species'] == species]['mean_intensity']
-        color = SPECIES_COLORS[species]
+        color = SPECIES_COLORS.get(species, '#808080')  # Default gray if species not found
 
         # Create display name for legend
         display_name = species.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
@@ -126,14 +129,15 @@ def create_intensity_distribution_comparison_with_reference(wing_data, wingtip_d
         bin_centers, hist_counts, x_smooth, y_smooth = create_histogram_interpolation(
             species_data, INTENSITY_BINS, color)
 
-        # Plot interpolation curve
-        ax1.plot(x_smooth, y_smooth, color=color, linewidth=2.5,
-                 alpha=0.9, linestyle='-')
+        # Plot interpolation curve only if we have enough data
+        if len(x_smooth) > 1:
+            ax1.plot(x_smooth, y_smooth, color=color, linewidth=2.5,
+                     alpha=0.9, linestyle='-')
 
     # Add mean lines and statistics
     for species in wing_data['species'].unique():
         species_data = wing_data[wing_data['species'] == species]['mean_intensity']
-        color = SPECIES_COLORS[species]
+        color = SPECIES_COLORS.get(species, '#808080')
         mean_val = species_data.mean()
         std_val = species_data.std()
 
@@ -162,9 +166,15 @@ def create_intensity_distribution_comparison_with_reference(wing_data, wingtip_d
     ax2.set_xlabel('Mean Intensity (0-255)')
     ax2.set_ylabel('Density')
 
+    # Check which column to use for wingtip intensity
+    if 'filtered_mean_wingtip_intensity' in wingtip_distribution.columns:
+        intensity_column = 'filtered_mean_wingtip_intensity'
+    else:
+        intensity_column = 'mean_wingtip_intensity'
+
     for species in wingtip_distribution['species'].unique():
-        species_data = wingtip_distribution[wingtip_distribution['species'] == species]['mean_wingtip_intensity']
-        color = SPECIES_COLORS[species]
+        species_data = wingtip_distribution[wingtip_distribution['species'] == species][intensity_column]
+        color = SPECIES_COLORS.get(species, '#808080')
 
         # Create display name for legend
         display_name = species.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
@@ -178,14 +188,15 @@ def create_intensity_distribution_comparison_with_reference(wing_data, wingtip_d
         bin_centers, hist_counts, x_smooth, y_smooth = create_histogram_interpolation(
             species_data, INTENSITY_BINS, color)
 
-        # Plot interpolation curve
-        ax2.plot(x_smooth, y_smooth, color=color, linewidth=2.5,
-                 alpha=0.9, linestyle='-')
+        # Plot interpolation curve only if we have enough data
+        if len(x_smooth) > 1:
+            ax2.plot(x_smooth, y_smooth, color=color, linewidth=2.5,
+                     alpha=0.9, linestyle='-')
 
     # Add mean lines and statistics
     for species in wingtip_distribution['species'].unique():
-        species_data = wingtip_distribution[wingtip_distribution['species'] == species]['mean_wingtip_intensity']
-        color = SPECIES_COLORS[species]
+        species_data = wingtip_distribution[wingtip_distribution['species'] == species][intensity_column]
+        color = SPECIES_COLORS.get(species, '#808080')
         mean_val = species_data.mean()
         std_val = species_data.std()
 
@@ -222,7 +233,7 @@ def create_intensity_distribution_comparison_with_reference(wing_data, wingtip_d
 
     # Calculate and display summary statistics
     wing_stats = wing_data.groupby('species')['mean_intensity'].agg(['mean', 'std', 'count'])
-    wingtip_stats = wingtip_distribution.groupby('species')['mean_wingtip_intensity'].agg(['mean', 'std', 'count'])
+    wingtip_stats = wingtip_distribution.groupby('species')[intensity_column].agg(['mean', 'std', 'count'])
 
     plt.savefig(os.path.join(output_dir, 'wing_wingtip_intensity_comparison_with_reference.png'),
                 dpi=300, bbox_inches='tight')
@@ -234,21 +245,52 @@ def create_intensity_distribution_comparison_with_reference(wing_data, wingtip_d
 def load_data():
     """Load and prepare all necessary datasets"""
     try:
+        # First, try to load wing data
         wing_data = pd.read_csv('../Intensity_Results/wing_intensity_analysis.csv')
+        print("Successfully loaded wing data")
 
-        wingtip_avg_data = pd.read_csv('../Wingtip_Intensity_Distribution/wingtip_intensity_averages.csv')
-        wingtip_distribution = pd.read_csv('../Wingtip_Intensity_Distribution/wingtip_intensity_distribution.csv')
+        # Try to load filtered wingtip data first, then fall back to original
+        try:
+            wingtip_distribution = pd.read_csv(
+                '../Wingtip_Intensity_Distribution_Filtered220/wingtip_intensity_distribution_filtered.csv')
+            print("Successfully loaded filtered wingtip distribution data")
+        except FileNotFoundError:
+            try:
+                wingtip_distribution = pd.read_csv(
+                    '../Wingtip_Intensity_Distribution_Filtered/wingtip_intensity_distribution_filtered.csv')
+                print("Successfully loaded filtered wingtip distribution data (alternative path)")
+            except FileNotFoundError:
+                wingtip_distribution = pd.read_csv(
+                    '../Wingtip_Intensity_Distribution/wingtip_intensity_distribution.csv')
+                print("Successfully loaded original wingtip distribution data")
 
-        # wingtip_avg_data = pd.read_csv('../Wingtip_Intensity_Distribution_Filtered220/wingtip_intensity_averages_filtered.csv')
-        # wingtip_avg_data = pd.read_csv('../Wingtip_Intensity_Distribution_Filtered220/wingtip_intensity_averages_filtered.csv')
+        # Try to load wingtip averages (optional)
+        try:
+            wingtip_avg_data = pd.read_csv(
+                '../Wingtip_Intensity_Distribution_Filtered220/wingtip_intensity_averages_filtered.csv')
+            print("Successfully loaded filtered wingtip averages data")
+        except FileNotFoundError:
+            try:
+                wingtip_avg_data = pd.read_csv(
+                    '../Wingtip_Intensity_Distribution_Filtered/wingtip_intensity_averages_filtered.csv')
+                print("Successfully loaded filtered wingtip averages data (alternative path)")
+            except FileNotFoundError:
+                try:
+                    wingtip_avg_data = pd.read_csv('../Wingtip_Intensity_Distribution/wingtip_intensity_averages.csv')
+                    print("Successfully loaded original wingtip averages data")
+                except FileNotFoundError:
+                    wingtip_avg_data = None
+                    print("Could not load wingtip averages data, continuing without it")
 
-
-        # wingtip_distribution = pd.read_csv('../Wingtip_Intensity_Distribution_Filtered220/wingtip_intensity_distribution_filtered.csv')
-        # wingtip_distribution = pd.read_csv('../Wingtip_Intensity_Distribution_Filtered220/wingtip_intensity_distribution_filtered.csv')
-        print("Successfully loaded all datasets")
+        print("Data loading completed")
         return wing_data, wingtip_avg_data, wingtip_distribution
+
     except Exception as e:
         print(f"Error loading data: {e}")
+        print("Please check that the following files exist:")
+        print("  - ../Intensity_Results/wing_intensity_analysis.csv")
+        print("  - ../Wingtip_Intensity_Distribution_Filtered220/wingtip_intensity_distribution_filtered.csv")
+        print("  - OR ../Wingtip_Intensity_Distribution/wingtip_intensity_distribution.csv")
         return None, None, None
 
 
@@ -261,17 +303,34 @@ def main():
         print("Error: Could not load required data files.")
         return
 
-    print("Creating wing vs wingtip intensity distribution comparison with intensity reference...")
-    wing_stats, wingtip_stats = create_intensity_distribution_comparison_with_reference(wing_data, wingtip_distribution)
+    # Print data info for debugging
+    print("\n=== DATA INFO ===")
+    print(f"Wing data shape: {wing_data.shape}")
+    print(f"Wing data columns: {wing_data.columns.tolist()}")
+    print(f"Wingtip distribution shape: {wingtip_distribution.shape}")
+    print(f"Wingtip distribution columns: {wingtip_distribution.columns.tolist()}")
+    print(f"Species in wing data: {wing_data['species'].unique()}")
+    print(f"Species in wingtip data: {wingtip_distribution['species'].unique()}")
 
-    print(f"\nAnalysis complete! Chart saved to {output_dir}/")
+    print("\nCreating wing vs wingtip intensity distribution comparison with intensity reference...")
 
-    # Print summary statistics
-    print("\n=== SUMMARY STATISTICS ===")
-    print("\nWing Intensity Statistics:")
-    print(wing_stats)
-    print("\nWingtip Intensity Statistics:")
-    print(wingtip_stats)
+    try:
+        wing_stats, wingtip_stats = create_intensity_distribution_comparison_with_reference(wing_data,
+                                                                                            wingtip_distribution)
+
+        print(f"\nAnalysis complete! Chart saved to {output_dir}/")
+
+        # Print summary statistics
+        print("\n=== SUMMARY STATISTICS ===")
+        print("\nWing Intensity Statistics:")
+        print(wing_stats)
+        print("\nWingtip Intensity Statistics:")
+        print(wingtip_stats)
+
+    except Exception as e:
+        print(f"Error creating visualization: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 if __name__ == "__main__":
