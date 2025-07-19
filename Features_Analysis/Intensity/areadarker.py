@@ -1,11 +1,12 @@
-import os
 import pandas as pd
-import numpy as np
 import cv2
+import numpy as np
+import os
 import matplotlib.pyplot as plt
 import seaborn as sns
-from pathlib import Path
+from matplotlib.gridspec import GridSpec
 import sys
+from pathlib import Path
 
 # Add the root directory to Python path
 current_dir = Path(__file__).resolve().parent
@@ -13,21 +14,27 @@ root_dir = current_dir.parent.parent
 sys.path.append(str(root_dir))
 from Features_Analysis.config import *
 
+# Define consistent color scheme for species
+SPECIES_COLORS = {
+    'Glaucous_Winged_Gull': '#3274A1',  # Blue
+    'Slaty_Backed_Gull': '#E1812C'  # Orange
+}
 
-def analyze_wingtip_darkness_ratio(image_path, seg_path, species, file_name, mean_wing_intensity, create_overlay=False):
+# Set plotting style for professional-looking visualizations
+plt.style.use('seaborn-v0_8-whitegrid')
+plt.rcParams['figure.figsize'] = (16, 10)
+plt.rcParams['font.size'] = 10
+plt.rcParams['axes.titlesize'] = 12
+plt.rcParams['axes.labelsize'] = 10
+
+# Create output directory
+output_dir = "Wingtip_Dark_Pixel_Analysis"
+os.makedirs(output_dir, exist_ok=True)
+
+
+def analyze_wingtip_dark_pixels(image_path, seg_path, species, file_name, mean_wing_intensity):
     """
-    Analyzes the portion of wingtip that is darker than the wing for a single image.
-
-    Args:
-        image_path: Path to the original image
-        seg_path: Path to the segmentation image
-        species: Species name
-        file_name: Image file name
-        mean_wing_intensity: Pre-calculated mean wing intensity for this image
-        create_overlay: Whether to create overlay visualization
-
-    Returns:
-        Dictionary with analysis results
+    Analyzes wingtip pixels that are darker than the mean wing intensity
     """
     # Load images
     original_img = cv2.imread(image_path)
@@ -35,10 +42,12 @@ def analyze_wingtip_darkness_ratio(image_path, seg_path, species, file_name, mea
 
     if original_img is None or segmentation_img is None:
         print(f"Error loading images: {image_path} or {seg_path}")
-        return None
+        return None, None
 
-    # Convert to grayscale and normalize (same as in your original code)
+    # Convert entire image to grayscale first
     gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
+
+    # Apply min-max normalization to the entire grayscale image
     gray_img = cv2.normalize(gray_img, None, 0, 255, cv2.NORM_MINMAX)
 
     # Extract wingtip region from the normalized grayscale image
@@ -49,465 +58,361 @@ def analyze_wingtip_darkness_ratio(image_path, seg_path, species, file_name, mea
 
     if len(wingtip_pixels) == 0:
         print(f"No wingtip region found in {file_name}")
-        return None
+        return None, None
 
-    # Count pixels darker than mean wing intensity
-    darker_pixels = wingtip_pixels < mean_wing_intensity
-    darker_pixel_count = np.sum(darker_pixels)
+    # Find pixels darker than mean wing intensity
+    darker_pixels_mask = wingtip_pixels < mean_wing_intensity
+    darker_pixel_count = np.sum(darker_pixels_mask)
+
+    # Calculate statistics
     total_wingtip_pixels = len(wingtip_pixels)
+    darker_pixel_percentage = (darker_pixel_count / total_wingtip_pixels) * 100
 
-    # Calculate the ratio/percentage
-    darkness_ratio = darker_pixel_count / total_wingtip_pixels
-    darkness_percentage = darkness_ratio * 100
+    # Create overlay mask for the entire image
+    full_image_mask = np.zeros_like(gray_img, dtype=bool)
+    full_image_mask[wingtip_mask > 0] = wingtip_pixels < mean_wing_intensity
 
-    # Additional statistics for analysis
-    mean_wingtip_intensity = np.mean(wingtip_pixels)
-    intensity_difference = mean_wing_intensity - mean_wingtip_intensity
-
-    # Calculate how much darker the dark pixels are on average
-    if darker_pixel_count > 0:
-        dark_wingtip_pixels = wingtip_pixels[darker_pixels]
-        mean_dark_intensity = np.mean(dark_wingtip_pixels)
-        avg_darkness_diff = mean_wing_intensity - mean_dark_intensity
-    else:
-        mean_dark_intensity = None
-        avg_darkness_diff = 0
-
-    # Create overlay visualization if requested
-    if create_overlay:
-        create_darkness_overlay(original_img, gray_img, wingtip_mask, mean_wing_intensity,
-                                species, file_name, darkness_percentage)
-
-    return {
+    # Prepare results
+    results = {
         'image_name': file_name,
         'species': species,
         'mean_wing_intensity': mean_wing_intensity,
-        'mean_wingtip_intensity': mean_wingtip_intensity,
+        'mean_wingtip_intensity': np.mean(wingtip_pixels),
         'total_wingtip_pixels': total_wingtip_pixels,
         'darker_pixel_count': darker_pixel_count,
-        'darkness_ratio': darkness_ratio,
-        'darkness_percentage': darkness_percentage,
-        'wing_wingtip_diff': intensity_difference,
-        'mean_dark_pixel_intensity': mean_dark_intensity,
-        'avg_darkness_difference': avg_darkness_diff
+        'darker_pixel_percentage': darker_pixel_percentage
     }
 
+    return results, full_image_mask
 
-def load_wing_intensity_data():
+
+def create_sample_overlay_images(wing_data, dark_pixel_results, n_samples=6):
     """
-    Load the previously saved wing intensity data.
-    Modify this path to match where your wing intensity CSV is saved.
+    Create overlay images showing darker pixels for sample images
     """
-    wing_data_path = "Intensity_Results/wing_intensity_analysis.csv"
+    # Select sample images (3 from each species, varying darkness percentages)
+    sample_images = []
 
-    if not os.path.exists(wing_data_path):
-        print(f"Wing intensity data not found at {wing_data_path}")
-        print("Please make sure you've run the wing intensity analysis first.")
-        return None
+    for species in wing_data['species'].unique():
+        species_data = dark_pixel_results[dark_pixel_results['species'] == species]
 
-    wing_df = pd.read_csv(wing_data_path)
+        # Sort by darker pixel percentage and select diverse samples
+        species_sorted = species_data.sort_values('darker_pixel_percentage')
 
-    # Create a lookup dictionary for quick access
-    wing_intensity_lookup = {}
-    for _, row in wing_df.iterrows():
-        wing_intensity_lookup[row['image_name']] = row['mean_intensity']
-
-    return wing_intensity_lookup
-
-
-def create_darkness_overlay(original_img, gray_img, wingtip_mask, mean_wing_intensity, species, file_name,
-                            darkness_percentage):
-    """
-    Create overlay visualization showing darker regions in the wingtip.
-
-    Args:
-        original_img: Original color image
-        gray_img: Grayscale normalized image
-        wingtip_mask: Mask for wingtip region
-        mean_wing_intensity: Mean wing intensity threshold
-        species: Species name
-        file_name: Image file name
-        darkness_percentage: Calculated darkness percentage
-    """
-    # Create output directory
-    overlay_dir = "Darkness_Overlay_Visualizations"
-    os.makedirs(overlay_dir, exist_ok=True)
-
-    # Create a copy of the original image for overlay
-    overlay_img = original_img.copy()
-
-    # Create mask for darker pixels within wingtip
-    darker_mask = np.zeros_like(gray_img, dtype=np.uint8)
-
-    # Find pixels in wingtip that are darker than mean wing intensity
-    wingtip_coords = np.where(wingtip_mask > 0)
-    for y, x in zip(wingtip_coords[0], wingtip_coords[1]):
-        if gray_img[y, x] < mean_wing_intensity:
-            darker_mask[y, x] = 255
-
-    # Create different overlays
-    fig, axes = plt.subplots(2, 3, figsize=(18, 12))
-    fig.suptitle(f'Darkness Analysis: {species} - {file_name}\nDarkness Percentage: {darkness_percentage:.1f}%',
-                 fontsize=16, fontweight='bold')
-
-    # 1. Original image
-    axes[0, 0].imshow(cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB))
-    axes[0, 0].set_title('Original Image')
-    axes[0, 0].axis('off')
-
-    # 2. Grayscale with wingtip outlined
-    axes[0, 1].imshow(gray_img, cmap='gray')
-    # Create wingtip contour
-    contours, _ = cv2.findContours(wingtip_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    for contour in contours:
-        # Convert contour points for matplotlib
-        contour_points = contour.reshape(-1, 2)
-        axes[0, 1].plot(contour_points[:, 0], contour_points[:, 1], 'cyan', linewidth=2)
-    axes[0, 1].set_title('Grayscale with Wingtip Boundary')
-    axes[0, 1].axis('off')
-
-    # 3. Darker regions highlighted
-    axes[0, 2].imshow(gray_img, cmap='gray')
-    axes[0, 2].imshow(darker_mask, cmap='Reds', alpha=0.6)
-    axes[0, 2].set_title('Darker Regions Highlighted (Red)')
-    axes[0, 2].axis('off')
-
-    # 4. Original with red overlay for darker regions
-    overlay_colored = original_img.copy()
-    # Create red overlay for darker pixels
-    red_overlay = np.zeros_like(original_img)
-    red_overlay[darker_mask > 0] = [0, 0, 255]  # Red in BGR
-
-    # Blend the images
-    overlay_colored = cv2.addWeighted(overlay_colored, 0.7, red_overlay, 0.3, 0)
-
-    axes[1, 0].imshow(cv2.cvtColor(overlay_colored, cv2.COLOR_BGR2RGB))
-    axes[1, 0].set_title('Original + Darker Regions (Red Overlay)')
-    axes[1, 0].axis('off')
-
-    # 5. Intensity analysis within wingtip
-    wingtip_pixels = gray_img[wingtip_mask > 0]
-    axes[1, 1].hist(wingtip_pixels, bins=50, alpha=0.7, color='skyblue', edgecolor='black')
-    axes[1, 1].axvline(mean_wing_intensity, color='red', linestyle='--', linewidth=2,
-                       label=f'Wing Mean: {mean_wing_intensity:.1f}')
-    axes[1, 1].axvline(np.mean(wingtip_pixels), color='blue', linestyle='--', linewidth=2,
-                       label=f'Wingtip Mean: {np.mean(wingtip_pixels):.1f}')
-    axes[1, 1].set_xlabel('Intensity')
-    axes[1, 1].set_ylabel('Frequency')
-    axes[1, 1].set_title('Wingtip Intensity Distribution')
-    axes[1, 1].legend()
-    axes[1, 1].grid(True, alpha=0.3)
-
-    # 6. Side-by-side comparison with statistics
-    axes[1, 2].axis('off')
-    stats_text = f"""
-    ANALYSIS STATISTICS:
-
-    Species: {species}
-    Image: {file_name}
-
-    Wing Mean Intensity: {mean_wing_intensity:.1f}
-    Wingtip Mean Intensity: {np.mean(wingtip_pixels):.1f}
-
-    Total Wingtip Pixels: {len(wingtip_pixels):,}
-    Darker Pixels: {np.sum(darker_mask > 0):,}
-    Darkness Percentage: {darkness_percentage:.1f}%
-
-    Intensity Difference: {mean_wing_intensity - np.mean(wingtip_pixels):.1f}
-
-    Min Wingtip Intensity: {np.min(wingtip_pixels):.0f}
-    Max Wingtip Intensity: {np.max(wingtip_pixels):.0f}
-    Std Wingtip Intensity: {np.std(wingtip_pixels):.1f}
-    """
-
-    axes[1, 2].text(0.05, 0.95, stats_text, transform=axes[1, 2].transAxes,
-                    fontsize=11, verticalalignment='top', fontfamily='monospace',
-                    bbox=dict(boxstyle='round', facecolor='lightgray', alpha=0.8))
-
-    plt.tight_layout()
-
-    # Save the overlay visualization
-    clean_filename = file_name.replace('.jpg', '').replace('.png', '').replace('.jpeg', '')
-    overlay_path = os.path.join(overlay_dir, f'darkness_overlay_{species}_{clean_filename}.png')
-    plt.savefig(overlay_path, dpi=300, bbox_inches='tight')
-    plt.close()  # Close to save memory
-
-    print(f"    Overlay saved: {overlay_path}")
-
-
-def create_combined_overlay_comparison(results_df, max_images_per_species=3):
-    """
-    Create a combined comparison showing overlays for multiple images from each species.
-    """
-    overlay_dir = "Darkness_Overlay_Visualizations"
-    os.makedirs(overlay_dir, exist_ok=True)
-
-    species_list = results_df['species'].unique()
-
-    # Select representative images (highest, medium, lowest darkness percentages)
-    for species in species_list:
-        species_data = results_df[results_df['species'] == species].copy()
-        species_data = species_data.sort_values('darkness_percentage')
-
-        n_images = min(len(species_data), max_images_per_species)
-
-        if n_images >= 3:
-            # Select high, medium, low
-            indices = [0, len(species_data) // 2, len(species_data) - 1]
-            selected = species_data.iloc[indices]
+        # Select low, medium, high darkness examples
+        n_per_species = n_samples // 2
+        if len(species_sorted) >= n_per_species:
+            indices = np.linspace(0, len(species_sorted) - 1, n_per_species, dtype=int)
         else:
-            # Select available images
-            selected = species_data.iloc[:n_images]
+            indices = range(len(species_sorted))
 
-        # Create comparison figure
-        fig, axes = plt.subplots(len(selected), 4, figsize=(20, 5 * len(selected)))
-        if len(selected) == 1:
-            axes = axes.reshape(1, -1)
+        for idx in indices:
+            sample_images.append(species_sorted.iloc[idx])
 
-        fig.suptitle(f'{species} - Darkness Analysis Comparison', fontsize=16, fontweight='bold')
+    # Create overlay visualizations
+    fig, axes = plt.subplots(2, 3, figsize=(18, 12))
+    fig.suptitle('Sample Wingtip Dark Pixel Overlays\n(Red = Pixels Darker than Mean Wing Intensity)',
+                 fontsize=16, fontweight='bold', y=0.95)
 
-        for i, (_, row) in enumerate(selected.iterrows()):
-            # This would require reloading images - simplified version for display
-            axes[i, 0].text(0.5, 0.5, f"Original\n{row['image_name']}\n{row['darkness_percentage']:.1f}% dark",
-                            ha='center', va='center', transform=axes[i, 0].transAxes,
-                            bbox=dict(boxstyle='round', facecolor='lightblue'))
-            axes[i, 0].set_title(f"Darkness: {row['darkness_percentage']:.1f}%")
-            axes[i, 0].axis('off')
+    axes = axes.flatten()
 
-            axes[i, 1].text(0.5, 0.5, f"Grayscale\nWing Mean: {row['mean_wing_intensity']:.1f}",
-                            ha='center', va='center', transform=axes[i, 1].transAxes,
-                            bbox=dict(boxstyle='round', facecolor='lightgray'))
-            axes[i, 1].set_title("Grayscale + Boundary")
-            axes[i, 1].axis('off')
+    for i in range(6):
+        ax = axes[i]
 
-            axes[i, 2].text(0.5, 0.5, f"Darker Regions\n{row['darker_pixel_count']} pixels",
-                            ha='center', va='center', transform=axes[i, 2].transAxes,
-                            bbox=dict(boxstyle='round', facecolor='lightcoral'))
-            axes[i, 2].set_title("Highlighted Darker Areas")
-            axes[i, 2].axis('off')
+        if i < len(sample_images):
+            sample = sample_images[i]
 
-            # Statistics
-            stats = f"""
-            Wing Mean: {row['mean_wing_intensity']:.1f}
-            Wingtip Mean: {row['mean_wingtip_intensity']:.1f}
-            Difference: {row['wing_wingtip_diff']:.1f}
-            Dark Pixels: {row['darker_pixel_count']:,}
-            Total Pixels: {row['total_wingtip_pixels']:,}
-            Darkness %: {row['darkness_percentage']:.1f}%
-            """
-            axes[i, 3].text(0.05, 0.95, stats, transform=axes[i, 3].transAxes,
-                            fontsize=9, verticalalignment='top', fontfamily='monospace',
-                            bbox=dict(boxstyle='round', facecolor='lightyellow'))
-            axes[i, 3].set_title("Statistics")
-            axes[i, 3].axis('off')
+            # Find the image paths
+            species_name = sample['species']
+            image_name = sample['image_name']
 
-        plt.tight_layout()
-        comparison_path = os.path.join(overlay_dir, f'darkness_comparison_{species}.png')
-        plt.savefig(comparison_path, dpi=300, bbox_inches='tight')
-        plt.close()
+            # Get image paths
+            image_paths = get_image_paths(species_name)
+            img_path = None
+            seg_path = None
 
-        print(f"Species comparison saved: {comparison_path}")
+            for img_p, seg_p in image_paths:
+                if os.path.basename(img_p) == image_name:
+                    img_path = img_p
+                    seg_path = seg_p
+                    break
 
+            if img_path is None:
+                ax.text(0.5, 0.5, 'Image not found', ha='center', va='center')
+                ax.set_title(f'{image_name} - Not Found')
+                ax.axis('off')
+                continue
 
-def create_darkness_plots(results_df):
-    """
-    Create visualization plots for the darkness analysis results.
-    """
-    # Create output directory
-    plot_dir = "Darkness_Analysis_Plots"
-    os.makedirs(plot_dir, exist_ok=True)
+            # Load and process image
+            original_img = cv2.imread(img_path)
+            segmentation_img = cv2.imread(seg_path)
 
-    # Set style
-    plt.style.use('default')  # Changed from 'seaborn-v0_8'
-    sns.set_palette("husl")
+            if original_img is None or segmentation_img is None:
+                ax.text(0.5, 0.5, 'Error loading image', ha='center', va='center')
+                ax.axis('off')
+                continue
 
-    # 1. Box plot comparing darkness percentages between species
-    plt.figure(figsize=(12, 8))
+            # Convert to RGB for matplotlib
+            original_rgb = cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB)
 
-    plt.subplot(2, 2, 1)
-    sns.boxplot(data=results_df, x='species', y='darkness_percentage')
-    plt.title('Distribution of Wingtip Darkness Percentage by Species')
-    plt.ylabel('Darkness Percentage (%)')
-    plt.xticks(rotation=45)
+            # Get the dark pixel mask
+            _, dark_mask = analyze_wingtip_dark_pixels(
+                img_path, seg_path, species_name, image_name, sample['mean_wing_intensity']
+            )
 
-    # 2. Scatter plot: Wing intensity vs Darkness percentage
-    plt.subplot(2, 2, 2)
-    for species in results_df['species'].unique():
-        species_data = results_df[results_df['species'] == species]
-        plt.scatter(species_data['mean_wing_intensity'], species_data['darkness_percentage'],
-                    alpha=0.7, label=species, s=50)
-    plt.xlabel('Mean Wing Intensity')
-    plt.ylabel('Darkness Percentage (%)')
-    plt.title('Wing Intensity vs Wingtip Darkness')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
+            if dark_mask is None:
+                ax.text(0.5, 0.5, 'Error processing mask', ha='center', va='center')
+                ax.axis('off')
+                continue
 
-    # 3. Histogram of darkness percentages
-    plt.subplot(2, 2, 3)
-    for species in results_df['species'].unique():
-        species_data = results_df[results_df['species'] == species]
-        plt.hist(species_data['darkness_percentage'], alpha=0.7, label=species, bins=20)
-    plt.xlabel('Darkness Percentage (%)')
-    plt.ylabel('Frequency')
-    plt.title('Distribution of Darkness Percentages')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
+            # Create overlay
+            overlay = original_rgb.copy()
+            overlay[dark_mask] = [255, 0, 0]  # Red for darker pixels
 
-    # 4. Wing-Wingtip intensity difference
-    plt.subplot(2, 2, 4)
-    sns.boxplot(data=results_df, x='species', y='wing_wingtip_diff')
-    plt.title('Wing-Wingtip Intensity Difference by Species')
-    plt.ylabel('Intensity Difference')
-    plt.xticks(rotation=45)
+            # Blend with original
+            alpha = 0.6
+            blended = cv2.addWeighted(original_rgb, 1 - alpha, overlay, alpha, 0)
+
+            # Display
+            ax.imshow(blended)
+            display_name = species_name.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
+            ax.set_title(f'{display_name}\n'
+                         f'{sample["darker_pixel_percentage"]:.1f}% Dark Pixels\n'
+                         f'Wing Mean: {sample["mean_wing_intensity"]:.1f}',
+                         fontsize=10, color=SPECIES_COLORS[species_name])
+        else:
+            ax.text(0.5, 0.5, 'No sample available', ha='center', va='center')
+            ax.set_title('No Sample')
+
+        ax.axis('off')
 
     plt.tight_layout()
-    plt.savefig(os.path.join(plot_dir, 'darkness_analysis_overview.png'), dpi=300, bbox_inches='tight')
+    plt.savefig(os.path.join(output_dir, 'sample_wingtip_dark_pixel_overlays.png'),
+                dpi=300, bbox_inches='tight')
     plt.show()
 
-    # Additional detailed plots
-    fig, axes = plt.subplots(2, 2, figsize=(15, 10))
 
-    # Individual species darkness distributions
-    species_list = results_df['species'].unique()
-    colors = ['skyblue', 'lightcoral']
+def create_dark_pixel_analysis_plots(dark_pixel_results):
+    """
+    Create analysis plots for dark pixel percentages
+    """
+    # Create figure with subplots
+    fig = plt.figure(figsize=(16, 10))
+    gs = GridSpec(2, 2, figure=fig, hspace=0.3, wspace=0.3)
 
-    for i, species in enumerate(species_list):
-        species_data = results_df[results_df['species'] == species]
+    # Main title
+    fig.suptitle('Wingtip Dark Pixel Analysis\n(Percentage of Pixels Darker than Mean Wing Intensity)',
+                 fontsize=16, fontweight='bold', y=0.95)
 
-        # Darkness percentage distribution
-        axes[0, i].hist(species_data['darkness_percentage'], bins=15,
-                        alpha=0.7, color=colors[i], edgecolor='black')
-        axes[0, i].set_title(f'{species}\nDarkness Percentage Distribution')
-        axes[0, i].set_xlabel('Darkness Percentage (%)')
-        axes[0, i].set_ylabel('Frequency')
-        axes[0, i].axvline(species_data['darkness_percentage'].mean(),
-                           color='red', linestyle='--',
-                           label=f'Mean: {species_data["darkness_percentage"].mean():.1f}%')
-        axes[0, i].legend()
-        axes[0, i].grid(True, alpha=0.3)
+    # 1. Dark Pixel Percentage Distribution (Histogram)
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax1.set_title('Distribution of Dark Pixel Percentages', fontsize=12, fontweight='bold')
 
-        # Intensity scatter for each species
-        axes[1, i].scatter(species_data['mean_wing_intensity'],
-                           species_data['mean_wingtip_intensity'],
-                           alpha=0.7, color=colors[i], s=50)
-        axes[1, i].set_xlabel('Mean Wing Intensity')
-        axes[1, i].set_ylabel('Mean Wingtip Intensity')
-        axes[1, i].set_title(f'{species}\nWing vs Wingtip Intensity')
+    for species in dark_pixel_results['species'].unique():
+        species_data = dark_pixel_results[dark_pixel_results['species'] == species]
+        color = SPECIES_COLORS[species]
+        display_name = species.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
 
-        # Add diagonal line (equal intensities)
-        min_val = min(species_data['mean_wing_intensity'].min(),
-                      species_data['mean_wingtip_intensity'].min())
-        max_val = max(species_data['mean_wing_intensity'].max(),
-                      species_data['mean_wingtip_intensity'].max())
-        axes[1, i].plot([min_val, max_val], [min_val, max_val],
-                        'r--', alpha=0.5, label='Equal intensity line')
-        axes[1, i].legend()
-        axes[1, i].grid(True, alpha=0.3)
+        ax1.hist(species_data['darker_pixel_percentage'], bins=15, alpha=0.7,
+                 color=color, label=display_name, density=True)
+
+    ax1.set_xlabel('Dark Pixel Percentage (%)')
+    ax1.set_ylabel('Density')
+    ax1.legend()
+    ax1.grid(True, alpha=0.3)
+
+    # 2. Box Plot Comparison
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax2.set_title('Dark Pixel Percentage by Species', fontsize=12, fontweight='bold')
+
+    species_data_list = []
+    species_labels = []
+    colors_list = []
+
+    for species in dark_pixel_results['species'].unique():
+        species_data = dark_pixel_results[dark_pixel_results['species'] == species]
+        species_data_list.append(species_data['darker_pixel_percentage'])
+        display_name = species.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
+        species_labels.append(display_name)
+        colors_list.append(SPECIES_COLORS[species])
+
+    # Create box plot
+    bp = ax2.boxplot(species_data_list, labels=species_labels, patch_artist=True)
+
+    # Color the box plots
+    for patch, color in zip(bp['boxes'], colors_list):
+        patch.set_facecolor(color)
+        patch.set_alpha(0.7)
+
+    ax2.set_ylabel('Dark Pixel Percentage (%)')
+    ax2.grid(True, alpha=0.3)
+    plt.setp(ax2.get_xticklabels(), rotation=45, ha='right')
+
+    # 3. Mean Comparison with Error Bars
+    ax3 = fig.add_subplot(gs[1, 0])
+    ax3.set_title('Mean Dark Pixel Percentage Comparison', fontsize=12, fontweight='bold')
+
+    species_names = []
+    means = []
+    stds = []
+    colors = []
+
+    for species in dark_pixel_results['species'].unique():
+        species_data = dark_pixel_results[dark_pixel_results['species'] == species]
+        display_name = species.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
+
+        species_names.append(display_name)
+        means.append(species_data['darker_pixel_percentage'].mean())
+        stds.append(species_data['darker_pixel_percentage'].std())
+        colors.append(SPECIES_COLORS[species])
+
+    bars = ax3.bar(species_names, means, yerr=stds, color=colors, alpha=0.7, capsize=5)
+    ax3.set_ylabel('Dark Pixel Percentage (%)')
+    plt.setp(ax3.get_xticklabels(), rotation=45, ha='right')
+    ax3.grid(True, alpha=0.3)
+
+    # Add value labels on bars
+    for bar, mean_val, std_val in zip(bars, means, stds):
+        height = bar.get_height()
+        ax3.text(bar.get_x() + bar.get_width() / 2., height + std_val + 1,
+                 f'{mean_val:.1f}%', ha='center', va='bottom', fontweight='bold')
+
+    # 4. Statistics Summary
+    ax4 = fig.add_subplot(gs[1, 1])
+    ax4.set_title('Summary Statistics', fontsize=12, fontweight='bold')
+    ax4.axis('off')
+
+    # Calculate statistics
+    stats_text = "DARK PIXEL STATISTICS:\n\n"
+    for species in dark_pixel_results['species'].unique():
+        species_data = dark_pixel_results[dark_pixel_results['species'] == species]
+        display_name = species.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
+
+        mean_dark_pct = species_data['darker_pixel_percentage'].mean()
+        std_dark_pct = species_data['darker_pixel_percentage'].std()
+        median_dark_pct = species_data['darker_pixel_percentage'].median()
+        min_dark_pct = species_data['darker_pixel_percentage'].min()
+        max_dark_pct = species_data['darker_pixel_percentage'].max()
+
+        stats_text += f"{display_name}:\n"
+        stats_text += f"  Mean:   {mean_dark_pct:.1f}%\n"
+        stats_text += f"  Std:    {std_dark_pct:.1f}%\n"
+        stats_text += f"  Median: {median_dark_pct:.1f}%\n"
+        stats_text += f"  Range:  {min_dark_pct:.1f}% - {max_dark_pct:.1f}%\n"
+        stats_text += f"  Count:  {len(species_data)} images\n\n"
+
+    ax4.text(0.05, 0.95, stats_text, transform=ax4.transAxes, fontsize=10,
+             verticalalignment='top', fontfamily='monospace',
+             bbox=dict(boxstyle='round,pad=0.5', facecolor='lightgray', alpha=0.8))
 
     plt.tight_layout()
-    plt.savefig(os.path.join(plot_dir, 'species_specific_analysis.png'), dpi=300, bbox_inches='tight')
+    plt.savefig(os.path.join(output_dir, 'wingtip_dark_pixel_analysis.png'),
+                dpi=300, bbox_inches='tight')
     plt.show()
 
 
 def main():
     """
-    Main function to process all images and analyze wingtip darkness ratios.
+    Main function to perform wingtip dark pixel analysis
     """
-    # Load wing intensity data
     print("Loading wing intensity data...")
-    wing_intensity_lookup = load_wing_intensity_data()
 
-    if wing_intensity_lookup is None:
+    # Load wing intensity data
+    try:
+        wing_data = pd.read_csv('Intensity_Results/wing_intensity_analysis.csv')
+        print(f"Successfully loaded wing data with {len(wing_data)} images")
+    except FileNotFoundError:
+        print("Error: wing_intensity_analysis.csv not found!")
+        print("Please run the wing intensity analysis script first.")
         return
 
-    print(f"Loaded wing intensity data for {len(wing_intensity_lookup)} images")
+    print("Analyzing dark pixels in wingtip regions...")
 
-    # Process all images
-    results = []
-    overlay_count_per_species = 5  # Create overlays for first 5 images of each species
+    # Process each image to find dark pixels
+    all_results = []
 
-    for species_name, paths in SPECIES.items():
-        print(f"\nAnalyzing {species_name} wingtip darkness...")
+    for _, row in wing_data.iterrows():
+        species_name = row['species']
+        image_name = row['image_name']
+        mean_wing_intensity = row['mean_intensity']
 
+        print(f"Processing {image_name}...")
+
+        # Find the image paths
         image_paths = get_image_paths(species_name)
+        img_path = None
+        seg_path = None
 
-        for i, (img_path, seg_path) in enumerate(image_paths[:S]):
-            file_name = os.path.basename(img_path)
-            print(f"  Processing image {i + 1}/{min(S, len(image_paths))}: {file_name}")
+        for img_p, seg_p in image_paths:
+            if os.path.basename(img_p) == image_name:
+                img_path = img_p
+                seg_path = seg_p
+                break
 
-            # Get the corresponding wing intensity
-            if file_name not in wing_intensity_lookup:
-                print(f"  Warning: No wing intensity data found for {file_name}")
-                continue
+        if img_path is None:
+            print(f"Warning: Could not find image path for {image_name}")
+            continue
 
-            mean_wing_intensity = wing_intensity_lookup[file_name]
+        # Analyze dark pixels
+        result, mask = analyze_wingtip_dark_pixels(
+            img_path, seg_path, species_name, image_name, mean_wing_intensity
+        )
 
-            # Analyze darkness ratio with overlay creation for first few images
-            create_overlay = i < overlay_count_per_species
-            darkness_stats = analyze_wingtip_darkness_ratio(
-                img_path, seg_path, species_name, file_name, mean_wing_intensity,
-                create_overlay=create_overlay
-            )
+        if result is not None:
+            all_results.append(result)
 
-            if darkness_stats:
-                results.append(darkness_stats)
+    if not all_results:
+        print("No results generated. Check if wingtip regions were detected.")
+        return
+
+    # Convert to DataFrame
+    dark_pixel_df = pd.DataFrame(all_results)
 
     # Save results
-    if results:
-        df = pd.DataFrame(results)
+    csv_path = os.path.join(output_dir, "wingtip_dark_pixel_analysis.csv")
+    dark_pixel_df.to_csv(csv_path, index=False)
+    print(f"\nResults saved to: {csv_path}")
 
-        # Create results directory
-        results_dir = "Wingtip_Darkness_Analysis"
-        os.makedirs(results_dir, exist_ok=True)
+    # Calculate and save species averages
+    species_averages = dark_pixel_df.groupby('species').agg({
+        'darker_pixel_percentage': ['mean', 'std', 'median', 'min', 'max'],
+        'mean_wing_intensity': ['mean', 'std'],
+        'mean_wingtip_intensity': ['mean', 'std'],
+        'total_wingtip_pixels': ['mean', 'std'],
+        'darker_pixel_count': ['mean', 'std']
+    }).round(2)
 
-        # Save detailed results
-        csv_path = os.path.join(results_dir, "wingtip_darkness_analysis.csv")
-        df.to_csv(csv_path, index=False)
-        print(f"\nDetailed results saved to: {csv_path}")
+    avg_csv_path = os.path.join(output_dir, "wingtip_dark_pixel_averages.csv")
+    species_averages.to_csv(avg_csv_path)
+    print(f"Species averages saved to: {avg_csv_path}")
 
-        # Calculate and save species averages
-        species_avg = df.groupby('species').agg({
-            'darkness_percentage': ['mean', 'std', 'min', 'max'],
-            'wing_wingtip_diff': ['mean', 'std'],
-            'avg_darkness_difference': ['mean', 'std'],
-            'total_wingtip_pixels': 'mean'
-        }).round(2)
+    # Create visualizations
+    print("\nCreating analysis plots...")
+    create_dark_pixel_analysis_plots(dark_pixel_df)
 
-        # Flatten column names
-        species_avg.columns = ['_'.join(col).strip() for col in species_avg.columns.values]
-        species_avg = species_avg.reset_index()
+    print("\nCreating sample overlay images...")
+    create_sample_overlay_images(wing_data, dark_pixel_df)
 
-        avg_csv_path = os.path.join(results_dir, "species_darkness_averages.csv")
-        species_avg.to_csv(avg_csv_path, index=False)
-        print(f"Species averages saved to: {avg_csv_path}")
+    # Print summary statistics
+    print("\n" + "=" * 60)
+    print("WINGTIP DARK PIXEL ANALYSIS SUMMARY")
+    print("=" * 60)
 
-        # Print summary statistics
-        print("\n" + "=" * 50)
-        print("WINGTIP DARKNESS ANALYSIS SUMMARY")
-        print("=" * 50)
+    for species in dark_pixel_df['species'].unique():
+        species_data = dark_pixel_df[dark_pixel_df['species'] == species]
+        display_name = species.replace('_', ' ').replace('Winged', '-winged').replace('Backed', '-backed')
 
-        for species in df['species'].unique():
-            species_data = df[df['species'] == species]
-            print(f"\n{species.upper()}:")
-            print(
-                f"  Average darkness percentage: {species_data['darkness_percentage'].mean():.1f}% (±{species_data['darkness_percentage'].std():.1f}%)")
-            print(
-                f"  Range: {species_data['darkness_percentage'].min():.1f}% - {species_data['darkness_percentage'].max():.1f}%")
-            print(f"  Images analyzed: {len(species_data)}")
-            print(f"  Average wing-wingtip difference: {species_data['wing_wingtip_diff'].mean():.1f} intensity units")
+        print(f"\n{display_name}:")
+        print(f"  Images analyzed:           {len(species_data)}")
+        print(
+            f"  Dark pixel percentage:     {species_data['darker_pixel_percentage'].mean():.1f}% ± {species_data['darker_pixel_percentage'].std():.1f}%")
+        print(
+            f"  Range:                     {species_data['darker_pixel_percentage'].min():.1f}% - {species_data['darker_pixel_percentage'].max():.1f}%")
+        print(f"  Median:                    {species_data['darker_pixel_percentage'].median():.1f}%")
 
-        # Create visualization plots
-        print("\nCreating visualization plots...")
-        create_darkness_plots(df)
-        print("Plots saved to Darkness_Analysis_Plots directory")
-
-        # Create combined overlay comparisons
-        print("\nCreating species comparison overlays...")
-        create_combined_overlay_comparison(df)
-        print("Overlay comparisons saved to Darkness_Overlay_Visualizations directory")
-
-    else:
-        print("No results generated. Check if images and wing intensity data are available.")
+    print("\n" + "=" * 60)
+    print("Analysis complete! All results and visualizations saved to:", output_dir)
+    print("=" * 60)
 
 
 if __name__ == "__main__":
