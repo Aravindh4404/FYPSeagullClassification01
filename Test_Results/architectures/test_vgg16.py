@@ -69,6 +69,23 @@ class GradCAM:
 # ------------------------------------
 # Utility Functions
 # ------------------------------------
+def sanitize_filename(filename):
+    """Clean filename by removing/replacing problematic characters"""
+    import unicodedata
+    import re
+
+    # Normalize unicode characters
+    filename = unicodedata.normalize('NFKD', filename)
+
+    # Remove non-printable characters and replace problematic ones
+    filename = re.sub(r'[\u202f\u00a0\u2009\u200b\u2060\ufeff]', ' ', filename)  # Various spaces
+    filename = re.sub(r'[^\w\s\-_\.]', '_', filename)  # Replace special chars with underscore
+    filename = re.sub(r'\s+', '_', filename)  # Replace multiple spaces with single underscore
+    filename = filename.strip('_')  # Remove leading/trailing underscores
+
+    return filename
+
+
 def preprocess_image(image_path, transform):
     image = Image.open(image_path).convert('RGB')
     input_tensor = transform(image).unsqueeze(0)
@@ -76,12 +93,31 @@ def preprocess_image(image_path, transform):
 
 
 def overlay_heatmap(image_path, heatmap, output_path):
-    image = cv2.imread(image_path)
-    heatmap = cv2.resize(heatmap, (image.shape[1], image.shape[0]))
-    heatmap = np.uint8(255 * heatmap)
-    heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
-    superimposed_img = cv2.addWeighted(image, 0.6, heatmap, 0.4, 0)
-    cv2.imwrite(output_path, superimposed_img)
+    # Use PIL to read image first, then convert to OpenCV format
+    try:
+        # Read image using PIL first
+        pil_image = Image.open(image_path).convert('RGB')
+        # Convert PIL to numpy array and then to OpenCV format (BGR)
+        image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+
+        # Verify image was loaded successfully
+        if image is None:
+            print(f"Warning: Could not load image {image_path}")
+            return False
+
+        heatmap = cv2.resize(heatmap, (image.shape[1], image.shape[0]))
+        heatmap = np.uint8(255 * heatmap)
+        heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+        superimposed_img = cv2.addWeighted(image, 0.6, heatmap, 0.4, 0)
+
+        # Ensure output directory exists
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        cv2.imwrite(output_path, superimposed_img)
+        return True
+
+    except Exception as e:
+        print(f"Error processing image {image_path}: {str(e)}")
+        return False
 
 
 def save_metrics(output_dir, all_labels, all_preds, class_names):
@@ -110,13 +146,21 @@ def save_metrics(output_dir, all_labels, all_preds, class_names):
 
     return metrics_file_path
 
+
 def save_gradcam_all_images(output_dir, image_path, heatmap, file_name, true_class, predicted_class, confidence):
     gradcam_all_dir = os.path.join(output_dir, "gradcam_all")
     os.makedirs(gradcam_all_dir, exist_ok=True)
-    output_path = os.path.join(gradcam_all_dir, file_name)
-    overlay_heatmap(image_path, heatmap, output_path)
-    # Do NOT add any text overlays here
-    return output_path
+
+    # Sanitize the filename
+    clean_filename = sanitize_filename(file_name)
+    output_path = os.path.join(gradcam_all_dir, clean_filename)
+
+    success = overlay_heatmap(image_path, heatmap, output_path)
+    if success:
+        return output_path
+    else:
+        print(f"Failed to save Grad-CAM for {file_name}")
+        return None
 
 
 def save_misclassified_list(output_dir, misclassified_images):
@@ -129,8 +173,34 @@ def save_misclassified_list(output_dir, misclassified_images):
             true_class = img_info["true_class"]
             predicted_class = img_info["predicted_class"]
             confidence = img_info["confidence"]
-            f.write(f"Path: {img_path}, True: {true_class}, Predicted: {predicted_class}, Confidence: {confidence:.4f}\n")
+            f.write(
+                f"Path: {img_path}, True: {true_class}, Predicted: {predicted_class}, Confidence: {confidence:.4f}\n")
     return list_file_path
+
+
+def safe_cv2_operations(image_path, output_path, operations_func):
+    """Safely perform OpenCV operations on an image with proper error handling"""
+    try:
+        # Read image using PIL first
+        pil_image = Image.open(image_path).convert('RGB')
+        # Convert PIL to numpy array and then to OpenCV format (BGR)
+        img = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+
+        if img is None:
+            print(f"Warning: Could not load image {image_path}")
+            return False
+
+        # Perform the operations
+        img = operations_func(img)
+
+        # Ensure output directory exists
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        cv2.imwrite(output_path, img)
+        return True
+
+    except Exception as e:
+        print(f"Error processing image {image_path}: {str(e)}")
+        return False
 
 
 # ------------------------------------
@@ -163,6 +233,7 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
     all_preds = []
     all_labels = []
     misclassified_images = []  # Track misclassified images
+    skipped_images = []  # Track images that couldn't be processed
 
     # Create necessary directories
     os.makedirs(os.path.join(output_dir, "correct"), exist_ok=True)
@@ -170,97 +241,131 @@ def generate_gradcam_and_confusion_matrix(model_path, data_dir, output_dir):
 
     # Process images
     for i, (inputs, labels) in enumerate(dataloader):
-        inputs = inputs.to(device)
-        outputs = model(inputs)
-        probabilities = F.softmax(outputs, dim=1)
-        confidence, preds = torch.max(probabilities, 1)
+        try:
+            inputs = inputs.to(device)
+            outputs = model(inputs)
+            probabilities = F.softmax(outputs, dim=1)
+            confidence, preds = torch.max(probabilities, 1)
 
-        all_preds.extend(preds.cpu().numpy())
-        all_labels.extend(labels.numpy())
+            all_preds.extend(preds.cpu().numpy())
+            all_labels.extend(labels.numpy())
 
-        # Generate Grad-CAM
-        heatmap = grad_cam.generate_cam(inputs)
+            # Generate Grad-CAM
+            heatmap = grad_cam.generate_cam(inputs)
 
-        image_path = dataset.imgs[i][0]
-        file_name = os.path.basename(image_path)
-        true_class = class_names[labels.item()]
-        predicted_class = class_names[preds.item()]
-        is_correct = preds.item() == labels.item()
-        confidence_value = confidence.item()
+            image_path = dataset.imgs[i][0]
+            file_name = os.path.basename(image_path)
+            clean_file_name = sanitize_filename(file_name)  # Create clean version
+            true_class = class_names[labels.item()]
+            predicted_class = class_names[preds.item()]
+            is_correct = preds.item() == labels.item()
+            confidence_value = confidence.item()
 
-        # Save all Grad-CAM images regardless of correctness
-        save_gradcam_all_images(
-            output_dir, image_path, heatmap, file_name, 
-            true_class, predicted_class, confidence_value
-        )
+            # Check if the image file exists and is readable
+            if not os.path.exists(image_path):
+                print(f"Warning: Image file not found: {image_path}")
+                skipped_images.append(image_path)
+                continue
 
-        if is_correct:
-            # Save correctly classified
-            class_dir = os.path.join(output_dir, "correct", true_class)
-            os.makedirs(class_dir, exist_ok=True)
-            output_path = os.path.join(class_dir, file_name)
+            # Save all Grad-CAM images regardless of correctness
+            gradcam_output = save_gradcam_all_images(
+                output_dir, image_path, heatmap, file_name,
+                true_class, predicted_class, confidence_value
+            )
 
-            overlay_heatmap(image_path, heatmap, output_path)
+            if gradcam_output is None:
+                skipped_images.append(image_path)
+                continue
 
-            # Add confidence score
-            img = cv2.imread(output_path)
-            confidence_text = f"Confidence: {confidence_value:.2f}"
-            cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            cv2.imwrite(output_path, img)
-        else:
-            # Track misclassified image info
-            misclassified_images.append({
-                "path": image_path,
-                "true_class": true_class,
-                "predicted_class": predicted_class,
-                "confidence": confidence_value
-            })
-            
-            # Save misclassified
-            misclassified_dir = os.path.join(output_dir, "misclassified", true_class)
-            os.makedirs(misclassified_dir, exist_ok=True)
+            if is_correct:
+                # Save correctly classified
+                class_dir = os.path.join(output_dir, "correct", true_class)
+                os.makedirs(class_dir, exist_ok=True)
+                output_path = os.path.join(class_dir, clean_file_name)  # Use clean filename
 
-            # Save Grad-CAM visualization
-            output_path = os.path.join(misclassified_dir, file_name)
-            overlay_heatmap(image_path, heatmap, output_path)
+                # Use safe OpenCV operations
+                def add_confidence_text(img):
+                    confidence_text = f"Confidence: {confidence_value:.2f}"
+                    cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                    return img
 
-            # Add prediction info
-            img = cv2.imread(output_path)
-            confidence_text = f"Confidence: {confidence_value:.2f}"
-            predicted_text = f"Predicted: {predicted_class}"
-            cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            cv2.putText(img, predicted_text, (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            cv2.imwrite(output_path, img)
+                if overlay_heatmap(image_path, heatmap, output_path):
+                    safe_cv2_operations(output_path, output_path, add_confidence_text)
+            else:
+                # Track misclassified image info
+                misclassified_images.append({
+                    "path": image_path,
+                    "true_class": true_class,
+                    "predicted_class": predicted_class,
+                    "confidence": confidence_value
+                })
 
-            # Save original copy
-            original_copy_path = os.path.join(misclassified_dir, "original_" + file_name)
-            shutil.copy2(image_path, original_copy_path)
+                # Save misclassified
+                misclassified_dir = os.path.join(output_dir, "misclassified", true_class)
+                os.makedirs(misclassified_dir, exist_ok=True)
+
+                # Save Grad-CAM visualization
+                output_path = os.path.join(misclassified_dir, clean_file_name)  # Use clean filename
+                if overlay_heatmap(image_path, heatmap, output_path):
+                    # Add prediction info using safe operations
+                    def add_prediction_text(img):
+                        confidence_text = f"Confidence: {confidence_value:.2f}"
+                        predicted_text = f"Predicted: {predicted_class}"
+                        cv2.putText(img, confidence_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                        cv2.putText(img, predicted_text, (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                        return img
+
+                    safe_cv2_operations(output_path, output_path, add_prediction_text)
+
+                    # Save original copy
+                    original_copy_path = os.path.join(misclassified_dir,
+                                                      "original_" + clean_file_name)  # Use clean filename
+                    try:
+                        shutil.copy2(image_path, original_copy_path)
+                    except Exception as e:
+                        print(f"Warning: Could not copy original image {image_path}: {str(e)}")
+                else:
+                    print(f"Failed to create Grad-CAM overlay for {image_path}")
+
+        except Exception as e:
+            print(f"Error processing image {i}: {str(e)}")
+            skipped_images.append(dataset.imgs[i][0] if i < len(dataset.imgs) else f"Image {i}")
+            continue
+
+    # Print summary of skipped images
+    if skipped_images:
+        print(f"\nWarning: {len(skipped_images)} images were skipped due to errors:")
+        for img_path in skipped_images:
+            print(f"  - {img_path}")
 
     # Generate confusion matrix
-    cm = confusion_matrix(all_labels, all_preds)
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
-                xticklabels=class_names,
-                yticklabels=class_names)
-    plt.title("Confusion Matrix - VGGModified")
-    plt.xlabel("Predicted")
-    plt.ylabel("True")
+    if all_labels and all_preds:
+        cm = confusion_matrix(all_labels, all_preds)
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                    xticklabels=class_names,
+                    yticklabels=class_names)
+        plt.title("Confusion Matrix - VGGModified")
+        plt.xlabel("Predicted")
+        plt.ylabel("True")
 
-    cm_output_path = os.path.join(output_dir, "metrics", "vggmodified_confusion_matrix.png")
-    os.makedirs(os.path.dirname(cm_output_path), exist_ok=True)
-    plt.savefig(cm_output_path, bbox_inches='tight', dpi=300)
-    plt.close()
+        cm_output_path = os.path.join(output_dir, "metrics", "vggmodified_confusion_matrix.png")
+        os.makedirs(os.path.dirname(cm_output_path), exist_ok=True)
+        plt.savefig(cm_output_path, bbox_inches='tight', dpi=300)
+        plt.close()
 
-    # Save metrics to text file
-    metrics_file_path = save_metrics(output_dir, all_labels, all_preds, class_names)
-    
-    # Save list of misclassified images
-    misclassified_list_path = save_misclassified_list(output_dir, misclassified_images)
+        # Save metrics to text file
+        metrics_file_path = save_metrics(output_dir, all_labels, all_preds, class_names)
 
-    print(f"Confusion matrix saved to: {cm_output_path}")
-    print(f"Metrics saved to: {metrics_file_path}")
-    print(f"Misclassified images list saved to: {misclassified_list_path}")
-    print(f"Results saved to: {output_dir}")
+        # Save list of misclassified images
+        misclassified_list_path = save_misclassified_list(output_dir, misclassified_images)
+
+        print(f"Confusion matrix saved to: {cm_output_path}")
+        print(f"Metrics saved to: {metrics_file_path}")
+        print(f"Misclassified images list saved to: {misclassified_list_path}")
+        print(f"Results saved to: {output_dir}")
+    else:
+        print("No images were successfully processed!")
 
 
 # ------------------------------------
