@@ -14,9 +14,16 @@ root_dir = current_dir.parent.parent
 sys.path.append(str(root_dir))
 from Features_Analysis.config import *
 
-# Create output directory
-output_dir = "Wingtip_Dark_Pixel_Visualizations"
-os.makedirs(output_dir, exist_ok=True)
+# Create main output directory
+main_output_dir = "Wingtip_Dark_Pixel_Visualizations"
+os.makedirs(main_output_dir, exist_ok=True)
+
+
+def create_species_output_dir(species_name, main_dir):
+    """Create and return species-specific output directory"""
+    species_dir = os.path.join(main_dir, species_name)
+    os.makedirs(species_dir, exist_ok=True)
+    return species_dir
 
 
 def remove_white_spots_kmeans(wingtip_pixels):
@@ -172,7 +179,7 @@ def calculate_dark_pixels_four_methods(image_path, seg_path, species, file_name)
     return results
 
 
-def create_overlay_visualization(results):
+def create_overlay_visualization(results, output_dir):
     """Create overlay visualization for all four methods"""
 
     fig, axes = plt.subplots(2, 3, figsize=(20, 12))
@@ -257,7 +264,7 @@ def create_overlay_visualization(results):
 
     plt.tight_layout()
 
-    # Save the visualization
+    # Save the visualization in species-specific folder
     filename = f"{results['species']}_{results['image_name'].split('.')[0]}_four_methods_comparison.png"
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, dpi=300, bbox_inches='tight')
@@ -266,7 +273,7 @@ def create_overlay_visualization(results):
     return filepath
 
 
-def create_combined_overlay_visualization(results):
+def create_combined_overlay_visualization(results, output_dir):
     """Create a single overlay showing all four methods together"""
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 10))
@@ -350,7 +357,7 @@ def create_combined_overlay_visualization(results):
 
     plt.tight_layout()
 
-    # Save the combined visualization
+    # Save the combined visualization in species-specific folder
     filename = f"{results['species']}_{results['image_name'].split('.')[0]}_combined_four_methods.png"
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, dpi=300, bbox_inches='tight')
@@ -363,17 +370,21 @@ def main():
     """Main function to process sample images and create visualizations"""
 
     print("Creating dark pixel detection method visualizations with 4 methods...")
-    print(f"Output directory: {output_dir}")
+    print(f"Main output directory: {main_output_dir}")
 
     all_results = []
-    sample_count = 5  # Number of sample images per species
+    sample_count = 20  # Number of sample images per species
 
     for species_name, paths in SPECIES.items():
         print(f"\nProcessing {species_name} images...")
 
+        # Create species-specific output directory
+        species_output_dir = create_species_output_dir(species_name, main_output_dir)
+        print(f"Species output directory: {species_output_dir}")
+
         image_paths = get_image_paths(species_name)
 
-        # Process first 5 images for each species
+        # Process first 20 images for each species
         for i, (img_path, seg_path) in enumerate(image_paths[:sample_count]):
             file_name = os.path.basename(img_path)
             print(f"  Processing image {i + 1}/{sample_count}: {file_name}")
@@ -385,13 +396,13 @@ def main():
             if results:
                 all_results.append(results)
 
-                # Create individual method comparison
+                # Create individual method comparison in species folder
                 print(f"    Creating four-method comparison visualization...")
-                create_overlay_visualization(results)
+                create_overlay_visualization(results, species_output_dir)
 
-                # Create combined overlay
+                # Create combined overlay in species folder
                 print(f"    Creating combined overlay visualization...")
-                create_combined_overlay_visualization(results)
+                create_combined_overlay_visualization(results, species_output_dir)
             else:
                 print(f"    Skipped {file_name} due to processing error")
 
@@ -404,6 +415,8 @@ def main():
         for species in set(r['species'] for r in all_results):
             species_results = [r for r in all_results if r['species'] == species]
             print(f"\n{species.replace('_', ' ')}:")
+            print(f"  Images processed: {len(species_results)}")
+            print(f"  Images saved to: {os.path.join(main_output_dir, species)}/")
 
             method1_avg = np.mean([r['method1_percentage'] for r in species_results])
             method2_avg = np.mean([r['method2_percentage'] for r in species_results])
@@ -425,7 +438,13 @@ def main():
             print(
                 f"  Average white pixels removed: {np.mean([r['white_removal_percentage'] for r in species_results]):.1f}%")
 
-    print(f"\n✅ Analysis complete! All visualizations saved to {output_dir}/")
+    print(f"\n✅ Analysis complete! All visualizations saved to species-specific folders in {main_output_dir}/")
+    print("\nFolder structure:")
+    for species in set(r['species'] for r in all_results):
+        species_count = len([r for r in all_results if r['species'] == species])
+        print(
+            f"  📁 {main_output_dir}/{species}/ - {species_count * 2} images ({species_count} comparison + {species_count} combined)")
+
     print("\nReview the overlay images to compare all four methods:")
     print("🔴 Method 1: Conservative - pixels darker than wing mean")
     print("🟢 Method 2: Moderate - pixels darker than wingtip mean")
