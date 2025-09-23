@@ -53,9 +53,8 @@ def remove_white_spots_kmeans(wingtip_pixels):
 
 def calculate_dark_pixels_four_methods(image_path, seg_path, species, file_name):
     """
-    Calculate dark pixels using four different methods and return overlay masks
+    Headless: compute four dark-pixel methods and return numeric results only.
     """
-    # Load images
     original_img = cv2.imread(image_path)
     segmentation_img = cv2.imread(seg_path)
 
@@ -63,7 +62,6 @@ def calculate_dark_pixels_four_methods(image_path, seg_path, species, file_name)
         print(f"Error loading images: {image_path} or {seg_path}")
         return None
 
-    # Convert to grayscale and normalize
     gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
     gray_img = cv2.normalize(gray_img, None, 0, 255, cv2.NORM_MINMAX)
 
@@ -71,7 +69,6 @@ def calculate_dark_pixels_four_methods(image_path, seg_path, species, file_name)
     wing_region, wing_mask = extract_region(gray_img, segmentation_img, "wing")
     wingtip_region, wingtip_mask = extract_region(gray_img, segmentation_img, "wingtip")
 
-    # Get wing and wingtip pixels
     wing_pixels = wing_region[wing_mask > 0]
     wingtip_pixels = wingtip_region[wingtip_mask > 0]
 
@@ -79,105 +76,76 @@ def calculate_dark_pixels_four_methods(image_path, seg_path, species, file_name)
         print(f"No wing or wingtip region found in {file_name}")
         return None
 
-    # Remove white spots from wingtip pixels
+    # Remove white spots from wingtip pixels (k=2: dark vs white)
     filtered_wingtip_pixels, white_removal_mask, cluster_info = remove_white_spots_kmeans(wingtip_pixels)
-
     if len(filtered_wingtip_pixels) == 0:
         print(f"No filtered wingtip pixels found in {file_name}")
         return None
 
-    # Calculate intensities
-    mean_wing_intensity = np.mean(wing_pixels)
-    mean_wingtip_intensity = np.mean(filtered_wingtip_pixels)
-    min_wing_intensity = np.min(wing_pixels)  # NEW: Darkest pixel in wing
+    # Intensities
+    mean_wing_intensity = float(np.mean(wing_pixels))
+    mean_wingtip_intensity = float(np.mean(filtered_wingtip_pixels))
+    min_wing_intensity = int(np.min(wing_pixels))
 
-    # Create full-size masks for overlays
-    img_height, img_width = gray_img.shape
+    total_filtered_pixels = int(len(filtered_wingtip_pixels))
 
-    # Get coordinates of wingtip pixels
-    wingtip_coords = np.where(wingtip_mask > 0)
-
-    # Filter coordinates to only include non-white pixels
-    filtered_coords_mask = white_removal_mask
-    filtered_wingtip_coords = (wingtip_coords[0][filtered_coords_mask],
-                               wingtip_coords[1][filtered_coords_mask])
-
-    # Method 1: Pixels darker than mean wing intensity
-    method1_mask = np.zeros((img_height, img_width), dtype=bool)
-    dark_pixels_method1 = filtered_wingtip_pixels < mean_wing_intensity
-    if np.any(dark_pixels_method1):
-        method1_y = filtered_wingtip_coords[0][dark_pixels_method1]
-        method1_x = filtered_wingtip_coords[1][dark_pixels_method1]
-        method1_mask[method1_y, method1_x] = True
-
-    # Method 2: Pixels darker than mean wingtip intensity
-    method2_mask = np.zeros((img_height, img_width), dtype=bool)
-    dark_pixels_method2 = filtered_wingtip_pixels < mean_wingtip_intensity
-    if np.any(dark_pixels_method2):
-        method2_y = filtered_wingtip_coords[0][dark_pixels_method2]
-        method2_x = filtered_wingtip_coords[1][dark_pixels_method2]
-        method2_mask[method2_y, method2_x] = True
-
-    # Method 3: K-means clustering on filtered pixels
-    method3_mask = np.zeros((img_height, img_width), dtype=bool)
+    # Method 1: < mean wing
+    method1_count = int(np.sum(filtered_wingtip_pixels < mean_wing_intensity))
+    # Method 2: < mean wingtip
+    method2_count = int(np.sum(filtered_wingtip_pixels < mean_wingtip_intensity))
+    # Method 3: k-means on filtered wingtip pixels (dark cluster size)
     if len(filtered_wingtip_pixels) > 1:
-        pixels_reshaped = filtered_wingtip_pixels.reshape(-1, 1)
-        kmeans = KMeans(n_clusters=2, random_state=42, n_init=10)
-        cluster_labels = kmeans.fit_predict(pixels_reshaped)
+        labels3 = KMeans(n_clusters=2, random_state=42, n_init=10).fit_predict(
+            filtered_wingtip_pixels.reshape(-1, 1)
+        )
+        centers3 = KMeans(n_clusters=2, random_state=42, n_init=10).fit(
+            filtered_wingtip_pixels.reshape(-1, 1)
+        ).cluster_centers_.flatten()
+        dark3 = np.argmin(centers3)
+        method3_count = int(np.sum(labels3 == dark3))
+        dark3_center = float(centers3[dark3])
+        white3_center = float(centers3[np.argmax(centers3)])
+    else:
+        method3_count = 0
+        dark3_center = float('nan')
+        white3_center = float('nan')
 
-        cluster_centers = kmeans.cluster_centers_.flatten()
-        dark_cluster_idx = np.argmin(cluster_centers)
-        dark_pixels_method3 = cluster_labels == dark_cluster_idx
+    # Method 4: < darkest wing pixel
+    method4_count = int(np.sum(filtered_wingtip_pixels < min_wing_intensity))
 
-        if np.any(dark_pixels_method3):
-            method3_y = filtered_wingtip_coords[0][dark_pixels_method3]
-            method3_x = filtered_wingtip_coords[1][dark_pixels_method3]
-            method3_mask[method3_y, method3_x] = True
+    # Percentages
+    def pct(x): return (x / total_filtered_pixels) * 100 if total_filtered_pixels > 0 else 0.0
+    method1_percentage = float(pct(method1_count))
+    method2_percentage = float(pct(method2_count))
+    method3_percentage = float(pct(method3_count))
+    method4_percentage = float(pct(method4_count))
 
-    # Method 4: Pixels darker than darkest wing pixel (NEW METHOD)
-    method4_mask = np.zeros((img_height, img_width), dtype=bool)
-    dark_pixels_method4 = filtered_wingtip_pixels < min_wing_intensity
-    if np.any(dark_pixels_method4):
-        method4_y = filtered_wingtip_coords[0][dark_pixels_method4]
-        method4_x = filtered_wingtip_coords[1][dark_pixels_method4]
-        method4_mask[method4_y, method4_x] = True
-
-    # Calculate statistics
-    total_filtered_pixels = len(filtered_wingtip_pixels)
-    method1_count = np.sum(dark_pixels_method1) if 'dark_pixels_method1' in locals() else 0
-    method2_count = np.sum(dark_pixels_method2) if 'dark_pixels_method2' in locals() else 0
-    method3_count = np.sum(dark_pixels_method3) if 'dark_pixels_method3' in locals() else 0
-    method4_count = np.sum(dark_pixels_method4) if 'dark_pixels_method4' in locals() else 0
-
-    results = {
-        'image_name': file_name,
-        'species': species,
-        'original_image': original_img,
-        'gray_image': gray_img,
-        'wingtip_mask': wingtip_mask,
-        'method1_mask': method1_mask,
-        'method2_mask': method2_mask,
-        'method3_mask': method3_mask,
-        'method4_mask': method4_mask,  # NEW
-        'mean_wing_intensity': mean_wing_intensity,
-        'mean_wingtip_intensity': mean_wingtip_intensity,
-        'min_wing_intensity': min_wing_intensity,  # NEW
-        'total_filtered_pixels': total_filtered_pixels,
-        'method1_count': method1_count,
-        'method2_count': method2_count,
-        'method3_count': method3_count,
-        'method4_count': method4_count,  # NEW
-        'method1_percentage': (method1_count / total_filtered_pixels) * 100 if total_filtered_pixels > 0 else 0,
-        'method2_percentage': (method2_count / total_filtered_pixels) * 100 if total_filtered_pixels > 0 else 0,
-        'method3_percentage': (method3_count / total_filtered_pixels) * 100 if total_filtered_pixels > 0 else 0,
-        'method4_percentage': (method4_count / total_filtered_pixels) * 100 if total_filtered_pixels > 0 else 0,  # NEW
-        'white_pixels_removed': cluster_info['white_pixel_count'],
-        'white_removal_percentage': (cluster_info['white_pixel_count'] / len(wingtip_pixels)) * 100 if len(
-            wingtip_pixels) > 0 else 0
+    return {
+        "species": species,
+        "image_name": file_name,
+        "total_filtered_pixels": total_filtered_pixels,
+        "method1_count": method1_count,
+        "method2_count": method2_count,
+        "method3_count": method3_count,
+        "method4_count": method4_count,
+        "method1_percentage": method1_percentage,
+        "method2_percentage": method2_percentage,
+        "method3_percentage": method3_percentage,
+        "method4_percentage": method4_percentage,
+        "mean_wing_intensity": mean_wing_intensity,
+        "mean_wingtip_intensity": mean_wingtip_intensity,
+        "min_wing_intensity": min_wing_intensity,
+        "white_pixels_removed": int(cluster_info.get("white_pixel_count", 0)),
+        "white_removal_percentage": float(
+            (cluster_info.get("white_pixel_count", 0) / len(wingtip_pixels)) * 100
+            if len(wingtip_pixels) > 0 else 0.0
+        ),
+        # Optional diagnostics
+        "dark_cluster_center_white_removal": float(cluster_info.get("dark_cluster_center", np.nan)),
+        "white_cluster_center_white_removal": float(cluster_info.get("white_cluster_center", np.nan)),
+        "dark_cluster_center_method3": dark3_center,
+        "white_cluster_center_method3": white3_center,
     }
-
-    return results
-
 
 def create_overlay_visualization(results, output_dir):
     """Create overlay visualization for all four methods"""
@@ -365,26 +333,22 @@ def create_combined_overlay_visualization(results, output_dir):
 
     return filepath
 
-
 def main():
-    """Main function to process sample images and create visualizations"""
+    """Process images and save per-image results to a single CSV (no visualizations)."""
 
-    print("Creating dark pixel detection method visualizations with 4 methods...")
+    print("Computing dark pixel metrics (4 methods) without visualizations...")
     print(f"Main output directory: {main_output_dir}")
 
-    all_results = []
-    sample_count = 20  # Number of sample images per species
+    os.makedirs(main_output_dir, exist_ok=True)
+
+    csv_rows = []
+    sample_count = 100  # Number of sample images per species
 
     for species_name, paths in SPECIES.items():
         print(f"\nProcessing {species_name} images...")
 
-        # Create species-specific output directory
-        species_output_dir = create_species_output_dir(species_name, main_output_dir)
-        print(f"Species output directory: {species_output_dir}")
-
         image_paths = get_image_paths(species_name)
 
-        # Process first 20 images for each species
         for i, (img_path, seg_path) in enumerate(image_paths[:sample_count]):
             file_name = os.path.basename(img_path)
             print(f"  Processing image {i + 1}/{sample_count}: {file_name}")
@@ -394,63 +358,20 @@ def main():
             )
 
             if results:
-                all_results.append(results)
-
-                # Create individual method comparison in species folder
-                print(f"    Creating four-method comparison visualization...")
-                create_overlay_visualization(results, species_output_dir)
-
-                # Create combined overlay in species folder
-                print(f"    Creating combined overlay visualization...")
-                create_combined_overlay_visualization(results, species_output_dir)
+                csv_rows.append(results)
             else:
                 print(f"    Skipped {file_name} due to processing error")
 
-    # Create summary statistics
-    if all_results:
-        print("\n" + "=" * 80)
-        print("SUMMARY STATISTICS FOR DARK PIXEL DETECTION METHODS (4 METHODS)")
-        print("=" * 80)
+    # Save consolidated CSV
+    if csv_rows:
+        df = pd.DataFrame(csv_rows)
+        all_csv_path = os.path.join(main_output_dir, "dark_pixel_results_all_images.csv")
+        df.to_csv(all_csv_path, index=False)
+        print(f"\n✅ Per-image results saved: {all_csv_path}")
+    else:
+        print("\n⚠️ No results to save (no valid images processed).")
 
-        for species in set(r['species'] for r in all_results):
-            species_results = [r for r in all_results if r['species'] == species]
-            print(f"\n{species.replace('_', ' ')}:")
-            print(f"  Images processed: {len(species_results)}")
-            print(f"  Images saved to: {os.path.join(main_output_dir, species)}/")
-
-            method1_avg = np.mean([r['method1_percentage'] for r in species_results])
-            method2_avg = np.mean([r['method2_percentage'] for r in species_results])
-            method3_avg = np.mean([r['method3_percentage'] for r in species_results])
-            method4_avg = np.mean([r['method4_percentage'] for r in species_results])
-
-            print(f"  Method 1 (< wing mean): {method1_avg:.1f}% average")
-            print(f"  Method 2 (< wingtip mean): {method2_avg:.1f}% average")
-            print(f"  Method 3 (k-means clustering): {method3_avg:.1f}% average")
-            print(f"  Method 4 (< wing minimum): {method4_avg:.1f}% average")
-
-            wing_intensity_avg = np.mean([r['mean_wing_intensity'] for r in species_results])
-            wingtip_intensity_avg = np.mean([r['mean_wingtip_intensity'] for r in species_results])
-            min_wing_intensity_avg = np.mean([r['min_wing_intensity'] for r in species_results])
-
-            print(f"  Average wing mean intensity: {wing_intensity_avg:.1f}")
-            print(f"  Average wingtip mean intensity: {wingtip_intensity_avg:.1f}")
-            print(f"  Average wing minimum intensity: {min_wing_intensity_avg:.1f}")
-            print(
-                f"  Average white pixels removed: {np.mean([r['white_removal_percentage'] for r in species_results]):.1f}%")
-
-    print(f"\n✅ Analysis complete! All visualizations saved to species-specific folders in {main_output_dir}/")
-    print("\nFolder structure:")
-    for species in set(r['species'] for r in all_results):
-        species_count = len([r for r in all_results if r['species'] == species])
-        print(
-            f"  📁 {main_output_dir}/{species}/ - {species_count * 2} images ({species_count} comparison + {species_count} combined)")
-
-    print("\nReview the overlay images to compare all four methods:")
-    print("🔴 Method 1: Conservative - pixels darker than wing mean")
-    print("🟢 Method 2: Moderate - pixels darker than wingtip mean")
-    print("🔵 Method 3: Data-driven - automatic threshold via k-means clustering")
-    print("🟣 Method 4: Ultra-conservative - pixels darker than darkest wing pixel")
-    print("\nMethod 4 should identify only the most extremely dark pixels in the wingtip region.")
+    print("\n✅ Done. No visualizations were generated.")
 
 
 if __name__ == "__main__":
