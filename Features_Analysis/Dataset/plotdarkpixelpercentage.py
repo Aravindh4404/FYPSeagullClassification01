@@ -48,8 +48,8 @@ def load_and_prepare_data(file_path):
         return None
 
 
-def create_box_violin_plots(df, output_dir="plots"):
-    """Create box plot and violin plot visualization"""
+def create_box_plot(df, output_dir="plots"):
+    """Create box plot visualization"""
 
     # Create output directory
     Path(output_dir).mkdir(exist_ok=True)
@@ -75,12 +75,12 @@ def create_box_violin_plots(df, output_dir="plots"):
 
     print(f"\nAfter cleaning: {len(df_clean)} rows (removed {len(df) - len(df_clean)} rows)")
 
-    # Create figure with subplots
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+    # Create figure with single plot
+    fig, ax = plt.subplots(1, 1, figsize=(12, 8))
 
     # Main title
-    fig.suptitle('Wingtip Dark Pixel Analysis: Method 1 (< Mean Wing Intensity) by Species',
-                 fontsize=14, fontweight='bold', y=0.95)
+    fig.suptitle('Percentge of Dark Pixels in Wingtip',
+                 fontsize=14, fontweight='bold', y=0.98)
 
     # Get colors for species
     n_species = len(df_clean['species_clean'].unique())
@@ -98,43 +98,27 @@ def create_box_violin_plots(df, output_dir="plots"):
     if df_clean['method3_percentage'].min() < 2:
         y_min = -1
 
-    # Plot 1: Box plot
-    sns.boxplot(data=df_clean, x='species_clean', y='method3_percentage', ax=ax1, palette=colors)
-    ax1.set_ylim(y_min, y_max)
-    ax1.set_xlabel('Species', fontsize=12, fontweight='bold')
-    ax1.set_ylabel('Dark Pixel Percentage (%)', fontsize=12, fontweight='bold')
-    ax1.set_title('Box Plot: Distribution Summary\n(Shows median, quartiles, and outliers)',
+    # Box plot
+    sns.boxplot(data=df_clean, x='species_clean', y='method3_percentage', ax=ax, palette=colors)
+    ax.set_ylim(y_min, y_max)
+    ax.set_xlabel('Species', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Dark Pixel Percentage (%)', fontsize=12, fontweight='bold')
+    ax.set_title('Darker pixels separated using K-means from Lighter pixels',
                   fontsize=11, fontweight='bold', pad=20)
-    ax1.tick_params(axis='x', rotation=45)
-    ax1.grid(True, alpha=0.3)
+    ax.tick_params(axis='x', rotation=45)
+    ax.grid(True, alpha=0.3)
 
-    # Plot 2: Violin plot with proper constraints
-    # Use cut=0 to prevent density estimation beyond data range
-    sns.violinplot(data=df_clean, x='species_clean', y='method3_percentage', ax=ax2,
-                   palette=colors, cut=0, inner='box')
-
-    # Force y-axis limits to stay within percentage bounds
-    ax2.set_ylim(0, 100)  # Hard limit for percentage data
-
-    ax2.set_xlabel('Species', fontsize=12, fontweight='bold')
-    ax2.set_ylabel('Dark Pixel Percentage (%)', fontsize=12, fontweight='bold')
-    ax2.set_title('Violin Plot: Full Distribution Shape\n(Shows probability density at each value)',
-                  fontsize=11, fontweight='bold', pad=20)
-    ax2.tick_params(axis='x', rotation=45)
-    ax2.grid(True, alpha=0.3)
-
-    # Add horizontal reference lines for context
-    for ax in [ax1, ax2]:
-        ax.axhline(y=50, color='gray', linestyle='--', alpha=0.3, linewidth=1)
-        ax.text(0.02, 50.5, '50%', transform=ax.get_yaxis_transform(),
-                fontsize=9, alpha=0.7, color='gray')
+    # Add horizontal reference line
+    ax.axhline(y=50, color='gray', linestyle='--', alpha=0.3, linewidth=1)
+    ax.text(0.02, 50.5, '50%', transform=ax.get_yaxis_transform(),
+            fontsize=9, alpha=0.7, color='gray')
 
     plt.tight_layout()
 
     # Save the plot
-    output_path = Path(output_dir) / "wingtip_box_violin_plots_fixed.png"
+    output_path = Path(output_dir) / "wingtip_boxplot.png"
     plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
-    print(f"Fixed plot saved as: {output_path}")
+    print(f"Plot saved as: {output_path}")
 
     plt.show()
 
@@ -147,7 +131,7 @@ def create_box_violin_plots(df, output_dir="plots"):
 
 
 def print_interpretation_guide(df, summary_stats):
-    """Print interpretation guide for the plots"""
+    """Print interpretation guide for the plot"""
 
     print("\n" + "=" * 80)
     print("PLOT INTERPRETATION GUIDE")
@@ -161,20 +145,10 @@ def print_interpretation_guide(df, summary_stats):
     print("• Dots beyond whiskers: Outliers (unusually high or low values)")
     print("• Box width: All boxes same width (doesn't indicate sample size)")
 
-    print("\n🎻 VIOLIN PLOT INTERPRETATION:")
-    print("-" * 50)
-    print("• Width at each height: Shows how many data points exist at that value")
-    print("• Wider sections: More common values (higher density)")
-    print("• Narrow sections: Less common values (lower density)")
-    print("• Shape reveals distribution: symmetric, skewed, bimodal, etc.")
-    print("• Inner box: Shows quartiles and median (like a mini box plot)")
-    print("• FIXED: Now properly constrained to 0-100% range for percentage data")
-
     print("\n📈 WHAT TO LOOK FOR:")
     print("-" * 50)
     print("• Central tendency: Which species have higher/lower median dark pixels?")
     print("• Variability: Which species show more consistent vs. variable results?")
-    print("• Distribution shape: Are values normally distributed or skewed?")
     print("• Outliers: Are there unusual specimens that deviate from the pattern?")
     print("• Sample size effects: Remember that smaller samples may look different")
 
@@ -235,9 +209,9 @@ def main():
 
     print(f"Successfully loaded data with {len(df)} records for {df['species'].nunique()} species")
 
-    # Create box and violin plots
-    print("\nCreating fixed box plot and violin plot...")
-    summary_stats = create_box_violin_plots(df)
+    # Create box plot
+    print("\nCreating box plot...")
+    summary_stats = create_box_plot(df)
 
     # Print interpretation guide
     print_interpretation_guide(df, summary_stats)
