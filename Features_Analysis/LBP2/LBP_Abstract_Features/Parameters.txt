@@ -1,3 +1,0 @@
-RADIUS = 3
-N_POINTS = 8 * RADIUS
-METHOD = 'uniform'  # 'uniform', 'default', etc.

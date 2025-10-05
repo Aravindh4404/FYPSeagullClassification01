@@ -79,7 +79,7 @@ def create_box_plot(df, output_dir="plots"):
     fig, ax = plt.subplots(1, 1, figsize=(12, 8))
 
     # Main title
-    fig.suptitle('Percentge of Dark Pixels in Wingtip',
+    fig.suptitle('Wingtip Dark Pixel Analysis: Method 3 (K-means Clustering) by Species',
                  fontsize=14, fontweight='bold', y=0.98)
 
     # Get colors for species
@@ -103,7 +103,7 @@ def create_box_plot(df, output_dir="plots"):
     ax.set_ylim(y_min, y_max)
     ax.set_xlabel('Species', fontsize=12, fontweight='bold')
     ax.set_ylabel('Dark Pixel Percentage (%)', fontsize=12, fontweight='bold')
-    ax.set_title('Darker pixels separated using K-means from Lighter pixels',
+    ax.set_title('Box Plot: Distribution Summary\n(Shows median, quartiles, and outliers)',
                   fontsize=11, fontweight='bold', pad=20)
     ax.tick_params(axis='x', rotation=45)
     ax.grid(True, alpha=0.3)
@@ -116,7 +116,7 @@ def create_box_plot(df, output_dir="plots"):
     plt.tight_layout()
 
     # Save the plot
-    output_path = Path(output_dir) / "wingtip_boxplot.png"
+    output_path = Path(output_dir) / "wingtip_boxplot_method3_kmeans.png"
     plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
     print(f"Plot saved as: {output_path}")
 
@@ -164,8 +164,8 @@ def print_interpretation_guide(df, summary_stats):
 
     print(f"\n⚠️  INTERPRETATION NOTES:")
     print("-" * 50)
-    print("• Method 1 counts pixels darker than the mean wing intensity")
-    print("• Higher percentages = more dark pixels relative to wing brightness")
+    print("• Method 3 uses k-means clustering to separate dark and light pixels")
+    print("• Higher percentages = more pixels assigned to the dark cluster")
     print("• Species differences may reflect:")
     print("  - Natural wing coloration patterns")
     print("  - Sexual dimorphism (if mixed sexes)")
