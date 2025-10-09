@@ -28,8 +28,8 @@ RANDOM_STATE = 42
 # Function to load and prepare data
 def load_data(file_path):
     df = pd.read_csv(file_path)
-    # You might need to adjust these column names based on your actual CSV file
-    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'pct_dark_lt_40']]
+    # Updated feature columns based on the new CSV
+    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'method3_percentage']]
 
     # Create mapping if it doesn't exist already
     if 'species' in df.columns:
@@ -84,6 +84,148 @@ def visualize_clusters(X_pca, clusters, centroids=None, title="Clustering Result
     if centroids is not None:
         plt.scatter(centroids[:, 0], centroids[:, 1], s=200, marker='X', c='red', label='Centroids')
         plt.legend()
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+    else:
+        plt.show()
+
+
+# Function to visualize PCA with true species labels
+def visualize_pca_by_species(X_pca, true_labels, species_names, explained_variance, save_path=None):
+    plt.figure(figsize=(10, 6))
+
+    # Plot each species with different colors
+    for label_id, species_name in species_names.items():
+        mask = true_labels == label_id
+        plt.scatter(X_pca[mask, 0], X_pca[mask, 1],
+                    label=species_name, alpha=0.7, s=50)
+
+    plt.xlabel(f'PCA Component 1 ({explained_variance[0] * 100:.1f}% variance)')
+    plt.ylabel(f'PCA Component 2 ({explained_variance[1] * 100:.1f}% variance)')
+    plt.title('PCA Visualization by Species')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+    else:
+        plt.show()
+
+
+# Function to create pairwise feature scatter plots
+def visualize_feature_pairs(df, features, true_labels, species_names, save_path=None):
+    feature_cols = features.columns.tolist()
+    n_features = len(feature_cols)
+
+    fig, axes = plt.subplots(n_features, n_features, figsize=(15, 15))
+
+    for i, feat1 in enumerate(feature_cols):
+        for j, feat2 in enumerate(feature_cols):
+            ax = axes[i, j]
+
+            if i == j:
+                # Diagonal: histogram
+                for label_id, species_name in species_names.items():
+                    mask = true_labels == label_id
+                    ax.hist(df.loc[mask, feat1], alpha=0.5, label=species_name, bins=20)
+                ax.set_ylabel('Frequency')
+                if i == 0:
+                    ax.legend()
+            else:
+                # Off-diagonal: scatter plot
+                for label_id, species_name in species_names.items():
+                    mask = true_labels == label_id
+                    ax.scatter(df.loc[mask, feat2], df.loc[mask, feat1],
+                               alpha=0.5, label=species_name, s=20)
+
+            # Labels
+            if i == n_features - 1:
+                ax.set_xlabel(feat2, fontsize=10)
+            if j == 0:
+                ax.set_ylabel(feat1, fontsize=10)
+
+            # Remove tick labels for cleaner look
+            if i < n_features - 1:
+                ax.set_xticklabels([])
+            if j > 0:
+                ax.set_yticklabels([])
+
+    plt.suptitle('Pairwise Feature Distributions by Species', fontsize=14, y=0.995)
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150)
+        plt.close()
+    else:
+        plt.show()
+
+
+# Function to visualize feature distributions
+def visualize_feature_distributions(df, features, true_labels, species_names, save_path=None):
+    feature_cols = features.columns.tolist()
+    n_features = len(feature_cols)
+
+    fig, axes = plt.subplots(1, n_features, figsize=(15, 5))
+
+    for i, feat in enumerate(feature_cols):
+        ax = axes[i]
+
+        for label_id, species_name in species_names.items():
+            mask = true_labels == label_id
+            ax.hist(df.loc[mask, feat], alpha=0.6, label=species_name, bins=20)
+
+        ax.set_xlabel(feat)
+        ax.set_ylabel('Frequency')
+        ax.set_title(f'Distribution of {feat}')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+    else:
+        plt.show()
+
+
+# Function to create box plots for features
+def visualize_feature_boxplots(df, features, true_labels, species_names, save_path=None):
+    feature_cols = features.columns.tolist()
+    n_features = len(feature_cols)
+
+    fig, axes = plt.subplots(1, n_features, figsize=(15, 5))
+
+    # Create dataframe for plotting
+    plot_data = df[feature_cols].copy()
+    plot_data['species'] = [species_names[label] for label in true_labels]
+
+    for i, feat in enumerate(feature_cols):
+        ax = axes[i]
+
+        # Create box plot
+        species_list = [species_names[label] for label in sorted(species_names.keys())]
+        data_to_plot = [plot_data[plot_data['species'] == species][feat] for species in species_list]
+
+        box_plot = ax.boxplot(data_to_plot, labels=species_list, patch_artist=True)
+
+        # Color the boxes
+        colors = ['lightblue', 'lightcoral']
+        for patch, color in zip(box_plot['boxes'], colors):
+            patch.set_facecolor(color)
+
+        ax.set_ylabel(feat)
+        ax.set_title(f'{feat} by Species')
+        ax.grid(True, alpha=0.3, axis='y')
+
+        # Rotate x labels if needed
+        ax.set_xticklabels(species_list, rotation=15, ha='right')
 
     plt.tight_layout()
 
@@ -224,7 +366,7 @@ def visualize_feature_importance(scaler, cluster_centers, feature_names, save_pa
     plt.xlabel('Features')
     plt.ylabel('Absolute Difference Between Cluster Centers')
     plt.title('Feature Importance Based on Cluster Separation')
-    plt.xticks(np.arange(len(feature_names)), feature_names, rotation=45)
+    plt.xticks(np.arange(len(feature_names)), feature_names, rotation=45, ha='right')
 
     # Add value labels on top of bars
     for bar in bars:
@@ -273,12 +415,46 @@ def run_clustering_analysis(file_path, output_dir=None):
     df, features, true_labels, species_names = load_data(file_path)
     feature_names = features.columns.tolist()
 
+    print("=== Data Summary ===")
+    print(f"Total samples: {len(df)}")
+    print(f"Features used: {feature_names}")
+    if true_labels is not None:
+        print(f"\nSpecies distribution:")
+        for label_id, species_name in species_names.items():
+            count = (true_labels == label_id).sum()
+            print(f"  {species_name}: {count} samples ({count / len(df) * 100:.1f}%)")
+
+    # Print feature statistics
+    print(f"\n=== Feature Statistics ===")
+    print(features.describe())
+
     # Standardize features
     X_scaled, scaler = preprocess_data(features)
 
     # Apply PCA for visualization
     X_pca, pca, explained_variance = apply_pca(X_scaled)
-    print(f"PCA explained variance: {explained_variance[0]:.3f}, {explained_variance[1]:.3f}")
+    print(f"\n=== PCA Analysis ===")
+    print(f"PCA Component 1 explained variance: {explained_variance[0]:.3f} ({explained_variance[0] * 100:.1f}%)")
+    print(f"PCA Component 2 explained variance: {explained_variance[1]:.3f} ({explained_variance[1] * 100:.1f}%)")
+    print(
+        f"Total variance explained by 2 components: {sum(explained_variance):.3f} ({sum(explained_variance) * 100:.1f}%)")
+
+    # Visualize PCA by true species labels
+    if true_labels is not None and species_names is not None:
+        pca_species_path = os.path.join(output_dir, "pca_by_species.png") if output_dir else None
+        visualize_pca_by_species(X_pca, true_labels, species_names, explained_variance, pca_species_path)
+
+        # Visualize feature distributions
+        feature_dist_path = os.path.join(output_dir, "feature_distributions.png") if output_dir else None
+        visualize_feature_distributions(df, features, true_labels, species_names, feature_dist_path)
+
+        # Visualize feature box plots
+        feature_box_path = os.path.join(output_dir, "feature_boxplots.png") if output_dir else None
+        visualize_feature_boxplots(df, features, true_labels, species_names, feature_box_path)
+
+        # Visualize pairwise feature relationships
+        feature_pairs_path = os.path.join(output_dir, "feature_pairwise.png") if output_dir else None
+        visualize_feature_pairs(df, features, true_labels, species_names, feature_pairs_path)
 
     # 1. K-means Clustering
     print("\n=== K-means Clustering ===")
@@ -417,8 +593,8 @@ def export_misclassified_points(analysis_df, algorithm_name, output_path=None):
 
 # Example usage
 if __name__ == "__main__":
-    # Replace with your actual file path
-    file_path = os.path.join(os.path.dirname(__file__), "wingtip_intensity_distribution.csv")
+    # Updated file path
+    file_path = "D:\FYPSeagullClassification01\Clustering\dark_pixel_results_all_images.csv"
 
     # Create output directory for plots
     output_dir = os.path.join(os.path.dirname(__file__), "clustering_results")

@@ -55,7 +55,7 @@ def analyze_wingtip_darkness(image_path, seg_path, species, file_name, wing_mean
 
 def main():
     # Load wing data first
-    wing_df = pd.read_csv("Wing_Greyscale_Intensity_Results/wing_intensity_analysis.csv")
+    wing_df = pd.read_csv("Intensity_Results/wing_intensity_analysis.csv")
     wing_data = wing_df.set_index('image_name')['mean_intensity'].to_dict()
 
     all_results = []
