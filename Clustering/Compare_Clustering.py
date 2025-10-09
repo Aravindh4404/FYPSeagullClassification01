@@ -28,8 +28,13 @@ RANDOM_STATE = 42
 # Function to load and prepare data
 def load_data(file_path):
     df = pd.read_csv(file_path)
-    # Updated feature columns based on the new CSV
-    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'method3_percentage']]
+
+    # Rename method3_percentage to a more descriptive name
+    if 'method3_percentage' in df.columns:
+        df = df.rename(columns={'method3_percentage': 'percentage_dark_pixels_wingtip'})
+
+    # Updated feature columns with new name
+    features = df[['mean_wing_intensity', 'mean_wingtip_intensity', 'percentage_dark_pixels_wingtip']]
 
     # Create mapping if it doesn't exist already
     if 'species' in df.columns:
@@ -118,7 +123,7 @@ def visualize_pca_by_species(X_pca, true_labels, species_names, explained_varian
         plt.show()
 
 
-# Function to create pairwise feature scatter plots
+# Function to create pairwise feature scatter plots (combined - original)
 def visualize_feature_pairs(df, features, true_labels, species_names, save_path=None):
     feature_cols = features.columns.tolist()
     n_features = len(feature_cols)
@@ -164,6 +169,62 @@ def visualize_feature_pairs(df, features, true_labels, species_names, save_path=
         plt.close()
     else:
         plt.show()
+
+
+# Function to create individual pairwise scatter plots
+def visualize_individual_feature_pairs(df, features, true_labels, species_names, output_dir=None):
+    feature_cols = features.columns.tolist()
+    n_features = len(feature_cols)
+
+    # Create all unique pairs
+    for i in range(n_features):
+        for j in range(i, n_features):
+            feat1 = feature_cols[i]
+            feat2 = feature_cols[j]
+
+            plt.figure(figsize=(10, 8))
+
+            if i == j:
+                # Diagonal: histogram for single feature
+                for label_id, species_name in species_names.items():
+                    mask = true_labels == label_id
+                    plt.hist(df.loc[mask, feat1], alpha=0.6, label=species_name, bins=25, edgecolor='black')
+
+                plt.xlabel(feat1, fontsize=12)
+                plt.ylabel('Frequency', fontsize=12)
+                plt.title(f'Distribution of {feat1} by Species', fontsize=14, fontweight='bold')
+                plt.legend(fontsize=10)
+                plt.grid(True, alpha=0.3)
+
+            else:
+                # Off-diagonal: scatter plot for feature pairs
+                for label_id, species_name in species_names.items():
+                    mask = true_labels == label_id
+                    plt.scatter(df.loc[mask, feat2], df.loc[mask, feat1],
+                                alpha=0.6, label=species_name, s=50, edgecolor='black', linewidth=0.5)
+
+                plt.xlabel(feat2, fontsize=12)
+                plt.ylabel(feat1, fontsize=12)
+                plt.title(f'{feat1} vs {feat2} by Species', fontsize=14, fontweight='bold')
+                plt.legend(fontsize=10)
+                plt.grid(True, alpha=0.3)
+
+            plt.tight_layout()
+
+            # Save individual plot
+            if output_dir:
+                if i == j:
+                    filename = f"feature_dist_{feat1}.png"
+                else:
+                    filename = f"feature_pair_{feat1}_vs_{feat2}.png"
+                save_path = os.path.join(output_dir, filename)
+                plt.savefig(save_path, dpi=150, bbox_inches='tight')
+                plt.close()
+            else:
+                plt.show()
+
+    if output_dir:
+        print(f"\nIndividual pairwise plots saved to: {output_dir}")
 
 
 # Function to visualize feature distributions
@@ -383,6 +444,63 @@ def visualize_feature_importance(scaler, cluster_centers, feature_names, save_pa
         plt.show()
 
 
+# Function to calculate feature importance (returns dictionary)
+def calculate_feature_importance(scaler, cluster_centers, feature_names):
+    # Transform cluster centers back to original scale
+    original_centers = scaler.inverse_transform(cluster_centers)
+
+    # Calculate differences between cluster centers for each feature
+    center_diffs = np.abs(original_centers[0] - original_centers[1])
+
+    # Create dictionary of feature importance
+    importance_dict = {}
+    for feature, diff in zip(feature_names, center_diffs):
+        importance_dict[feature] = diff
+
+    return importance_dict
+
+
+# Function to calculate pseudo-centroids for hierarchical clustering
+def calculate_hierarchical_centers(X_scaled, clusters):
+    # Calculate mean of each cluster
+    unique_clusters = np.unique(clusters)
+    centers = np.zeros((len(unique_clusters), X_scaled.shape[1]))
+
+    for i, cluster in enumerate(unique_clusters):
+        cluster_mask = clusters == cluster
+        centers[i] = X_scaled[cluster_mask].mean(axis=0)
+
+    return centers
+
+
+# Function to create feature importance comparison table
+def create_feature_importance_table(kmeans_imp, hierarchical_imp, gmm_imp, feature_names):
+    # Create a dataframe with all feature importance values
+    data = {
+        'Feature': feature_names,
+        'K-means_Importance': [kmeans_imp[feat] for feat in feature_names],
+        'Hierarchical_Importance': [hierarchical_imp[feat] for feat in feature_names]
+    }
+
+    if gmm_imp is not None:
+        data['GMM_Importance'] = [gmm_imp[feat] for feat in feature_names]
+
+    df = pd.DataFrame(data)
+
+    # Calculate average importance across all models
+    importance_cols = [col for col in df.columns if 'Importance' in col]
+    df['Average_Importance'] = df[importance_cols].mean(axis=1)
+
+    # Calculate rank for each model
+    for col in importance_cols:
+        df[f'{col.replace("_Importance", "")}_Rank'] = df[col].rank(ascending=False, method='min').astype(int)
+
+    # Sort by average importance
+    df = df.sort_values('Average_Importance', ascending=False).reset_index(drop=True)
+
+    return df
+
+
 # 1. K-means Clustering
 def apply_kmeans(X_scaled, n_clusters=2):
     kmeans = KMeans(n_clusters=n_clusters, random_state=RANDOM_STATE, n_init=10)
@@ -456,6 +574,9 @@ def run_clustering_analysis(file_path, output_dir=None):
         feature_pairs_path = os.path.join(output_dir, "feature_pairwise.png") if output_dir else None
         visualize_feature_pairs(df, features, true_labels, species_names, feature_pairs_path)
 
+        # Visualize individual pairwise feature relationships
+        visualize_individual_feature_pairs(df, features, true_labels, species_names, output_dir)
+
     # 1. K-means Clustering
     print("\n=== K-means Clustering ===")
     kmeans_clusters, kmeans_centers = apply_kmeans(X_scaled)
@@ -493,6 +614,9 @@ def run_clustering_analysis(file_path, output_dir=None):
         kmeans_feature_path = os.path.join(output_dir, "kmeans_feature_importance.png") if output_dir else None
         visualize_feature_importance(scaler, kmeans_centers, feature_names, kmeans_feature_path)
 
+        # Calculate feature importance for K-means
+        kmeans_importance = calculate_feature_importance(scaler, kmeans_centers, feature_names)
+
     # 2. Hierarchical Clustering
     print("\n=== Hierarchical Clustering ===")
     hierarchical_clusters, _ = apply_hierarchical(X_scaled)
@@ -504,6 +628,10 @@ def run_clustering_analysis(file_path, output_dir=None):
     # Visualize Hierarchical results
     hierarchical_plot_path = os.path.join(output_dir, "hierarchical_clustering.png") if output_dir else None
     visualize_clusters(X_pca, hierarchical_clusters, None, "Hierarchical Clustering Results", hierarchical_plot_path)
+
+    # Calculate pseudo-centroids for hierarchical clustering
+    hierarchical_centers = calculate_hierarchical_centers(X_scaled, hierarchical_clusters)
+    hierarchical_importance = calculate_feature_importance(scaler, hierarchical_centers, feature_names)
 
     if true_labels is not None and species_names is not None:
         # Map clusters to species and identify misclassifications
@@ -542,6 +670,10 @@ def run_clustering_analysis(file_path, output_dir=None):
     gmm_plot_path = os.path.join(output_dir, "gmm_clustering.png") if output_dir else None
     visualize_clusters(X_pca, gmm_clusters, gmm_centers_pca, "Gaussian Mixture Model Results", gmm_plot_path)
 
+    # Calculate feature importance for GMM
+    if gmm_centers is not None:
+        gmm_importance = calculate_feature_importance(scaler, gmm_centers, feature_names)
+
     if true_labels is not None and species_names is not None:
         # Map clusters to species and identify misclassifications
         gmm_analysis, gmm_mapping = map_clusters_to_species(df, gmm_clusters, true_labels, species_names)
@@ -560,6 +692,23 @@ def run_clustering_analysis(file_path, output_dir=None):
         print("\nGMM Cluster to Species Mapping:")
         for cluster, species in gmm_mapping.items():
             print(f"Cluster {cluster} -> {species}")
+
+    # Create combined feature importance table
+    print("\n=== Feature Importance Comparison Across All Models ===")
+    feature_importance_table = create_feature_importance_table(
+        kmeans_importance,
+        hierarchical_importance,
+        gmm_importance if gmm_centers is not None else None,
+        feature_names
+    )
+
+    # Save feature importance table to CSV
+    importance_csv_path = os.path.join(output_dir, "feature_importance_comparison.csv") if output_dir else None
+    if importance_csv_path:
+        feature_importance_table.to_csv(importance_csv_path, index=False)
+        print(f"\nFeature importance table saved to: {importance_csv_path}")
+
+    print("\n" + feature_importance_table.to_string(index=False))
 
     return {
         'kmeans': (kmeans_clusters, kmeans_results, kmeans_analysis if true_labels is not None else None),
