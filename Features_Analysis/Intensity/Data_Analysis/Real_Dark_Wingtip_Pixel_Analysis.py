@@ -120,6 +120,8 @@ def calculate_dark_pixels_four_methods(image_path, seg_path, species, file_name)
     method3_percentage = float(pct(method3_count))
     method4_percentage = float(pct(method4_count))
 
+    wingtip_darker_pct = float(pct(method1_count))
+
     return {
         "species": species,
         "image_name": file_name,
@@ -132,6 +134,8 @@ def calculate_dark_pixels_four_methods(image_path, seg_path, species, file_name)
         "method2_percentage": method2_percentage,
         "method3_percentage": method3_percentage,
         "method4_percentage": method4_percentage,
+        "wingtip_darker_than_wing_count": method1_count,
+        "pct_wingtip_darker_than_wing": wingtip_darker_pct,
         "mean_wing_intensity": mean_wing_intensity,
         "mean_wingtip_intensity": mean_wingtip_intensity,
         "min_wing_intensity": min_wing_intensity,
@@ -365,7 +369,7 @@ def main():
     # Save consolidated CSV
     if csv_rows:
         df = pd.DataFrame(csv_rows)
-        all_csv_path = os.path.join(main_output_dir, "dark_pixel_results_all_images.csv")
+        all_csv_path = os.path.join(main_output_dir, "FINALE.csv")
         df.to_csv(all_csv_path, index=False)
         print(f"\n✅ Per-image results saved: {all_csv_path}")
     else:
