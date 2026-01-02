@@ -33,12 +33,28 @@ SPECIES_COLORS = {
 # Path to your all.csv file - MODIFY THIS PATH TO YOUR ACTUAL FILE LOCATION
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / "D:\FYPSeagullClassification01\Features_Analysis\Intensity\Data_Analysis\Wingtip_Dark_Pixel_Visualizations\dark_pixel_results_all_images.csv"
-OUTPUT_DIR = BASE_DIR / "Intensity_Distribution_Comparison"
-SCATTER_OUTPUT = OUTPUT_DIR / "upperparts_vs_primaries_scatter.png"
-BAR_OUTPUT = OUTPUT_DIR / "upperparts_vs_primaries_bar.png"
-DARK_BOX_OUTPUT = OUTPUT_DIR / "dark_pixel_percentage_box.png"
-UPPERPARTS_DIST_OUTPUT = OUTPUT_DIR / "upperparts_intensity_distribution.png"
-PRIMARIES_DIST_OUTPUT = OUTPUT_DIR / "primaries_intensity_distribution.png"
+
+# Output directories for filtered and unfiltered data
+OUTPUT_DIR_FILTERED = BASE_DIR / "Intensity_Distribution_Filtered"
+OUTPUT_DIR_UNFILTERED = BASE_DIR / "Intensity_Distribution_Unfiltered"
+
+# Filtered outputs (primaries darker than upperparts)
+SCATTER_OUTPUT_FILTERED = OUTPUT_DIR_FILTERED / "upperparts_vs_primaries_scatter_filtered.png"
+BAR_OUTPUT_FILTERED = OUTPUT_DIR_FILTERED / "upperparts_vs_primaries_bar_filtered.png"
+DARK_BOX_OUTPUT_FILTERED = OUTPUT_DIR_FILTERED / "dark_pixel_percentage_box_filtered.png"
+UPPERPARTS_DIST_OUTPUT_FILTERED = OUTPUT_DIR_FILTERED / "upperparts_intensity_distribution_filtered.png"
+PRIMARIES_DIST_OUTPUT_FILTERED = OUTPUT_DIR_FILTERED / "primaries_intensity_distribution_filtered.png"
+
+# Unfiltered outputs (all data)
+SCATTER_OUTPUT_UNFILTERED = OUTPUT_DIR_UNFILTERED / "upperparts_vs_primaries_scatter_all.png"
+BAR_OUTPUT_UNFILTERED = OUTPUT_DIR_UNFILTERED / "upperparts_vs_primaries_bar_all.png"
+DARK_BOX_OUTPUT_UNFILTERED = OUTPUT_DIR_UNFILTERED / "dark_pixel_percentage_box_all.png"
+UPPERPARTS_DIST_OUTPUT_UNFILTERED = OUTPUT_DIR_UNFILTERED / "upperparts_intensity_distribution_all.png"
+PRIMARIES_DIST_OUTPUT_UNFILTERED = OUTPUT_DIR_UNFILTERED / "primaries_intensity_distribution_all.png"
+
+# CSV outputs for filtered and removed images
+FILTERED_CSV = OUTPUT_DIR_FILTERED / "filtered_images_list.csv"
+REMOVED_CSV = OUTPUT_DIR_FILTERED / "removed_images_list.csv"
 
 # Define bin configuration - 15-unit bins matching reference image
 INTENSITY_BINS = list(range(0, 256, 15))  # [0, 15, 30, 45, ..., 240, 255]
@@ -61,8 +77,11 @@ def format_species_label(species: str) -> str:
     return label
 
 
-def load_intensity_data() -> pd.DataFrame:
-    """Load and filter the per-bird intensity measurements from all.csv."""
+def load_intensity_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """
+    Load and filter the per-bird intensity measurements from all.csv.
+    Returns: (filtered_df, unfiltered_df, removed_df)
+    """
     df = pd.read_csv(DATA_PATH)
 
     print(f"\nLoaded CSV with {len(df)} rows")
@@ -73,14 +92,12 @@ def load_intensity_data() -> pd.DataFrame:
     wingtip_cols = [col for col in df.columns if 'mean_wingtip' in col.lower()]
 
     if wing_cols and wingtip_cols:
-        # Use the first available method columns
         wing_col = wing_cols[0]
         wingtip_col = wingtip_cols[0]
 
         print(f"Using wing intensity column: {wing_col}")
         print(f"Using wingtip intensity column: {wingtip_col}")
 
-        # Rename columns to standard names
         df = df.rename(columns={
             wing_col: 'mean_wing_intensity',
             wingtip_col: 'mean_wingtip_intensity'
@@ -101,8 +118,14 @@ def load_intensity_data() -> pd.DataFrame:
     # Drop rows with missing values in required columns
     df = df.dropna(subset=list(required_cols))
 
-    # CRITICAL FILTER: Remove rows where wing is darker than wingtip
-    # This filters out TRUE values (wing darker than wingtip)
+    # Filter for species in SPECIES_COLORS (before any other filtering)
+    df = df[df["species"].isin(SPECIES_COLORS.keys())].copy()
+
+    # Store the unfiltered data
+    unfiltered_df = df.copy()
+    unfiltered_df = ensure_dark_pixel_percentage(unfiltered_df)
+
+    # CRITICAL FILTER: Separate rows where wing is darker than wingtip
     initial_count = len(df)
 
     # Check if there's a boolean column indicating wing darker than wingtip
@@ -110,30 +133,59 @@ def load_intensity_data() -> pd.DataFrame:
                  (df[col].dtype == 'object' and df[col].str.upper().isin(['TRUE', 'FALSE']).any())]
 
     if bool_cols:
-        # Assume the last boolean column is the filter column
         filter_col = bool_cols[-1]
         print(f"Found filter column: {filter_col}")
 
-        # Convert to boolean if it's stored as string
         if df[filter_col].dtype == 'object':
             df[filter_col] = df[filter_col].str.upper() == 'TRUE'
 
-        # Keep only rows where the filter is FALSE (wingtip is darker than wing)
-        df = df[df[filter_col] == False].copy()
-        print(f"Filtered out {initial_count - len(df)} rows where wing was darker than wingtip")
+        # Split into filtered (keep) and removed dataframes
+        filtered_df = df[df[filter_col] == False].copy()
+        removed_df = df[df[filter_col] == True].copy()
     else:
-        # Manual calculation if no boolean column exists
         print("No boolean filter column found. Calculating manually...")
-        df = df[df['mean_wing_intensity'] >= df['mean_wingtip_intensity']].copy()
-        print(f"Filtered out {initial_count - len(df)} rows where wing was darker than wingtip")
+        # Keep rows where wingtip is darker (lower intensity) than wing
+        filtered_df = df[df['mean_wingtip_intensity'] < df['mean_wing_intensity']].copy()
+        removed_df = df[df['mean_wingtip_intensity'] >= df['mean_wing_intensity']].copy()
 
-    print(f"Remaining rows after filtering: {len(df)}\n")
+    print(f"Total images: {initial_count}")
+    print(f"Filtered images (wingtip darker): {len(filtered_df)}")
+    print(f"Removed images (wing darker or equal): {len(removed_df)}\n")
 
-    # Filter for species in SPECIES_COLORS
-    df = df[df["species"].isin(SPECIES_COLORS.keys())]
+    # Ensure dark pixel percentage for all dataframes
+    filtered_df = ensure_dark_pixel_percentage(filtered_df)
+    removed_df = ensure_dark_pixel_percentage(removed_df)
 
-    df = ensure_dark_pixel_percentage(df)
-    return df
+    # Save image lists to CSV
+    OUTPUT_DIR_FILTERED.mkdir(exist_ok=True, parents=True)
+
+    # Check if image_name column exists
+    if 'image_na' in filtered_df.columns:
+        image_col = 'image_na'
+    elif 'image_name' in filtered_df.columns:
+        image_col = 'image_name'
+    elif 'species' in filtered_df.columns:
+        # Use index as image identifier
+        image_col = None
+    else:
+        image_col = None
+
+    if image_col:
+        # Save filtered images list
+        filtered_list = filtered_df[[image_col, 'species', 'mean_wing_intensity', 'mean_wingtip_intensity']].copy()
+        filtered_list.to_csv(FILTERED_CSV, index=False)
+        print(f"Saved filtered images list to {FILTERED_CSV}")
+
+        # Save removed images list
+        removed_list = removed_df[[image_col, 'species', 'mean_wing_intensity', 'mean_wingtip_intensity']].copy()
+        removed_list.to_csv(REMOVED_CSV, index=False)
+        print(f"Saved removed images list to {REMOVED_CSV}\n")
+    else:
+        print("Warning: No image name column found. Saving with index only.")
+        filtered_df[['species', 'mean_wing_intensity', 'mean_wingtip_intensity']].to_csv(FILTERED_CSV)
+        removed_df[['species', 'mean_wing_intensity', 'mean_wingtip_intensity']].to_csv(REMOVED_CSV)
+
+    return filtered_df, unfiltered_df, removed_df
 
 
 def ensure_dark_pixel_percentage(df: pd.DataFrame) -> pd.DataFrame:
@@ -186,9 +238,9 @@ def print_dataset_summary(df: pd.DataFrame) -> None:
     )
 
 
-def plot_upperwing_vs_wingtip(df: pd.DataFrame) -> None:
+def plot_upperwing_vs_wingtip(df: pd.DataFrame, output_path: Path, title_suffix: str = "") -> None:
     """Generate the scatter plot with equal axes and a 1:1 reference line."""
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    output_path.parent.mkdir(exist_ok=True, parents=True)
 
     fig, ax = plt.subplots(figsize=(9, 9))
     sns.scatterplot(
@@ -220,7 +272,7 @@ def plot_upperwing_vs_wingtip(df: pd.DataFrame) -> None:
     ax.set_xlabel("Upperparts mean intensity (0–255)")
     ax.set_ylabel("Primaries mean intensity (0–255)")
     ax.set_title(
-        "Relationship Between Upperparts and Primaries Tones\n(Filtered: Primaries darker than Upperparts)",
+        f"Relationship Between Upperparts and Primaries Tones{title_suffix}",
         fontsize=13,
         fontweight="bold",
     )
@@ -236,12 +288,14 @@ def plot_upperwing_vs_wingtip(df: pd.DataFrame) -> None:
     ax.legend(handles, formatted_labels, title="Species", frameon=True)
 
     fig.tight_layout()
-    fig.savefig(SCATTER_OUTPUT, dpi=300)
-    print(f"Saved scatter plot to {SCATTER_OUTPUT}")
+    fig.savefig(output_path, dpi=300)
+    print(f"Saved scatter plot to {output_path}")
 
 
-def plot_species_bar_chart(df: pd.DataFrame) -> None:
+def plot_species_bar_chart(df: pd.DataFrame, output_path: Path, title_suffix: str = "") -> None:
     """Generate grouped bar chart of per-species mean wing vs wingtip intensity."""
+    output_path.parent.mkdir(exist_ok=True, parents=True)
+
     summary = (
         df.groupby("species")[["mean_wing_intensity", "mean_wingtip_intensity"]]
         .mean()
@@ -267,7 +321,7 @@ def plot_species_bar_chart(df: pd.DataFrame) -> None:
     ax.set_xlabel("Species")
     ax.set_ylim(0, 270)
     ax.set_title(
-        "Average Upperparts vs Primaries Intensity\n(Filtered: Primaries darker than Upperparts)",
+        f"Average Upperparts vs Primaries Intensity{title_suffix}",
         fontsize=12,
         fontweight="bold",
     )
@@ -287,18 +341,18 @@ def plot_species_bar_chart(df: pd.DataFrame) -> None:
         )
 
     fig.tight_layout()
-    fig.savefig(BAR_OUTPUT, dpi=300)
-    print(f"Saved bar plot to {BAR_OUTPUT}")
+    fig.savefig(output_path, dpi=300)
+    print(f"Saved bar plot to {output_path}")
 
 
-def plot_dark_pixel_boxplot(df: pd.DataFrame) -> None:
+def plot_dark_pixel_boxplot(df: pd.DataFrame, output_path: Path, title_suffix: str = "") -> None:
     """Create a box plot of dark pixel percentages per species - styled like reference."""
     column = "pct_darker_pixels"
     if column not in df.columns:
         print(f"Warning: Column '{column}' not found. Skipping dark pixel box plot.")
         return
 
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    output_path.parent.mkdir(exist_ok=True, parents=True)
 
     # Prepare data
     box_df = df.copy()
@@ -352,7 +406,7 @@ def plot_dark_pixel_boxplot(df: pd.DataFrame) -> None:
     ax.set_ylim(y_min, y_max)
     ax.set_xlabel('Species', fontsize=12, fontweight='bold')
     ax.set_ylabel('Dark Pixel Percentage (%)', fontsize=12, fontweight='bold')
-    ax.set_title('Primaries Dark Pixel Analysis by Species\n(Filtered: Primaries darker than Upperparts)',
+    ax.set_title(f'Primaries Dark Pixel Analysis by Species{title_suffix}',
                  fontsize=12, fontweight='bold', pad=12)
     ax.tick_params(axis='x', rotation=45)
     ax.grid(True, alpha=0.3)
@@ -368,8 +422,8 @@ def plot_dark_pixel_boxplot(df: pd.DataFrame) -> None:
 
     plt.tight_layout()
 
-    fig.savefig(DARK_BOX_OUTPUT, dpi=300, bbox_inches='tight', facecolor='white')
-    print(f"Saved dark pixel box plot to {DARK_BOX_OUTPUT}")
+    fig.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"Saved dark pixel box plot to {output_path}")
 
     # Calculate and print summary statistics
     summary_stats = box_df.groupby('species_display')[column].agg([
@@ -377,7 +431,7 @@ def plot_dark_pixel_boxplot(df: pd.DataFrame) -> None:
     ]).round(2)
 
     print("\n" + "=" * 80)
-    print("DARK PIXEL PERCENTAGE SUMMARY STATISTICS")
+    print(f"DARK PIXEL PERCENTAGE SUMMARY STATISTICS{title_suffix}")
     print("=" * 80)
     print(summary_stats)
     print("=" * 80 + "\n")
@@ -430,15 +484,15 @@ def add_intensity_reference(ax, bins):
     ax.set_ylim(box_y_position - box_height * 1.5, ylim[1])
 
 
-def plot_intensity_distribution(df: pd.DataFrame, column: str, title: str, output_path: Path) -> None:
+def plot_intensity_distribution(df: pd.DataFrame, column: str, title: str, output_path: Path, title_suffix: str = "") -> None:
     """
     Create intensity distribution histogram with KDE curves matching reference style.
     """
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    output_path.parent.mkdir(exist_ok=True, parents=True)
 
     fig, ax = plt.subplots(figsize=(14, 8))
 
-    ax.set_title(title + '\n(Filtered: Primaries darker than Upperparts)',
+    ax.set_title(f'{title}{title_suffix}',
                  fontsize=12, fontweight='bold', pad=15)
     ax.set_xlabel('Mean Intensity (0-255)')
     ax.set_ylabel('Density')
@@ -521,27 +575,87 @@ def plot_intensity_distribution(df: pd.DataFrame, column: str, title: str, outpu
 
 
 def main() -> None:
-    df = load_intensity_data()
-    if df.empty:
-        raise ValueError("No intensity records found after filtering.")
-    print_dataset_summary(df)
-    plot_upperwing_vs_wingtip(df)
-    plot_species_bar_chart(df)
-    plot_dark_pixel_boxplot(df)
+    # Load data and get filtered, unfiltered, and removed dataframes
+    filtered_df, unfiltered_df, removed_df = load_intensity_data()
 
-    # Create intensity distribution plots matching reference style
+    if filtered_df.empty and unfiltered_df.empty:
+        raise ValueError("No intensity records found for the configured species.")
+
+    # Print summaries
+    print("\n" + "="*80)
+    print("UNFILTERED DATA SUMMARY (All Images)")
+    print("="*80)
+    print_dataset_summary(unfiltered_df)
+
+    print("\n" + "="*80)
+    print("FILTERED DATA SUMMARY (Primaries darker than Upperparts)")
+    print("="*80)
+    print_dataset_summary(filtered_df)
+
+    print("\n" + "="*80)
+    print("REMOVED DATA SUMMARY (Upperparts darker than or equal to Primaries)")
+    print("="*80)
+    print_dataset_summary(removed_df)
+
+    # Generate plots for FILTERED data
+    print("\n" + "="*80)
+    print("GENERATING FILTERED PLOTS...")
+    print("="*80)
+    plot_upperwing_vs_wingtip(filtered_df, SCATTER_OUTPUT_FILTERED,
+                              "\n(Filtered: Primaries darker than Upperparts)")
+    plot_species_bar_chart(filtered_df, BAR_OUTPUT_FILTERED,
+                          "\n(Filtered: Primaries darker than Upperparts)")
+    plot_dark_pixel_boxplot(filtered_df, DARK_BOX_OUTPUT_FILTERED,
+                           "\n(Filtered: Primaries darker than Upperparts)")
     plot_intensity_distribution(
-        df,
+        filtered_df,
         'mean_wing_intensity',
         'Upperparts Intensity Distribution',
-        UPPERPARTS_DIST_OUTPUT
+        UPPERPARTS_DIST_OUTPUT_FILTERED,
+        '\n(Filtered: Primaries darker than Upperparts)'
     )
     plot_intensity_distribution(
-        df,
+        filtered_df,
         'mean_wingtip_intensity',
         'Primaries Intensity Distribution',
-        PRIMARIES_DIST_OUTPUT
+        PRIMARIES_DIST_OUTPUT_FILTERED,
+        '\n(Filtered: Primaries darker than Upperparts)'
     )
+
+    # Generate plots for UNFILTERED data
+    print("\n" + "="*80)
+    print("GENERATING UNFILTERED PLOTS...")
+    print("="*80)
+    plot_upperwing_vs_wingtip(unfiltered_df, SCATTER_OUTPUT_UNFILTERED,
+                              "\n(All Images)")
+    plot_species_bar_chart(unfiltered_df, BAR_OUTPUT_UNFILTERED,
+                          "\n(All Images)")
+    plot_dark_pixel_boxplot(unfiltered_df, DARK_BOX_OUTPUT_UNFILTERED,
+                           "\n(All Images)")
+    plot_intensity_distribution(
+        unfiltered_df,
+        'mean_wing_intensity',
+        'Upperparts Intensity Distribution',
+        UPPERPARTS_DIST_OUTPUT_UNFILTERED,
+        '\n(All Images)'
+    )
+    plot_intensity_distribution(
+        unfiltered_df,
+        'mean_wingtip_intensity',
+        'Primaries Intensity Distribution',
+        PRIMARIES_DIST_OUTPUT_UNFILTERED,
+        '\n(All Images)'
+    )
+
+    print("\n" + "="*80)
+    print("ALL PLOTS GENERATED SUCCESSFULLY!")
+    print("="*80)
+    print(f"\nFiltered plots saved to: {OUTPUT_DIR_FILTERED}")
+    print(f"Unfiltered plots saved to: {OUTPUT_DIR_UNFILTERED}")
+    print(f"\nImage lists saved:")
+    print(f"  - Filtered images: {FILTERED_CSV}")
+    print(f"  - Removed images: {REMOVED_CSV}")
+    print("="*80)
 
 
 if __name__ == "__main__":
