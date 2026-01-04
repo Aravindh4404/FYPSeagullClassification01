@@ -242,7 +242,7 @@ def plot_upperwing_vs_wingtip(df: pd.DataFrame, output_path: Path, title_suffix:
     """Generate the scatter plot with equal axes and a 1:1 reference line."""
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
-    fig, ax = plt.subplots(figsize=(9, 9))
+    fig, ax = plt.subplots(figsize=(10, 10))
     sns.scatterplot(
         data=df,
         x="mean_wing_intensity",
@@ -269,13 +269,16 @@ def plot_upperwing_vs_wingtip(df: pd.DataFrame, output_path: Path, title_suffix:
     ax.set_xlim(0, 255)
     ax.set_ylim(0, 255)
     ax.set_aspect("equal", "box")
-    ax.set_xlabel("Upperparts mean intensity (0–255)")
-    ax.set_ylabel("Primaries mean intensity (0–255)")
+    ax.set_xlabel("Upperparts mean intensity (0–255)", fontsize=20, fontweight='bold')
+    ax.set_ylabel("Primaries mean intensity (0–255)", fontsize=20, fontweight='bold')
     ax.set_title(
         f"Relationship Between Upperparts and Primaries Tones{title_suffix}",
-        fontsize=13,
+        fontsize=22,
         fontweight="bold",
     )
+
+    # Increase tick label sizes
+    ax.tick_params(axis='both', which='major', labelsize=16)
 
     # Tidy legend with formatted species labels plus the 1:1 reference line
     handles, labels = ax.get_legend_handles_labels()
@@ -285,7 +288,7 @@ def plot_upperwing_vs_wingtip(df: pd.DataFrame, output_path: Path, title_suffix:
             formatted_labels.append(format_species_label(label))
         else:
             formatted_labels.append(label)
-    ax.legend(handles, formatted_labels, title="Species", frameon=True)
+    ax.legend(handles, formatted_labels, title="Species", frameon=True, fontsize=16, title_fontsize=17)
 
     fig.tight_layout()
     fig.savefig(output_path, dpi=300)
@@ -307,7 +310,7 @@ def plot_species_bar_chart(df: pd.DataFrame, output_path: Path, title_suffix: st
 
     counts = df.groupby("species").size().to_dict()
 
-    fig, ax = plt.subplots(figsize=(9, 6))
+    fig, ax = plt.subplots(figsize=(10, 7))
     sns.barplot(
         data=summary,
         x="species_display",
@@ -317,15 +320,19 @@ def plot_species_bar_chart(df: pd.DataFrame, output_path: Path, title_suffix: st
         ax=ax,
     )
 
-    ax.set_ylabel("Mean intensity (0–255)")
-    ax.set_xlabel("Species")
+    ax.set_ylabel("Mean intensity (0–255)", fontsize=18, fontweight='bold')
+    ax.set_xlabel("Species", fontsize=18, fontweight='bold')
     ax.set_ylim(0, 270)
     ax.set_title(
         f"Average Upperparts vs Primaries Intensity{title_suffix}",
-        fontsize=12,
+        fontsize=20,
         fontweight="bold",
     )
-    ax.legend(title="Metric", frameon=True)
+
+    # Increase tick label sizes
+    ax.tick_params(axis='both', which='major', labelsize=14)
+
+    ax.legend(title="Metric", frameon=True, fontsize=14, title_fontsize=15)
 
     for idx, species in enumerate(summary["species"].unique()):
         label = format_species_label(species)
@@ -336,7 +343,7 @@ def plot_species_bar_chart(df: pd.DataFrame, output_path: Path, title_suffix: st
             f"n={count}",
             ha="center",
             va="bottom",
-            fontsize=10,
+            fontsize=12,
             fontweight="bold",
         )
 
@@ -367,7 +374,7 @@ def plot_dark_pixel_boxplot(df: pd.DataFrame, output_path: Path, title_suffix: s
     box_df[column] = box_df[column].clip(0, 100)
 
     # Create figure
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(14, 9))
 
     # Get species order and colors
     species_order = sorted(box_df['species_display'].unique())
@@ -404,11 +411,15 @@ def plot_dark_pixel_boxplot(df: pd.DataFrame, output_path: Path, title_suffix: s
     )
 
     ax.set_ylim(y_min, y_max)
-    ax.set_xlabel('Species', fontsize=12, fontweight='bold')
-    ax.set_ylabel('Dark Pixel Percentage (%)', fontsize=12, fontweight='bold')
+    ax.set_xlabel('Species', fontsize=18, fontweight='bold')
+    ax.set_ylabel('Dark Pixel Percentage (%)', fontsize=18, fontweight='bold')
     ax.set_title(f'Primaries Dark Pixel Analysis by Species{title_suffix}',
-                 fontsize=12, fontweight='bold', pad=12)
-    ax.tick_params(axis='x', rotation=45)
+                 fontsize=20, fontweight='bold', pad=12)
+
+    # Increase tick label sizes - especially x-axis species names
+    ax.tick_params(axis='both', which='major', labelsize=14)
+    ax.tick_params(axis='x', rotation=45, labelsize=18)  # Larger species names
+
     ax.grid(True, alpha=0.3)
 
     ymin = 0
@@ -418,7 +429,7 @@ def plot_dark_pixel_boxplot(df: pd.DataFrame, output_path: Path, title_suffix: s
     # Add horizontal reference line at 50%
     ax.axhline(y=50, color='gray', linestyle='--', alpha=0.3, linewidth=1)
     ax.text(0.02, 50.5, '50%', transform=ax.get_yaxis_transform(),
-            fontsize=9, alpha=0.7, color='gray')
+            fontsize=11, alpha=0.7, color='gray')
 
     plt.tight_layout()
 
@@ -478,8 +489,9 @@ def add_intensity_reference(ax, bins):
                          facecolor=gray_color, edgecolor='black', linewidth=0.5)
         ax.add_patch(rect)
 
-        ax.text(bin_center, box_y_position - box_height * 0.5,
-                f'{int(bin_center)}', ha='center', va='top', fontsize=7, rotation=45)
+        # Only show numbers at 0, 15, 30, 45, etc. (not the middle values like 7, 22, 37)
+        # These are the bin centers, but we only want to label the bin edges
+        # So we skip labeling here entirely - labels are handled by x-axis ticks
 
     ax.set_ylim(box_y_position - box_height * 1.5, ylim[1])
 
@@ -490,12 +502,15 @@ def plot_intensity_distribution(df: pd.DataFrame, column: str, title: str, outpu
     """
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
-    fig, ax = plt.subplots(figsize=(14, 8))
+    fig, ax = plt.subplots(figsize=(16, 9))
 
     ax.set_title(f'{title}{title_suffix}',
-                 fontsize=12, fontweight='bold', pad=15)
-    ax.set_xlabel('Mean Intensity (0-255)')
-    ax.set_ylabel('Density')
+                 fontsize=22, fontweight='bold', pad=20)
+    ax.set_xlabel('Mean Intensity (0-255)', fontsize=20, fontweight='bold')
+    ax.set_ylabel('Density', fontsize=20, fontweight='bold')
+
+    # Increase tick label sizes
+    ax.tick_params(axis='both', which='major', labelsize=14)
 
     # Plot histogram and KDE for each species
     for species in df['species'].unique():
@@ -539,7 +554,7 @@ def plot_intensity_distribution(df: pd.DataFrame, column: str, title: str, outpu
             fontweight='bold',
             ha='center',
             va='top',
-            fontsize=10,
+            fontsize=12,
             bbox=dict(
                 boxstyle='round,pad=0.3',
                 facecolor='white',
@@ -551,20 +566,21 @@ def plot_intensity_distribution(df: pd.DataFrame, column: str, title: str, outpu
     # Add intensity reference gradient at bottom
     add_intensity_reference(ax, INTENSITY_BINS)
 
-    # Configure legend
+    # Configure legend - larger font at top right
     ax.legend(
         loc='upper right',
-        bbox_to_anchor=(1.0, 0.95),
+        bbox_to_anchor=(1.0, 0.98),
         frameon=True,
         fancybox=True,
         shadow=True,
-        fontsize=10
+        fontsize=18,
+        title_fontsize=19
     )
 
-    # Set x-axis ticks
+    # Set x-axis ticks - only show major ticks (0, 15, 30, etc.)
     x_ticks = list(range(0, 256, 15))
     ax.set_xticks(x_ticks)
-    ax.set_xticklabels([f'{i}' for i in x_ticks], rotation=45, ha='right', fontsize=8)
+    ax.set_xticklabels([f'{i}' for i in x_ticks], rotation=0, ha='center', fontsize=14)
 
     ax.grid(True, alpha=0.3)
     ax.set_xlim(0, 255)
@@ -597,54 +613,44 @@ def main() -> None:
     print("="*80)
     print_dataset_summary(removed_df)
 
-    # Generate plots for FILTERED data
+    # Generate plots for FILTERED data (WITHOUT suffix in titles)
     print("\n" + "="*80)
     print("GENERATING FILTERED PLOTS...")
     print("="*80)
-    plot_upperwing_vs_wingtip(filtered_df, SCATTER_OUTPUT_FILTERED,
-                              "\n(Filtered: Primaries darker than Upperparts)")
-    plot_species_bar_chart(filtered_df, BAR_OUTPUT_FILTERED,
-                          "\n(Filtered: Primaries darker than Upperparts)")
-    plot_dark_pixel_boxplot(filtered_df, DARK_BOX_OUTPUT_FILTERED,
-                           "\n(Filtered: Primaries darker than Upperparts)")
+    plot_upperwing_vs_wingtip(filtered_df, SCATTER_OUTPUT_FILTERED)
+    plot_species_bar_chart(filtered_df, BAR_OUTPUT_FILTERED)
+    plot_dark_pixel_boxplot(filtered_df, DARK_BOX_OUTPUT_FILTERED)
     plot_intensity_distribution(
         filtered_df,
         'mean_wing_intensity',
         'Upperparts Intensity Distribution',
-        UPPERPARTS_DIST_OUTPUT_FILTERED,
-        '\n(Filtered: Primaries darker than Upperparts)'
+        UPPERPARTS_DIST_OUTPUT_FILTERED
     )
     plot_intensity_distribution(
         filtered_df,
         'mean_wingtip_intensity',
         'Primaries Intensity Distribution',
-        PRIMARIES_DIST_OUTPUT_FILTERED,
-        '\n(Filtered: Primaries darker than Upperparts)'
+        PRIMARIES_DIST_OUTPUT_FILTERED
     )
 
     # Generate plots for UNFILTERED data
     print("\n" + "="*80)
     print("GENERATING UNFILTERED PLOTS...")
     print("="*80)
-    plot_upperwing_vs_wingtip(unfiltered_df, SCATTER_OUTPUT_UNFILTERED,
-                              "\n(All Images)")
-    plot_species_bar_chart(unfiltered_df, BAR_OUTPUT_UNFILTERED,
-                          "\n(All Images)")
-    plot_dark_pixel_boxplot(unfiltered_df, DARK_BOX_OUTPUT_UNFILTERED,
-                           "\n(All Images)")
+    plot_upperwing_vs_wingtip(unfiltered_df, SCATTER_OUTPUT_UNFILTERED)
+    plot_species_bar_chart(unfiltered_df, BAR_OUTPUT_UNFILTERED)
+    plot_dark_pixel_boxplot(unfiltered_df, DARK_BOX_OUTPUT_UNFILTERED)
     plot_intensity_distribution(
         unfiltered_df,
         'mean_wing_intensity',
         'Upperparts Intensity Distribution',
-        UPPERPARTS_DIST_OUTPUT_UNFILTERED,
-        '\n(All Images)'
+        UPPERPARTS_DIST_OUTPUT_UNFILTERED
     )
     plot_intensity_distribution(
         unfiltered_df,
         'mean_wingtip_intensity',
         'Primaries Intensity Distribution',
-        PRIMARIES_DIST_OUTPUT_UNFILTERED,
-        '\n(All Images)'
+        PRIMARIES_DIST_OUTPUT_UNFILTERED
     )
 
     print("\n" + "="*80)
