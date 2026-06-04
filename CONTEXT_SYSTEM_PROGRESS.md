@@ -73,9 +73,58 @@ FYPSeagullClassification01 is a Final Year Project (FYP) for classifying two mor
 
 ---
 
+## TASK 3 — GBrain ✅ (Partial)
+
+- GBrain CLI v0.18.2 installed at `~/.bun/bin/gbrain`
+- `.gbrain-source` file created
+- Source `seagull-classification` registered pointing to repo root
+- **Issue:** PGLite TOAST corruption on Windows prevents semantic search
+- **Workaround:** Use `doc/` files directly for context queries
+- Pages indexed: 11
+
+## TASK 4+5 — Symbol Summaries + Module Graph ✅
+
+- `doc/API.md` — full per-file function/class listing
+- `doc/ModuleGraph.md` — Mermaid flowchart + dependency table
+- `doc/CallGraph.md` — 4 entry point call chains traced
+
+## TASK 6 — LLM Wiki
+
+- Skipped. `doc/` files serve as knowledge layer.
+
+## TASK 7 — Learnings ✅
+
+8 learnings saved to gstack store:
+- `config-py-central-hub` (confidence: 10)
+- `discriminating-feature-wingtip-darkness` (confidence: 10)
+- `model-architectures-all-pytorch` (confidence: 10)
+- `segmentation-mask-color-coding` (confidence: 10)
+- `model-weights-outside-repo` (confidence: 10)
+- `lbp-parameters` (confidence: 9)
+- `clustering-input-csv` (confidence: 9)
+- `gbrain-pglite-lock-windows` (confidence: 8)
+
+## TASK 8+9 — Context System Test ✅
+
+Results saved to `doc/ContextSystemTest.md`
+
+| Metric | Value |
+|--------|-------|
+| Average score WITHOUT context | 2.0/10 |
+| Average score WITH context | 9.0/10 |
+| Average improvement | +7.0 points (+350%) |
+| Questions where memory alone was sufficient | 0/10 |
+
+---
+
 ## Status Log
 
 | Time | Task | Status |
 |------|------|--------|
 | 2026-06-04 | TASK 1 - Repo exploration | COMPLETE |
-| 2026-06-04 | TASK 2 - Docs generation | IN PROGRESS |
+| 2026-06-04 | TASK 2 - Docs generation | COMPLETE |
+| 2026-06-04 | TASK 3 - GBrain setup (partial) | COMPLETE |
+| 2026-06-04 | TASK 4+5 - Summaries + graphs | COMPLETE |
+| 2026-06-04 | TASK 6 - Wiki | SKIPPED (using doc/) |
+| 2026-06-04 | TASK 7 - Learnings | COMPLETE (8 saved) |
+| 2026-06-04 | TASK 8+9 - Context test | COMPLETE |
