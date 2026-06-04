@@ -1,0 +1,5 @@
+,darker_pixel_percentage,darker_pixel_percentage,darker_pixel_percentage,darker_pixel_percentage,darker_pixel_percentage,mean_wing_intensity,mean_wing_intensity,mean_wingtip_intensity,mean_wingtip_intensity,total_wingtip_pixels,total_wingtip_pixels,darker_pixel_count,darker_pixel_count
+,mean,std,median,min,max,mean,std,mean,std,mean,std,mean,std
+species,,,,,,,,,,,,,
+Glaucous_Winged_Gull,48.46,26.19,48.2,1.28,96.75,153.18,31.07,153.97,33.84,30977.35,101194.25,13522.67,40187.74
+Slaty_Backed_Gull,56.65,17.75,59.0,11.16,86.13,74.94,22.06,82.34,20.71,282891.93,173356.9,156769.29,111091.05

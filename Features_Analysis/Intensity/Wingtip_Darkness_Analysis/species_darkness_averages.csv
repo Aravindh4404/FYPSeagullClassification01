@@ -1,0 +1,3 @@
+species,darkness_percentage_mean,darkness_percentage_std,darkness_percentage_min,darkness_percentage_max,wing_wingtip_diff_mean,wing_wingtip_diff_std,avg_darkness_difference_mean,avg_darkness_difference_std,total_wingtip_pixels_mean
+Glaucous_Winged_Gull,48.46,26.19,1.28,96.75,-0.79,19.73,20.55,11.55,30977.35
+Slaty_Backed_Gull,65.24,19.29,11.16,97.53,16.81,42.78,52.47,32.35,282891.93

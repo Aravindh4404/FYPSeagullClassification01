@@ -1,4 +1,59 @@
 
+# ── Large binary / media files ────────────────────────────────────────────────
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.tif
+*.pdf
+*.svg
+*.mp4
+*.avi
+*.mov
+
+# ML model weights & data arrays
+*.h5
+*.pkl
+*.pt
+*.pth
+*.bin
+*.onnx
+*.npy
+*.npz
+*.weights
+
+# Office / spreadsheet
+*.xlsx
+*.xls
+
+# LaTeX build artefacts
+*.synctex.gz
+*.aux
+*.bbl
+*.blg
+*.lof
+*.lot
+*.out
+*.toc
+*.bcf
+*.run.xml
+
+# Auto-generated large outputs
+repomix-output.xml
+
+# Dataset image directories (keep on local / Drive only)
+Features_Analysis/Dataset/Colored_Images/
+Features_Analysis/Dataset/Original_Images/
+Features_Analysis/Dataset/removed/
+Features_Analysis/Dataset/to add/
+Features_Analysis/Dataset/gwg extra/
+Test_Results/Test_Data/
+Test_Results/Old_Test_Data/
+
+# Claude Code internals
+.claude/worktrees/
 
 large code files/
 

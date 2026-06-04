@@ -1,0 +1,123 @@
+
+======================================================================
+CORRECTED GULL CLUSTERING ANALYSIS
+======================================================================
+
+✓ Loaded 180 birds
+✓ Features: ['mean_wing_intensity', 'mean_wingtip_intensity', 'percentage_dark_pixels_wingtip']
+
+✓ PCA complete
+  PC1 explains 80.9% variance
+  PC2 explains 15.9% variance
+  Total variance explained: 96.8%
+
+======================================================================
+STATISTICAL TESTS: Species Differences on Principal Components
+======================================================================
+
+PC1:
+  t-statistic: -19.2945
+  p-value: 1.7199e-45
+  Cohen's d: -2.8924 (large effect)
+  SB mean: -1.281 ± 0.733
+  GW mean: 1.281 ± 1.016
+
+PC2:
+  t-statistic: -4.3108
+  p-value: 2.6883e-05
+  Cohen's d: -0.6462 (medium effect)
+  SB mean: -0.212 ± 0.619
+  GW mean: 0.212 ± 0.693
+
+======================================================================
+1. CREATING CORRECTED PCA BIPLOT
+======================================================================
+
+======================================================================
+PCA BIPLOT - LOADING STATISTICS
+======================================================================
+
+Data range (PC1, PC2): [6.39403178 3.60930551]
+Loading range (PC1, PC2): [0.95645285 0.58596789]
+Calculated scale factor: 4.312
+
+Note: Scale factor is calculated to fit arrows within 70% of data range
+
+----------------------------------------------------------------------
+Feature Loadings (Correlation with PCs):
+----------------------------------------------------------------------
+Feature                                         PC1        PC2    |Loading|
+----------------------------------------------------------------------
+mean_wing_intensity                           0.930      0.313        0.981
+mean_wingtip_intensity                        0.956      0.194        0.976
+percentage_dark_pixels_wingtip               -0.813      0.586        1.002
+----------------------------------------------------------------------
+
+Interpretation:
+  • Loading values are correlations between original features and PCs
+  • Range: -1 (perfect negative correlation) to +1 (perfect positive)
+  • |r| > 0.7: Strong relationship
+  • |r| = 0.5-0.7: Moderate relationship
+  • |r| < 0.5: Weak relationship
+
+======================================================================
+2. IDENTIFYING OVERLAP ZONE (LDA METHOD)
+======================================================================
+
+======================================================================
+OVERLAP ZONE IDENTIFICATION - Method: LDA
+======================================================================
+
+LDA Classification Results:
+  Decision boundary: posterior probability = 0.5
+  Overlap threshold: |p - 0.5| ≤ 0.2
+  This means: 0.3 ≤ p ≤ 0.7 are considered uncertain
+
+Species                     In Overlap    Total   Percentage
+----------------------------------------------------------------------
+Slaty_Backed_Gull                    0       90         0.0%
+Glaucous_Winged_Gull                 5       90         5.6%
+----------------------------------------------------------------------
+Total Overlap Birds                  5      180         2.8%
+
+✓ Overlap zone birds saved to: D:\FYPSeagullClassification01\Clustering\clustering_results\2_overlap_zone_lda.csv
+
+======================================================================
+3. HIGHLIGHTING HOKKAIDO BIRDS
+======================================================================
+
+======================================================================
+LOCATING HOKKAIDO BIRDS IN PCA SPACE
+======================================================================
+
+✓ FOUND: 'mod-0R8A4927.JPG'
+   Species: Slaty_Backed_Gull
+   PCA Position: PC1=0.314, PC2=-1.313
+
+✓ FOUND: 'mod-0R8A5109.JPG'
+   Species: Slaty_Backed_Gull
+   PCA Position: PC1=-0.228, PC2=-0.604
+
+✓ FOUND: 'mod-0R8A5217.JPG'
+   Species: Slaty_Backed_Gull
+   PCA Position: PC1=-0.106, PC2=-0.653
+
+✓ Hokkaido bird details saved to: D:\FYPSeagullClassification01\Clustering\clustering_results\3_hokkaido_birds_highlighted_details.csv
+
+✓ Successfully located 3 Hokkaido bird(s)
+
+======================================================================
+✓ CORRECTED ANALYSIS COMPLETE!
+======================================================================
+
+📁 Results saved to: D:\FYPSeagullClassification01\Clustering\clustering_results
+
+📊 Files created:
+   1. 1_pca_biplot_corrected.png - Properly scaled PCA biplot
+   2. pca_loadings.csv - Feature correlation loadings
+   3. statistical_tests.csv - t-tests for PC differences
+   4. 2_overlap_zone_lda.png - LDA-based overlap identification
+   5. 2_overlap_zone_lda.csv - Overlap birds with probabilities
+   6. 3_hokkaido_birds_highlighted.png - Hokkaido bird locations
+
+======================================================================

@@ -1,0 +1,534 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{lastpage}
+\usepackage{tabularx}
+
+\usepackage[nottoc,numbib]{tocbibind}
+  % Preamble packages:
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{multicol}
+\usepackage{caption}
+
+
+
+% for apa with apa
+% \usepackage{natbib} 
+% for ieee with IEEEtran
+\usepackage[numbers]{natbib}
+\usepackage{float}
+\usepackage{grffile}  % Add to preamble
+\usepackage{titlesec} % Add this line for chapter formatting
+
+\usepackage{graphicx}
+
+\usepackage{float} % If you use [H] placement
+
+
+% Required in preamble
+\usepackage{pgfplots}      % Core plotting package
+\pgfplotsset{compat=1.18} % Set compatibility mode (use newest version available) % For general graphics handling (usually auto-loaded)
+
+% Required packages in preamble
+\usepackage{algorithm}      % For algorithm float environment
+\usepackage{algpseudocode}  % For algorithmic structure (functions, loops, etc.)
+\usepackage{xspace}         % For smart spacing after macros (optional but recommended)
+
+\usepackage{csquotes}
+
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\renewcommand{\contentsname}{Table of Contents}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+
+\usepackage{booktabs} % For professional quality tables
+\usepackage{caption}  % For captions of figures and tables
+\usepackage{subcaption} % For subfigures within a figure environment
+% \usepackage[backend=biber, style=apa]{biblatex} % Example for bibliography (if needed, adapt style)
+% \addbibresource{references.bib} % Link to your bibliography file
+% \usepackage{hyperref} % Optional: for clickable links and references
+% \usepackage[capitalise]{cleveref} % Optional: for smart cross-referencing (e.g., Figure 1, Table 2)
+
+\newenvironment{smallquote}
+  {\begin{quote}\footnotesize\vspace{0em}}
+  {\vspace{0em}\end{quote}}
+
+
+\usepackage{pgffor}
+% MAKE Smaller
+% make lists small
+\usepackage{enumitem}
+\setlist{nosep} % Removes extra space in itemize/enumerate
+
+\titlespacing*{\section}{0pt}{0.5em}{0.5em}
+\titlespacing*{\subsection}{0pt}{0.5em}{0.5em}
+
+% % \titleformat{\section}
+% %   {\normalfont\normalsize\bfseries}
+% %   {\thesection}{1em}{}
+
+% \titleformat{\subsection}
+%   {\normalfont\small\bfseries}
+%   {\thesubsection}{1em}{}
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0.5em} % Adjust spacing between paragraphs
+
+% Customise hyperlink appearance (Optional)
+\hypersetup{
+    colorlinks=true,        % Enable colored links
+    linkcolor=black,        % Color for internal links (TOC, sections, etc.)
+    citecolor=black,        % Color for citation links
+    filecolor=black,        % Color for file links
+    urlcolor=blue          % Color for external URLs
+}
+
+% \titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{0.5em}{}
+% \titleformat{\chapter}[display]
+%   {\normalfont\Large\bfseries}
+%   {}
+%   {0pt}
+%   {\vspace{-2em}}
+% \titlespacing*{\chapter}{0pt}{-2em}{1em}
+
+% % Chapter title (smaller than default)
+% \titleformat{\chapter}[display]
+%   {\normalfont\Large\bfseries}
+%   {} % No label
+%   {0pt}
+%   {\vspace{-2em}}
+
+% % Section title (even smaller)
+% \titleformat{\section}
+%   {\normalfont\small\bfseries}
+%   {\thesection}{1em}{}
+
+% \titleformat{\chapter}[display]
+%   {\normalfont\LARGE\bfseries}
+%   {\thechapter}{1em}{} % <- this line sets the number before the title
+% \titlespacing*{\chapter}{0pt}{-2em}{1em}
+
+% \usepackage{titlesec}
+
+\titleformat{\chapter}[block] % or [hang]
+  {\normalfont\LARGE\bfseries}
+  {\thechapter}{1em}{}
+
+\titlespacing*{\chapter}{0pt}{-2em}{1em}
+
+
+% Section: Large and bold
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{0.5em}{0.5em}
+
+% Subsection: Slightly smaller than section, bold
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{0.4em}{0.4em}
+
+% Subsubsection: Normal size, bold (smaller than subsection)
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{0.3em}{0.3em}
+
+\begin{document}
+
+
+% LaTeX code for segmentation masks figure
+% Requires: graphicx, subcaption, adjustbox packages
+
+% Add these to your preamble if not already included:
+% \usepackage{graphicx}
+% \usepackage{subcaption}
+% \usepackage{adjustbox}
+
+% Option 2: Updated Paired Layout with Grad-CAM (Original → Mask → Grad-CAM triplets)
+\begin{figure}[htbp]
+    \centering
+    \caption{Wing-tip segmentation and attention visualization pipeline for species identification. Each set shows the original image (left), its corresponding segmentation mask (middle) highlighting wing-tip patterns, and Grad-CAM visualization (right) showing model attention regions for morphological analysis.}
+    \label{fig:segmentation_pairs}
+    
+    % Triplet 1
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \begin{subfigure}[b]{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_1.png}
+            \caption*{Original}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_1.png}
+            \caption*{Segmentation}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/gradcam_1.png}
+            \caption*{Grad-CAM}
+        \end{subfigure}
+        \caption{Glaucous-winged Gull - Example 1}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    % Triplet 2
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \begin{subfigure}[b]{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_2.png}
+            \caption*{Original}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_2.png}
+            \caption*{Segmentation}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/gradcam_2.png}
+            \caption*{Grad-CAM}
+        \end{subfigure}
+        \caption{Glaucous-winged Gull - Example 2}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    % % Triplet 3
+    % \begin{subfigure}[b]{\textwidth}
+    %     \centering
+    %     \begin{subfigure}[b]{0.32\textwidth}
+    %         \centering
+    %         \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_3.png}
+    %         \caption*{Original}
+    %     \end{subfigure}%
+    %     \hfill
+    %     \begin{subfigure}[b]{0.32\textwidth}
+    %         \centering
+    %         \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_3.png}
+    %         \caption*{Segmentation}
+    %     \end{subfigure}%
+    %     \hfill
+    %     \begin{subfigure}[b]{0.32\textwidth}
+    %         \centering
+    %         \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/gradcam_3.png}
+    %         \caption*{Grad-CAM}
+    %     \end{subfigure}
+    %     \caption{Slaty-backed Gull - Example 1}
+    % \end{subfigure}
+    
+    % \vspace{0.5cm}
+    
+    % % Triplet 4
+    % \begin{subfigure}[b]{\textwidth}
+    %     \centering
+    %     \begin{subfigure}[b]{0.32\textwidth}
+    %         \centering
+    %         \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_4.png}
+    %         \caption*{Original}
+    %     \end{subfigure}%
+    %     \hfill
+    %     \begin{subfigure}[b]{0.32\textwidth}
+    %         \centering
+    %         \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_4.png}
+    %         \caption*{Segmentation}
+    %     \end{subfigure}%
+    %     \hfill
+    %     \begin{subfigure}[b]{0.32\textwidth}
+    %         \centering
+    %         \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/gradcam_4.png}
+    %         \caption*{Grad-CAM}
+    %     \end{subfigure}
+    %     \caption{Slaty-backed Gull - Example 2}
+    % \end{subfigure}
+\end{figure}
+
+% Option 1: Basic 2x4 Layout (Recommended for publication)
+\begin{figure}[htbp]
+    \centering
+    \caption{Image segmentation pipeline showing original gull images and corresponding wing-tip segmentation masks. (A) Original images of Glaucous-winged Gull (GWG) and Slaty-backed Gull (SBG) specimens. (B) Corresponding segmentation masks highlighting wing-tip regions for morphological analysis.}
+    \label{fig:segmentation_pipeline}
+    
+    % Top row - Original images
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_1.png}
+        \caption*{GWG - Example 1}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_2.png}
+        \caption*{GWG - Example 2}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_3.png}
+        \caption*{SBG - Example 1}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_4.png}
+        \caption*{SBG - Example 2}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    \textbf{(A) Original Images}
+    \vspace{0.3cm}
+    
+    % Bottom row - Segmentation masks
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_1.png}
+        \caption*{Mask 1}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_2.png}
+        \caption*{Mask 2}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_3.png}
+        \caption*{Mask 3}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_4.png}
+        \caption*{Mask 4}
+    \end{subfigure}
+    
+    \vspace{0.2cm}
+    \textbf{(B) Segmentation Masks}
+\end{figure}
+
+% Option 2: Paired Layout (Original → Mask pairs)
+\begin{figure}[htbp]
+    \centering
+    \caption{Wing-tip segmentation Examples demonstrating the image processing pipeline for species identification. Each pair shows the original image (left) and its corresponding segmentation mask (right) highlighting wing-tip patterns used for morphological analysis.}
+    \label{fig:segmentation_pairs}
+    
+    % Pair 1
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_1.png}
+            \caption*{Original}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_1.png}
+            \caption*{Segmentation}
+        \end{subfigure}
+        \caption{Glaucous-winged Gull - Example 1}
+    \end{subfigure}%
+    \hfill
+    % Pair 2
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_2.png}
+            \caption*{Original}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_2.png}
+            \caption*{Segmentation}
+        \end{subfigure}
+        \caption{Glaucous-winged Gull - Example 2}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    % Pair 3
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_3.png}
+            \caption*{Original}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_3.png}
+            \caption*{Segmentation}
+        \end{subfigure}
+        \caption{Slaty-backed Gull - Example 1}
+    \end{subfigure}%
+    \hfill
+    % Pair 4
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/original_4.png}
+            \caption*{Original}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}[b]{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth,height=3cm,keepaspectratio]{figures/mask_4.png}
+            \caption*{Segmentation}
+        \end{subfigure}
+        \caption{Slaty-backed Gull - Example 2}
+    \end{subfigure}
+\end{figure}
+
+% Option 3: Compact Grid Layout
+\begin{figure}[htbp]
+    \centering
+    \caption{Segmentation pipeline results for wing-tip pattern analysis. Top row: original images; bottom row: corresponding segmentation masks highlighting wing-tip regions for morphological feature extraction.}
+    \label{fig:segmentation_grid}
+    
+    % Create a table-like structure
+    \begin{tabular}{cccc}
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/original_1.png} &
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/original_2.png} &
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/original_3.png} &
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/original_4.png} \\
+        \small{GWG-1 Original} & \small{GWG-2 Original} & \small{SBG-1 Original} & \small{SBG-2 Original} \\[0.3cm]
+        
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/mask_1.png} &
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/mask_2.png} &
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/mask_3.png} &
+        \includegraphics[width=0.22\textwidth,height=3cm,keepaspectratio]{figures/mask_4.png} \\
+        \small{GWG-1 Mask} & \small{GWG-2 Mask} & \small{SBG-1 Mask} & \small{SBG-2 Mask} \\
+    \end{tabular}
+\end{figure}
+
+% Option 4: Publication-ready with detailed captions
+\begin{figure}[!htbp]
+    \centering
+    \caption{Image segmentation pipeline for automated wing-tip pattern analysis in \textit{Larus} species. Representative Examples show the segmentation process applied to field photographs of Glaucous-winged Gull (\textit{L. glaucescens}) and Slaty-backed Gull (\textit{L. schistisagus}). (A) Original field photographs showing wing-tip regions. (B) Corresponding binary segmentation masks generated through automated image processing, highlighting wing-tip patterns used for morphological feature extraction and species classification.}
+    \label{fig:segmentation_detailed}
+    
+    % Row A - Original images
+    \noindent\textbf{(A) Original Images}\\[0.2cm]
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/original_1.png}}
+        \caption*{\small GWG specimen 1}
+        \label{fig:orig1}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/original_2.png}}
+        \caption*{\small GWG specimen 2}
+        \label{fig:orig2}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/original_3.png}}
+        \caption*{\small SBG specimen 1}
+        \label{fig:orig3}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/original_4.png}}
+        \caption*{\small SBG specimen 2}
+        \label{fig:orig4}
+    \end{subfigure}
+    
+    \vspace{0.8cm}
+    
+    % Row B - Segmentation masks
+    \noindent\textbf{(B) Segmentation Masks}\\[0.2cm]
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/mask_1.png}}
+        \caption*{\small Wing-tip mask 1}
+        \label{fig:mask1}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/mask_2.png}}
+        \caption*{\small Wing-tip mask 2}
+        \label{fig:mask2}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/mask_3.png}}
+        \caption*{\small Wing-tip mask 3}
+        \label{fig:mask3}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \adjustbox{frame=0.5pt}{\includegraphics[width=\textwidth,height=3.5cm,keepaspectratio]{figures/mask_4.png}}
+        \caption*{\small Wing-tip mask 4}
+        \label{fig:mask4}
+    \end{subfigure}
+\end{figure}
+
+% Required packages for preamble:
+% \usepackage{graphicx}
+% \usepackage{subcaption}
+% \usepackage{adjustbox}
+% \usepackage{array}
+
+% Folder structure needed:
+% your_project/
+% └── figures/
+%     ├── original_1.png  (GWG Example 1)
+%     ├── original_2.png  (GWG Example 2)
+%     ├── original_3.png  (SBG Example 1)
+%     ├── original_4.png  (SBG Example 2)
+%     ├── mask_1.png      (mask for original_1)
+%     ├── mask_2.png      (mask for original_2)
+%     ├── mask_3.png      (mask for original_3)
+%     └── mask_4.png      (mask for original_4)
+
+% Usage Instructions:
+% 1. Add the required packages to your preamble
+% 2. Create a 'figures' folder in your LaTeX project directory
+% 3. Place your 8 images (4 originals + 4 masks) in the figures folder
+% 4. Rename them according to the naming convention above
+% 5. Choose one of the four options above and add it to your document
+% 6. Compile your LaTeX document
+
+% Tips:
+% - Option 1: Best for general publication use
+% - Option 2: Good for showing clear original→mask relationships
+% - Option 3: Most compact, good for space-constrained journals
+% - Option 4: Most detailed, good for method papers
+
+% Customization options:
+% - Adjust width/height parameters to fit your layout
+% - Change frame thickness by modifying frame=0.5pt
+% - Modify captions and labels as needed
+% - Add/remove species labels as appropriate
+
+\end{document}

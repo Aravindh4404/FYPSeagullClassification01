@@ -1,0 +1,91 @@
+============================================================
+WINGTIP DARKNESS PERCENTAGE ANALYSIS STATISTICS
+============================================================
+
+OVERALL DATASET STATISTICS:
+----------------------------------------
+Total Images Analyzed: 200
+Overall Mean Darkness: 56.85%
+Overall Std Darkness: 24.43%
+Overall Min Darkness: 1.28%
+Overall Max Darkness: 97.53%
+Overall Median Darkness: 60.10%
+
+SPECIES-SPECIFIC STATISTICS:
+----------------------------------------
+
+Slaty -backed Gull:
+  Sample Size: 100 images
+  Mean: 65.24%
+  Standard Deviation: 19.29%
+  Minimum: 11.16%
+  Maximum: 97.53%
+  Median: 71.76%
+  25th Percentile: 54.33%
+  75th Percentile: 79.28%
+  Interquartile Range: 24.95%
+
+Glaucous -winged Gull:
+  Sample Size: 100 images
+  Mean: 48.46%
+  Standard Deviation: 26.19%
+  Minimum: 1.28%
+  Maximum: 96.75%
+  Median: 48.20%
+  25th Percentile: 27.46%
+  75th Percentile: 68.78%
+  Interquartile Range: 41.32%
+
+
+DISTRIBUTION ANALYSIS:
+----------------------------------------
+
+Slaty -backed Gull - Frequency Distribution (5% bins):
+  10-15%: 1 images (1.0%)
+  20-25%: 1 images (1.0%)
+  25-30%: 5 images (5.0%)
+  30-35%: 4 images (4.0%)
+  35-40%: 3 images (3.0%)
+  40-45%: 4 images (4.0%)
+  45-50%: 5 images (5.0%)
+  50-55%: 3 images (3.0%)
+  55-60%: 9 images (9.0%)
+  60-65%: 7 images (7.0%)
+  65-70%: 4 images (4.0%)
+  70-75%: 13 images (13.0%)
+  75-80%: 16 images (16.0%)
+  80-85%: 11 images (11.0%)
+  85-90%: 10 images (10.0%)
+  90-95%: 3 images (3.0%)
+  95-100%: 1 images (1.0%)
+
+Glaucous -winged Gull - Frequency Distribution (5% bins):
+  0-5%: 5 images (5.0%)
+  5-10%: 5 images (5.0%)
+  10-15%: 2 images (2.0%)
+  15-20%: 5 images (5.0%)
+  20-25%: 5 images (5.0%)
+  25-30%: 5 images (5.0%)
+  30-35%: 4 images (4.0%)
+  35-40%: 8 images (8.0%)
+  40-45%: 6 images (6.0%)
+  45-50%: 8 images (8.0%)
+  50-55%: 7 images (7.0%)
+  55-60%: 5 images (5.0%)
+  60-65%: 7 images (7.0%)
+  65-70%: 4 images (4.0%)
+  70-75%: 3 images (3.0%)
+  75-80%: 6 images (6.0%)
+  80-85%: 5 images (5.0%)
+  85-90%: 4 images (4.0%)
+  90-95%: 5 images (5.0%)
+  95-100%: 1 images (1.0%)
+
+
+STATISTICAL COMPARISON BETWEEN SPECIES:
+----------------------------------------
+Mean Difference (Slaty -backed Gull - Glaucous -winged Gull): 16.78%
+Slaty -backed Gull has higher average darkness percentage
+
+============================================================
+Analysis completed successfully.
