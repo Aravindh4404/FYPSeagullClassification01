@@ -60,19 +60,6 @@ FYPSeagullClassification01 is a Final Year Project (FYP) for classifying two mor
 
 ---
 
-## TASK 7 — Learnings ⏳
-
-- [ ] Learnings saved
-
----
-
-## TASK 8 — Context System Test ⏳
-
-- [ ] 10 questions answered with/without context
-- [ ] Results saved to doc/ContextSystemTest.md
-
----
-
 ## TASK 3 — GBrain ✅ (Partial)
 
 - GBrain CLI v0.18.2 installed at `~/.bun/bin/gbrain`
@@ -103,19 +90,6 @@ FYPSeagullClassification01 is a Final Year Project (FYP) for classifying two mor
 - `lbp-parameters` (confidence: 9)
 - `clustering-input-csv` (confidence: 9)
 - `gbrain-pglite-lock-windows` (confidence: 8)
-
-## TASK 8+9 — Context System Test ✅
-
-Results saved to `doc/ContextSystemTest.md`
-
-| Metric | Value |
-|--------|-------|
-| Average score WITHOUT context | 2.0/10 |
-| Average score WITH context | 9.0/10 |
-| Average improvement | +7.0 points (+350%) |
-| Questions where memory alone was sufficient | 0/10 |
-
----
 
 ## Status Log
 

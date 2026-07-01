@@ -1,0 +1,5 @@
+model,result_folder,n_test_images,test_accuracy,validation_accuracy,precision_macro,recall_macro,f1_macro,precision_GWG,recall_GWG,f1_GWG,precision_SBG,recall_SBG,f1_SBG
+VGG-16,best_model_vgg_20250210,86,0.9884,N/A (not present in Test_Results/Test_Results; only test-set confusion matrices exist there),0.9886,0.9884,0.9884,1.0,0.9767,0.9882,0.9773,1.0,0.9885
+Inception v3,best_model_inception,86,0.7093,N/A (not present in Test_Results/Test_Results; only test-set confusion matrices exist there),0.7481,0.7093,0.6975,0.8462,0.5116,0.6377,0.65,0.907,0.7573
+ViT-Base/16,final_model_vit_20241224,86,0.9419,N/A (not present in Test_Results/Test_Results; only test-set confusion matrices exist there),0.944,0.9419,0.9418,0.913,0.9767,0.9438,0.975,0.907,0.9398
+ViT+Attention,final_model_vit_20250213,86,0.9651,N/A (not present in Test_Results/Test_Results; only test-set confusion matrices exist there),0.9654,0.9651,0.9651,0.9545,0.9767,0.9655,0.9762,0.9535,0.9647
