@@ -13,8 +13,8 @@ OUT = r"D:\FYPSeagullClassification01\outputs"
 
 # (filename, species_folder, short_note)
 BIRDS = [
-    ("0Z2A1082.JPG", "Glaucous_Winged_Gull", "Inception misclassifies; others correct"),
-    ("49995412233_e28cbc91f7_o.jpg", "Glaucous_Winged_Gull", "VGG & Inception misclassify; both ViT variants correct"),
+    ("0Z2A2122.JPG", "Glaucous_Winged_Gull", "Inception misclassifies; others correct"),
+    ("mod-0R8A5109.JPG", "Slaty_Backed_Gull", "ViT-Base/16 misclassifies; others correct"),
     ("mod-0R8A5217.JPG", "Slaty_Backed_Gull", "Both ViT variants misclassify; VGG & Inception correct"),
     ("0Z2A0606.JPG", "Glaucous_Winged_Gull", "All four models correct"),
 ]
